@@ -1,0 +1,19 @@
+label {
+  color: green;
+/*  font: bold 36px "dejavu"; */
+  font: bold 36px "waree"; 
+}
+
+MainWindow {
+    background-image: url('../imgs/Bermuda-Circle.svg');
+    /*
+    background-image: url('../imgs/Bullseye-Gradient.svg');
+    background-image: url('../imgs/Large-Triangles.svg');
+    background-image: url('../imgs/Rose-Petals.svg');
+    background-image: url('../imgs/Tortoise-Shell.svg');
+    background-image: url('../imgs/Vanishing-Stripes.svg');
+    background-image: url('../imgs/Wintery-Sunburst.svg');
+    */
+}
+
+

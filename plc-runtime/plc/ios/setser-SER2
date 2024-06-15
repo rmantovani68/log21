@@ -1,0 +1,30 @@
+#!/bin/sh
+#
+# This script will be executed *after* all the other init scripts.
+# You can put your own initialization stuff in here if you don't
+# want to do the full Sys V style init stuff.
+
+#  Configurazione delle seriali CNI.
+# Prima scheda SER2 (IO=0x1A0 IRQ=11)
+/bin/setserial /dev/ttyS4 port 0x1a0 irq 11 \
+	autoconfig '^skip_test' fourport \
+	set_multiport port1 0x1bf match1 0x00 mask1 0x03
+/bin/setserial /dev/ttyS5 port 0x1a8 irq 11 \
+	autoconfig '^skip_test' fourport \
+	set_multiport port1 0x1bf match1 0x00 mask1 0x03
+# Seconda scheda SER2 (IO=0x1C0 IRQ=10)
+/bin/setserial /dev/ttyS6 port 0x1c0 irq 10 \
+	autoconfig '^skip_test' fourport \
+	set_multiport port1 0x1df match1 0x00 mask1 0x03
+/bin/setserial /dev/ttyS7 port 0x1c8 irq 10 \
+	autoconfig '^skip_test' fourport \
+	set_multiport port1 0x1df match1 0x00 mask1 0x03
+
+# rm 01-02-2001 : trucco per gestire correttamente le maledette
+# etichettatrici Alfajet 3000
+/bin/setserial /dev/ttyS6 uart 8250
+/bin/setserial /dev/ttyS7 uart 8250
+
+stty 9600 raw -echo ixon ixoff < /dev/ttyS6
+stty 9600 raw -echo ixon ixoff < /dev/ttyS7
+

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo PACKING LIST ORDINE $1
+echo "select ronmbam as BAM, ronmcll as COLLI, ropspre as PESO_PRE, ropsrea as PESO_REALE, data(rotmeva) as DATA_EVA , ora(rotmeva) as ORA_EVA from ric_ord_stor as o where ordprog ~* '$1';" | psql -h database mondadori
+
+echo "select rocdcla||' '||rocdspa||' '||rocdspc||' '||rodscla||' '||roincla||' '||rolocla||' '||roprcla as DESTINATARIO from ric_ord_stor as o where ordprog ~* '$1';" | psql -h database mondadori
+
+echo "select rocdrid||' '||rodscli||' '||rococli||' '||rolocli||' '||roprcli as DESTINAZIONE from ric_ord_stor as o where ordprog ~* '$1';" | psql -h database mondadori
+
+echo 'COLLI'
+echo "select c.cpnmcol as COLLO,c.cppspre as PESO_PRE,c.cppsrea as PESO_REALE, data(c.cptmeva) as DATA_EVA , ora(c.cptmeva) as ORA_EVA from col_prod_stor as c where c.ordprog ~* '$1' order by c.cpnmcol;" | psql -h database mondadori
+echo 'RIGHE'
+echo "select r.rpcdpro as CODICE,p.prdstit as TITOLO,p.prpesgr*r.rpqtspe as PESO,r.rpnmcol as COLLO,r.rpqtspe as QTA,p.prdsaut as AUTORE,p.prpzcoe as PREZZO from rig_prod_stor r,catalogo p where r.ordprog~*'$1' and r.rpcdpro=p.prcdpro order by r.rpnmcol;" | psql -h database mondadori

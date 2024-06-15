@@ -1,0 +1,30 @@
+
+#lb_dati_linea {
+    color: yellow;
+    font: bold 14px "Comic Sans";
+    margin-right: 30px; margin-left: 30px;
+}
+
+#frame_dati_linea {
+    background-color: pink;
+}
+
+#lb_dati_bancale {
+    color: yellow;
+    font: bold 14px "Comic Sans";
+    margin-right: 30px; margin-left: 30px;
+}
+
+#frame_dati_bancale {
+    background-color: lightgreen;
+}
+
+#lb_dati_collo {
+    color: yellow;
+    font: bold 14px "Comic Sans";
+    margin-right: 30px; margin-left: 30px;
+}
+
+#frame_dati_collo {
+    background-color: lightblue;
+}

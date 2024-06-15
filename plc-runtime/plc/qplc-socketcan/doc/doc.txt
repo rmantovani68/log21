@@ -1,0 +1,463 @@
+
+
+                    NOTE SUL FUNZIONAMENTO DEL PLC CNI 
+                    ----------------------------------
+
+1 - Concetti fondamentali
+-------------------------
+
+ L'esecutore del programma Plc integrato in XNC ("qplc") esegue periodicamente
+il programma Plc scritto dall'utente. Il periodo dipende dalle opzioni di
+lancio dell'esecutore, e normalmente e` di 10 millisecondi.
+ Prima di iniziare il ciclo di esecuzione, qplc realizza le associazioni tra
+segnali di I/O e variabili, come richiesto dal programma utente. Se si cerca
+di utilizzare un segnale inesistente o proibito, oppure si tenta di associarlo
+ad una variabile di dimensione imprevista, si ha una segnalazione di errore
+e l'esecuzione del programma non ha luogo.
+ Il ciclo di esecuzione compie le seguenti azioni:
+
+	- Lettura dei segnali d'ingresso, cioe` copia dello stati dei segnali
+	  fisici nelle variabili di ingresso del programma
+	- Esecuzione del programma utente
+	- Scrittura dei segnali di uscita, cioe` scrittura delle variabili di
+	  uscita del programma sui segnali fisici
+
+ I segnali di ingresso e di uscita sono abbinati alle variabili del
+programma utente tramite appositi costrutti del linguaggio IL. L'ambiente
+di edit del programma Plc genera automaticamente il codice necessario,
+richiedendo all'utente di selezionare i segnali di I/O attraverso appositi
+menu`. In particolare, la scelta dei moduli IOS di ingresso o uscita a bit,
+che e` l'operazione di gran lunga piu` frequente, e` automatizzata completamente
+da un apposito ambiente, mentre la selezione di segnali di altro tipo richiede
+solo la scrittura della stringa che li descrive nel campo "I/O speciali" della
+finestra di definizione delle variabili. Piu` avanti saranno descritti nel
+dettaglio i possibili segnali di ingresso e di uscita riconosciuti
+dall'esecutore Plc. E` importante ricordare che la stringa di definizione
+di un segnale non ha alcun significato particolare per il compilatore IL,
+il quale si limita a passarla cosi` com'e` all'esecutore. Sara` quindi solo
+in fase di esecuzione che si rileveranno eventuali errori nella definizione
+dei segnali.
+
+2 - Architettura dei segnali di I/O
+-----------------------------------
+
+NOTA: Le informazioni qui riportate si riferiscono alla versione 1.8.0.16
+ dell'esecutore.
+
+ L'organizzazione dei segnali di I/O di qplc e` gerarchica: al livello piu`
+alto si trovano le classi di gestori dei segnali, che rappresentano il tipo di
+scheda, controllore o altro dispositivo, reale o virtuale, a cui fa capo il
+gruppo di segnali di cui il segnale fa parte. Il livello successivo descrive
+il particolare controllore a cui ci si riferisce: possono infatti essere
+installati piu` controllori dello stesso tipo su una macchina. Ai livelli
+inferiori si trovano le descrizioni dei segnali collegati al particolare
+controllore, con un livello di dettaglio via via piu` spinto.
+ Quest'organizzazione gerarchica si riflette nelle regole di costruzione
+della stringa che identifica un particolare segnale. La stringa e` composta
+da campi di lettere e numeri separati dal carattere ".". Lettere maiuscole
+e minuscole sono equivalenti. I campi contengono le informazioni relative
+ai vari livelli gerarchici in ordine di priorita`, cioe` i campi piu` a
+sinistra si riferiscono ai livelli piu` alti. Percio` il primo campo sara`
+sempre il nome della classe del gestore.
+ Attualmente sono riconosciuti i seguenti nomi di classi:
+
+	IOS:   Comprende le schede IOS, CX, UDC, MPP. Tutti i segnali
+	       collegati a queste schede fanno capo a questa classe,
+	       eccetto quelli che sono sotto il controllo del software
+	       di gestione dei movimenti, per i quali si deve usare
+	       la classe AX (vedi sotto).
+	KEYB:  E` il controllore della tastiera PLC, e gestisce i
+	       tasti PLC, i tasti speciali START, STOP, RESET e CLEAR,
+	       le manopole chiamate usualmente "override", e
+	       i LED dei modelli compatti della plancia.
+	AX:    E` un controllore virtuale, che realizza un colloquio
+	       col sistema di gestione dei movimenti di macchina. Permette
+	       di accedere da programma PLC a segnali normalmente riservati
+	       al controllo degli assi, come per esempio le uscite analogiche
+	       delle schede RCX.
+	SER:   Questa classe di controllori da` accesso alle linee seriali.
+	       I segnali appartenenti a questa classe sono manipolabili
+	       solo tramite appositi blocchi funzionali di trasmissione
+	       e ricezione.
+	BGAGE: A questa classe appartengono l'ingresso e l'uscita analogici
+	       della scheda di acquisizione "Bus Gage".
+
+ Si descriveranno ora in dettaglio i dispositivi appartenenti alle varie
+classi e le regole di costruzione delle stringhe di descrizione di ciascuno.
+
+2.1 - Classe IOS
+----------------
+
+ Questa classe contiene la maggior parte dei segnali gestiti da qplc.
+ Comprende:
+
+	- Moduli IOS "ordinari", cioe` con ingressi o uscite a bit
+	  e senza elaborazioni particolari dei segnali.
+	- Moduli IOS "speciali", come moduli assi, tastiere a 24 LED
+	  + 24 tasti, moduli a 4 ingressi analogici, moduli con
+	  uscite temporizzate.
+	  Per limitazioni intrinseche del bus IOS, l'esecutore non e`
+	  in grado di distinguere il modello esatto di modulo speciale
+	  collegato.
+	- Uscite a bit delle schede MPP ed UDC.
+	- Uscita DAC della scheda CX a montaggio completo.
+	- Uscita LED della scheda CX (obsoleta).
+
+2.1.1 - Moduli IOS
+------------------
+
+ Tutti i segnali controllati da moduli IOS sono descritti da stringhe
+nella seguente forma:
+
+				  IOS.s.l.m.p
+
+ dove
+
+ "s" e` l'indice della scheda IOS o CX a cui e` collagata la linea IOS,
+ "l" e` l'indice della linea IOS sulla scheda,
+ "m" e` l'indirizzo IOS del modulo,
+ "p" e` una stringa composta da uno o piu` campi, la cui forma dipende
+     dalla natura del segnale.
+
+ Tutti i moduli IOS sono accessibili a byte collegando variabili ad otto bit
+a segnali nella forma:
+
+				  IOS.s.l.m.x
+
+dove i parametri "s","l" ed "m" hanno il significato gia` visto, mentre "x"
+indica l'indice del byte a cui si vuole accedere. La modalilta` di accesso
+(ingresso o uscita) dipende dal tipo di modulo. Per i moduli speciali, i
+primi quattro byte (0-3) sono di lettura, gli altri quattro (4-7) sono di
+scrittura. Per i moduli ordinari, le regole di accesso riflettono la
+funzione dei gruppi di otto segnali a cui i byte corrispondono.
+ Questa modalita` di accesso e` poco usata, ed e` riportata solo per
+completezza. Si consigli di utilizzare sempre i segnali specifici dei vari
+modelli di modulo, che saranno descritti nei paragrafi seguenti.
+
+ NOTA: qplc e` in grado di identificare esattamente il modello di modulo
+ordinario collegato, puo` quindi rilevare errori di configurazione e tentativi
+di accedere a segnali inesistenti. Non e` invece possibile riconoscere il
+modello di modulo speciale collegato, percio` lo scambio di indirizzi tra
+due moduli speciali di tipo diverso non provoca errori di esecuzione, ma
+solo comportamenti imprevisti della macchina.
+
+2.1.1.1 - Moduli IOS ordinari
+-----------------------------
+
+ Ricadono in questa categoria tutti i moduli utilizzati per lettura o
+emissione di segnali binari senza elaborazione aggiuntiva, ad eccezione
+del modulo S24T, che fa parte dei moduli speciali.
+ I moduli IOS ordinari controllano fino a tre gruppi di otto segnali di
+ingresso o uscita. I segnali sono accessibili singolarmente da programma come
+valore booleani. La sintassi  da utilizzare e`
+
+				 IOS.s.l.m.x.y
+
+dove "x" e` l'indice del byte a cui appartiene il bit, e "y" e` l'indice del
+bit nel byte. E` ammesso per "y" un valore maggiore di sette, che equivale
+ad accedere a byte successivi a quello indicato in "x".
+ Si ricorda che per la selezione di ingressi e uscite a bit di moduli
+ordinari e` possibile utilizzare l'apposito ambiente dell'editor Plc.
+
+2.1.1.2 - Moduli con uscita DAC
+-------------------------------
+
+ E` possibile pilotare l'uscita analogica dei moduli installanti un DAC
+collegando una variabile d'uscita a 16 bit ad un segnale nella forma
+
+				 IOS.s.l.m.DAC
+
+ Il convertitore D/A del modulo ha una risoluzione di 12 bit. Qplc non
+controlla eventuali overflow della variabile a 16 bit collegata. Questo
+controllo resta a carico del programmatore.
+
+2.1.1.3 - Moduli ADC (IAN451)
+-----------------------------
+
+ Gli ingressi ADC dei moduli IAN451 sono accessibili collegando una variabile
+d'ingresso a 16 bit ad un segnale nella forma
+
+				IOS.s.l.m.ADC.n
+ 
+dove "n" e` un numero compreso tra 0 e 3 ed individua l'ingresso desiderato.
+ Il valore ottenuto da tali ingressi e` da intendersi con segno. Si usi
+pertanto il tipo "INT" per la variabile collegata.
+ 
+2.1.1.4 - Moduli S24T
+---------------------
+
+ Il modulo speciale S24T e` una tastiera con 24 tasti e 24 LED. I tasti
+sono accessibili come ingressi a bit, i LED come uscite a bit. La sintassi
+da utilizzare per questi segnali e` simile a quella dei segnali a bit dei
+moduli ordinari, ma l'indice di byte e` sempre "0" e l'indice di bit va
+da "0" a "23" per gli ingressi (tasti), e da "24" a "47" per le uscite (LED).
+ La stringa ha dunque la forma
+
+				 IOS.s.l.m.0.y
+
+dove "y" e` compreso tra 0 e 23 per i tasti e tra 24 e 47 per i LED.
+
+2.1.1.5 - Moduli SI816V e SIR88V
+--------------------------------
+
+ Questi due moduli speciali contengono otto ingressi a bit ed otto uscite
+a bit collegate ai rispettivi ingressi attraverso altrettanti monostabili
+ritardati. La variazione dell'ingresso provoca un impulso sull'uscita con
+un ritardo e per una durata programmabili. Sono pure programmabili le polarita`
+del fronte attivo in ingresso e dell'impulso d'uscita. Ciascuna uscita
+prevede inoltre un bit di abilitazione che, se posto a 0, inibisce l'emissione
+dell'impulso.
+
+				   [ FIGURA ]
+
+ Il modello SI816V contiene anche otto uscite a bit ordinarie.
+ La sintassi della stringa di descrizione dei segnali di questo modulo e`
+simile a quella del modulo S24T. In piu`, esistono segnali per la
+configurazione dei monostabili.
+ Qplc riconosce 24 ingressi a bit, descritti da stringhe aventi la forma
+
+				 IOS.s.l.m.0.y
+
+dove "y" ha il seguente significato:
+
+  0 <= y <= 7  : Immagine dell'ingresso fisico di posto "y".
+  8 <= y <= 15 : Immagine dell'uscita fisica y-8, a meno dell'abilitazione.
+ 16 <= y <= 23 : Immagine dell'uscita ordinaria y-16 (solo per SI816V).
+
+ La stessa sintassi, per "y" compreso tra 24 e 39 , descrive sedici uscite
+a bit secondo queste regole:
+
+ 24 <= y <= 31 : Abilitazione dell'uscita monostabile di posto y-24.
+ 32 <= y <= 39 : Uscite a bit ordinarie (solo per SI816V).
+
+ Per la configurazione dei monostabili e dei ritardi sono disponibili
+quattro uscite per ogni segnale. Esse configurano la durata del ritardo,
+la durata dell'impulso, la polarita` del fronte attivo in ingresso e la
+polarita` del livello attivo in uscita. La loro sintassi e` la seguente:
+
+Durata del ritardo:
+			      IOS.s.l.m.0.y.DELAY
+
+Durata dell'impulso:
+			      IOS.s.l.m.0.y.PULSE
+
+Fronte attivo in ingresso:
+			      IOS.s.l.m.0.y.TRIGL
+
+Livello attivo d'uscita:
+			       IOS.s.l.m.0.y.OUTL
+
+
+dove "y" indica la particolare uscita, ed e` percio` compreso tra 24 e 31.
+ La durata del ritardo (".DELAY") e dell'impulso (".PULSE") devono essere
+associati a valori a 16 bit, contenenti le durate espresse in millisecondi.
+Il valore massimo annesso per entrambe le grandezze e` 2047. Non c'e`
+controllo di overflow da parte dell'esecutore.
+ La polarita` del fronte attivo (".TRIGL") e` un'uscita a bit. Se e` posta
+a 1, il fronte attivo e` quello di salita, se 0, e` quello di discesa.
+ Il livello dell'impulso d'uscita (".OUTL") e` un'uscita a bit. Se e` posta
+a 1, l'uscita e` attiva bassa, se e` posta a 0, e` attiva alta.
+
+2.1.2 - Uscite UDC ed MPP
+-------------------------
+
+ Le schede UDC3 ed MPP3 possiedono ingressi ed uscite a bit. Per l'esattezza,
+la scheda UDC3 ha 16 ingressi e 11 uscite, mentre la scheda MPP3 ha 16
+ingressi e 7 uscite (NOTA: i primi quattro ingressi della scheda MPP3 sono
+in genere utilizzati anche dal gestore degli assi per leggere i micro di
+fine corsa). La stringa di definizione di questi segnali ammette due forme
+perfettamente equivalenti:
+
+				  IOS.s.UDC.y
+				  IOS.s.MPP.y
+
+dove "s" e` l'indice della scheda, come di consueto, ed "y" l'indice del bit.
+"y" parte da zero sia per gli ingressi che per le uscite. Il valore massimo
+per "y" dipende dal modello di scheda.
+
+2.1.3 - Uscita DAC della scheda CX completa
+-------------------------------------------
+
+ La versione completa della scheda CX contiene un convertitore D/A ad 8 bit,
+accessibile da programma PLC collegando una variabile ad 8 bit al segnale
+
+				   IOS.s.DAC
+
+dove "s" e` l'indice della scheda.
+ 
+2.1.4 - Uscita LED della scheda CX (OBSOLETA)
+---------------------------------------------
+
+ Una versione preliminare della scheda CX prevedeva otto uscite a bit
+destinate a pilotare glio otto LED della tastiera compatta. In seguito
+la gestione dei questi LED e` passata sotto il controllo del gestore della
+tastiera, ma qplc continua, per ora, a riconoscere il vecchio dispositivo,
+che pero` non e` piu` prodotto.
+ I segnali associati a queste uscite hanno la forma
+
+				  IOS.s.LED.y
+
+dove "s" e` l'indice della scheda, ed "y" l'indice del LED, compreso tra 0
+e 8.
+NOTA: Questa prestazione verra` probabilmente rimossa in futuro.
+ 
+2.2 - Classe KEYB
+-----------------
+
+ Questa classe di gestori comprende i tasti del PLC, gli ingressi delle
+manopole override, i tasti START, STOP, RESET e CLEAR, e le uscite LED
+della tastiera compatta.
+
+2.2.1 - Tasti PLC e speciali
+----------------------------
+
+ I tasti del PLC e i tasti speciali sono visti come ingressi a bit
+descritti dalla sintassi
+
+				   KEYB.s.1.y
+
+dove "s" e` l'indice del controllore di tastiera, e vale normalmente "0",
+ed "y" l'indice del tasto. Il significato di "y" e` il seguente:
+	
+	0...31 : Tasti PLC
+	32 : START
+	33 : STOP
+	34 : CLEAR
+	35 : RESET
+
+NOTA: Qplc, in condizioni normali, assegna automaticamente questi tasti
+ad appositi segnali di scambio predefiniti. In particolare, i tasti PLC
+sono disponibili nei segnali TASTI[0]...TASTI[31], mentre i tasti speciali
+sono assegnati diversamente a seconda della versione del controllo numerico.
+Per questo, il tentativo di assegnarli da programma utente, oltre che essere
+del tutto inutile, e` normalmente destinato a fallire. Questo vale anche per
+gli ingressi override, descritti sotto, che sono assegnati ai segnali
+OVR[0]...OVR[3].
+ Si consulti il manuale "Segnali di Scambio" per una trattazione dettagliata
+di questi aspetti.
+
+2.2.2 - Ingressi "OVERRIDE"
+---------------------------
+
+ La plancia XNC prevede fino a quattro manopole dette "override". Di solito
+e` montata solo la prima. Lo stato di questi ingressi e` accessibile
+tramite segnali ad 8 o a 32 bit, con la seguente sintassi:
+
+Per associazione a variabili di 8 bit:
+
+				   KEYB.s.8.y
+
+Per associazione a variabili di 32 bit:
+
+				  KEYB.s.32.y
+
+dove "s" e` l'indice del controllore di tastiera, e vale normalmente "0",
+ed "y" l'indice dell'ingresso override, compreso tra 0 e 3.
+
+NOTA: Qplc collega normalmente questi ingressi ai segnali di scambio
+predefiniti OVR[0]...OVR[3]. Si veda la nota al paragrafo precedente.
+
+2.2.3 - Uscite LED della tastiera compatta
+------------------------------------------
+
+ Qplc gestisce fino a 24 LED sotto il controllo della tastiera compatta.
+Si tratta di uscite a bit aventi la sintassi seguente:
+
+				  KEYB.s.LED.y
+
+dove "s" e` l'indice del controllore di tastiera, e vale normalmente "0",
+ed "y" l'indice del led (0...23).
+
+NOTA : per ovviare ad alcune limitazioni del controllore di tastiera, qplc
+evita di modificare troppo velocemente lo stato dei LED. Attualmente il
+minimo intervallo di tempo ammesso tra due variazioni di stato dei LED
+e` di 200 millisecondi. Variazioni piu` rapide non hanno effetto.
+
+2.3 - Classe AX
+---------------
+
+ Il dispositivo "AX" permette di controllare DAC o ADC posti sul
+bus CABX controllato normalmente dal sistema di gestione dei movimenti
+di macchina.
+ Per ogni "linea" (le "linee" sono canali di comunicazione col gestore
+degli assi, e sono sono definite in apposite tabelle dei dati macchina,
+rif. Sarti) e` possibile avere fino a quattro collegamenti di ingressi o
+di uscita con variabili a 16 bit. Gli ingressi controllano degli ADC, le
+uscite dei DAC.
+ La stringa di definizione di questi segnali ha la forma seguente:
+
+				   AX.l.s.t.p
+
+dove
+
+   l: Numero linea. Vedere l'apposita tabella dei dati macchina ("protee").
+   s: Un numero da 0 a 15, indicante il dispositivo collegato al bus CABX
+      coinvolto,
+   t: Tipo di scheda: "1" o "rcx" per RCX,
+                      "2" o "adx" per ADX,
+                      "3" o "mpp" per uscita DAC MPP3,
+   p: Porta 1 o 2 : primo o secondo canale di ingresso o di uscita.
+
+2.4 - Classe SER
+----------------
+
+ Le linee seriali (ed in generale i dispositivi ad esse riconducibili)
+sono accessibili tramite la classe "SER". Poiche` i canali seriali
+sono per loro natura asincroni, il modello di gestione degli I/O tipico
+dei programmi PLC mal si adatta ad essi. Il loro uso e` possibile tramite
+apposite primitive di trasmissione e ricezione, che necessitano di un
+parametro che rappresenta il dispositivo di interesse. Tale parametro e`
+un valore calcolato dal PLC stesso all'entrata in GO, quando sono esaminate
+tutte le associazioni tra variabili di programma e segnali di I/O. Se un
+programma necessita di dispositivi seriali, deve contenere un'associazioni di
+INPUT tra una variabile a 32 bit (tipo "DINT" in IL o "long" in C) ed un
+dispositivo descritto dalla stringa
+
+				    SER.d.p
+
+dove "d" e` una stringa che il sistema converte in minuscolo
+ed interpreta come un nome in "/dev" (es. COM1 = /dev/com1), e "p"
+e` una stringa nella forma
+
+		 <velocita`><parita`><bit di dato><bit di stop>
+
+dove "velocita`" e` un numero tra 110 e 38400, "parita`" puo` essere
+"n" (niente parita`), "o" (parita` dispari) o "e" (parita` pari),
+"bit di dato" e` un numero tra 5 ed 8, "bit di stop" puo` valere "1" o "2"
+
+Esempio :
+
+				SER.COM2.9600n81
+
+indica "/dev/com2" a 9600 baud, niente parita`, 8 bit di dato, un bit di stop.
+
+ Come si e` detto, la variabile associata a questo segnale deve essere
+utilizzata come parametro di apposite funzioni di trasmissione o ricezione,
+mentre non ha senso utilizzarla come ingresso o uscita ordinaria.
+
+
+2.4 - Classe BGAGE
+------------------
+
+ Questa classe consente l'accesso alla scheda di acquisizione "Bus Gage".
+ La scheda di acquisizione Bus Gage contiene un ADC ed un DAC a 12 bit.
+ Il DAC genera la tensione di "zero" per il sensore collegato
+all'ADC. Le letture dell'ADC rappresentano scostamenti rispetto al
+valore di zero.
+ Entrambi i dispositivi sono mappati da variabili a 16 bit con segno (INT).
+ La sia per l'ingresso ADC che per l'uscita DAC, la stringa da utilizzare
+ha la forma
+
+				    BGAGE.s
+
+dove "s" e` l'indice del dispositivo (normalmente 0).
+ E` spesso utile convertire il valore a 12 bit prodotto dall'ADC nella
+tensione corrispondente. Il fattore di conversione e` 0.004882813 .
+
+	(* Esempio di conversione da valore sull'ADC in tensione. *)
+
+		LD		BGAGE
+		DINT_TO_REAL
+		MUL_REAL	0.004882813
+		ST		VOLT
+

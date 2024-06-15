@@ -1,0 +1,8 @@
+
+DROP FUNCTION anno(timestamp without time zone);
+CREATE FUNCTION anno(timestamp without time zone) returns text as '
+select date_part(\'year\',\$1)::text' language 'sql';
+
+DROP FUNCTION anno(timestamp);
+CREATE FUNCTION anno(timestamp) returns text as '
+select date_part(\'year\',\$1)::text' language 'sql';

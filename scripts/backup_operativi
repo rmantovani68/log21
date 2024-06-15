@@ -1,0 +1,5 @@
+pg_dump -h database mondadori -O -t settori     > settori.dump.sql
+pg_dump -h database mondadori -O -t imballi     > imballi.dump.sql 
+pg_dump -h database mondadori -O -t ubicazioni  > ubicazioni.dump.sql
+pg_dump -h database mondadori -O -t displays    > displays.dump.sql
+pg_dump -h database mondadori -O -t operatori   > operatori.dump.sql

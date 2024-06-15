@@ -1,0 +1,26 @@
+
+
+;
+;
+;		--------------------------------------
+;			Aiuti PLC
+;		--------------------------------------
+;
+PLC-1.ita=Controllare la logica del programma Plc
+PLC-5.ita=Controllare il nome e l'esistenza del dispositivo indicato
+PLC-8.ita=Spegnere e riaccendere la macchina
+PLC-9.ita=Far partire il PLC prima di riprendere il lavoro
+PLC-62.ita=Controllare il programma. Avvertire la CNI se l'errore e` frequente
+PLC-63.ita=Controllare il programma. Avvertire la CNI se l'errore e` frequente
+PLC-120.ita=Problema hardware o configurazione di macchina errata
+PLC-130.ita=Possibile problema hardware
+PLC-131.ita=Possibile problema elettrico
+PLC-141.ita=Fare riferimento ai messaggi seguenti
+PLC-142.ita=Interrompere il PLC
+PLC-181.ita=Controllare il nome del programma PLC impostato
+PLC-185.ita=Avvertire la CNI
+PLC-190.ita=Possibile problema hardware
+PLC-191.ita=Impostare la configurazione di I/O
+PLC-192.ita=Problema hardware o configurazione inadatta
+PLC-193.ita=Problema hardware o configurazione inadatta
+PLC-194.ita=Problema hardware, oppure si e` solo installato un nuovo programma

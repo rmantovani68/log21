@@ -1,0 +1,28 @@
+ Spiegazione:
+
+STORIA           Storia delle versioni.
+VERSIONE         Versione corrente di questo pacchetto.
+LynxOS           Copia di alcuni header di LynxOS (non utilizzabili
+                 direttamente).
+edit_plc         Editor/debugger PLC completo. Ha un link in /home/edit_plc.
+                 Vuole wishDeb.
+                 NOTA: Contiene i binari di una parte di "GNU binutils"
+                 nella configurazione per oggetti LynxOS. I sorgenti sono
+                 altrove.
+ilc              Sorgenti del compilatore IL, della libreria IL, e delle
+                 utility di conversione di formato binario.
+ios              Driver per schede CNi IOS e SER2.
+iosim            Simulatore degli I/O per QPLC. Vuole wishDeb.
+cni              Copia del contenuto di /usr/local/cni, necessario per
+                 compilare questa roba.
+libftp           Libreria di trasmissione dei file, necessaria per wishDeb.
+libplc           Libreria di accesso a QPLC in modalita` locale,
+                 usata da plc2 e wishDeb.
+plc2             Debugger/tracer locale per QPLC.
+plcdeb           Debugger/tracer remoto per QPLC. Sperimentale.
+qplc-socketcan   Sorgenti e documentazione dell'esecutore. versione socketcan
+tkTable2.00      Widget tkTable, necessario per wishDeb.
+wishDeb          Interprete Tcl/Tk esteso per applicazioni CNi.
+xad              Toolkit utilizzato da Plc2.
+Makefile         Contiene la procedura di installazione.
+

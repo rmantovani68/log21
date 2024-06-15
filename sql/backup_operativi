@@ -1,0 +1,5 @@
+pg_dump mondadori -O -t settori     > settori.dump.sql
+pg_dump mondadori -O -t imballi     > imballi.dump.sql 
+pg_dump mondadori -O -t ubicazioni  > ubicazioni.dump.sql
+pg_dump mondadori -O -t displays    > displays.dump.sql
+pg_dump mondadori -O -t operatori   > operatori.dump.sql

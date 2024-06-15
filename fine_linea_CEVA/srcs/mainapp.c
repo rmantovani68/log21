@@ -1,0 +1,48 @@
+#include <gtk/gtk.h>
+#include <glib/gprintf.h>
+#include <ep-common.h>
+#include <picking.h>
+
+#include <gtk-support.h>
+
+#include "mainapp.h"
+#include "mainwin.h"
+
+
+
+struct _MainApp
+{
+    GtkApplication parent;
+};
+
+G_DEFINE_TYPE(MainApp, main_app, GTK_TYPE_APPLICATION);
+
+static void main_app_init (MainApp *app)
+{
+}
+
+static void main_app_startup (GApplication *app)
+{
+    G_APPLICATION_CLASS (main_app_parent_class)->startup (app);
+}
+
+static void main_app_activate (GApplication *app)
+{
+    MainWindow *win;
+
+    win = main_window_new (MAIN_APP (app));
+    gtk_window_present (GTK_WINDOW (win));
+}
+
+static void main_app_class_init (MainAppClass *class)
+{
+    G_APPLICATION_CLASS (class)->startup = main_app_startup;
+    G_APPLICATION_CLASS (class)->activate = main_app_activate;
+}
+
+MainApp *main_app_new (void)
+{
+    char szBuffer[256];
+    sprintf(szBuffer, "org.%s.%s", APP_CLASS, APP_NAME);
+    return g_object_new (MAIN_APP_TYPE, "application-id", szBuffer, "flags", ep_get_glib_default_flags(), NULL);
+}

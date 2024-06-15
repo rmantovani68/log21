@@ -1,0 +1,17 @@
+CONFIGURATION NONAME_CONTROL
+
+ VAR_GLOBAL
+	UNO AT %IXIOS.0.0.0.0.0 : BOOL:= 0;
+ END_VAR
+
+ RESOURCE unica ON sola_cpu_presente
+
+  PROGRAM G : NONAME
+
+   (* Input *)
+    (
+
+  (* Output *)
+   );
+ END_RESOURCE
+END_CONFIGURATION

@@ -1,0 +1,1 @@
+echo 'select codprod,ubicazione_ridotta(ubicazione),cnistato,prswffo,prqtpcf,prlungh,prlargh,praltez,prpesgr from ubicazioni u, catalogo c where u.codprod=c.prcdpro order by ubicazione_ridotta(ubicazione);' | psql rcs > /u/prj/sli/export/ubicazioni.txt

@@ -1,0 +1,23 @@
+
+var_global _VERSION : string := 'prova IL 1.3 Thu Jun 12 11:43:17 MET DST 1997';
+           _CREATED : udint := 16#55385651;
+end_var
+
+configuration conf_1
+resource sola_ed_unica on cpu1
+program prova : p (
+	);
+end_resource
+end_configuration
+
+
+var_global
+	in1 at %IXIOS.0.0.3.0.0 : bool;
+	out1 at %QXIOS.0.0.3.0.24 : bool;
+end_var
+
+program p
+	ld	in1
+	st	out1
+end_program
+

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+gdb qplc -reset -period 10 -remote-debug -stand-alone -go-anyway  -devconf ios.chkwd=0:ios.trig=0:ios.candebug=3:ios.canspeed=500:ios.bitoffset=48 -no-fault $* --args
+#exec ./qplc -reset -period 10 -remote-debug \
+#            -stand-alone -go-anyway -no-hatsh \
+#            -devconf ios.chk=0:ios.trig=0 $*
+
+# Per eliminare i segnali di scambio stile CN, aggiungere "-shvmask 0"
+

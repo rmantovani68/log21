@@ -1,0 +1,12 @@
+
+cp wishDeb.tcltk8.0.ok /usr/local/bin/wishDeb
+cp libtcl8.0.so /usr/local/lib
+cp libtixsam4.1.8.0.so /usr/local/lib
+cp libtk8.0.so /usr/local/lib
+mkdir /usr/lib/tcl8.0
+chmod a+rwx /usr/lib/tcl8.0
+mkdir /usr/lib/tk8.0
+chmod a+rwx /usr/lib/tk8.0
+cp tcl8.0/* /usr/lib/tcl8.0
+cp tk8.0/* /usr/lib/tk8.0
+

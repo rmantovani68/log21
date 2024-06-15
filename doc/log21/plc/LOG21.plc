@@ -1,0 +1,1253 @@
+VAR_GLOBAL
+	ALLM23 : BOOL:= 0;
+	ALLM4 : BOOL:= 0;
+	ALSEV1 : BOOL:= 0;
+	ALSEV11 : BOOL:= 0;
+	ALSEV6 : BOOL:= 0;  (* allarme spintore scarto *)
+	ALSEV7 : BOOL:= 0;
+	ALSEV9 : BOOL:= 0;
+	ALSYV1 : BOOL:= 0;
+	ALSYV2 : BOOL:= 0;
+	BF11 : BOOL:= 0;
+	BF13 : BOOL:= 0;
+	BISTA : BOOL:= 0;
+	BISTA1 : BOOL:= 0;
+	CB : BOOL:= 0;
+	CPB : BOOL:= 0;
+	CS : BOOL:= 0;
+	DCOUNT : BOOL:= 0;
+	ENEV1 : BOOL:= 0;
+	ENM10 : BOOL:= 0;
+	ENM11 : BOOL:= 0;
+	ENM14 : BOOL:= 0;
+	ENM18 : BOOL:= 0;
+	ENM22 : BOOL:= 0;
+	ENM23 : BOOL:= 0;
+	ENM3 : BOOL:= 0;
+	ENM4 : BOOL:= 0;
+	ENM5 : BOOL:= 0;
+	ENM6 : BOOL:= 0;
+	ENM8 : BOOL:= 0;
+	ENM9 : BOOL:= 0;
+	I2IN : BOOL:= 0;
+	ICOUNT : BOOL:= 0;
+	IDBF11 : BOOL:= 0;
+	IDBF12 : BOOL:= 0;
+	IDBF13 : BOOL:= 0;
+	IDBF14 : BOOL:= 0;
+	IDBF15 : BOOL:= 0;
+	IDBF20 : BOOL:= 0;
+	IDBF21 : BOOL:= 0;
+	IDBF22 : BOOL:= 0;
+	IDBF23 : BOOL:= 0;
+	IDBF24 : BOOL:= 0;
+	IDBF26 : BOOL:= 0;
+	IDBF27 : BOOL:= 0;
+	IDBF3 : BOOL:= 0;
+	IDBF4 : BOOL:= 0;
+	IDBF5 : BOOL:= 0;
+	IDBF5B : BOOL:= 0;
+	IDBF6 : BOOL:= 0;
+	IDBF8 : BOOL:= 0;
+	IDBF9 : BOOL:= 0;
+	IDCOUNT : BOOL:= 0;
+	IDFC13 : BOOL:= 0;
+	IDFC15 : BOOL:= 0;
+	IDFC16 : BOOL:= 0;
+	IDTBF5 : BOOL:= 0;
+	IDTBF6 : BOOL:= 0;
+	IDTBF7 : BOOL:= 0;
+	IDTF5B : BOOL:= 0;
+	IDTFBF5 : BOOL:= 0;
+	IICOUNT : BOOL:= 0;
+	IIDBF4 : BOOL:= 0;
+	IIDBF5 : BOOL:= 0;
+	INAL : BOOL:= 0;
+	IUBF2 : BOOL:= 0;
+	IUBF3 : BOOL:= 0;
+	IUBF5 : BOOL:= 0;
+	IUBF5B : BOOL:= 0;
+	IUCOUNT : BOOL:= 0;
+	IUENM23 : BOOL:= 0;
+	IUFC16 : BOOL:= 0;
+	MARCIA1 : BOOL:= 0;
+	MARCIA2 : BOOL:= 0;
+	MARCIA3 : BOOL:= 0;
+	MSGCLAS : BOOL:= 0;
+	MSGCODE : BOOL:= 0;
+	MSGRX : BOOL:= 0;
+	MSGTX : BOOL:= 0;
+	NOCM2 : BOOL:= 0;
+	NOCM4 : BOOL:= 0;
+	OC10 : BOOL:= 0;
+	OC16 : BOOL:= 0;
+	OCBIL : BOOL:= 0;
+	OCM10 : BOOL:= 0;
+	OCM11 : BOOL:= 0;
+	OCM14 : BOOL:= 0;
+	OCM15 : BOOL:= 0;
+	OCM16 : BOOL:= 0;
+	OCM18 : BOOL:= 0;
+	OCM23 : BOOL:= 0;
+	OCM4 : BOOL:= 0;
+	OCM6 : BOOL:= 0;
+	OCM7 : BOOL:= 0;
+	OCM8 : BOOL:= 0;
+	OCM9 : BOOL:= 0;
+	TBF2 : BOOL:= 0;
+	TBF3 : BOOL:= 0;
+	TBF32 : BOOL:= 0;
+	TBF33 : BOOL:= 0;
+	TBF36 : BOOL:= 0;
+	TBF37 : BOOL:= 0;
+	TBF5 : BOOL:= 0;
+	TBF5B : BOOL:= 0;
+	TBF6 : BOOL:= 0;
+	TEV1 : BOOL:= 0;
+	TFBF5 : BOOL:= 0;
+	TFBF6 : BOOL:= 0;
+	TFBF7 : BOOL:= 0;
+	TFC15 : BOOL:= 0;
+	TFC2 : BOOL:= 0;
+	TFC3 : BOOL:= 0;
+	TFC4 : BOOL:= 0;
+	TFC5 : BOOL:= 0;
+	TSIRENA : BOOL:= 0;  (* tempo di sirena prima dello start *)
+	TYV1 : BOOL:= 0;
+	TYV2 : BOOL:= 0;
+	TYV3 : BOOL:= 0;
+	VALORE : INT:= 0;
+	XALEV7 : BOOL:= 0;
+	XALLM23 : BOOL:= 0;
+	XALLM4 : BOOL:= 0;
+	XALYV1 : BOOL:= 0;
+	YBF12 : BOOL:= 0;
+	YBF16 : BOOL:= 0;
+	YBF34 : BOOL:= 0;
+	YBF4 : BOOL:= 0;
+	YEV7 : BOOL:= 0;
+	YYV1 : BOOL:= 0;
+	ZALLM23 : BOOL:= 0;
+	ZALLM4 : BOOL:= 0;
+	ZASE1 : BOOL:= 0;
+	ZASE6 : BOOL:= 0;
+	ZASE7 : BOOL:= 0;
+	ZINAL : BOOL:= 0;
+	ZPSFMB : BOOL:= 0;
+	ZTERM1 : BOOL:= 0;
+	_CREATED : UDINT:= 1689788419;
+	_VERSION : STRING:= '1.0.0.0';
+END_VAR
+
+PROGRAM  LOG21
+
+  VAR
+	IIDBF11 : F_TRIG;
+	TTBF36 : TON;
+	IIDBF12 : F_TRIG;
+	TALYV1 : TON;
+	TTBF37 : TON;
+	IIDBF14 : F_TRIG;
+	TTBF3 : TOF;
+	TALEV7 : TON;
+	TTEV1 : TON;
+	COCM2 : CTUD;
+	IIDFC15 : F_TRIG;
+	TALLM4 : TON;
+	IIDFC16 : F_TRIG;
+	TALLM23 : TON;
+	IIUFC16 : R_TRIG;
+	IIDBF20 : F_TRIG;
+	BISTN : TON;
+	TTYV1 : TON;
+	IIDBF21 : F_TRIG;
+	IIDBF3 : F_TRIG;
+	TTSIREN : TON;
+	TTYV2 : TON;
+	IIDBF22 : F_TRIG;
+	IIDBF4 : F_TRIG;
+	TTYV3 : TON;
+	IIDBF23 : F_TRIG;
+	IICOUNT : R_TRIG;
+	IIDBF5 : F_TRIG;
+	TTFC2 : TON;
+	TTFBF5 : TOF;
+	IITBF6 : F_TRIG;
+	TTFBF6 : TOF;
+	IIDBF24 : F_TRIG;
+	IIDBF6 : F_TRIG;
+	TTFC3 : TON;
+	TTBF32 : TON;
+	TTFC4 : TOF;
+	TTFBF7 : TOF;
+	IITBF7 : F_TRIG;
+	IIDBF8 : F_TRIG;
+	TTBF33 : TON;
+	TTFC15 : TOF;
+	IIDTBF5 : F_TRIG;
+  END_VAR
+
+
+(* BISTABILE *)
+   
+   
+	
+	LD	BISTA
+	ST	BISTN.IN
+	LD	T#500MS
+	ST	BISTN.PT
+	CAL	BISTN	(* FUNCTION BLOCK TON *)
+	LD	BISTN.Q
+	ST	BISTA1
+	
+	LD	BISTA1
+	ST BISTA
+	
+
+(* M A R C I A  E SEGNALAZIONI VARIE *)
+		
+	LD	SIRENA
+	
+	ST	TTSIREN.IN
+	LD	T#2000MS
+	ST	TTSIREN.PT
+	CAL	TTSIREN	(* FUNCTION BLOCK TON *)
+	LD	TTSIREN.Q
+	ST	TSIRENA
+
+
+
+LD PMI1
+AND PSTOP1
+ANDN MARCIA1
+OR(
+LD PMI2
+AND PSTOP2
+ANDN MARCIA2
+)
+OR(
+LD PMI3
+AND PSTOP3
+ANDN MARCIA3
+)
+	ST SIRENA
+
+
+	
+LD TSIRENA
+AND PMI1
+OR MARCIA1
+AND PSTOP1
+			(* AND TERM1 *)
+			(* AND INAL COMTROLLARE LE DUE VARIABILI *)
+	ST MARCIA1
+	
+LD TSIRENA
+AND PMI2
+OR MARCIA2
+AND PSTOP2
+			(* AND TERM2 CONTROLLAR LE DUE VARIABILI *)
+			(*AND INAL *)
+	ST MARCIA2
+	
+LD TSIRENA
+AND PMI3
+OR MARCIA3
+AND PSTOP3
+			(* AND TERM3 CONTROLLARE LE DUE VARIABILI *)
+			(* AND INAL *)
+	ST MARCIA3
+
+LD ALSEV1
+
+OR ALSEV6
+
+OR ALSYV1
+
+OR ALSEV9
+OR ALSEV11
+OR ALLM4
+AND BISTA1
+OR(
+LDN ALSEV1
+ANDN ALSEV6
+ANDN ALSYV1
+ANDN ALSEV9
+ANDN ALSEV11
+ANDN ALLM4
+AND MARCIA3
+)
+	ST LMI3			(* lampada impianto in marcia; lampeggia con ALSEV-- *)
+	
+LD ALLM4 
+AND BISTA1	
+OR(
+LD MARCIA2
+ANDN ALLM4
+)
+	ST LMI2
+
+LD ALLM4 
+AND BISTA1	
+OR(
+LD MARCIA1
+ANDN ALLM4
+)
+	ST LMI1
+	
+	
+LDN TERM1
+	ST LPM1		(* lampada termico scattato *)
+LDN TERM2
+	ST LPM2
+LDN TERM3
+	ST LPM3
+	
+
+
+
+
+
+
+(* ----------------------------------------------------------------------------- *)
+
+
+
+
+		(* ==================  M E S S A G G I   D I   A L L A R M E  =================================  *)
+		
+
+
+
+
+
+LDN INAL
+ANDN MSGTX
+ANDN MSGRX
+ANDN ZINAL
+JMPCN EZINAL
+	LD 1
+	ST MSGCODE
+	LD 0
+	ST MSGCLAS
+	LD TRUE
+	ST MSGTX
+	ST ZINAL
+EZINAL:
+
+LD INAL
+	R ZINAL		(* memoria di impulso antiripetitivo dell' allarme *)
+
+
+
+
+	(*	-------------------------------------------- *)
+
+
+
+
+
+LDN TERM1
+ORN TERM2
+ORN TERM3
+
+ANDN MSGTX
+ANDN MSGRX
+ANDN ZTERM1
+JMPCN EZTERM1
+	LD 2
+	ST MSGCODE
+	LD 0
+	ST MSGCLAS
+	LD TRUE
+	ST MSGTX
+	ST ZTERM1
+EZTERM1:
+
+LD TERM1
+AND TERM2
+AND TERM3
+
+	R ZTERM1		(* memoria di impulso antiripetitivo dell' allarme *)
+
+
+
+
+	(*	-------------------------------------------- *)
+
+
+	
+
+	(* ================= M E S S A G G I   D I   A V V I S O  ============================= *)
+	
+
+
+
+LD ALLM4
+ANDN MSGTX
+ANDN MSGRX
+ANDN ZALLM4
+JMPCN EZALLM4
+	LD 1
+	ST MSGCODE
+	LD 1
+	ST MSGCLAS
+	LD TRUE
+	ST MSGTX
+	ST ZALLM4
+EZALLM4:
+
+LDN ALLM4
+	R ZALLM4		(* memoria di impulso antiripetitivo dell' allarme *)
+
+
+
+
+	(*	--------------------------------------------  *)
+
+	
+
+
+	(*	-------------------------------------------- *)
+
+
+
+
+LD ALSEV1
+ANDN MSGTX
+ANDN MSGRX
+ANDN ZASE1
+JMPCN EZALSEV1
+	LD 2
+	ST MSGCODE
+	LD 1
+	ST MSGCLAS
+	LD TRUE
+	ST MSGTX
+	ST ZASE1
+EZALSEV1:
+
+LDN ALSEV1
+	R ZASE1		(* memoria di impulso antiripetitivo dell' allarme *)
+	
+	
+
+
+	(*	-------------------------------------------- *)
+	
+
+LD ALSEV6
+ANDN MSGTX
+ANDN MSGRX
+ANDN ZASE6
+JMPCN EZALSEV6
+	LD 4
+	ST MSGCODE
+	LD 1
+	ST MSGCLAS
+	LD TRUE
+	ST MSGTX
+	ST ZASE6
+EZALSEV6:
+
+LDN ALSEV6
+	R ZASE6		(* memoria di impulso antiripetitivo dell' allarme *)
+	
+
+
+	(*	-------------------------------------------- *)
+
+
+LD ALSYV1
+ANDN MSGTX
+ANDN MSGRX
+ANDN ZASE7
+JMPCN EZALSYV1
+	LD 3
+	ST MSGCODE
+	LD 1
+	ST MSGCLAS
+	LD TRUE
+	ST MSGTX
+	ST ZASE7
+EZALSYV1:
+
+LDN ALSYV1
+	R ZASE7		(* memoria di impulso antiripetitivo dell' allarme *)
+	
+	
+
+
+	(*	-------------------------------------------- *)
+	
+	
+	
+	
+	(* ============== RESET DI 'MSGTX' =================*)
+	
+	
+LD MSGRX
+	R MSGTX		(* MSGTX viene settato una sola volta sotto JUMP; qui viene resettato da MSGRX=1 *)
+	
+
+
+
+
+(* ===================== F I N E   D E I   M E S S A G G I ========================== *)
+
+
+
+
+
+
+
+
+
+
+
+	
+LDN BF1
+OR  M2
+AND MARCIA1
+	ST M1
+	
+
+LD  M3
+AND (
+LD MARCIA1
+OR MARCIA2
+)
+	ST M2	
+
+	(* contatore up-dw dei colli impegnanti M22 *)
+	
+	LD ENM23
+	OR BF2
+		ST ICOUNT
+		
+	LD	ICOUNT
+	ST	IICOUNT.CLK
+	CAL	IICOUNT	(* FUNCTION BLOCK R_TRIG *)
+	LD	IICOUNT.Q
+	ST	IUCOUNT
+	
+	LD BF3
+	ANDN NOCM2
+		ST DCOUNT
+		
+	
+	LD	DCOUNT
+	ST	IIDBF3.CLK
+	CAL	IIDBF3	(* FUNCTION BLOCK F_TRIG *)
+	LD	IIDBF3.Q
+	ST	IDCOUNT
+	
+	
+	
+	
+	LD	IUCOUNT
+	ST	COCM2.CU
+	LD	IDCOUNT
+	ST	COCM2.CD
+	CAL	COCM2	(* FUNCTION BLOCK CTUD *)
+	LD	COCM2.QD
+	ST	NOCM2
+	LD	COCM2.CV
+	ST	VALORE
+
+LD BF4
+AND SQ1
+ANDN OCM4
+			(*ANDN CPB
+			ANDN CS
+			ANDN CB*)
+	ST ENM3		(* consenso introduzione *)	
+
+
+LD M3
+AND YBF4
+OR ENM3
+ORN BF4
+AND MARCIA3
+	ST M3
+LD BF4
+	ST YBF4	
+	
+	
+LDN BF28
+OR  M20
+AND MARCIA2
+	ST M19
+	
+
+LDN BF30
+OR  M21
+AND MARCIA2
+	ST M20
+
+LD TRUE
+	ST YV4
+
+
+LDN BF31
+OR  M22
+AND MARCIA2
+	ST M21
+
+
+	
+	
+	
+	(* FRIZIONATO CON PALETTA *)
+	
+(* M22=mot. frizionato; M4=mot.a valle; M4=consenso da valle; YV5=elettr. paletta *)
+(* BF33=fot. paletta; BF32=fot.accumulo pieno su M22 *)
+
+
+
+LD M23
+OR YV5
+AND TBF33
+	ST YV5	(* 0=su 1=giu' *)
+
+
+LDN YV5
+OR M23
+AND(
+LDN TBF32
+OR YV5
+ORN TBF33
+)
+AND MARCIA2
+	ST M22
+	
+	LD	BF33
+	ST	TTBF33.IN
+	LD	T#1S
+	ST	TTBF33.PT
+	CAL	TTBF33	(* FUNCTION BLOCK TON *)
+	LD	TTBF33.Q
+	ST	TBF33
+	
+	LD	BF32
+	ST	TTBF32.IN
+	LD	T#2500MS
+	ST	TTBF32.PT
+	CAL	TTBF32	(* FUNCTION BLOCK TON *)
+	LD	TTBF32.Q
+	ST	TBF32
+	
+	
+	
+(*	-------------------------------------------- *)
+
+LD BF34
+AND M2
+ANDN M23
+AND NOCM2
+	ST ENM23
+
+
+	
+LD M23
+AND YBF34
+OR ENM23
+ORN BF34
+AND MARCIA1
+	ST	M23
+LD BF34	
+	ST YBF34
+	
+
+
+
+(* =============================================================================================== *)
+		(* B I L A N C I A ed espulsore con pistone *)
+(* =============================================================================================== *)
+
+
+
+(* motore bilancia= M4; motore espulsore=M4 *) 
+(* pistone YV1=scarti peso;  fot. bilancia=BF5; fot. spintore=BF22 *)
+(* consenso fuori = BF20  *)
+(* micro pistone avanti- indietro= -,SQ1 *)
+(* richiesta al PC= CPB; risposte del PC: CB=peso corretto, CS=peso errato *)
+(* segnale DA PC: ABM4=abilitazione al controllo peso *)
+(* allarmi: ALLM4=time-out risposta PC a CPB; ALSYV1,time-out spintore avanti *)
+
+
+
+	(* ritardo off e impulso di BF5*)
+	
+	
+	
+	
+	LD	BF4
+	ST	IIDBF4.CLK
+	CAL	IIDBF4	(* FUNCTION BLOCK F_TRIG *)
+	LD	IIDBF4.Q
+	ST	IDBF4
+	
+	LD	BF5
+	ST	IIDBF5.CLK
+	CAL	IIDBF5	(* FUNCTION BLOCK F_TRIG *)
+	LD	IIDBF5.Q
+	ST	IDBF5
+
+	
+	LD	BF5
+	ST	TTFBF5.IN
+	LD	T#100MS
+	ST	TTFBF5.PT
+	CAL	TTFBF5	(* FUNCTION BLOCK TOF *)
+	LD	TTFBF5.Q
+	ST	TFBF5
+	
+	
+	
+	LD	TFBF5
+	ST	IIDTBF5.CLK
+	CAL	IIDTBF5	(* FUNCTION BLOCK F_TRIG *)
+	LD	IIDTBF5.Q
+	ST	IDTFBF5
+(* ______________ *)
+
+
+	LD	BF22
+	ST	IIDBF22.CLK
+	CAL	IIDBF22	(* FUNCTION BLOCK F_TRIG *)
+	LD	IIDBF22.Q
+	ST	IDBF22
+
+	
+LD IDBF4
+OR OCM4
+ANDN IDBF22
+ANDN TYV1
+
+	ST OCM4 (* occupato: cade con la fotocellula BF5, impulso down *)
+
+LD TRUE					
+	ST CB
+
+	
+			
+LD ENM3		
+OR M4
+AND (
+LDN IDTFBF5
+OR CB
+)
+AND (
+LD M5
+ORN BF22
+)
+
+AND MARCIA3
+	ST M4
+	
+
+
+(* -------------------------------------- *)
+
+
+
+	(*  pistone *)
+
+	
+(* LD CS *)	
+LDN M4		(* COLLO POSIZIONATO PER ESPULSIONE *)
+AND OCM4
+ANDN BF20
+OR YV1
+ANDN TYV1
+AND MARCIA3
+ANDN ALSYV1
+	ST YV1	(* elettrovalvola spintore scarto *)
+	
+	LD	YV1
+	ST	TTYV1.IN
+	LD	T#2000MS
+	ST	TTYV1.PT
+	CAL	TTYV1	(* FUNCTION BLOCK TON *)
+	LD	TTYV1.Q
+	ST	TYV1
+	
+	
+	
+	
+	
+	
+	(* -------------- segnali di scambio con PC ------------------------ *)
+	
+	
+LD OCM4
+	ST CPB	(* comunicazione a PC che un collo è in bilancia *)
+	
+	
+	
+	(* ------------- allarme di time-out della risposta a CPB ------------------- *)
+	
+LD CPB
+ANDN CB
+ANDN CS
+	ST XALLM4
+	
+	LD	XALLM4
+	ST	TALLM4.IN
+	LD	T#5S
+	ST	TALLM4.PT
+	CAL	TALLM4	(* FUNCTION BLOCK TON *)
+	LD	TALLM4.Q
+	ST	ALLM4
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+
+	(* ------------------ allarme del pistone ------------------------- *)
+						
+LD YV1
+ANDN SQ1
+OR ALSYV1
+ANDN PMI3
+	ST XALYV1
+	
+	LD	XALYV1
+	ST	TALYV1.IN
+	LD	T#4S
+	ST	TALYV1.PT
+	CAL	TALYV1	(* FUNCTION BLOCK TON *)
+	LD	TALYV1.Q
+	ST	ALSYV1
+	
+	
+	
+	
+	
+(* --------------------------- fine bilancia ed espulsore --------------------------- *)
+
+(* ---------------------------------------------------------------------------------- *)
+
+
+	(* distribuzione su due linee di chiusura *)
+	
+LD BF6
+(* AND SQ2  riattaccare *)
+ANDN OCM6
+	ST ENM5			
+	
+LDN BF6	
+ORN OCM6
+AND MARCIA3
+	ST M5
+	
+	LD	BF6
+	ST	IIDBF6.CLK
+	CAL	IIDBF6	(* FUNCTION BLOCK F_TRIG *)
+	LD	IIDBF6.Q
+	ST	IDBF6
+
+
+	
+	LD	BF8
+	ST	IIDBF8.CLK
+	CAL	IIDBF8	(* FUNCTION BLOCK F_TRIG *)
+	LD	IIDBF8.Q
+	ST	IDBF8
+	
+	
+	LD	BF7
+	ST	TTFBF7.IN
+	LD	T#100MS
+	ST	TTFBF7.PT
+	CAL	TTFBF7	(* FUNCTION BLOCK TOF *)
+	LD	TTFBF7.Q
+	ST	TFBF7
+	
+	
+	LD	TFBF7
+	ST	IITBF7.CLK
+	CAL	IITBF7	(* FUNCTION BLOCK F_TRIG *)
+	LD	IITBF7.Q
+	ST	IDTBF7
+	
+	
+LD IDBF6
+OR OCM6
+ANDN IDBF8
+	ST OCM6
+
+LDN OCM7
+ANDN BF8
+	ST ENM6		
+
+
+LD ENM5
+OR M6
+AND(
+LDN IDTBF7
+OR BF35
+)
+AND(
+LD M7
+ORN BF8
+)
+AND MARCIA3
+	ST M6
+
+
+	
+LD M14
+ANDN BF35
+ANDN M6	(* COLLO POSIZIONATO PER ESPULSIONE *)
+ANDN OCM14
+AND OCM6
+OR YV2
+ANDN TYV2
+AND MARCIA3
+ANDN ALSYV2
+	ST YV2	(* elettrovalvola spintore  *)
+	
+	LD	YV2
+	ST	TTYV2.IN
+	LD	T#2000MS
+	ST	TTYV2.PT
+	CAL	TTYV2	(* FUNCTION BLOCK TON *)
+	LD	TTYV2.Q
+	ST	TYV2
+	
+	
+	
+	LD	BF20
+	ST	IIDBF20.CLK
+	CAL	IIDBF20	(* FUNCTION BLOCK F_TRIG *)
+	LD	IIDBF20.Q
+	ST	IDBF20
+	
+	LD	BF23
+	ST	IIDBF23.CLK
+	CAL	IIDBF23	(* FUNCTION BLOCK F_TRIG *)
+	LD	IIDBF23.Q
+	ST	IDBF23
+	
+	LD	BF24
+	ST	IIDBF24.CLK
+	CAL	IIDBF24	(* FUNCTION BLOCK F_TRIG *)
+	LD	IIDBF24.Q
+	ST	IDBF24
+	
+	LD	BF21
+	ST	IIDBF21.CLK
+	CAL	IIDBF21	(* FUNCTION BLOCK F_TRIG *)
+	LD	IIDBF21.Q
+	ST	IDBF21
+	
+	
+LD YV2	
+OR OCM14
+ANDN IDBF21
+	ST OCM14
+	
+LD YV2
+ORN BF21
+OR ENM14
+AND MARCIA3
+	ST M14
+LD BF21
+AND SQ3
+ANDN OCM15
+	ST ENM14
+	
+
+	
+LD IDBF21	
+OR OCM15
+ANDN(
+LDN BF23
+AND TYV3
+)
+	ST OCM15
+	
+LD ENM14
+ORN BF23
+AND MARCIA3
+	ST M15
+
+	
+	
+LD TYV3	
+OR OCM16
+ANDN IDBF24
+	ST OCM16		
+				
+LD BF23
+ANDN OCM16
+AND M16
+OR YV3
+ANDN TYV3
+	ST YV3
+	
+	LD	YV3
+	ST	TTYV3.IN
+	LD	T#2000MS
+	ST	TTYV3.PT
+	CAL	TTYV3	(* FUNCTION BLOCK TON *)
+	LD	TTYV3.Q
+	ST	TYV3	
+	
+	
+LDN BF24 
+OR M17		(* *) 
+(* OR  consenso ingresso nastratrice *)
+AND MARCIA3
+	ST M16
+	
+LDN BF25
+OR M18
+	ST M17
+	
+	
+	
+LD IDBF8	
+OR OCM7
+ANDN IDBF9
+	ST OCM7		
+				
+	
+LDN BF9
+ANDN OCM8
+(* OR  consenso ingresso nastratrice *)
+AND MARCIA3
+	ST M7
+	(* ______________________________________ *)
+
+LD IDBF24	(* LD IDBF26 *)
+OR OCM18
+ANDN IDBF27
+	ST OCM18
+	STN CVRD		(* Consenso a Valle Reggiatrice Destra *)
+	
+
+		(*LD ENM18*)
+LDN BF27
+OR M10
+AND MARCIA3
+	ST M18
+
+	(* ------------------------------------- *)
+	
+	
+	
+LD BF15	
+ANDN OCM9
+	ST ENM10
+
+
+LDN BF15
+OR M9
+AND MARCIA3
+	ST M10
+
+	(* ------------------------------------- *)
+	
+	
+LD BF16	
+ANDN ENM8	(* serve per evitare che: OCM11 cade quando entrambe ENM8 e ENM9 sono pronte e quindi vanno su insieme; *)
+ANDN OCM11			(* poi entrerebbero anche insieme! sono interbloccate a vicenda *)
+	ST ENM9
+
+
+
+LD M9
+AND YBF16
+OR ENM9
+ORN BF16
+AND MARCIA3
+	ST M9
+LD BF16
+	ST YBF16
+	
+	(* ------------------------------------- *)	
+	
+	
+LD IDBF9			(*LD IDBF11	*)
+OR OCM8
+ANDN IDBF12			(* ANDN IDBF12 *)
+	ST OCM8
+	STN CVRS		(* Consenso a Valle Reggiatrice Sinistra *)
+	
+LD BF12
+ANDN ENM9	(* serve per evitare che: OCM11 cade quando entrambe ENM8 e ENM9 sono pronte e quindi vanno su insieme; *)
+ANDN OCM11	(* poi entrerebbero anche insieme! *)
+	ST ENM8
+
+LD M8
+AND YBF12
+OR ENM8
+ORN BF12
+AND MARCIA3
+	 ST M8
+	
+LD BF12
+	ST YBF12
+	
+
+
+
+	(* ------------------------------------- *)	
+	
+	
+	LD	BF11
+	ST	IIDBF11.CLK
+	CAL	IIDBF11	(* FUNCTION BLOCK F_TRIG *)
+	LD	IIDBF11.Q
+	ST	IDBF11
+	
+	LD	BF12
+	ST	IIDBF12.CLK
+	CAL	IIDBF12	(* FUNCTION BLOCK F_TRIG *)
+	LD	IIDBF12.Q
+	ST	IDBF12
+	
+	
+	LD	BF14
+	ST	IIDBF14.CLK
+	CAL	IIDBF14	(* FUNCTION BLOCK F_TRIG *)
+	LD	IIDBF14.Q
+	ST	IDBF14
+
+	
+	
+LDN BF17
+OR M12
+AND MARCIA3
+	ST M11
+	
+LD ENM8
+OR ENM9
+OR OCM11
+ANDN IDBF14
+	ST OCM11
+	
+	
+
+LDN BF18
+OR M13
+AND MARCIA3
+	ST M12
+	
+LDN BF19
+OR M24
+AND MARCIA3
+	ST M13
+	
+	
+LDN BF37
+OR M25
+AND MARCIA3
+	ST M24
+	
+	
+LDN BF38
+OR M26
+AND MARCIA3
+	ST M25
+	
+LDN BF39
+OR M27
+AND MARCIA3
+	ST M26
+	
+LDN BF41
+AND MARCIA3
+	ST M27
+	
+
+	
+
+
+
+
+	(* -------------------------------------------------------- *)
+	
+	
+
+
+	
+	
+	(* FRIZIONATO CON PALETTA *)
+	
+(* M24=mot. frizionato; M25=mot.a valle; M25=consenso da valle; YV6=elettr. paletta *)
+(* BF37=fot. paletta; BF36=fot.accumulo pieno su M22 *)
+
+
+
+LD M25
+OR YV6
+AND TBF37
+	ST YV6	(* 0=su 1=giu' *)
+
+
+LDN YV6
+OR M24
+AND(
+LDN TBF36
+OR YV6
+ORN TBF37
+)
+AND MARCIA3
+	ST M24
+	
+	LD	BF37
+	ST	TTBF37.IN
+	LD	T#1S
+	ST	TTBF37.PT
+	CAL	TTBF37	(* FUNCTION BLOCK TON *)
+	LD	TTBF37.Q
+	ST	TBF37
+	
+	LD	BF36
+	ST	TTBF36.IN
+	LD	T#2500MS
+	ST	TTBF36.PT
+	CAL	TTBF36	(* FUNCTION BLOCK TON *)
+	LD	TTBF36.Q
+	ST	TBF36
+	
+(*	-------------------------------------------- *)
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+END_PROGRAM

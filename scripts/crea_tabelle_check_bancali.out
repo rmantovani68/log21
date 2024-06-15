@@ -1,0 +1,103 @@
+05-12-02
+CREATE FUNCTION fila(bpchar) returns text as 'select substr($1,1,3)' language 'sql';
+ERROR:  ProcedureCreate: procedure fila already exists with same arguments
+EOF
+CREATE FUNCTION montante(bpchar) returns text as 'select substr($1,4,3)' language 'sql';
+ERROR:  ProcedureCreate: procedure montante already exists with same arguments
+EOF
+CREATE FUNCTION colonna(bpchar) returns text as 'select substr($1,7,3)' language 'sql';
+ERROR:  ProcedureCreate: procedure colonna already exists with same arguments
+EOF
+CREATE FUNCTION piano(bpchar) returns text as 'select substr($1,10,3)' language 'sql';
+ERROR:  ProcedureCreate: procedure piano already exists with same arguments
+EOF
+CREATE FUNCTION ubicazione(bpchar) returns text as 'select substr($1,1,3)||\'.\'||substr($1,4,3)||\'.\'||substr($1,7,3)||\'.\'||substr($1,10,3)' language 'sql';
+ERROR:  ProcedureCreate: procedure ubicazione already exists with same arguments
+EOF
+CREATE FUNCTION data_YYYYMMDDHHMMSS(datetime) returns text as 'select lpad(date_part(\'year\',$1),4,\'0\')||lpad(date_part(\'month\',$1),2,\'0\')||lpad(date_part(\'day\',$1),2,\'0\')||lpad(date_part(\'hour\',$1),2,\'0\')||lpad(date_part(\'minute\',$1),2,\'0\')||lpad(date_part(\'second\',$1),2,\'0\')' language 'sql';
+ERROR:  ProcedureCreate: procedure data_yyyymmddhhmmss already exists with same arguments
+EOF
+CREATE FUNCTION data_YYYYMMDD(datetime) returns text as 'select lpad(date_part(\'year\',$1),4,\'0\')||lpad(date_part(\'month\',$1),2,\'0\')||lpad(date_part(\'day\',$1),2,\'0\')' language 'sql';
+ERROR:  ProcedureCreate: procedure data_yyyymmdd already exists with same arguments
+EOF
+CREATE FUNCTION ora(datetime) returns text as 'select lpad(date_part(\'hour\',$1),2,\'0\')||\':\'||lpad(date_part(\'minute\',$1),2,\'0\')||\':\'||lpad(date_part(\'second\',$1),2,\'0\')' language 'sql';
+ERROR:  ProcedureCreate: procedure ora already exists with same arguments
+EOF
+CREATE FUNCTION data(datetime) returns text as 'select lpad(date_part(\'day\',$1),2,\'0\')||\'-\'||lpad(date_part(\'month\',$1),2,\'0\')||\'-\'||lpad(date_part(\'year\',$1),4,\'0\')' language 'sql';
+ERROR:  ProcedureCreate: procedure data already exists with same arguments
+EOF
+CREATE FUNCTION ora_HH(datetime) returns text as 'select lpad(date_part(\'hour\',$1),2,\'0\')' language 'sql';
+ERROR:  ProcedureCreate: procedure ora_hh already exists with same arguments
+EOF
+CREATE FUNCTION ora_MM(datetime) returns text as 'select lpad(date_part(\'minute\',$1),2,\'0\')' language 'sql';
+ERROR:  ProcedureCreate: procedure ora_mm already exists with same arguments
+EOF
+CREATE FUNCTION ora_SS(datetime) returns text as 'select lpad(date_part(\'second\',$1),2,\'0\')' language 'sql';
+ERROR:  ProcedureCreate: procedure ora_ss already exists with same arguments
+EOF
+CREATE SEQUENCE sequence_linee_spedizione increment 1 minvalue 1 maxvalue 99999999 start 1;
+ERROR:  Relation 'sequence_linee_spedizione' already exists
+EOF
+CREATE TABLE storico_linee_spedizione (
+	key_linea   INTEGER,
+	tminit      DATETIME,
+	tmclose     DATETIME,
+	lntpspe     VARCHAR(20) DEFAULT 'TPSPE',
+	lncdlin     VARCHAR(20) DEFAULT 'CDLIN',
+	stato       VARCHAR(1) DEFAULT ' '
+);
+ERROR:  Relation 'storico_linee_spedizione' already exists
+EOF
+CREATE UNIQUE INDEX storico_linee_spedizione_key ON storico_linee_spedizione (key_linea);
+ERROR:  Cannot create index: 'storico_linee_spedizione_key' already exists
+EOF
+CREATE SEQUENCE sequence_bancali increment 1 minvalue 1 maxvalue 99999999 start 1;
+ERROR:  Relation 'sequence_bancali' already exists
+EOF
+CREATE TABLE storico_bancali (
+	key_linea   INTEGER,
+	key_bancale INTEGER,
+	tminit      DATETIME,
+	tmclose     DATETIME,
+	bntpspe     VARCHAR(20) DEFAULT 'TPSPE',
+	bncdlin     VARCHAR(20) DEFAULT 'CDLIN',
+	stato       VARCHAR(1) DEFAULT ' '
+);
+ERROR:  Relation 'storico_bancali' already exists
+EOF
+CREATE INDEX storico_bancali_key ON storico_bancali (key_linea);
+ERROR:  Cannot create index: 'storico_bancali_key' already exists
+EOF
+CREATE UNIQUE INDEX storico_bancali_key_bancale ON storico_bancali (key_bancale);
+ERROR:  Cannot create index: 'storico_bancali_key_bancale' already exists
+EOF
+CREATE SEQUENCE sequence_colli_bancale increment 1 minvalue 1 maxvalue 99999999 start 1;
+ERROR:  Relation 'sequence_colli_bancale' already exists
+EOF
+CREATE TABLE storico_colli_bancale (
+	key_collo    INTEGER,
+	key_bancale  INTEGER,
+	key_linea    INTEGER,
+	ordprog   VARCHAR(20) DEFAULT 'CODICE',
+	cptpspe   VARCHAR(20) DEFAULT 'TPSPE',
+	cpcdlin   VARCHAR(20) DEFAULT 'CDLIN',
+	cpnmcol   INTEGER,
+	cppsrea   INTEGER,
+	cppspre   INTEGER,
+	tmread    DATETIME
+);
+ERROR:  Relation 'storico_colli_bancale' already exists
+EOF
+CREATE UNIQUE INDEX storico_colli_bancale_key ON storico_colli_bancale (ordprog,cpnmcol);
+ERROR:  Cannot create index: 'storico_colli_bancale_key' already exists
+EOF
+CREATE UNIQUE INDEX storico_colli_bancale_key_collo ON storico_colli_bancale (key_collo);
+ERROR:  Cannot create index: 'storico_colli_bancale_key_collo' already exists
+EOF
+CREATE INDEX storico_colli_bancale_key_bancale ON storico_colli_bancale (key_bancale);
+NOTICE:  identifier "storico_colli_bancale_key_bancale" will be truncated to "storico_colli_bancale_key_banca"
+ERROR:  Cannot create index: 'storico_colli_bancale_key_banca' already exists
+EOF
+CREATE INDEX storico_colli_bancale_key_linea ON storico_colli_bancale (key_linea);
+ERROR:  Cannot create index: 'storico_colli_bancale_key_linea' already exists
+EOF

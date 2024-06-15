@@ -1,0 +1,92 @@
+asend.c
+beppe.c
+cback.c
+compat.c
+debugger.c
+dr_autec.c
+dr_ax.c
+dr_bgage.c
+dr_can.c
+948c948
+< 	                   ixxatusb_rx_thread,(void *)cbr) != 0) {
+---
+> 	                   ixxatusb_rx_thread,(void *)cbr) < 0) {
+1326c1326
+< 	                   canboard_rx_thread,(void *)cbr) != 0) {
+---
+> 	                   canboard_rx_thread,(void *)cbr) < 0) {
+1329c1329
+< 				   canboard_rx_thread,(void *)cbr) != 0) {
+---
+> 				   canboard_rx_thread,(void *)cbr) < 0) {
+3623,3624d3622
+< int n_ain = 7;
+< int n_aout = 5;
+3695,3705d3692
+< 		printf("AInput =");
+< 		for (i = 0; i < n_ain; ++i) {
+< 			printf(" %05u",
+< 			 (canboard_get_ain_image(cbr, module_in))[i]);
+< 		}
+< 		printf("\n");
+< 		(canboard_get_aout_image(cbr, module_in))[0] += 64;
+< 		(canboard_get_aout_image(cbr, module_in))[1] -= 64;
+< 		(canboard_get_aout_image(cbr, module_in))[2] += 128;
+< 		(canboard_get_aout_image(cbr, module_in))[3] -= 128;
+< 		(canboard_get_aout_image(cbr, module_in))[4] += 16;
+dr_hsd.c
+dr_ios.c
+2c2
+< * @(#) dr_ios.c 4.12 mer dic 16 22:15:50 CET 2009
+---
+> * @(#) dr_ios.c 4.13 mar gen  5 16:03:23 CET 2010
+190a191,194
+> * 05/01/10 GG 4.13 Correzioni per modifiche all'interfaccia del
+> *             modulo dr_can (durata del periodo comunicata all'apertura
+> *             anziche' nella funzione di ciclo).
+> *             Aggiunta la stampa degli errori provenienti da CAN.
+820a825
+> //																	plcPeriod(),
+3238a3244
+> 		//util_usleep(1, 0);
+3462c3468,3472
+< 		canboard_schedule(dr -> canbus, plcPeriod());
+---
+> 	const char *txt;
+> 		canboard_schedule(dr -> canbus,plcPeriod());
+> //		while ( (txt = canboard_next_error(dr->canbus)) ) {
+> //			plcError(130, "CAN%d: %s", dr -> candevice, txt);
+> //		}
+drivers.c
+dr_keyb.c
+dr_ser.c
+dr_ybn.c
+dummy.c
+dummy_hatsh.c
+dummy_prog480.c
+dynaload.c
+exec.c
+glue.c
+hsort.c
+ilcrtm.c
+ioconf.c
+iosass.c
+iovel.c
+main.c
+modules.c
+plc480.c
+plc480mix.c
+posix.c
+pseudocan.c
+remote.c
+shvar.c
+superv.c
+symbol_table.c
+sysv.c
+util.c
+ver.c
+1c1
+< char Versione[] = "@(#) 1.8.1.179\t\t[18/03/2011 09:33:05]\tlib: ??? ";
+---
+> char Versione[] = "@(#) 1.8.1.192\t\t[09/03/2011 10:00:38]\tlib: ??? ";
+ver_core.c

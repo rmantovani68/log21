@@ -1,0 +1,8 @@
+Andare in /usr/src/linux-<versione>
+Lanciare da root 
+ - make menuconfig
+andare in /u/prj/plc/ios/kernel-2.4.x 
+Lanciare da root
+ - make -C /usr/src/linux-2.4.20-18.9/ SUBDIRS=$PWD modules
+
+

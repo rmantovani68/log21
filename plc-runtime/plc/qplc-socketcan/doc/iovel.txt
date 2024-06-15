@@ -1,0 +1,78 @@
+
+                     DESCRIZIONE COMANDI I/O VELOCI
+                     ------------------------------
+
+ I moduli I/O veloci sono moduli IOS speciali composti da
+ 
+  - otto uscite a bit ordinarie,
+  - otto ingressi a bit,
+  - otto uscite a bit che costituiscono la risposta agli otto ingressi
+    da parte di otto blocchi elaborativi configurabili.
+
+ I blocchi elaborativi configurabili sono monostabili con trigger ritardato.
+ I trigger sono collegati agli ingressi del modulo. Le uscite dei monostabili
+sono poste in AND con una maschera di abilitazione impostabile con un apposito
+comando. Altri comandi permettono di configurare le seguenti caratteristiche
+dei blocchi elaborativi:
+
+ - la polarita` del segnale di trigger (fronte di salita/fronte di discesa),
+ - la polarita` dell'uscita del monostabile, quando abilitata (alto/basso),
+ - il ritardo alla risposta al trigger,
+ - la durata dell'impulso prodotto dal monostabile.
+
+ I byte del modulo hanno il seguente significato:
+
+ 0 Scrittura - Comando
+ 1 Scrittura - Dato 1
+ 2 Scrittura - Dato 2
+ 3 Scrittura - Dato 3
+ 4 Lettura - Flag di stato
+ 5 Lettura - Immagine degli ingressi
+ 6 Lettura - Immagine delle uscite speciali
+ 7 Lettura - Immagine delle uscite ordinarie
+
+Comando 0x0C:
+ invio abilitazione uscite a BIT
+
+byte 0 codice comando (0x0C)
+byte 1 byte ena/disa (bit 0=0 disabilita l'output 0
+                       "   =1 abilita l'output 0
+                      bit 1=0 disabilita l'output 1
+                       "   =1 abilita ......
+                       ..........
+                      bit 7=0 disabilita l'output 7
+                       "   =1 abilita l'output 7)
+byte 2 byte di OUTPUT ordinari
+byte 3 not used
+
+Comando 0x10-0x17:
+ invio timer RITARDO per bit (MAX 4095 msec.)
+
+byte 0 codice comando (0x10->bit 0, 0x11->bit 1, ..., 0x17->bit7)
+byte 1 timer low (millisecondi)
+byte 2 timer high (millisecondi)
+byte 3 livello e fronte (bit 0 = 0 attivazione sul fronte di discesa
+                          "    = 1 attivazione sul fronte di salita
+                         bit 1 = 0 output attivo basso
+                          "    = 1 output attivo alto)
+
+default: timer ritardo =0; attivazione sul fronte di salita;
+          output attivo alto .
+
+Comando 0x18-0x1F:
+ invio timer MANTENIMENTO per bit (MAX 4095 msec.)
+
+byte 0	codice comando (0x18->bit 0, 0x19->bit 1, ..., 0x1F->bit7)
+byte 1	timer low (millisecondi)
+byte 2	timer high (millisecondi)
+
+default: timer mantenimento =0
+
+Comando 0x28:
+ reset completo delle uscite e delle abilitazioni modulo
+
+byte 0 codice comando (0x28)
+byte 1 not used
+byte 2 not used
+byte 3 not used
+

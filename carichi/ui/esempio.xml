@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="no"?> <!--*- mode: xml -*-->
+<!DOCTYPE lista-variabili-plc SYSTEM "">
+
+<lista-var>
+
+<variabile class="PLC" id="rpm1">
+  <property name="type">DINT</property>
+  <property name="title">Giri motore 1</property>
+  <property name="min_value">900</property>
+  <property name="max_value">700</property>
+</variabile>
+
+</listavar>

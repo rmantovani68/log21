@@ -1,0 +1,1093 @@
+<!DOCTYPE openRPTDef>
+<report>
+ <title>Stampa Linee Distribuzione</title>
+ <name>Stampa Linee Distribuzione</name>
+ <description></description>
+ <size>A4</size>
+ <portrait/>
+ <topmargin>10</topmargin>
+ <bottommargin>10</bottommargin>
+ <rightmargin>20</rightmargin>
+ <leftmargin>20</leftmargin>
+ <querysource>
+  <name>linee_distribuzione</name>
+  <sql>select
+ sdnmced as &quot;CEDOLA&quot;,
+ sdcdlin as &quot;CODICE&quot;,
+ sddslin as &quot;DESCRIZIONE&quot;,
+ sdnmort as &quot;ORDINI&quot;,
+ sdnmclt as &quot;COLLI&quot;,
+ sdnmrgh as &quot;RIGHE&quot;,
+ sdnmcpe as &quot;COPIE&quot;,
+ linea_sdpspre(sdcdlin) as &quot;PESO&quot;
+ from distribuzione_l where sdnmced!='0';</sql>
+ </querysource>
+ <querysource>
+  <name>linee_distribuzione_totali</name>
+  <sql>select sum(sdnmort)as &quot;TOT_ORDINI&quot;,
+ sum(sdnmclt)as &quot;TOT_COLLI&quot;,
+ sum(sdnmrgh)as &quot;TOT_RIGHE&quot;,
+ sum(sdnmcpe)as &quot;TOT_COPIE&quot;,
+ sum(linea_sdpspre(sdcdlin))as &quot;TOT_PESO&quot;
+ from distribuzione_l
+ where sdnmced!=0;</sql>
+ </querysource>
+ <rpthead>
+  <height>131</height>
+  <line>
+   <xstart>70</xstart>
+   <ystart>110</ystart>
+   <xend>70</xend>
+   <yend>130</yend>
+   <weight>0</weight>
+  </line>
+  <line>
+   <xstart>685</xstart>
+   <ystart>110</ystart>
+   <xend>685</xend>
+   <yend>130</yend>
+   <weight>0</weight>
+  </line>
+  <label>
+   <rect>
+    <x>440</x>
+    <y>110</y>
+    <width>60</width>
+    <height>20</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>10</size>
+    <weight>normal</weight>
+   </font>
+   <hcenter/>
+   <vcenter/>
+   <string>ORDINI</string>
+  </label>
+  <line>
+   <xstart>10</xstart>
+   <ystart>130</ystart>
+   <xend>775</xend>
+   <yend>130</yend>
+   <weight>2</weight>
+  </line>
+  <line>
+   <xstart>440</xstart>
+   <ystart>110</ystart>
+   <xend>440</xend>
+   <yend>130</yend>
+   <weight>0</weight>
+  </line>
+  <line>
+   <xstart>135</xstart>
+   <ystart>110</ystart>
+   <xend>135</xend>
+   <yend>130</yend>
+   <weight>0</weight>
+  </line>
+  <label>
+   <rect>
+    <x>70</x>
+    <y>110</y>
+    <width>65</width>
+    <height>20</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>10</size>
+    <weight>normal</weight>
+   </font>
+   <hcenter/>
+   <vcenter/>
+   <string>CODICE</string>
+  </label>
+  <label>
+   <rect>
+    <x>585</x>
+    <y>55</y>
+    <width>196</width>
+    <height>14</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>9</size>
+    <weight>normal</weight>
+   </font>
+   <left/>
+   <bottom/>
+   <string>A&amp;L Automazione e Logistica</string>
+  </label>
+  <image>
+   <rect>
+    <x>10</x>
+    <y>0</y>
+    <width>80</width>
+    <height>65</height>
+   </rect>
+   <mode>stretch</mode>
+   <map format="PNG" >begin 644 internal
+MB5!.1PT*&amp;@H````-24A$4@```'X```!A&quot;`,````G?>7T````8%!,5$4`*4+A
+MZ.QUB91`7W&amp;VQ,V&lt;K;?-U]T@1%K___]?&lt;WZ*G*>FMK_N\?00-D[8W^3&quot;SM54
+M:'-]D9MG>X8P46:OOL;U]_>2I*[?Y.?3V]_G[>]N@HV^Q\W'T]F&quot;E:!8;'?^
+M`0).&amp;HXJ`````6)+1T0?!0T0O0````EP2%ES````2````$@`1LEK/@``!@))
+M1$%4:-[MFNFRJR@0@(T*:B0:C8H&amp;\?T?&lt;UB41&lt;&amp;0Y%3-U%3ZUST!^Z.;WK1N
+ME/^K$OWP/_P/_\/_\#_\#__#__`__`__G\?W_73!U3A#.(X5QI&lt;)H;[G/R,T
+ML16V-,(9UC4A:=>5'?D3?'^I8#5>^ARQ?Y&quot;T!`&quot;479>2&amp;5;5!?5YCR9&lt;P;DF
+M#,G6ABMMXF=;+/?Q:SR&quot;'8.E]4J?:TDO!7V4]/XBZ6E7EII>W,LOG=^3:W,=
+M.!UZZ!-S/;=]W-&amp;?1;'0[^X>#^U3T1&amp;[`@P97;J>T6&lt;/_=K$&lt;=LNR[/_!C_&amp;
+MQ4KO:H@9?:H8G=V$I->&quot;CCC]PNBSI`]`TIGM&quot;Z-_C.^O]Z5X-G2E3YP^,OIJ
+M>ZKI[$I&amp;J&amp;P?KDWSY&amp;%7X/QS?+K&lt;E_89&quot;SJ!U93GC#XK.K,=5IC3^TG0ZS1=
+MZ532%T'_#,],O]\+22]7.I:V#R5/N97.@GZ:*A;T(LLE/18I]Y3TC_&quot;X7>E7
+M`#HR5Q=!GTFW);R@RX2_X-&amp;1\$V?O\##&lt;N#&amp;I3RC;*E9O;@7K:2G\\CHB--5
+MRM6ZW#`Z&quot;_HTM>FETN7!UW',7#N4W+BI=](;05?E1M*!M'W$5K&amp;SZ13GYWC&lt;
+MB+`2=*E>GP`8]$.Q`[+4KG1GL1M&amp;D^3&quot;EP6G7SF=J>?UI)HGM2;H:[EA&amp;&lt;&lt;;
+M&quot;KJP\!9]IF)WON\SE5B;>9\AU0YUQ/=TI4O72CI));]N&amp;9VE7#.D&lt;,J_EP.^
+M9]58TU4U*\M>TZ_U7Z&quot;=^)IE#B'&lt;4[6HI?E%T,%0\XSC=(`_`07B+4\@7LTD
+M_3IPQ]SOPU\9_AK/3\&quot;K65GR&lt;E71XA[_H>4A>%9_6-YP.FO1]S)`XQ_C\QD`
+MWBA8DQS-GQ'I**4)D[@9B,LKF`A!IWBAP9:8`FCL25>Z1N!AR:*=).;%(-`^
+MC*76%ZY1CFZ12VYMM^WIV830%D\5&lt;^#A?&quot;(BVP:R'!>IS_DP\D@&amp;-O&lt;S>KN=
+M'V2^_2L>)ZY%+SZ/??JB9+VW1M%1XMV\XH';FWX\]FO,9`QTQ6H9O/GW2CSP
+M+/KQ>>97F0G[IT'N[O;TS'0&amp;.:&amp;?X96.EJ427:S(6HS-ENYE6#V&quot;&quot;'UL>#..
+M$LJRKK[&amp;63!^&quot;QYJ6`E=]&amp;RPLQG'-_&amp;T=L:B4TU$PQMXIDY[H-U^,^Z='DL)
+M7MC3VGA@KJ'X37R.%2O;=*A?;M&quot;IJH,ZAY;=&amp;LG>P^=4&amp;;+^H#8]_&amp;U'[3D&lt;
+M$!'G`UZ\]J-4-2C;3YK>_L@OQ8O7JHCM>GBF;9/0OAR`%ZK:\_S=/W.Z*P2O
+M2Z$P7@4B.M46&lt;D-!^$Y%&amp;O]+W3PXU:;3-8-YB'CQB^5'599/C;>:%SW?>HXG
+MRHW(O(GE7)O5NV\!!_#@=84#EN^'%^KL=GQ[.9FZ\&lt;&quot;FZYL@+]0=1I>D.]WO
+MP&quot;-CGEDC38742V\>&amp;VY&amp;&lt;3`>=M3P7[89&amp;P7C=8$(BL(=WAP\C*;Z!E['B1D$
+M71A>!7P4FT^\@\^A:Q&quot;.40A>^RZV=KV#=P_#[CZYQ^O6\K'U7!R3OG-*.$2^
+M*K9FV58ZPM\PQ?AEIX##_\?$TV.%WI69&amp;X)E_S84'[&lt;&lt;\7K,TMO5AM!&amp;NMV!
+M?8&quot;C^8ZRHS-'M3&lt;U>3V&quot;R9L'S&quot;LXMDM7T55_JFC1^?CVYP5D!.'1^RZ\,=-N
+M[E*_M,%&lt;);H.)D%X'?W1`^U5A(T1EF1OXHVQ86WP\'&quot;@-V1X%X]TV5J]G7S!
+M)SM;7N+-OBWCQ7@)?YNOK#^FK6_8TB\Y:[H88YQWC$2Y\V3..?X&lt;GR][OE%!
+M;LZ9&quot;RTDI\LQ,]4$&lt;LO#\&lt;;U2[[U82,Y&amp;L+:'.%.6SH/W54R_6\Y)D[PN\@4
+M>XC#0R8>%W=V:X&amp;Z!*Q3]A;4&lt;I28.&amp;#;$:T4&amp;01D2+;'=75>**5-;-9\U\1C
+MX^T=X`7_(,2,V+TXWX\$WM'CW/SN[,/6.=[]=L;QNL7MWPQ-;:UXW3GYK'>&amp;
+M]\V:D6WCOJ2`@PJ2?(!O?94JV@W&amp;^XD,FK1$+,+6&lt;P6L'#D_:;;^&amp;2G&quot;#;5E
+MOP,.QJ*T`G7M?IA.XO6C-7M/,8]P6\#Y!_5/!9+M3.#PR1X2&lt;>:.O&amp;H/_Z__
+;N?+#OR/_`%E/&lt;'9]YO!.`````$E%3D2N0F&quot;&quot;
+`
+end
+</map>
+  </image>
+  <line>
+   <xstart>10</xstart>
+   <ystart>110</ystart>
+   <xend>10</xend>
+   <yend>130</yend>
+   <weight>2</weight>
+  </line>
+  <label>
+   <rect>
+    <x>10</x>
+    <y>110</y>
+    <width>60</width>
+    <height>20</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>10</size>
+    <weight>normal</weight>
+   </font>
+   <hcenter/>
+   <vcenter/>
+   <string>CEDOLA</string>
+  </label>
+  <label>
+   <rect>
+    <x>560</x>
+    <y>110</y>
+    <width>60</width>
+    <height>20</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>10</size>
+    <weight>normal</weight>
+   </font>
+   <hcenter/>
+   <vcenter/>
+   <string>RIGHE</string>
+  </label>
+  <line>
+   <xstart>775</xstart>
+   <ystart>110</ystart>
+   <xend>775</xend>
+   <yend>130</yend>
+   <weight>2</weight>
+  </line>
+  <label>
+   <rect>
+    <x>500</x>
+    <y>110</y>
+    <width>60</width>
+    <height>20</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>10</size>
+    <weight>normal</weight>
+   </font>
+   <hcenter/>
+   <vcenter/>
+   <string>COLLI</string>
+  </label>
+  <line>
+   <xstart>10</xstart>
+   <ystart>110</ystart>
+   <xend>775</xend>
+   <yend>110</yend>
+   <weight>2</weight>
+  </line>
+  <label>
+   <rect>
+    <x>118</x>
+    <y>20</y>
+    <width>287</width>
+    <height>40</height>
+   </rect>
+   <font>
+    <face>BN Elements</face>
+    <size>20</size>
+    <weight>normal</weight>
+   </font>
+   <hcenter/>
+   <vcenter/>
+   <string>Linee Distribuzione</string>
+  </label>
+  <label>
+   <rect>
+    <x>620</x>
+    <y>110</y>
+    <width>60</width>
+    <height>20</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>10</size>
+    <weight>normal</weight>
+   </font>
+   <hcenter/>
+   <vcenter/>
+   <string>COPIE</string>
+  </label>
+  <label>
+   <rect>
+    <x>685</x>
+    <y>110</y>
+    <width>95</width>
+    <height>20</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>10</size>
+    <weight>normal</weight>
+   </font>
+   <hcenter/>
+   <vcenter/>
+   <string>PESO (Kg)</string>
+  </label>
+  <line>
+   <xstart>620</xstart>
+   <ystart>110</ystart>
+   <xend>620</xend>
+   <yend>130</yend>
+   <weight>0</weight>
+  </line>
+  <line>
+   <xstart>500</xstart>
+   <ystart>110</ystart>
+   <xend>500</xend>
+   <yend>130</yend>
+   <weight>0</weight>
+  </line>
+  <line>
+   <xstart>560</xstart>
+   <ystart>110</ystart>
+   <xend>560</xend>
+   <yend>130</yend>
+   <weight>0</weight>
+  </line>
+  <line>
+   <xstart>0</xstart>
+   <ystart>70</ystart>
+   <xend>785</xend>
+   <yend>70</yend>
+   <weight>4</weight>
+  </line>
+  <label>
+   <rect>
+    <x>140</x>
+    <y>110</y>
+    <width>300</width>
+    <height>20</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>10</size>
+    <weight>normal</weight>
+   </font>
+   <left/>
+   <vcenter/>
+   <string>DESCRIZIONE</string>
+  </label>
+ </rpthead>
+ <pghead>
+  <firstpage/>
+  <height>6</height>
+ </pghead>
+ <pghead>
+  <height>111</height>
+  <line>
+   <xstart>620</xstart>
+   <ystart>90</ystart>
+   <xend>620</xend>
+   <yend>110</yend>
+   <weight>0</weight>
+  </line>
+  <line>
+   <xstart>70</xstart>
+   <ystart>90</ystart>
+   <xend>70</xend>
+   <yend>110</yend>
+   <weight>0</weight>
+  </line>
+  <label>
+   <rect>
+    <x>120</x>
+    <y>20</y>
+    <width>291</width>
+    <height>40</height>
+   </rect>
+   <font>
+    <face>BN Elements</face>
+    <size>20</size>
+    <weight>normal</weight>
+   </font>
+   <hcenter/>
+   <vcenter/>
+   <string>Linee Distribuzione</string>
+  </label>
+  <label>
+   <rect>
+    <x>500</x>
+    <y>90</y>
+    <width>60</width>
+    <height>20</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>10</size>
+    <weight>normal</weight>
+   </font>
+   <hcenter/>
+   <vcenter/>
+   <string>COLLI</string>
+  </label>
+  <label>
+   <rect>
+    <x>560</x>
+    <y>90</y>
+    <width>60</width>
+    <height>20</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>10</size>
+    <weight>normal</weight>
+   </font>
+   <hcenter/>
+   <vcenter/>
+   <string>RIGHE</string>
+  </label>
+  <line>
+   <xstart>560</xstart>
+   <ystart>90</ystart>
+   <xend>560</xend>
+   <yend>110</yend>
+   <weight>0</weight>
+  </line>
+  <label>
+   <rect>
+    <x>440</x>
+    <y>90</y>
+    <width>60</width>
+    <height>20</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>10</size>
+    <weight>normal</weight>
+   </font>
+   <hcenter/>
+   <vcenter/>
+   <string>ORDINI</string>
+  </label>
+  <line>
+   <xstart>775</xstart>
+   <ystart>90</ystart>
+   <xend>775</xend>
+   <yend>110</yend>
+   <weight>2</weight>
+  </line>
+  <label>
+   <rect>
+    <x>70</x>
+    <y>90</y>
+    <width>65</width>
+    <height>20</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>10</size>
+    <weight>normal</weight>
+   </font>
+   <hcenter/>
+   <vcenter/>
+   <string>CODICE</string>
+  </label>
+  <line>
+   <xstart>500</xstart>
+   <ystart>90</ystart>
+   <xend>500</xend>
+   <yend>110</yend>
+   <weight>0</weight>
+  </line>
+  <line>
+   <xstart>135</xstart>
+   <ystart>90</ystart>
+   <xend>135</xend>
+   <yend>110</yend>
+   <weight>0</weight>
+  </line>
+  <line>
+   <xstart>10</xstart>
+   <ystart>90</ystart>
+   <xend>775</xend>
+   <yend>90</yend>
+   <weight>2</weight>
+  </line>
+  <line>
+   <xstart>0</xstart>
+   <ystart>70</ystart>
+   <xend>785</xend>
+   <yend>70</yend>
+   <weight>4</weight>
+  </line>
+  <image>
+   <rect>
+    <x>10</x>
+    <y>0</y>
+    <width>80</width>
+    <height>65</height>
+   </rect>
+   <mode>stretch</mode>
+   <map format="PNG" >begin 644 internal
+MB5!.1PT*&amp;@H````-24A$4@```'X```!A&quot;`,````G?>7T````8%!,5$4`*4+A
+MZ.QUB91`7W&amp;VQ,V&lt;K;?-U]T@1%K___]?&lt;WZ*G*>FMK_N\?00-D[8W^3&quot;SM54
+M:'-]D9MG>X8P46:OOL;U]_>2I*[?Y.?3V]_G[>]N@HV^Q\W'T]F&quot;E:!8;'?^
+M`0).&amp;HXJ`````6)+1T0?!0T0O0````EP2%ES````2````$@`1LEK/@``!@))
+M1$%4:-[MFNFRJR@0@(T*:B0:C8H&amp;\?T?&lt;UB41&lt;&amp;0Y%3-U%3ZUST!^Z.;WK1N
+ME/^K$OWP/_P/_\/_\#_\#__#__`__`__G\?W_73!U3A#.(X5QI&lt;)H;[G/R,T
+ML16V-,(9UC4A:=>5'?D3?'^I8#5>^ARQ?Y&quot;T!`&quot;479>2&amp;5;5!?5YCR9&lt;P;DF
+M#,G6ABMMXF=;+/?Q:SR&quot;'8.E]4J?:TDO!7V4]/XBZ6E7EII>W,LOG=^3:W,=
+M.!UZZ!-S/;=]W-&amp;?1;'0[^X>#^U3T1&amp;[`@P97;J>T6&lt;/_=K$&lt;=LNR[/_!C_&amp;
+MQ4KO:H@9?:H8G=V$I->&quot;CCC]PNBSI`]`TIGM&quot;Z-_C.^O]Z5X-G2E3YP^,OIJ
+M>ZKI[$I&amp;J&amp;P?KDWSY&amp;%7X/QS?+K&lt;E_89&quot;SJ!U93GC#XK.K,=5IC3^TG0ZS1=
+MZ532%T'_#,],O]\+22]7.I:V#R5/N97.@GZ:*A;T(LLE/18I]Y3TC_&quot;X7>E7
+M`#HR5Q=!GTFW);R@RX2_X-&amp;1\$V?O\##&lt;N#&amp;I3RC;*E9O;@7K:2G\\CHB--5
+MRM6ZW#`Z&quot;_HTM>FETN7!UW',7#N4W+BI=](;05?E1M*!M'W$5K&amp;SZ13GYWC&lt;
+MB+`2=*E>GP`8]$.Q`[+4KG1GL1M&amp;D^3&quot;EP6G7SF=J>?UI)HGM2;H:[EA&amp;&lt;&lt;;
+M&quot;KJP\!9]IF)WON\SE5B;>9\AU0YUQ/=TI4O72CI));]N&amp;9VE7#.D&lt;,J_EP.^
+M9]58TU4U*\M>TZ_U7Z&quot;=^)IE#B'&lt;4[6HI?E%T,%0\XSC=(`_`07B+4\@7LTD
+M_3IPQ]SOPU\9_AK/3\&quot;K65GR&lt;E71XA[_H>4A>%9_6-YP.FO1]S)`XQ_C\QD`
+MWBA8DQS-GQ'I**4)D[@9B,LKF`A!IWBAP9:8`FCL25>Z1N!AR:*=).;%(-`^
+MC*76%ZY1CFZ12VYMM^WIV830%D\5&lt;^#A?&quot;(BVP:R'!>IS_DP\D@&amp;-O&lt;S>KN=
+M'V2^_2L>)ZY%+SZ/??JB9+VW1M%1XMV\XH';FWX\]FO,9`QTQ6H9O/GW2CSP
+M+/KQ>>97F0G[IT'N[O;TS'0&amp;.:&amp;?X96.EJ427:S(6HS-ENYE6#V&quot;&quot;'UL>#..
+M$LJRKK[&amp;63!^&quot;QYJ6`E=]&amp;RPLQG'-_&amp;T=L:B4TU$PQMXIDY[H-U^,^Z='DL)
+M7MC3VGA@KJ'X37R.%2O;=*A?;M&quot;IJH,ZAY;=&amp;LG>P^=4&amp;;+^H#8]_&amp;U'[3D&lt;
+M$!'G`UZ\]J-4-2C;3YK>_L@OQ8O7JHCM>GBF;9/0OAR`%ZK:\_S=/W.Z*P2O
+M2Z$P7@4B.M46&lt;D-!^$Y%&amp;O]+W3PXU:;3-8-YB'CQB^5'599/C;>:%SW?>HXG
+MRHW(O(GE7)O5NV\!!_#@=84#EN^'%^KL=GQ[.9FZ\&lt;&quot;FZYL@+]0=1I>D.]WO
+MP&quot;-CGEDC38742V\>&amp;VY&amp;&lt;3`>=M3P7[89&amp;P7C=8$(BL(=WAP\C*;Z!E['B1D$
+M71A>!7P4FT^\@\^A:Q&quot;.40A>^RZV=KV#=P_#[CZYQ^O6\K'U7!R3OG-*.$2^
+M*K9FV58ZPM\PQ?AEIX##_\?$TV.%WI69&amp;X)E_S84'[&lt;&lt;\7K,TMO5AM!&amp;NMV!
+M?8&quot;C^8ZRHS-'M3&lt;U>3V&quot;R9L'S&quot;LXMDM7T55_JFC1^?CVYP5D!.'1^RZ\,=-N
+M[E*_M,%&lt;);H.)D%X'?W1`^U5A(T1EF1OXHVQ86WP\'&quot;@-V1X%X]TV5J]G7S!
+M)SM;7N+-OBWCQ7@)?YNOK#^FK6_8TB\Y:[H88YQWC$2Y\V3..?X&lt;GR][OE%!
+M;LZ9&quot;RTDI\LQ,]4$&lt;LO#\&lt;;U2[[U82,Y&amp;L+:'.%.6SH/W54R_6\Y)D[PN\@4
+M>XC#0R8>%W=V:X&amp;Z!*Q3]A;4&lt;I28.&amp;#;$:T4&amp;01D2+;'=75>**5-;-9\U\1C
+MX^T=X`7_(,2,V+TXWX\$WM'CW/SN[,/6.=[]=L;QNL7MWPQ-;:UXW3GYK'>&amp;
+M]\V:D6WCOJ2`@PJ2?(!O?94JV@W&amp;^XD,FK1$+,+6&lt;P6L'#D_:;;^&amp;2G&quot;#;5E
+MOP,.QJ*T`G7M?IA.XO6C-7M/,8]P6\#Y!_5/!9+M3.#PR1X2&lt;>:.O&amp;H/_Z__
+;N?+#OR/_`%E/&lt;'9]YO!.`````$E%3D2N0F&quot;&quot;
+`
+end
+</map>
+  </image>
+  <label>
+   <rect>
+    <x>10</x>
+    <y>90</y>
+    <width>60</width>
+    <height>20</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>10</size>
+    <weight>normal</weight>
+   </font>
+   <hcenter/>
+   <vcenter/>
+   <string>CEDOLA</string>
+  </label>
+  <line>
+   <xstart>10</xstart>
+   <ystart>110</ystart>
+   <xend>775</xend>
+   <yend>110</yend>
+   <weight>2</weight>
+  </line>
+  <label>
+   <rect>
+    <x>585</x>
+    <y>55</y>
+    <width>196</width>
+    <height>15</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>9</size>
+    <weight>normal</weight>
+   </font>
+   <left/>
+   <bottom/>
+   <string>A&amp;L Automazione e Logistica</string>
+  </label>
+  <label>
+   <rect>
+    <x>620</x>
+    <y>90</y>
+    <width>60</width>
+    <height>20</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>10</size>
+    <weight>normal</weight>
+   </font>
+   <hcenter/>
+   <vcenter/>
+   <string>COPIE</string>
+  </label>
+  <label>
+   <rect>
+    <x>140</x>
+    <y>90</y>
+    <width>300</width>
+    <height>20</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>10</size>
+    <weight>normal</weight>
+   </font>
+   <left/>
+   <vcenter/>
+   <string>DESCRIZIONE</string>
+  </label>
+  <line>
+   <xstart>680</xstart>
+   <ystart>90</ystart>
+   <xend>680</xend>
+   <yend>110</yend>
+   <weight>0</weight>
+  </line>
+  <line>
+   <xstart>440</xstart>
+   <ystart>90</ystart>
+   <xend>440</xend>
+   <yend>110</yend>
+   <weight>0</weight>
+  </line>
+  <line>
+   <xstart>10</xstart>
+   <ystart>90</ystart>
+   <xend>10</xend>
+   <yend>110</yend>
+   <weight>2</weight>
+  </line>
+  <label>
+   <rect>
+    <x>680</x>
+    <y>90</y>
+    <width>95</width>
+    <height>20</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>10</size>
+    <weight>normal</weight>
+   </font>
+   <hcenter/>
+   <vcenter/>
+   <string>PESO (Kg)</string>
+  </label>
+ </pghead>
+ <section>
+  <name>lista_articoli</name>
+  <detail>
+   <key>
+    <query>linee_distribuzione</query>
+   </key>
+   <height>16</height>
+   <line>
+    <xstart>10</xstart>
+    <ystart>0</ystart>
+    <xend>10</xend>
+    <yend>16</yend>
+    <weight>2</weight>
+   </line>
+   <line>
+    <xstart>620</xstart>
+    <ystart>0</ystart>
+    <xend>620</xend>
+    <yend>16</yend>
+    <weight>0</weight>
+   </line>
+   <field>
+    <rect>
+     <x>505</x>
+     <y>0</y>
+     <width>50</width>
+     <height>16</height>
+    </rect>
+    <font>
+     <face>Sans</face>
+     <size>8</size>
+     <weight>normal</weight>
+    </font>
+    <right/>
+    <vcenter/>
+    <data>
+     <query>linee_distribuzione</query>
+     <column>COLLI</column>
+    </data>
+   </field>
+   <field>
+    <rect>
+     <x>565</x>
+     <y>0</y>
+     <width>50</width>
+     <height>16</height>
+    </rect>
+    <font>
+     <face>Sans</face>
+     <size>8</size>
+     <weight>normal</weight>
+    </font>
+    <right/>
+    <vcenter/>
+    <data>
+     <query>linee_distribuzione</query>
+     <column>RIGHE</column>
+    </data>
+   </field>
+   <field>
+    <rect>
+     <x>625</x>
+     <y>0</y>
+     <width>55</width>
+     <height>16</height>
+    </rect>
+    <font>
+     <face>Sans</face>
+     <size>8</size>
+     <weight>normal</weight>
+    </font>
+    <right/>
+    <vcenter/>
+    <data>
+     <query>linee_distribuzione</query>
+     <column>COPIE</column>
+    </data>
+   </field>
+   <line>
+    <xstart>775</xstart>
+    <ystart>0</ystart>
+    <xend>775</xend>
+    <yend>16</yend>
+    <weight>2</weight>
+   </line>
+   <field>
+    <rect>
+     <x>445</x>
+     <y>0</y>
+     <width>50</width>
+     <height>16</height>
+    </rect>
+    <font>
+     <face>Sans</face>
+     <size>8</size>
+     <weight>normal</weight>
+    </font>
+    <right/>
+    <vcenter/>
+    <data>
+     <query>linee_distribuzione</query>
+     <column>ORDINI</column>
+    </data>
+   </field>
+   <line>
+    <xstart>500</xstart>
+    <ystart>0</ystart>
+    <xend>500</xend>
+    <yend>16</yend>
+    <weight>0</weight>
+   </line>
+   <field>
+    <rect>
+     <x>140</x>
+     <y>0</y>
+     <width>295</width>
+     <height>16</height>
+    </rect>
+    <font>
+     <face>Sans</face>
+     <size>8</size>
+     <weight>normal</weight>
+    </font>
+    <left/>
+    <vcenter/>
+    <data>
+     <query>linee_distribuzione</query>
+     <column>DESCRIZIONE</column>
+    </data>
+   </field>
+   <line>
+    <xstart>560</xstart>
+    <ystart>0</ystart>
+    <xend>560</xend>
+    <yend>16</yend>
+    <weight>0</weight>
+   </line>
+   <line>
+    <xstart>70</xstart>
+    <ystart>0</ystart>
+    <xend>70</xend>
+    <yend>16</yend>
+    <weight>0</weight>
+   </line>
+   <line>
+    <xstart>135</xstart>
+    <ystart>0</ystart>
+    <xend>135</xend>
+    <yend>16</yend>
+    <weight>0</weight>
+   </line>
+   <line>
+    <xstart>440</xstart>
+    <ystart>0</ystart>
+    <xend>440</xend>
+    <yend>16</yend>
+    <weight>0</weight>
+   </line>
+   <field>
+    <rect>
+     <x>690</x>
+     <y>0</y>
+     <width>80</width>
+     <height>16</height>
+    </rect>
+    <font>
+     <face>Sans</face>
+     <size>8</size>
+     <weight>normal</weight>
+    </font>
+    <right/>
+    <vcenter/>
+    <data>
+     <query>linee_distribuzione</query>
+     <column>PESO</column>
+    </data>
+   </field>
+   <line>
+    <xstart>685</xstart>
+    <ystart>0</ystart>
+    <xend>685</xend>
+    <yend>16</yend>
+    <weight>0</weight>
+   </line>
+   <field>
+    <rect>
+     <x>16</x>
+     <y>0</y>
+     <width>49</width>
+     <height>16</height>
+    </rect>
+    <font>
+     <face>Sans</face>
+     <size>8</size>
+     <weight>normal</weight>
+    </font>
+    <right/>
+    <vcenter/>
+    <data>
+     <query>linee_distribuzione</query>
+     <column>CEDOLA</column>
+    </data>
+   </field>
+   <line>
+    <xstart>10</xstart>
+    <ystart>16</ystart>
+    <xend>775</xend>
+    <yend>16</yend>
+    <weight>0</weight>
+   </line>
+   <field>
+    <rect>
+     <x>75</x>
+     <y>0</y>
+     <width>55</width>
+     <height>16</height>
+    </rect>
+    <font>
+     <face>Sans</face>
+     <size>8</size>
+     <weight>normal</weight>
+    </font>
+    <right/>
+    <vcenter/>
+    <data>
+     <query>linee_distribuzione</query>
+     <column>CODICE</column>
+    </data>
+   </field>
+  </detail>
+ </section>
+ <pgfoot>
+  <height>47</height>
+  <line>
+   <xstart>648</xstart>
+   <ystart>39</ystart>
+   <xend>648</xend>
+   <yend>39</yend>
+   <weight>0</weight>
+  </line>
+  <field>
+   <rect>
+    <x>20</x>
+    <y>20</y>
+    <width>245</width>
+    <height>20</height>
+   </rect>
+   <font>
+    <face>Bitstream Vera Sans</face>
+    <size>12</size>
+    <weight>normal</weight>
+   </font>
+   <left/>
+   <vcenter/>
+   <data>
+    <query>dati_ordine</query>
+    <column>data_ora</column>
+   </data>
+  </field>
+  <field>
+   <rect>
+    <x>705</x>
+    <y>20</y>
+    <width>50</width>
+    <height>20</height>
+   </rect>
+   <font>
+    <face>Bitstream Vera Sans</face>
+    <size>12</size>
+    <weight>normal</weight>
+   </font>
+   <left/>
+   <vcenter/>
+   <data>
+    <query>Context Query</query>
+    <column>page_number</column>
+   </data>
+  </field>
+  <line>
+   <xstart>0</xstart>
+   <ystart>16</ystart>
+   <xend>790</xend>
+   <yend>16</yend>
+   <weight>4</weight>
+  </line>
+  <label>
+   <rect>
+    <x>640</x>
+    <y>20</y>
+    <width>60</width>
+    <height>20</height>
+   </rect>
+   <font>
+    <face>Bitstream Vera Sans</face>
+    <size>12</size>
+    <weight>normal</weight>
+   </font>
+   <right/>
+   <vcenter/>
+   <string>Pagina</string>
+  </label>
+ </pgfoot>
+ <rptfoot>
+  <height>29</height>
+  <line>
+   <xstart>440</xstart>
+   <ystart>20</ystart>
+   <xend>775</xend>
+   <yend>20</yend>
+   <weight>2</weight>
+  </line>
+  <field>
+   <rect>
+    <x>625</x>
+    <y>0</y>
+    <width>55</width>
+    <height>20</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>8</size>
+    <weight>normal</weight>
+   </font>
+   <right/>
+   <vcenter/>
+   <data>
+    <query>linee_distribuzione_totali</query>
+    <column>TOT_COPIE</column>
+   </data>
+  </field>
+  <line>
+   <xstart>500</xstart>
+   <ystart>0</ystart>
+   <xend>500</xend>
+   <yend>20</yend>
+   <weight>0</weight>
+  </line>
+  <field>
+   <rect>
+    <x>690</x>
+    <y>0</y>
+    <width>80</width>
+    <height>20</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>8</size>
+    <weight>normal</weight>
+   </font>
+   <right/>
+   <vcenter/>
+   <data>
+    <query>linee_distribuzione_totali</query>
+    <column>TOT_PESO</column>
+   </data>
+  </field>
+  <field>
+   <rect>
+    <x>565</x>
+    <y>0</y>
+    <width>50</width>
+    <height>20</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>8</size>
+    <weight>normal</weight>
+   </font>
+   <right/>
+   <vcenter/>
+   <data>
+    <query>linee_distribuzione_totali</query>
+    <column>TOT_RIGHE</column>
+   </data>
+  </field>
+  <line>
+   <xstart>775</xstart>
+   <ystart>0</ystart>
+   <xend>775</xend>
+   <yend>20</yend>
+   <weight>2</weight>
+  </line>
+  <field>
+   <rect>
+    <x>505</x>
+    <y>0</y>
+    <width>50</width>
+    <height>20</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>8</size>
+    <weight>normal</weight>
+   </font>
+   <right/>
+   <vcenter/>
+   <data>
+    <query>linee_distribuzione_totali</query>
+    <column>TOT_COLLI</column>
+   </data>
+  </field>
+  <line>
+   <xstart>440</xstart>
+   <ystart>0</ystart>
+   <xend>440</xend>
+   <yend>20</yend>
+   <weight>2</weight>
+  </line>
+  <line>
+   <xstart>10</xstart>
+   <ystart>0</ystart>
+   <xend>775</xend>
+   <yend>0</yend>
+   <weight>2</weight>
+  </line>
+  <field>
+   <rect>
+    <x>445</x>
+    <y>0</y>
+    <width>50</width>
+    <height>20</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>8</size>
+    <weight>normal</weight>
+   </font>
+   <right/>
+   <vcenter/>
+   <data>
+    <query>linee_distribuzione_totali</query>
+    <column>TOT_ORDINI</column>
+   </data>
+  </field>
+  <line>
+   <xstart>560</xstart>
+   <ystart>0</ystart>
+   <xend>560</xend>
+   <yend>20</yend>
+   <weight>0</weight>
+  </line>
+  <line>
+   <xstart>685</xstart>
+   <ystart>0</ystart>
+   <xend>685</xend>
+   <yend>20</yend>
+   <weight>0</weight>
+  </line>
+  <line>
+   <xstart>620</xstart>
+   <ystart>0</ystart>
+   <xend>620</xend>
+   <yend>20</yend>
+   <weight>0</weight>
+  </line>
+ </rptfoot>
+</report>

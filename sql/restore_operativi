@@ -1,0 +1,6 @@
+psql mr <  settori.dump.sql
+psql mr <  imballi.dump.sql
+psql mr <  ubicazioni.dump.sql
+psql mr <  displays.dump.sql
+psql mr <  operatori.dump.sql
+

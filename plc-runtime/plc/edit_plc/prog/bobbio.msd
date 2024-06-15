@@ -1,0 +1,20 @@
+CONFIGURATION NONAME_CONTROL
+
+ VAR_GLOBAL
+	IN1 AT %IXIOS.1.UDC.0 : BOOL:= 0;
+	IN2 AT %IXIOS.1.UDC.1 : BOOL:= 0;
+	OUT1 AT %QXIOS.1.UDC.0 : BOOL:= 0;
+	OUT2 AT %QXIOS.1.UDC.1 : BOOL:= 0;
+ END_VAR
+
+ RESOURCE unica ON sola_cpu_presente
+
+  PROGRAM G : NONAME
+
+   (* Input *)
+    (
+
+  (* Output *)
+   );
+ END_RESOURCE
+END_CONFIGURATION

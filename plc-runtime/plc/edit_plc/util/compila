@@ -1,0 +1,14 @@
+cd /home/edit_plc/prog
+../ilc -il -g -w 1 -header ../util/scambio ../util/illib.ilc -code /home/d_unc/plc/$1.plc -os $1.plc.s  /home/d_unc/plc/$1.msd -os $1.msd.s /home/xnc/bin/scambdin -os scambdin.s 
+#../ilc -il -g -w 1 -header ../util/scambio ../util/illib.ilc -code $1.plc -os $1.plc.s  $1.msd -os $1.msd.s ../util/scambdin -os scambdin.s
+#as $1.plc.s -o $1.plc.o
+#as $1.msd.s -o $1.msd.o
+#as scambdin.s -o scambdin.o
+#ld -r ../ilc0.o scambdin.o $1.plc.o $1.msd.o ../ilcn.o ../libil.a -o user.o
+#/bin/ld -r user.o -o user.oo
+#rm $1.plc.s
+#rm $1.plc.o
+#rm $1.msd.s
+#rm $1.msd.o
+#rm scambdin.s
+#rm scambdin.o

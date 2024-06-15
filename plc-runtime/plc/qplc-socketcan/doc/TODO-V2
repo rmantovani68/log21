@@ -1,0 +1,61 @@
+              NOTE E DESIDERATA RIGUARDANTI QPLC VERSIONE 2
+              ---------------------------------------------
+
+1) La shared memory va completamente riorganizzata. Dovra` essere
+   composta da due sole parti: un'intestazione e zona dei segnali di scambio.
+   L'intestazione deve contenere una descrizione completa dell'intera area,
+   comprendendo la dimensiome delle strutture, il numero di versione
+   dell'esecutore, puntatori rilocabili alla zona dei dati, un flag di
+   "shared memory inizializzata" che servira` alle altre applicazioni per
+   iniziare il colloquio col PLC. Isagraf sara` solo un ricordo.
+2) Tutto cio` che riguarda il CN deve essere esterno al PLC. Non intendo piu`
+   transigere su questo punto. Non dovranno piu` esistere segnali di scambio
+   predefiniti: l'esecutore creera` automaticamente solo i segnali di scambio
+   di sua stretta pertinenza, cioe` quelli legati al debugger.
+3) I "segnali di scambio a rilevamento di fronte" sono un'altra cosa che
+   dovra` sparire: siccome i segnali di scambio sono caratteristici dell'ap-
+   plicazione, non e` giusto che l'esecutore contenga automatismi per rilevarne
+   i fronti. E` un modo inutilmente rigido e contorto di ottenere un certo
+   risultato. Puo` darsi pero` che un meccanismo equivalente debba essere
+   realizzato nell'ambito del debug in rete. Vedere il punto 7.
+4) Dovra` essere possibile l'esecuzione di vari task, ciascuno caratterizzato
+   da un periodo, una priorita` ed uno stato. Tutte le azioni compiute
+   nel ciclo del PLC, compreso il colloquio col debugger e l'aggiornamento
+   dei segnali di I/O, dovranno rientrare in questo modello.
+5) Il caricamento dinamico dovra` essere razionalizzato. Gli unici punti di
+   entrata saranno una routine da chiamare all'installazione ed una da chiamare
+   alla disinstallazione. La prima aggancera` altre funzioni del modulo
+   ad azioni specifiche del PLC attraverso un meccanismo di registrazione di
+   callback oppure le primitive di creazione di task, la seconda dovra`
+   provvedere a rimettere a posto le cose. Puo` darsi che con questo meccanismo
+   si riesca a gestire ancora i vecchi oggetti, a patto che siano "linkati" con
+   due apposite procedure di installazione e disinstallazione.
+6) Dovra` essere previsto un meccanismo per utilizzare diverse sorgenti di
+   temporizzazione. Oltre al timer di sistema, sara` utile il timer della
+   scheda INAX, ed una modalita` di esecuzione "a ciclo continuo", nella
+   quale la CPU e` ceduta solo saltuariamente, senza pretendere tempistiche
+   regolari.
+7) A parte la scorciatoia dell'uso di certi segnali di scambio speciali,
+   il colloquio tra PLC e debugger avverra`, in generale, su un canale di
+   comunicazione bidirezionale, multiplo e remotabile: socket, quindi.
+   Dovrebbe essere possibile riuscire a far qualcosa con un comando del
+   tipo "telnet localhost plc". Tra i comandi accettati dal PLC potrebbe
+   comparire un servizio di notifica di cambio di stato di una cella o di
+   un insieme di celle, che realizzerebbe in modo pulito e piu` potente il
+   vecchio meccanismo dei "segnali a rilevamento di fronte". Tra l'altro,
+   con appositi driver di I/O, si potrebbe ottenere di agganciare due
+   esecutori su CPU diverse in modo trasparente attraverso variabili
+   tracciate da una parte e aggiornate dall'altra su cambiamento delle prime.
+8) Un problema spinoso sara` quello della ridefinizione di segnali di
+   scambio a seguito di caricamenti, in fase di debug, di varie versioni
+   dello stesso programma. Attualmente e` impossibile modificare le
+   caratteristiche di un segnale di scambio gia` definito. Non so se sia
+   peggio questo o accettare la ridefinizione e le possibili incongruenze
+   derivanti.
+9) Prima o poi si avra` a che fare con dispositivi di I/O "immediati", per
+   i quali non vale il modello di esecuzione tradizionale del ciclo di PLC:
+   "lettura-elaborazione-scrittura". Si dovranno prevedere servizi di
+   lettura e scrittura immediate, ed appositi automatismi a livello di
+   compilatore IL.
+
+

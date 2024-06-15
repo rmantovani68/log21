@@ -1,0 +1,115 @@
+
+ Installazione del driver IOSCNI e SERIAL modificato.
+
+* Via semplice:
+
+	cp ioscni.o in /lib/modules/2.2.14-12/misc/
+	
+	vai al punto (7)
+
+* Via complicata:
+
+0) Diventare "root"
+
+1) Assicurarsi che sia installato il sorgente di linux in "/usr/src/linux".
+
+2) Trasferire il contenuto della directory "kernel" in "/usr/src/linux":
+
+	( cd kernel && tar cf - . ) | ( cd /usr/src/linux && tar xvf - )
+
+3) Lanciare il configuratore del kernel:
+
+	cd /usr/src/linux; make menuconfig
+
+4) Nel sottomenu` "Character devices", attivare le seguenti voci:
+
+	Bugfix for National UARTs (NS16C55x)
+	Bugfix for AST multiports interrupt loss
+	Extended dumb serial driver
+	 Support for more than 4 serial ports
+	 Support for sharing serial interrupts
+	 Support special multiport boards
+	 Support the CNi Ser2 card
+	CNi IOS support
+
+ Per quest'ultima voce si puo` scegliere la modalita` "M" (modulo
+caricabile dinamicamente).
+ La seconda voce deve essere attivata solo se si intende usare la scheda
+MS550 (non CNi). Per utilizzare la scheda MS550, e` necessario disattivare 
+la gestione "stile SER2" delle porte collegate. A questo scopo, bisogna
+usare opzioni di boot del tipo "cniser=port<n>=0", oppure disattivare
+completamente la gestione stile CNi con "cniser=none". Questa stringa
+puo` essere aggiunta al boot oppure in "/etc/lilo.conf" col comando
+
+	append="cniser=none"
+
+nella sezione del boot linux.
+
+ 5) Compilare e installare il kernel
+
+	make clean; make depend
+	make bzlilo
+	make modules
+	meke modules_install
+
+ 6) Pubblicarlo (bug RedHat)
+
+	cp /vmlinuz /boot/vmlinuz
+	cp /System.map /boot/System.map
+	lilo
+
+ NOTA: il lancio di "lilo" non va mai dimenticato!
+
+ 7) Modificare /etc/rc.d/rc.local, aggiungendo le seguenti linee
+ all'inizio
+
+# Installazione del driver IOS.
+/sbin/modprobe ioscni
+# Configurazione delle quattro seriali aggiuntive.
+setserial /dev/ttyS4 port 0x1a0 irq 11 \
+	autoconfig '^skip_test' fourport \
+	set_multiport port1 0x1bf match1 0x00 mask1 0x03
+setserial /dev/ttyS5 port 0x1a8 irq 11 \
+	autoconfig '^skip_test' fourport \
+	set_multiport port1 0x1bf match1 0x00 mask1 0x03
+setserial /dev/ttyS6 port 0x1c0 irq 10 \
+	autoconfig '^skip_test' fourport \
+	set_multiport port1 0x1df match1 0x00 mask1 0x03
+setserial /dev/ttyS7 port 0x1c8 irq 10 \
+	autoconfig '^skip_test' fourport \
+	set_multiport port1 0x1df match1 0x00 mask1 0x03
+
+ 8) Aggiungere i dispositivi in /dev:
+
+	cd /dev
+	mknod ios0 c 127 0
+	mknod ios1 c 127 1
+	./MAKEDEV ttyS4
+	./MAKEDEV ttyS5
+	./MAKEDEV ttyS6
+	./MAKEDEV ttyS7
+	chmod 666 ios0 ios1 ttyS4 ttyS5 ttyS6 ttyS7
+
+ 9) Assicurarsi che IRQ 10 e IRQ 11 siano asseganti al bus ISA da Bios.
+ Di solito bisogna disattivare l'assegnamento automatico delle risorse,
+e assegnare a IRQ 10 e IRQ 11 la voce "Legacy/ISA" o simile. Su alcune
+macchina bisogna anche disattivare l'USB.
+
+ 10) Per schede MS550 (quattro porte) le pozioni di "setserial" cambiano
+leggermente. Questa serie di comandi abilita le quattro uscite di
+una MS550 configurata per IRQ=11 e IO=0x1A0:
+
+setserial /dev/ttyS4 port 0x1a0 irq 11 \
+	autoconfig '^skip_test' fourport \
+	set_multiport port1 0x1bf match1 0x0F mask1 0x0F
+setserial /dev/ttyS5 port 0x1a8 irq 11 \
+	autoconfig '^skip_test' fourport \
+	set_multiport port1 0x1bf match1 0x0F mask1 0x0F
+setserial /dev/ttyS6 port 0x1b0 irq 11 \
+	autoconfig '^skip_test' fourport \
+	set_multiport port1 0x1bf match1 0x0F mask1 0x0F
+setserial /dev/ttyS7 port 0x1b8 irq 11 \
+	autoconfig '^skip_test' fourport \
+	set_multiport port1 0x1bf match1 0x0F mask1 0x0F
+
+

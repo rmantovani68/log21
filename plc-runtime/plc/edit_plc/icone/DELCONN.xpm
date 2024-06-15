@@ -1,0 +1,22 @@
+/* XPM */
+static char * DELCONT_xpm[] = {
+"16 16 3 1",
+" 	s None	c None",
+".	c red",
+"X	c black",
+"                ",
+"                ",
+"                ",
+"                ",
+"        .     . ",
+"   X X   .   .  ",
+"   X X   .   .  ",
+"   X X    . .   ",
+"XXXX XXXXXX.XXXX",
+"   X X    . .   ",
+"   X X   .   .  ",
+"   X X   .   .  ",
+"        .     . ",
+"                ",
+"                ",
+"                "};

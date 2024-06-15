@@ -1,0 +1,726 @@
+
+/---\
+|ILC|
+\---/
+
+Mon Sep 16 20:44:39 MET DST 1996
+
+Distribuzione 1.0.0.0
+
+ Versione :
+ ilc version 1.0.0.0		[03/09/1996 10:31:45]	lib:3.0.22
+
+Wed Sep 25 20:09:09 MET DST 1996
+
+Debug 1.0.0.1
+
+ Versione :
+ ilc version 1.0.0.0		[03/09/1996 10:31:45]	lib:3.0.22
+
+ - Distribuito erroneamente con numero di versione sbagliato !
+ - Corretto un errore nel ripristino dell'accumulatore salvato nello stack,
+   che provocava l'emissione di un "pop" di troppo.
+ - Iniziata la codifica della compilazione delle chiamate a funzione.
+
+Debug 1.0.0.2
+
+ Versione :
+ ilc version 1.0.0.2		[25/09/1996 20:11:36]	lib:3.0.29
+
+ - Ricompilato per correggere il numero di versione della distribuzione.
+
+Debug 1.0.0.3
+
+ Versione :
+ ilc version 1.0.0.3		[27/09/1996 10:21:58]	lib:3.0.33
+
+ - Aggiunto l'azzeramento di %edx nella divisione. Senno`, non va.
+
+Debug 1.0.0.4
+
+ Versione :
+ ilc version 1.0.0.4		[27/09/1996 16:48:16]	lib:3.0.33
+
+ - Completata la gestione delle funzioni.
+
+Debug 1.0.0.5
+Debug 1.0.0.6
+
+ Versione :
+ ilc version 1.0.0.6		[27/09/1996 19:06:12]	lib:3.0.33
+
+ - Aggiunta l'opzione "-boung-chk", per abilitare varie modalita` di
+   controllo degli indici di vettore.
+
+Distribuzione 1.0.0.7
+
+ Versione :
+ ilc version 1.0.0.7		[01/10/1996 09:39:11]	lib:3.0.33
+
+ - Corretto il controllo sui limiti degli indici : i test erano rovesciati.
+
+Mon Oct  7 18:59:24 MET 1996
+
+Debug 1.0.0.8
+
+ Versione :
+ ilc version 1.0.0.8		[07/10/1996 18:43:48]	lib:3.0.33
+
+ - Risolta parzialmente l'ambiguita` per i nomi/parole chiave "LD", "S" ed "R"
+   (ed, eventualmente, anche altre).
+ - Aggiunta la gestione delle istruzioni "S" ed "R" (e guai ad usare questi
+   nomi anche per funzioni !).
+ - Corretto un bug nel caso di array con indice minimo diverso da zero
+   e "bound-check" uguale a zero.
+ - DISTRIBUITO IN LAE IL 10/10/96.
+
+Debug 1.0.1.0
+
+ Versione :
+ ilc version 1.0.1.0		[11/10/1996 17:55:29]	lib:3.0.34
+
+ - Iniziati i lavori per la gestione delle stringhe. Per ora, possono
+   comparire solo come parametri di funzioni.
+ 
+Debug 1.0.1.1
+
+ Versione :
+ ilc version 1.0.1.1		[14/10/1996 17:55:29]	lib:3.0.34
+
+ - Ancora lavori per le stringhe.
+ 
+Debug 1.0.1.2
+
+ Versione :
+ ilc version 1.0.1.2		[15/10/1996 10:02:31]	lib:3.0.34
+
+ - Completata la gestione delle stringhe.
+
+Debug 1.0.1.3
+
+ Versione :
+ ilc version 1.0.1.3		[15/10/1996 16:47:41]	lib:3.0.34
+
+ - Corretto un buco clamoroso nella chiusura di un'espressione tra
+   parentesi.
+
+Wed Oct 16 12:25:31 MET 1996
+
+Distribuzione 1.1.0.0
+
+ Versione :
+ ilc version 1.1.0.0		[16/10/1996 10:45:13]	lib:3.0.34
+
+ - Corretto un problema nell'assegnamento degli offset ai parametri di
+   funzione, a causa del quale non funzionavano le chiamate a funzione
+   non ancora definita o definita in un file "header".
+ - Corretta la sintassi dell'istruzione IL "NOT", che si aspettava
+   erroneamente un operando.
+
+ Debug 1.1.0.1
+
+ Versione :
+ ilc version 1.1.0.1		[16/10/1996 18:25:51]	lib:3.0.34
+
+ - Aggiunte callback di fine istruzione IL, in vista dell'aggiunta di
+   controlli di congruenza di tipo negli assegnamenti e nei salti.
+
+Thu Oct 17 12:55:53 MET 1996
+
+
+ Debug 1.1.0.2
+
+ Versione :
+ ilc version 1.1.0.2		[17/10/1996 12:54:38]	lib:3.0.34
+
+ - Corretto un bug nella chamata di blocchi funzionali che poteva provocare
+   l'errore interno 2031 (stack di valutazione pieno).
+
+Fri Oct 18 12:49:30 MET 1996
+
+Distribuzione 1.1.0.3
+
+ Versione :
+ ilc version 1.1.0.3		[17/10/1996 18:36:37]	lib:3.0.34
+
+ - Razionalizzata la compilazione dei segnali di scambio, in vista
+   dell'introduzione di meccanismi di ottimizzazione.
+
+ Debug 1.1.0.4
+
+ Versione :
+ ilc version 1.1.0.4		[18/10/1996 12:48:39]	lib:3.0.34
+
+ - Corretta l'indebita occupazione dei registri cache.
+
+Tue Nov 26 16:30:10 MET 1996
+
+ Debug 1.1.1.0
+
+ Versione :
+ ilc version 1.1.1.0		[26/11/1996 16:29:46]	lib:3.0.42
+
+ - Iniziata la gestione delle variabili "RETAIN". Sono trattate come segnali
+   di scambio con chiave indefinita. Possono quindi essere solo globali,
+   per il monento. Il caricatore (opportunamente modificato, vedere la
+   versione 1.3.2.0 di qplc) riconosce la proprieta` "RETAIN" del segnale
+   di scambio e provvede ad allocarlo nello spazio dell'area del PLC480.
+
+Thu Nov 28 19:29:08 MET 1996
+
+ Debug 1.1.1.1
+
+ Versione :
+ ilc version 1.1.1.1		[28/11/1996 15:10:01]	lib:3.0.42
+
+ - Iniziata l'emissione di informazioni di debug. Il compilatore genera
+   informazioni di linea comprensibili da gdb (opzionalmente) ed etichette
+   che, si presume, serviranno al debugger CNI. Non e` possibile utilizzare
+   le informazioni di GDB, perche` si perdono nel passaggio al formato
+   "a.out". La prestazione e` ancora ampiamente sperimentale, e manca di
+   un supporto nell'esecutore.
+ 
+Fri Nov 29 18:46:57 MET 1996
+
+ Debug 1.1.2.0
+
+ Versione :
+ ilc version 1.1.2.0		[29/11/1996 11:50:29]	lib:3.0.42
+
+ - Aggiunta la possibilita` di definire variabili e vettori di tipo
+   stringa inizializzati. Ancora non si sa cosa succeda ad usarli
+   in un programma IL...
+
+Mon Dec  2 12:03:03 MET 1996
+
+ Debug 1.1.2.1
+
+ Versione:
+ ilc version 1.1.2.1		[02/12/1996 11:58:33]	lib:3.0.42
+
+ - Completata la gestione delle variabili RETAIN, che ora possono avere anche
+   un valore iniziale diverso da 0. La prestazione e` disponibile solo con
+   qplc 1.3.3.1 o successivo.
+ - Distribuita sperimentalmente ad Anzola.
+
+Mon Dec  2 17:33:37 MET 1996
+
+ Debug 1.1.2.2
+
+ Versione:
+ ilc version 1.1.2.2		[02/12/1996 17:32:33]	lib:3.0.42
+
+ - I simboli di debug ora iniziano per "$", visto che si puo`.
+
+Tue Dec  3 12:26:40 MET 1996
+
+ Debug 1.1.2.3
+
+ Versione:
+ ilc version 1.1.2.3		[03/12/1996 09:23:02]	lib:3.0.42
+
+ - Aggiunta l'opzione "-g".
+ - "-gdb" diventa "-ggdb".
+ - Aggiunta l'informazione di debug "$EFfile", che marca la fine del
+   codice di un file. Aggiunte anche altre cose. Si veda il file "debug".
+
+ Debug 1.1.2.4
+
+ Versione:
+ ?
+
+ - Scappata...
+ - Corrette le solite sfighe.
+
+Wed Dec 11 16:55:18 MET 1996
+
+ Debug 1.1.2.5
+
+ Versione:
+ ilc version 1.1.2.5		[11/12/1996 16:52:29]	lib:4.0.0
+
+ - Corretta la generazione delle informazioni di debug inerenti i file,
+   che non funzionava bene con i percorsi assoluti.
+
+Mon Jan 13 12:26:57 MET 1997
+
+ Debug 1.1.2.6
+
+ Versione:
+ ilc version 1.1.2.6		[13/01/1997 12:22:14]	lib:4.0.3
+
+ - Evitata l'emissione di "$VA..." nel caso di MUL/DIV/MOD di una costante.
+
+Tue Jan 14 09:44:58 MET 1997
+
+ Debug 1.1.2.7
+
+ Versione:
+ ilc version 1.1.2.7		[13/01/1997 19:08:38]	lib:4.0.3
+
+ - I simboli "$BF..." e "$EF..." codificano il nome di file come sequenza di
+   cifre esadecimali.
+
+Mon Jan 20 15:02:03 MET 1997
+
+ Debug 1.1.2.8
+
+ Versione:
+ ilc version 1.1.2.8		[20/01/1997 15:01:35]	lib:4.0.3
+
+ - E` stata aggiunta l'emissione di simboli del tipo "$LE...". Hanno la stessa
+   forma dei simboli "$LN...". In effetti, l'unica differenza tra "$LN" e "$LE"
+   e` che questi ultimi codificano il numero di linea corrente meno uno.
+   Sono stati aggiunti per facilitare la raccolta delle informazioni di debug
+   relative ad una certa linea da parte del debugger.
+ - L'emissione dei simboli "$LN" e "$LE" e` stata condizionata a due flag
+   di compilazione : "-blinfo" e "-elinfo", che attivano o disattivano
+   rispettivamente "$LN" e "$LE" a seconda che siano seguiti da 1 o da 0.
+   Per default, "-blinfo" e` disattivato, mentre "-elinfo" e` attivato,
+   vale a dire che il compilatore emette, salvo diversa indicazione, i
+   simboli "$LE", ma non i "$LN".
+ - E` stato corretto un micro-bug nella gestione dell'opzione "-bound-chk",
+   che provocava l'alterazione di altre opzioni.
+  
+Wed Jan 22 18:44:56 MET 1997
+
+ Debug 1.1.2.9
+
+ Versione:
+ ilc version 1.1.2.9		[22/01/1997 18:43:48]	lib:4.0.4
+
+ - Si e` fatto un po' di casino con le versioni.
+ - Migliorata la diagnostica nel caso di RETAIN+AT. Il messaggio era
+   incomprensibile.
+ - Cambiata la sintassi delle dichiarazioni RETAIN. La
+   parola chiave RETAIN deve seguire immediatamente VAR,
+   VAR_GLOBAL e VAR_OUTPUT, e si intende applicata a tutte
+   le variabili dichiarate fino ad END_VAR.
+ - NOTA: benche` le modifiche apportate siano semplici da un punto
+   di vista logico, hanno richiesto piccoli interventi in parecchi punti
+   delicati del programma (file parser.c, pass1.c, pass2.c). Meditate...
+
+Tue May  6 14:23:00 MET DST 1997
+
+ Debug 1.1.2.10
+
+ Versione:
+ ilc version 1.1.2.10		[06/05/1997 14:24:10]	lib:4.0.16
+
+ - Aggiunto un aggiustamento allo stato della cache delle variabili "pchMem"
+   e "pKeyTab" nella compilazione delle istruzioni "S" ed "R", senza il quale
+   si poteva avere codice errato nel caso di set/reset di segnali di scambio.
+
+Wed Jun  4 10:54:15 MET DST 1997
+
+ Debug 1.1.2.11
+
+ Versione:
+ ilc version 1.1.2.11		[04/06/1997 10:45:00]	lib:4.0.20
+
+ - Aggiunta la possibilita` di indicare decimali nelle costanti di tipo "TIME",
+   come previsto dalle norme.
+ - Corretta un'imperfezione che faceva si` che un segnale di scambio a chiave
+   indefinita inizializzato si trovasse con la propria variabile "ombra"
+   inizializzata allo stesso modo. Non dava fastidio, perche` la variabile
+   ombra e` comunque riscritta al GO, ma era un'inaccettabile sporcizia.
+
+ Debug 1.1.3.0
+
+ Versione:
+ ilc version 1.1.3.0		[09/06/1997 16:13:51]	lib:4.0.20
+ 
+ - Aggiunti alcuni NOP in corrispondenza dei salti e delle etichette per
+   facilitare la vita al debugger.
+
+ Debug 1.1.3.1
+
+ Versione:
+ ilc version 1.1.3.1		[11/06/1997 17:37:37]	lib:4.0.21
+
+ - Aggiunto il simbolo di debug "$LJ<numero_di_linea>", che da` la posizione
+   "consigliata" per l'introduzione di un break in corrispondenza di salti,
+   etichette e RET.
+
+ Debug 1.1.3.2
+
+ Versione:
+ ilc version 1.1.3.2		[12/06/1997 10:02:03]	lib:4.0.21
+
+ - Modificata l'emissione di $LJ, che ora contiene anche l'informazione
+   sull'accumulatore. Inoltre, in corrispondenza di etichette, e` emesso
+   il sibolo "$LL...", per evitare conflitti in caso di linee del tipo
+
+	ETICHETTA:	JMP	...
+
+ Debug 1.1.3.3
+
+ Versione:
+ ilc version 1.1.3.3		[16/09/1997 09:50:36]	lib:4.1.5
+
+ - Ripulito il codice (grazie a Fabbri) dove possibile in maniera non invasiva.
+ - Riammessa la possibilita` di scrivere cose del tipo "LD 'stringa'".
+ - Alcuni piccoli aggiustamenti per compilazione con Win32 (poca roba: un
+   cast e qualche #ifdef).
+
+ Debug 1.2.0.0
+
+ Versione:
+ ilc version 1.2.0.0		[18/11/1997 16:42:33]	lib:4.1.10
+
+ - Sostituito il riferimento al simbolo NVRAM con NVRAM_pub, equivalente,
+   ed al riparo da conflitti con variabili IL. Vuole qplc >= 1.4.1.0.
+ - Corretta la compilazione della scrittura di variabili RETAIN a 32 bit.
+   Per limitazioni hardware, e` stato necessario spezzare la scrittura
+   in due parti a 16 bit, pena interferenze con il driver del floppy.
+
+ Debug 1.2.0.1
+
+ Versione:
+
+ ilc version 1.2.0.1		[26/11/1998 17:21:25]	lib:6.1.1
+
+ - Aggiunti controlli per evitare di utilizzare un nome di blocco funzionale
+   al posto di una variabile ordinaria. Evita schianti e incongruenza.
+
+ Debug 1.2.0.2
+
+ Versione:
+
+ ilc version 1.2.0.2		[01/12/1998 13:05:36]	lib:6.1.1
+
+ - Corretta (si spera) la compilazione della divisione con segno, che
+   poteva provocare un'eccezione per overflow (segnalata come divisione
+   per zero da qplc, tra l'altro).
+
+ Debug 1.2.0.3
+
+ Versione:
+
+ ilc version 1.2.0.3		[20/04/1999 10:27:39]	lib:6.2.0
+
+ - Corretto un buco grande come una casa nella funzione di allocazione
+   dinamica degli oggetti. Se utilizzata per allocare oggetti piccoli (meno
+   di quattro o cinque campi) forniva memoria non realmente allocata. Sintomo:
+   crash con programmi contenenti molti blocchi funzionali.
+
+ Distribuzione 1.2.0.4
+
+ Versione:
+
+ ilc version 1.2.0.4		[02/11/2000 10:49:36]	lib:6.2.6
+
+ - Aggiunta l'emissione dell'etichetta di debug "$VA..." con istruzioni S
+   e R, cosi` gli sviluppatori non si lamenteranno piu`!
+
+ Debug 1.2.0.5
+
+ Versione:
+ ilc version 1.2.0.5		[20/11/2000 20:09:33]	lib:6.2.6
+
+ - Migliorata la generazione dello spazio aggiuntivo per il debugger,
+   che ora non dovrebbe avere piu` problemi a generare liste di break
+   corte. Questo dovrebbe risolvere il problema del debug dei blocchi
+   funzionali.
+   Per una gestione completa della nuova prestazione e` necessario
+   un esecutore qplc 1.8.1.16. Senza di esso, restano ancora alcuni
+   casi non coperti (liste di una sola linea contenenti istruzioni LD
+   o ST).
+
+ Debug 1.2.0.6
+
+ Versione:
+ ilc version 1.2.0.6		[22/11/2000 11:59:25]	lib:6.2.6
+
+ - Ricompilato tutto, per sicurezza. Migliorato il Makefile, per
+   facilitare le compilazioni su diverse piattaforme.
+   Rigenerato il progetto per Win32.
+
+ Debug 1.2.0.6
+
+ Versione:
+ ilc version 1.2.0.7		[24/01/2001 20:38:40]	lib:6.3.9
+
+ - Modificata la compilazione dei comandi S e R in modo che l'indirizzo
+   dell'operando sia eseguito anche quando l'operando non deve cambiare.
+   Questo risolve gli schianti di qplc in debug introdotti con la
+   versione 1.2.0.4 . Il codice prodotto e` un  po' meno efficiente.
+ - Aggiunta l'opzione "-optsr", che riprostina la compilazione ottimizzata
+   di S ed R, ma senza produrre l'etichetta $VA... per il debugger,
+   riproducendo cosi` il comportamento pre-1.2.0.4. Vantaggi: codice
+   veloce. Svantaggi: il debugger non puo` mostrare il contenuto dell'operando
+   di S ed R.
+ - Apportate insignificanti adattamenti per compilazione con CIGWIN32.
+
+/---------------------\
+| illib.ilc - libil.a |
+\---------------------/
+
+Distribuzione
+
+ ilc0.o, ilcn.o, ilcloader.o, libil.a 1.1 :
+
+ Versione :
+
+ 3.0.0.1		[09/09/1996 11:32:00]
+
+ 
+Mon Sep 16 20:50:20 MET DST 1996
+
+Distribuzione
+
+ ilc0.o, ilcn.o, ilcloader.o, libil.a 1.2 :
+
+ Versione :
+
+ 3.0.0.2		[16/09/1996 11:32:00]
+
+ - Corretta l'associazione di I/O a variabili a 16 bit. Non funzionava.
+
+Fri Sep 20 16:09:52 MET DST 1996
+
+ 3.0.0.3		[20/09/1996 11:32:00]
+
+ - Versione transitoria.
+
+ 3.0.0.4		[20/09/1996 11:32:00]
+ 
+ - Adottate le nuove convenzioni per gli errori.
+ - Unificati gli oggetti ottenuti da "ilcloader.c" e "ilc0.s". Ora 
+   confluiscono entrambi in "ilc0.o". "ilc0.s" si chiama ora "ilc0tail.s".
+   Per la compilazione del programma IL non e` quindi piu` necessario
+   specificare "ilcloader.o" tra gli oggetti di libreria.
+
+ 3.0.0.5		[01/10/1996 00:00:00]
+
+ - Aggiunta la funzione "_ilc_ex_rtmerr_subscript". E` necessario qplc 1.2.0.6
+   o successivo.
+
+Mon Oct  7 18:59:13 MET 1996
+
+ - Versione 1.1 del file "illib.ilc", compilabile solo con ilc 1.0.0.8
+   o successiva.
+
+Thu Oct 10 18:16:34 MET 1996
+
+ - Versione 4.0.0.1 di ilc0.o, 1.2 di illib.ilc e libil.a
+ - Il blocco funzionale "TOFF" si chiama "TOF".
+ - DISTRIBUITO IN LAE IL 10/10/96.
+
+Tue Oct 15 16:49:12 MET 1996
+
+ - Versione 4.0.0.2 del caricatore, 1.0.0.3 della libreria.
+ - Rivoluzionato tutto : separati i sorgenti di libreria e caricatore,
+   modificato il meccanismo di assegnamento delle versioni, isolate le
+   primitive IEC e CNi.
+ - Corretti i blocchi funzionali CTD e CTUD, che probabilmente non
+   funzionavano a dovere.
+ - Aggiunti i blocchi funzionali per la lettura dei dati macchina
+   (per ora , dati generali e tabelle utente).
+
+Fri Feb  7 11:21:02 MET 1997
+
+ - Versione 1.0.0.4 della libreria.
+ - Corretti i blocchi TON e TOF, che ritardavano di un ciclo.
+ - Tolte alcuni istruzioni inutili in TPULSE.
+
+Mon Feb 10 18:43:04 MET 1997
+
+ - Versione 1.0.0.5 della libreria.
+ - Per un commento non chiuso, erano sparite le funzioni R_TRIG, F_TRIG, RS
+   ed SR.
+
+Tue Feb 11 18:44:06 MET 1997
+
+ - Versione 1.0.0.6 della libreria, e 1.4 di illib.ilc .
+ - Aggiunte le funzioni SHR, SHL, ROL, ROR a norme IEC-1131/3.
+ - Aggiunti i blocchi funzionali MESSAGE, VMSG e VERR.
+ - Aggiunte le funzioni BITSET, BITRES, BITTEST, BITFIELD.
+
+Thu Feb 13 09:19:14 MET 1997
+
+ - Versione 1.0.0.7 della libreria.
+ - La funzione ROR era uguale a ROL.
+
+Thu Mar 13 17:21:00 MET 1997
+
+ - Versione 1.0.0.8 della libreria.
+ - Aggiunto un supporto d'emergenza per le operazioni elementari su tipo REAL :
+   FADD, FSUB, FMUL, FDIV, DINT_TO_REAL, REAL_TO_DINT, FGE, FGE, FLT, FLE.
+
+Mon Apr  7 17:07:54 MET DST 1997
+
+ - Versione 1.0.0.9
+ - Aggiunta la funzione MD_AXIS.
+
+
+Mon Apr  7 17:08:51 MET DST 1997
+
+ - Versione 1.0.0.10
+ - Aggiunta la funzione MD_TOOLCHG.
+
+Wed Jun 11 16:05:35 MET DST 1997
+
+ - Versione 1.0.1.0
+ - Aggiunti i blocchi funzionali MSGUPD e VMSGUPD, che sono estensioni di
+   MESSAGE e VMSG, permettono di specificare un codice aggiuntivo dopo il
+   messaggio in lingua, e sovrascrivono l'eventuale messaggio precedente
+   con lo stesso codice. Queste prestazioni richiedono quote >= 2.6.0.15.
+
+Thu Jun 19 16:12:17 MET DST 1997
+
+ - Versione 1.1.0.0
+ - Rinominati FADD, FMUL, FDIV, FSUB, FGT, FGE, FLT, FLE
+   in ADD_REAL, MUL_REAL, DIV_REAL, SUB_REAL, GT_REAL, GE_REAL,
+   LT_REAL, LE_REAL rispettivamente. I vecchi nomi saranno
+   mantenuti ancora per un po', per compatibilita`.
+   Aggiunte le funzioni ABS, ABS_REAL, SIN, COS, TAN, ASIN,
+   ACOS, ATAN, SQRT, EXP, LOG, LN, TRUNC, EXPT.
+   Modificato il comportamento di REAL_TO_DINT, che troncava
+   verso zero anziche` verso il piu` vicino come da norme.
+
+Tue Aug 26 14:33:26 MET DST 1997
+
+ - Versione 1.1.0.0 + 1.9 di illib.ilc
+ - Corretto il prototipo del blocco funzionale VMSGUPD. Era stato omessa
+   una variabile privata. Sputtanamenti...
+
+Thu Sep 18 19:27:10 MET DST 1997
+
+ - Versione 1.1.0.2 di libil.a, 1.10 di illib.ilc
+ - Aggiunti i blocchi funzionali SEND_BYTES, SEND_STRING, RECV_BYTES,
+   RECV_STRING, e le funzioni STRING_TO_DINT e STRING_TO_REAL.
+
+Tue Sep 30 10:14:20 MET 1997
+
+ - Versione 1.1.0.3 di libil.a, abortita
+
+Tue Sep 30 10:14:50 MET 1997
+
+ - Versione 1.1.0.4 di libil.a, 1.11 di illib.ilc
+ - Corretti vari bug.
+
+Tue Oct  7 09:33:50 MET 1997
+
+ - Versione 1.1.0.5 di libil.a.
+ - Corretti i blocchi funzionali di trasmissione asincrona, che potevano
+   bloccarsi permanentemente in caso di errore.
+
+Wed Nov 26 16:54:32 MET 1997
+
+ - Versione 1.1.0.6 di libil.a.
+ - Aggiunta la funzione MD_CONF per la lettura della configurazione
+   dei mandrini.
+
+Thu Jan  8 08:26:47 MET 1998
+
+ - Versione 1.1.0.7 di libil.a
+ - Aggiunta la funzione RDAX per la lettura della quota corrente di un asse.
+
+Mon Jan 12 14:33:34 MET 1998
+
+ - Versione 1.1.0.8 di libil.a
+ - Versione 1.14 di illib.ilc
+ - Aggiunta la funzione RDAXQ, interfeccia generica per "read_parm".
+
+Wed Jan 28 13:28:38 MET 1998
+
+ - Versione 1.1.0.9 di libil.a
+ - Mancavano le definizioni di alcuni simboli necessari alle operazioni
+   in virgola mobile. A causa di questo, non funzionavano le funzioni
+   "vecchio stile" come FADD, FSUB,... ne` alcune di quelle "nuove",
+   come GT_REAL.
+   
+??? ??? ?? ??:??:?? ??? MET 1998
+
+ - Versione 1.1.1.1. di libil.a
+ - Aggiunta la funzione MD_SET_USER, per scrivere nelle tabelle dei
+   dati macchina.
+
+Wed May 20 21:04:28 MET DST 1998
+
+ - Versione 1.1.1.2 di libil.a
+ - Aggiunta la funzione VERLIB, che restituisce la versione della
+   libreria IL.
+ - Corretto un buco clamoroso in CTUD. CD e CU erano scambiati. E dunque,
+   in due anni, nessuno li ha mai usati?
+
+Thu May 21 12:32:43 MET DST 1998
+
+ - Versione 1.1.1.3 di libil.a
+ - Versione 1.17 di illib.ilc
+ - VERLIB e` diventata una semplice variabile. Perche` infatti complicarsi
+   tanto la vita?
+
+Wed Jun 10 17:05:03 CEST 1998
+
+ - Versione 1.1.1.5 (la 1.1.1.4 era bacata) di libil.a
+ - Versione 1.18 di illib.ilc
+ - Aggiunte le funzioni MD_SAVE_AXIS e MD_SET_AXIS. Richiedono qplc 1.7.0.5
+   almeno.
+
+Fri Jan 22 13:27:36 MET 1999
+
+ - Versione 1.1.1.6 di libil.a
+ - Versione 1.19 di illib.ilc
+ - Aggiunta la funzione MD_ORIG per la lettura della tabella delle origini.
+
+Thu Feb 18 18:42:34 MET 1999
+
+ - Versione 1.1.1.7 di libil.a
+ - versione 1.20 di illib.ilc
+ - Aggiunta la funzione MD_SAVE_USER per il salvataggio di tabelle utente.
+
+Thu Mar  2 18:07:15 MET 2000
+ - Versione 1.1.1.8 di libil.a
+ - versione 1.21 di illib.ilc
+ - Aggiunte le funzioni MID, LEN, ASCII e WRAXQ.
+   Le prime due scimmiottano le funzioni standard MID e LEN (con le
+   ben note limitazioni delle stringhe). ASCII estrae da una stringa
+   il carattere alla posizione indicata dall'accumulatore.
+   WRAXQ e` un'interfaccia alla funzione "write_parm" della libreria
+   degli assi.
+
+Thu Jul 13 20:25:39 MET DST 2000
+ - Versione 1.1.1.9 di libil.a
+ - versione 1.22 di illib.ilc
+ - Aggiunti il blocchi funzionali VMSGV e VMSGR.
+
+Tue Dec 12 17:55:50 MET 2000
+ - Versione 1.1.1.10 di libil.a
+ - versione 1.23 di illib.ilc
+ - Aggiunta la funzione MD_SAVE_ORIG.
+
+/------------------------\
+| astrip - fixaout - c2a |
+\------------------------/
+
+Fri Jan 31 16:08:01 MET 1997
+
+ - Versione 1.3 di astrip. Aggiunto un trucco (innocente, si spera) per
+   togliere di mezzo i simboli ".xxxx", che, se generati da "objdump",
+   sono interpretati erroneamente come variabili da allocare.
+   Ora questi simboli sono spostati nella parte di debug dell'oggetto,
+   e non rompono piu`.
+ - Versione 1.0 di fixaout. Questo comando serve per correggere l'errata
+   rappresentazione delle informazioni di rilocazione ottenute con objcopy.
+
+Mon Nov  3 11:21:30 MET 1997
+
+ - Versione 1.0 di "c2a". E` un convertitore di formato da COFF a A.OUT o
+   A.OUT con estensione CNi. Il prodotto e` adatto ad essere trattato
+   dal debugger.
+
+Thu Nov 23 12:34:53 MET 2000
+
+ - Versione 1.2 di c2a.
+   Aggiustamenti per ricompilazione su Linux.
+   Rigenerato il progetto per Win32.
+   Aggiunto l'azzeramento dei campi inutilizzati nella relocation table
+   (non era un bug, l'unico effetto era la generazione di oggetti
+   diversi su piattafore diverse con gli stessi dati in ingresso. I bit
+   diversi erano nei campi non utilizzati, quindi innocui).
+ - Versione 1.4 di astrip
+   Aggiustamenti per ricompilazione su Linux.
+   Rigenerato il progetto per Win32.
+

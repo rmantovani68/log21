@@ -1,0 +1,50 @@
+## TODO LIST
+##
+## updated 24 April 1998, jeff.hobbs@acm.org
+##
+
+These are recommendations, not all of the same priority, and not
+all necessarily will be implemented.  If you see something you
+feel is important, email me and say so.  Very democratic.
+
+* Tcl8 object model will be supported when it is supported in Tk
+  (or somewhere else that has good examples for widgets)
+
+* Add Unicode support
+
+* -rowstretchmode fill ignores initial # of rows, or config requests for more.
+* interpret 0 rows/cols to be FILL
+* add -colstretchmode fill
+* scratch stretchmode "fill" in favor of "dynamic" which would monitor
+  the max extent of row/col (difficult)
+
+* fix selection routines to properly handle title area movement
+
+* support smooth scrolling of rows/cols
+
+* possible -fill option for tags/cells (col/rowspan idea)
+ 
+* add ability to index by tagname
+* overhaul tag mechanism (include way to query for tags on a cell, add
+  priority, allow indices like 2,*)
+
+* add forced refresh routine?
+
+
+**** BUGS *****
+
+MAJOR:
+
+Sol2.5.1/gcc 2.8.1/Tk8.1a2 && WinNT/VC++5
+seg fault when you exit Tk without destroying or withdrawing
+the table first.  Dies trying to reference TableEventProc.
+Problem seems to be that TableEventProc gets unloaded before it can
+be called when not used in the primary interpreter, or used as a
+loadable library.  Fixed with hack that creates ExitHandler for each
+instance of table to make sure it is destroyed before Tcl exits.
+
+MINOR:
+
+Windows: During exposure, not everything is wiped clean properly
+
+If last row is one pixel, it is not redrawn properly

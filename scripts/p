@@ -1,0 +1,2 @@
+echo "DROP FUNCTION ubicazione_rid(bpchar);"     | psql -h database mr 
+echo "CREATE FUNCTION ubicazione_rid(bpchar) returns text as 'select substr(\$1,1,1)||''.''||substr(\$1,8,2)||''.''||substr(\$1,12,1)' language 'sql';" | psql -h database mr

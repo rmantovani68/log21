@@ -1,0 +1,57 @@
+#---------------------------------------------------
+# corr_sda.cfg
+# Configurazione per l'archivio Dati Corriere Mondadori - SDA
+# Data di Creazione: 27-11-2007
+#
+# Copyright A&L srl 2003-2021
+#---------------------------------------------------
+[General Settings]
+TableName=corr_sda
+FieldsNumber=37
+TagsNumber=0
+RecordType=0
+RecordLen=412
+RecordTypeLen=0
+RecordTypePos=0
+DataStart=0
+
+[Tags]
+
+[Fields]
+Field_00=CRCDCLI,  C, 11, 0,4,Codice cliente mittente                   ,Codice cliente mittente                   
+Field_01=CRTPSRV,  C,  1, 0,4,Tipo servizio                             ,Tipo servizio                             
+Field_02=CRFILLR,  C,  1, 0,4,Filler                                    ,Filler                                    
+Field_03=CRGSTOP,  C,  1, 0,4,Gestione operativa                        ,Gestione operativa                        
+Field_04=CRCDFLG,  C,  1, 0,4,Flag                                      ,Flag                                      
+Field_05=CRFRMDP,  C,  1, 0,4,Fermo deposito                            ,Fermo deposito                            
+Field_06=CRRSDST,  C, 40, 0,4,Ragione sociale destinatario              ,Ragione sociale destinatario              
+Field_07=CRINDST,  C, 35, 0,4,Indirizzo destinatario                    ,Indirizzo destinatario                    
+Field_08=CRTLDST,  C, 15, 0,4,Telefono destinatario                     ,Telefono destinatario                     
+Field_09=CRCPDST,  C,  5, 0,4,Cap destinatario                          ,Cap destinatario                          
+Field_10=CRLCDST,  C, 30, 0,4,Localita destinatario                     ,Localita destinatario                     
+Field_11=CRPVDST,  C,  2, 0,4,Provincia destinatario                    ,Provincia destinatario                    
+Field_12=CRTPMRC,  C,  1, 0,4,Tipo merce                                ,Tipo merce                                
+Field_13=CRCNMRC,  C, 20, 0,4,Contenuto merce                           ,Contenuto merce                           
+Field_14=CRNMCLL,  C,  5, 0,4,Numero dei colli                          ,Numero dei colli                          
+Field_15=CRPSSPD,  C,  8, 0,4,Peso dei colli in kg                      ,Peso dei colli in kg                     
+Field_16=CRLUNGH,  C,  3, 0,4,Dimensione -lunghezza cm                  ,Dimensione -lunghezza cm                  
+Field_17=CRALTEZ,  C,  3, 0,4,Dimensione altezza cm                     ,Dimensione altezza cm                     
+Field_18=CRLARGH,  C,  3, 0,4,Dimensione larghezza cm                   ,Dimensione larghezza cm                   
+Field_19=CRRFMTT,  C, 10, 0,4,Riferimento mittente DDT o bolla interna  ,Riferimento mittente DDT o bolla interna  
+Field_20=CRISTRZ,  C, 80, 0,4,Istruzioni particolari                    ,Istruzioni particolari                    
+Field_21=CRVLCNT,  C,  3, 0,4,Valuta contrassegno (EUR o LIT)           ,Valuta contrassegno (EUR o LIT)           
+Field_22=CRIMCNT,  C, 12, 0,4,Importo contrassegno                      ,Importo contrassegno                        
+Field_23=CRVLASS,  C,  3, 0,4,Valuta assicurazione (EUR o LIT)          ,Valuta assicurazione (EUR o LIT)          
+Field_24=CRIMASS,  C, 12, 0,4,Importo assicurazione                     ,Importo assicurazione                     
+Field_25=CRCMCNT,  C,  1, 0,4,Commissioni contrassegno (flag)           ,Commissioni contrassegno (flag)           
+Field_26=CRVOLUM,  C,  7, 0,4,Volume in metri cubi                      ,Volume in metri cubi                      
+Field_27=CRCDRGR,  C, 16, 0,4,Codice raggruppamento spedizione          ,Codice raggruppamento spedizione          
+Field_28=CRRIFCL,  C, 26, 0,4,Riferimento collo                         ,Riferimento collo                         
+Field_29=CRRIFDF,  C,  5, 0,4,Riferimento F.M. divisione fattura        ,Riferimento F.M. divisione fattura        
+Field_30=CRRIFAF,  C, 15, 0,4,Riferimento F.M. allegato fattura         ,Riferimento F.M. allegato fattura         
+Field_31=CRRIFUS,  C,  8, 0,4,Riferimento F.M. unificazione spediz.     ,Riferimento F.M. unificazione spediz.     
+Field_32=CRRIFNO,  C,  5, 0,4,Riferimento F.M. numero offerta           ,Riferimento F.M. numero offerta           
+Field_33=CRTPPRT,  C,  1, 0,4,Tipo porto                                ,Tipo porto                                
+Field_34=CRRIFLV,  C, 11, 0,4,Riferimento TNT: lettera di vettura       ,Riferimento TNT: lettera di vettura       
+Field_35=CRRIFFS,  C,  9, 0,4,Riferimento TNT: Filiale, Segnacollo      ,Riferimento TNT: Filiale, Segnacollo      
+Field_36=CRTPMEZ,  C,  1, 0,4,Tipo mezzo                                ,Tipo mezzo                                

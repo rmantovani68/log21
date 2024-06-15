@@ -1,0 +1,143 @@
+#
+# @(#) asmop.lst 1.11 Tue Dec  1 13:04:17 MET 1998
+#
+# Lista delle operazioni previste dall'assembler
+#
+# Significato delle sequenze "%x" :
+#
+# %b : all'inizio di una stringa, indica che la stringa va in colonna 0
+# %c : alla fine di una stringa, indica che non deve essere emesso \n
+# %1,%2,%3 : parametri dell'operazione
+# %% : carattere "%"
+# %s : carattere " "
+# %t : carattere "\t"
+# %n : carattere "\n"
+# %(identificatore) : e` espanso nella definizione di "identificatore",
+#      data in qualche linea precedente.
+#
+# 18/07/96 GG 1.0 Prima stesura.
+# 27/09/96 GG 1.1 Aggiunto un meccanismo di espansione dei simboli
+#             definiti in linee precedenti.
+# 28/11/96 GG 1.2 Aggiunte definizioni (sperimentali) per le informazioni
+#             di debug.
+# 03/12/96 GG 1.3 Riviste le informazioni di debug.
+# 03/12/96 GG 1.4 Ri-riviste le informazioni di debug.
+# 05/12/96 GG 1.5 Utilizzate le solite etichette ".Ln" come riferimenti
+#             per certe informazioni di debug. "as" ed "ld", a quanto pare
+#             non ignorano affatto le etichette temporanee "0:" !
+# 20/01/97 GG 1.6 Aggiunta l'operazione "AOP_ELINEINFO2", per individuare
+#             la fine di un'istruzione.
+# 09/06/97 GG 1.7 Aggiunta l'operazione "AOP_NOP".
+# 11/06/97 GG 1.8 Aggiunta l'operazione "AOP_JMPINFO2".
+# 12/06/97 GG 1.9 Aggiunta l'operazione "AOP_LBLINFO2", e modificato
+#             "AOP_JMPINFO2".
+# 18/11/97 GG 1.10 Aggiunta l'operazione "AOP_SWAP16".
+# 01/12/98 GG 1.11 Aggiunta l'operazione "AOP_CLTD".
+#
+
+AOP_COMMENT    %b/%1%c
+AOP_TMPID      %b.L%1%c
+AOP_STRID      %b.LS%1%c
+AOP_SYMPLOFF   %b%1+%2%c
+AOP_FIRSTLABEL %bilc.compiled:
+AOP_LALIGN     .align 4
+AOP_DATA       .data
+AOP_TEXT       .text
+AOP_BYTE       .byte %c
+AOP_SHORT      .short %c
+AOP_LONG       .long %c
+AOP_SPACE      .space %1,%2
+AOP_ASCIZ      .asciz \"%1\"
+AOP_LABEL      %b%1:
+AOP_EXTERN     .extern %1
+AOP_GLOBAL     .globl %1
+AOP_NOP        nop
+AOP_RET        ret
+AOP_CLTD       cltd
+AOP_MOVL       movl %1,%2
+AOP_MOVB       movb %1,%2
+AOP_MOVW       movw %1,%2
+AOP_MOVSBL     movsbl %1,%2
+AOP_MOVSWL     movswl %1,%2
+AOP_MOVZBL     movzbl %1,%2
+AOP_MOVZWL     movzwl %1,%2
+AOP_PUSHL      pushl %1
+AOP_POPL       popl %1
+AOP_CALL       call %1
+AOP_JMP        jmp %1
+AOP_JE         je %1
+AOP_JNE        jne %1
+AOP_TESTL      testl %1,%2
+AOP_SETE       sete %1
+AOP_SETNE      setne %1
+AOP_SETA       seta %1
+AOP_SETAE      setae %1
+AOP_SETB       setb %1
+AOP_SETBE      setbe %1
+AOP_SETG       setg %1
+AOP_SETGE      setge %1
+AOP_SETL       setl %1
+AOP_SETLE      setle %1
+AOP_NOTL       notl %1
+#Rispettare quest'ordine !
+AOP_ANDB       andb %1,%2
+AOP_ANDW       andw %1,%2
+AOP_ANDL       andl %1,%2
+AOP_XORB       xorb %1,%2
+AOP_XORW       xorw %1,%2
+AOP_XORL       xorl %1,%2
+AOP_ORB        orb %1,%2
+AOP_ORW        orw %1,%2
+AOP_ORL        orl %1,%2
+AOP_ADDB       addb %1,%2
+AOP_ADDW       addw %1,%2
+AOP_ADDL       addl %1,%2
+AOP_SUBB       subb %1,%2
+AOP_SUBW       subw %1,%2
+AOP_SUBL       subl %1,%2
+AOP_CMPB       cmpb %1,%2
+AOP_CMPW       cmpw %1,%2
+AOP_CMPL       cmpl %1,%2
+AOP_IMULB      imulb %1,%2
+AOP_IMULW      imulw %1,%2
+AOP_IMULL      imull %1,%2
+#
+AOP_LEAL       leal %1,%2
+AOP_XCHGL      xchgl %1,%2
+AOP_INCL       incl %1
+AOP_DECL       decl %1
+#
+# Divisione e modulo.
+#
+AOP_EIDIVL     idivl %1,%2
+AOP_EDIVL      divl %1,%2
+#
+# Rotazione di bit
+#
+AOP_SWAP16	rol $0x10,%1
+#
+# Trucco per rendere configurabile il nome della procedura di errore
+# di indice fuori range.
+#
+AOP_ERRBOUND   jae _il_rtmerr_subscript
+AOP_ERRBOUND2  jb .+7\n call _il_ex_rtmerr_subscript
+#
+# Per le informazioni di debug.
+#
+AOP_FILE       .file \"%1\"
+# Per GDB.
+AOP_DIRINFO    %b.stabs \"%1\",100,0,0,ilc.compiled
+AOP_FILEINFO   %b.stabs \"%1\",100,0,0,ilc.compiled
+AOP_LINEINFO   %b.stabn 68,0,%1,.LM%3-%2\n.LM%3:
+AOP_TYPEINFO   %b.stabs \"int:t1=r1;-2147483648;2147483647;\",128,0,0,0
+AOP_FUNCINFO   %b.stabs \"%1:F1\",36,0,%2,%1
+# Per il debugger IL.
+AOP_FILEINFO2  %b$BF%1:
+AOP_EFILEINFO2 %b$EF%1:
+AOP_LINEINFO2  %b$LN%1$%3:
+AOP_ELINEINFO2 %b$LE%1$%3:
+AOP_FUNCINFO2  %b$FN%1 = %2
+AOP_VALINFO2   %b$VA%1$%2$%3$%4 = %5
+AOP_INDINFO2   %b$VI%1$%2$%3:
+AOP_JMPINFO2   %b$LJ%1$%2:
+AOP_LBLINFO2   %b$LL%1$%2:

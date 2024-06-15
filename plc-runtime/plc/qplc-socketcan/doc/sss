@@ -1,0 +1,6 @@
+
+ - Aggiunta la funzione "plcSaveGenericTable", che salva una tabella
+   utente dato il nome.
+ - Cambiata la priorita` interna del salvataggio dei dati assi (aveva qualla
+   degli errori, gli e` stata data quella dei comandi).
+

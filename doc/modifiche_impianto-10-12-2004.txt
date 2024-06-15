@@ -1,0 +1,57 @@
+DELTA							
+TRADING COMPANY S.R.L.							
+Loc. Villabroggia, 3							
+37059 - Zevio VR							
+							
+							
+					A&L S.r.l.		
+							
+							
+							
+							
+							
+OGGETTO: MODIFICHE E CORREZIONI SU IMPIANTO EASY PICKING							
+							
+							
+Con la presente per comunicarvi alcune correzioni da apportare all'impianto:							
+							
+A-	FINE LINEA						
+							
+	1-	Possibilita' di visualizzare e di stampare tutti i bancali di una determinata linea e successivamente 					
+		la possibilita' di visualizzare e di stampare l'edit del bancale in oggetto, ossia avere la possibilita' di					
+		sapere quali spedizioni e il numero del collo relativo sono contenute su quel bancale.					
+							
+	2-	La possibilita' di analizzare e di poter stampare la situazione del fine linea direttamente sul pc picking					
+							
+	3-	Possibilita' di accedere ad uno storico contenente i dati del fine linea direttamente dal pc picking					
+							
+A-	PESATURA BANCALI						
+							
+	1-	Possibilita' di visualizzare e di stampare tutti i bancali di una determinata linea e successivamente 					
+		la possibilita' di visualizzare e di stampare l'edit del bancale in oggetto, ossia avere la possibilita' di					
+		sapere quali spedizioni e il numero del collo relativo sono contenute su quel bancale.					
+							
+	2-	La possibilita' di analizzare e di poter stampare la situazione deIla pesatura bancali direttamente sul pc picking					
+							
+	3-	Possibilita' di accedere ad uno storico contenente i dati della pesatura bancali direttamente dal pc picking					
+							
+A-	PICKING						
+							
+	1-	Nella dicitura della consegna nel modulo rac manca la prima lettera.					
+		 					
+	2-	Sistema in cui sia possibile associare una scritta specifica x ogni linea della cedola					
+							
+	3-	Sistemazione stampanti in rete.					
+							
+	4-	Quando viene generato un dischetto per il corriere da storico esso genera un file vuoto.					
+							
+	5-	Test su impianto luci non funziona correttamente.					
+							
+	6-	Possibilita' di sapere quanti colli dei vari imballi vengono generati per cedola e tenere uno storico.					
+							
+	7-	Riposizionamento scanner.					
+							
+							
+							Distinti saluti
+							
+							Perusi Alberto

@@ -1,0 +1,22 @@
+# eseguo printman se non presente
+*/5 * *  /usr/local/bin/run_printman_ceva.sh >/dev/null 2>&1 & 
+
+#
+# invio dati consuntivo
+#
+5,10,15,20,25,30,35,40,45,50,55 * * /usr/local/bin/spedisci_consuntivo_ceva.sh >/dev/null 2>&1
+
+#
+# invio dati rimanenze
+#
+8,13,18,23,28,33,38,43,48,53,58 * * /usr/local/bin/spedisci_rimanenze_ceva.sh >/dev/null 2>&1
+
+#
+# ricezione dati (LA_CATALOGO.TXT LA_TESTATE.TXT LA_RIGHE.TXT LA_CARICHI.TXT)
+#
+6,11,16,21,26,31,36,41,46,51,56 * * /usr/local/bin/ftp_receive.sh --ftpuser edi_mbxln_prd --ftppassword eD1Mbxln@pr0d --ftphost ftpext.cevalogistics.com/from_ceva --localdir /u/prj/mondadori-rcs-ufficio/export/ftp-mondadori-import/ --filename LA_* >/dev/null 2>&1
+7,12,17,22,27,32,37,42,47,52,57 * * /usr/local/bin/receive_ceva.sh --importdir /u/prj/mondadori-rcs-ufficio/export/ftp-mondadori-import --targetdir /u/prj/mondadori-rcs-ufficio/export --backupdir /u/prj/mondadori-rcs-ufficio/export/ftp-mondadori-import-backup >/dev/null 2>&1
+
+### LG 2018/01/03: rimesso da zevio_crontab_alberto presente in exe di mondadori. 
+# */5 * *  /usr/local/bin/massive_ftp_sender.sh --ftpuser 'a&l' --ftppassword boxline@cedola --ftphost ftphost --remotedir ARTICOLI/DAIMPORTARE  --dbhost database --dbname mondadori --localdir /u/prj/delta-carichi/export/flussi-carichi --backupdir /u/prj/delta-carichi/export/flussi-carichi/backup 2>&1 
+# 20 0 1 * cd /u/prj/delta-carichi/export && /bin/tar zcvf backup/backup_export_`/bin/date +\%Y\%m\%d`.tgz  `/bin/find -mtime +31 -type f` --remove-files --exclude='./backup'

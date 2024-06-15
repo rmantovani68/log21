@@ -1,0 +1,7 @@
+
+(* Segnali di scambio statici predefiniti (modalita` "-shvmask 0" di qplc *)
+
+VAR_GLOBAL
+    CNOK                     AT %MX11     : BOOL ;
+END_VAR
+

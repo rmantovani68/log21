@@ -1,0 +1,866 @@
+(*************)
+(* FLIP-FLOP *)
+(*************)
+
+(* Flip-Flop con "set" dominante. *)
+
+function_block SR
+var_input
+	S1 : bool;
+	R : bool;
+end_var
+var_output
+	Q1 : bool;
+end_var
+end_function_block
+
+(* Flip-Flop con "reset" dominante. *)
+
+function_block RS
+var_input
+	S : bool;
+	R1 : bool;
+end_var
+var_output
+	Q1 : bool;
+end_var
+end_function_block
+
+
+(* Rising edge detector *)
+
+function_block R_TRIG
+var_input
+	CLK : bool;
+end_var
+var_output
+	Q : bool;
+end_var
+var
+	sts : bool;
+end_var
+end_function_block
+
+
+(* Falling edge detector *)
+
+function_block F_TRIG
+var_input
+	CLK : bool;
+end_var
+var_output
+	Q : bool;
+end_var
+var
+	sts : bool;
+end_var
+end_function_block
+
+(*************)
+(* CONTATORI *)
+(*************)
+
+(* Up counter *)
+
+function_block CTU
+var_input
+	CU : bool;
+	R : bool;
+	PV : dint;
+end_var
+var_output
+	Q : bool;
+	CV : dint;
+end_var
+var
+	cu_old : bool;
+end_var
+end_function_block
+
+(* Down counter *)
+
+function_block CTD
+var_input
+	CD : bool;
+	LD : bool;
+	PV : dint;
+end_var
+var_output
+	Q : bool;
+	CV : dint;
+end_var
+var
+	cd_old : bool;
+end_var
+end_function_block
+
+(* Up-down counter *)
+
+function_block CTUD
+var_input
+	CU : bool;
+	CD : bool;
+	R : bool;
+	LD : bool;
+	PV : dint;
+end_var
+var_output
+	QU : bool;
+	QD : bool;
+	CV : dint;
+end_var
+var
+	cu_old : bool;
+	cd_old : bool;
+end_var
+end_function_block
+
+(*********)
+(* TIMER *)
+(*********)
+
+(* Generatore d'impulso (monostabile, piu` o meno). *)
+
+function_block TPULSE
+var_input
+	IN : bool;
+	PT : time;
+end_var
+var_output
+	Q : bool;
+	ET : time;
+end_var
+var
+	sts : time;
+end_var
+end_function_block
+
+(* Salita ritardata. *)
+
+function_block TON
+var_input
+	IN : bool;
+	PT : time;
+end_var
+var_output
+	Q : bool;
+	ET : time;
+end_var
+var
+	in_old : bool;
+	sts : time;
+end_var
+end_function_block
+
+(* Discesa ritardata. *)
+
+function_block TOF
+var_input
+	IN : bool;
+	PT : time;
+end_var
+var_output
+	Q : bool;
+	ET : time;
+end_var
+var
+	in_old : bool;
+	sts : time;
+end_var
+end_function_block
+
+(**********************)
+(* MESSAGGI ED ERRORI *)
+(**********************)
+
+(* Emissione di un errore *)
+
+function_block ERROR
+var_input
+	CODE : dint;
+end_var
+var
+	code_old : dint;
+end_var
+end_function_block
+
+function_block MESSAGE
+var_input
+	CODE : dint;
+end_var
+var
+	code_old : dint;
+end_var
+end_function_block
+
+(* Emissione/sovrascrittura di un messaggio con codice numerico aggiuntivo *)
+
+function_block MSGUPD
+var_input
+	CODE : dint;
+	VALUE : dint;
+end_var
+var
+	code_old : dint;
+	value_old : dint;
+end_var
+end_function_block
+
+(* Emissione di un errore *)
+
+function_block VERR
+var_input
+	CODE : dint;
+	ENABLE : bool;
+	RESET : bool;
+end_var
+var
+	code_old : dint;
+	enable_old : bool;
+	reset_old : bool;
+end_var
+end_function_block
+
+(* Emissione di un messaggio *)
+
+function_block VMSG
+var_input
+	CODE : dint;
+	ENABLE : bool;
+	RESET : bool;
+end_var
+var
+	code_old : dint;
+	enable_old : bool;
+	reset_old : bool;
+end_var
+end_function_block
+
+(* Emissione/sovrascrittura di un messaggio con codice numerico aggiuntivo *)
+
+function_block VMSGUPD
+var_input
+	CODE : dint;
+	VALUE : dint;
+	ENABLE : bool;
+	RESET : bool;
+end_var
+var
+	enable_old : bool;
+	reset_old : bool;
+	code_old : dint;
+	value_old : dint;
+end_var
+end_function_block
+
+(************************)
+(* MANIPOLAZIONE DI BIT *)
+(************************)
+
+(* FUNZIONI A NORME IEC-1131/3 *)
+
+(* Rotazione a sinistra di POS posizioni. *)
+
+function ROL : DWORD
+var_input
+	X : DWORD;
+	POS : UINT;
+end_var
+end_function
+
+(* Rotazione a destra di POS posizioni. *)
+
+function ROR : DWORD
+var_input
+	X : DWORD;
+	POS : UINT;
+end_var
+end_function
+
+(* Shift a sinistra di POS posizioni. *)
+
+function SHL : DWORD
+var_input
+	X : DWORD;
+	POS : UINT;
+end_var
+end_function
+
+(* Shift a destra di POS posizioni. *)
+
+function SHR : DWORD
+var_input
+	X : DWORD;
+	POS : UINT;
+end_var
+end_function
+
+(* FUNZIONI NON STANDARD (CNi) *)
+
+function BITFIELD : DWORD
+var_input
+	X : DWORD;
+	POS : UINT;
+	LEN : UINT;
+end_var
+end_function
+
+
+function BITRES : DWORD
+var_input
+	X : DWORD;
+	BITN : UINT;
+end_var
+end_function
+
+(* Accensione del bit BITN nell'accumulatore (quantita` a 32 bit). *)
+
+function BITSET : DWORD
+var_input
+	X : DWORD;
+	BITN : UINT;
+end_var
+end_function
+
+(* Controllo del bit BITN nell'accumulatore (quantita` a 32 bit). *)
+
+function BITTEST : BOOL
+var_input
+	X : DWORD;
+	BITN : UINT;
+end_var
+end_function
+
+(************************************************)
+(* MANIPOLAZIONE DI QUANTITA` IN VIRGOLA MOBILE *)
+(************************************************)
+
+(* Somma di valori REAL *)
+
+function ADD_REAL : REAL
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+function FADD : REAL (* OBSOLETA *)
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+(* Sotrazione di valori REAL *)
+
+function SUB_REAL : REAL
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+function FSUB : REAL (* OBSOLETA *)
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+(* Moltiplicazione di valori REAL *)
+
+function MUL_REAL : REAL
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+function FMUL : REAL (* OBSOLETA *)
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+(* Divisione di valori REAL *)
+
+function DIV_REAL : REAL
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+function FDIV : REAL (* OBSOLETA *)
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+(* Conversione a REAL di un valore DINT *)
+
+function DINT_TO_REAL : REAL
+var_input
+	X : DINT;
+end_var
+end_function
+
+(* Conversione a DINT di un valore REAL *)
+
+function REAL_TO_DINT : DINT
+var_input
+	X : REAL;
+end_var
+end_function
+
+(* Conversione a DINT di una stringa *)
+
+function STRING_TO_DINT : DINT
+var_input
+	STR : STRING;
+end_var
+end_function
+
+(* Conversione a REAL di una stringa *)
+
+function STRING_TO_REAL : REAL
+var_input
+	STR : STRING;
+end_var
+end_function
+
+(* Confronto (x > y) di valori REAL *)
+
+function GT_REAL : BOOL
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+function FGT : BOOL (* OBSOLETA *)
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+(* Confronto (x >= y) di valori REAL *)
+
+function GE_REAL : BOOL
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+function FGE : BOOL (* OBSOLETA *)
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+(* Confronto (x < y) di valori REAL *)
+
+function LT_REAL : BOOL
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+function FLT : BOOL (* OBSOLETA *)
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+(* Confronto (x <= y) di valori REAL *)
+
+function LE_REAL : BOOL
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+function FLE : BOOL (* OBSOLETA *)
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+(***********************)
+(* LIBRERIA MATEMATICA *)
+(***********************)
+
+(* Valore assoluto di INTERI *)
+
+function ABS : DINT
+var_input
+	X : DINT;
+end_var
+end_function
+
+(* Valore assoluto di REALI *)
+
+function ABS_REAL : REAL
+var_input
+	X : REAL;
+end_var
+end_function
+
+(* Conversione da REAL a DINT con troncamento. *)
+
+function TRUNC : DINT
+var_input
+	X : REAL;
+end_var
+end_function
+
+(* Radice quadrata di grandezze REAL *)
+
+function SQRT : REAL
+var_input
+	X : REAL;
+end_var
+end_function
+
+(* Seno di grandezze REAL *)
+
+function SIN : REAL
+var_input
+	X : REAL;
+end_var
+end_function
+
+(* Coseno di grandezze REAL *)
+
+function COS : REAL
+var_input
+	X : REAL;
+end_var
+end_function
+
+(* Tangente di grandezze REAL *)
+
+function TAN : REAL
+var_input
+	X : REAL;
+end_var
+end_function
+
+(* Arcoseno di grandezze REAL *)
+
+function ASIN : REAL
+var_input
+	X : REAL;
+end_var
+end_function
+
+(* Arcocoseno di grandezze REAL *)
+
+function ACOS : REAL
+var_input
+	X : REAL;
+end_var
+end_function
+
+(* Arcotangente di grandezze REAL *)
+
+function ATAN : REAL
+var_input
+	X : REAL;
+end_var
+end_function
+
+(* Logaritmo naturale di grandezze REAL *)
+
+function LN : REAL
+var_input
+	X : REAL;
+end_var
+end_function
+
+(* Logaritmo decimale di grandezze REAL *)
+
+function LOG : REAL
+var_input
+	X : REAL;
+end_var
+end_function
+
+(* Esponenziale di grandezze REAL *)
+
+function EXP : REAL
+var_input
+	X : REAL;
+end_var
+end_function
+
+(* Elevamento a potenza (x ^ y) di grandezze REAL *)
+
+function EXPT : REAL
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+(*****************************************)
+(* LETTURA DELLA VERSIONE DELLA LIBRERIA *)
+(*****************************************)
+
+(* Questa funzione fornisce il numero di versione della libreria IL.
+ Si tratta di un valore decimale, in cui coppie di cifre codificano
+versione, sottoversione, release, sottorelease. *)
+
+var_external
+	VERLIB : dint;
+end_var
+
+(*********************)
+(* DATI MACCHINA XNC *)
+(*********************)
+
+function MD_STATUS : dint
+end_function
+
+function MD_GENERAL : dint
+var_input
+	SCALE : real;
+
+	NAME : string;
+	FORMAT : string;
+end_var
+end_function
+
+function MD_USER : dint
+var_input
+	SCALE : real;
+
+	TAB_NAME : string;
+	D_NAME : string;
+	INDEX : dint; 
+	FORMAT : string; 
+end_var
+end_function
+
+function MD_SET_USER : dint
+var_input
+	VAL : real;
+	TAB_NAME : string;
+	D_NAME : string; 
+	INDEX : dint; 
+end_var
+end_function
+
+function MD_AXIS : dint
+var_input
+	SCALE : real;
+
+	AXIS : dint;
+	D_NAME : string;
+	FORMAT : string;
+end_var
+end_function
+
+function MD_SET_AXIS : dint
+var_input
+	VAL : real;
+	AXIS : dint;
+	D_NAME : string;
+end_var
+end_function
+
+function MD_SAVE_AXIS : dint
+var_input
+	AXIS : dint;
+end_var
+end_function
+
+function MD_SAVE_USER : dint
+var_input
+	TAB_NAME : string;
+end_var
+end_function
+
+function MD_TOOLCHG : dint
+var_input
+	SCALE : real;
+
+	CENTER : dint;
+	TOOLPOS : dint;
+	TTYPE : dint;
+	D_NAME : string;
+	FORMAT : string;
+end_var
+end_function
+
+function MD_CONF : dint
+var_input
+	SCALE : real;
+
+	CENTER : dint;
+	MAND : string;
+	NCONF : dint;
+	D_NAME : string;
+	FORMAT : string;
+end_var
+end_function
+
+function MD_ORIG : dint
+var_input
+	SCALE : real;
+
+	O_NAME : string;
+	D_NAME : string;
+	FORMAT : string;
+end_var
+end_function
+
+function RDAX : real
+var_input
+	INDEX : dint;
+end_var
+end_function
+
+function RDAXQ : real
+var_input
+	SCALE : real;
+
+	OP : dint;
+	INDEX : dint;
+	P1 : dint;
+	P2 : dint;
+	FORMAT : string;
+end_var
+end_function
+
+function WRAXQ : bool
+var_input
+	VAL : real;
+
+	OP : dint;
+	INDEX : dint;
+	P1 : dint;
+	P2 : dint;
+end_var
+end_function
+
+(*****************************)
+(* MANIPOLAZIONE DI STRINGHE *)
+(*****************************)
+
+function MID : string
+var_input
+	IN : string;
+	L : dint; 
+	P : dint; 
+end_var
+end_function
+
+function LEN : dint
+var_input
+	IN : string;
+end_var
+end_function
+
+function ASCII : dint
+var_input
+	P : dint;
+	STR : string;
+end_var
+end_function
+
+(*****************************************)
+(* PRIMITIVE DI TRASMISSIONE E RICEZIONE *)
+(*****************************************)
+
+(* Trasmissione di NB byte *)
+
+function_block SEND_BYTES
+var_input
+	CH : dint;
+	NB : uint;
+	ENABLE : bool;
+	RESET : bool;
+	BUFFER : array[0..63] of byte;
+end_var
+var_output
+	NB_SENT : uint;
+	DONE : bool := TRUE;
+	ERR : bool;
+end_var
+var
+	enable_old : bool;
+	status : array[0..15] of byte;
+end_var
+end_function_block
+
+(* Ricezione di NB byte *)
+
+function_block RECV_BYTES
+var_input
+	CH : dint;
+	NB : uint;
+	ENABLE : bool;
+	RESET : bool;
+end_var
+var_output
+	BUFFER : array[0..63] of byte;
+	NB_RECV : uint;
+	DONE : bool;
+	ERR : bool;
+end_var
+var
+	status : array[0..15] of byte;
+end_var
+end_function_block
+
+(* Trasmissione di una stringa. *)
+
+function_block SEND_STRING
+var_input
+	CH : dint;
+	STR : string;
+	ENABLE : bool;
+	RESET : bool;
+end_var
+var_output
+	NB_SENT : uint;
+	DONE : bool := TRUE;
+	ERR : bool;
+end_var
+var
+	enable_old : bool;
+	status : array[0..15] of byte;
+end_var
+end_function_block
+
+(* Ricezione di una stringa. *)
+
+function_block RECV_STRING
+var_input
+	CH : dint;
+	LASTCHR : byte;
+	ENABLE : bool;
+	RESET : bool;
+end_var
+var_output
+	DONE : bool;
+	STR : string;
+	NB_RECV : uint;
+	ERR : bool;
+end_var
+var
+	buffer : array[0..63] of byte;
+	status : array[0..15] of byte;
+end_var
+end_function_block
+

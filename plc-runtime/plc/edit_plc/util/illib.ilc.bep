@@ -1,0 +1,1068 @@
+(*
+* @(#) illib.ilc 1.22 Thu Jul 13 20:10:28 MET DST 2000
+*
+* Definizioni dei blocchi funzionali standard a norme IEC1131-C (piu` o meno).
+*
+* 30/08/96 GG 1.0 Prima stesura.
+* 07/10/96 GG 1.1 Corretto il nome del parametro "LD", ora che il compilatore
+*          (dalla versione 1.0.0.8) risolve l'ambiguita`.
+* 10/10/96 GG 1.2 "TOFF" e` stato ribattezzato "TOF" (#@*$#@&@# !!!)
+* 15/10/96 GG 1.3 Aggiunte le funzioni di lettura dei dati macchina.
+* 11/02/97 GG 1.4 Aggiunti i blocchi funzionali MESSAGE, VMSG e VERR,
+*             e le funzioni BITSET, BITRES, BITTEST, BITFIELD,
+*             SHL, SHR, ROL, ROR.
+* 25/03/97 GG 1.5 Aggiunte la seguenti funzioni :
+*             MD_AXIS, FADD, FMUL, FDIV, FSUB, FGT, FLE, FLT, FLE,
+*             REAL_TO_DINT, DINT_TO_REAL.
+* 07/04/97 GG 1.6 Aggiunte le funzioni MD_AXIS e MD_TOOLCHG.
+* 11/06/97 GG 1.7 Aggiunti i blocchi funzionali MSGUPD e VMSGUPD, che
+*             servono a sovrascrivere messaggi gia` emessi e completarli
+*             con un codice numerico aggiuntivo (prestazione disponibile
+*             solo con quote >= 2.6.0.15).
+* 19/06/97 GG 1.8 Rinominati FADD, FMUL, FDIV, FSUB, FGT, FGE, FLT, FLE
+*             in ADD_REAL, MUL_REAL, DIV_REAL, SUB_REAL, GT_REAL, GE_REAL,
+*             LT_REAL, LE_REAL rispettivamente. I vecchi nomi saranno
+*             mantenuti ancora per un po', per compatibilita`.
+*             Aggiunte le funzioni ABS, ABS_REAL, SIN, COS, TAN, ASIN,
+*             ACOS, ATAN, SQRT, EXP, LOG, LN, TRUNC, EXPT.
+*             Modificato il comportamento di REAL_TO_DINT, che troncava
+*             verso zero anziche` verso il piu` vicino come da norme.
+* 26/08/97 GG 1.9 Corretta la definizione del prototipo di VMSGUPD, dove
+*             era stata dimenticata una variabile di stato.
+* 18/09/97 GG 1.10 Aggiunti i blocchi funzionali SEND_BYTES, RECV_BYTES,
+*             SEND_STRING e RECV_STRING, e le funzioni STRING_TO_DINT
+*             e STRING_TO_REAL.
+* 25/09/97 GG 1.11 Corretti e migliorati i prototipi delle funzioni di
+*             trasmeissione e ricezione. Aggiunto l'ingresso ENABLE a
+*             RECV_BYTES.
+* 26/11/97 GG 1.12 Aggiunta la funzione MD_CONF per la lettura dei dati
+*             di configurazione dei mandrini.
+* 07/01/98 GG 1.13 Aggiunta la funzione RDAX, che legge la quota corrente
+*             dell'asse il cui indice e` dato nell'accumulatore.
+* 12/01/98 GG 1.14 Aggiunta la funzione RDAXQ, interfaccia generica per
+*             la funzione "read_parm". Funziona un modo simile alle
+*             funzioni di accesso ai dati mecchina.
+* 31/03/98 GG 1.15 Aggiunta la funzione MD_SET_USER per la scrittura
+*             di dati macchina nelle tabelle utente.
+* 20/05/98 GG 1.16 Aggiunta la funzione VERLIB, che restituisce il numero di
+*             versione della libreria
+* 21/05/98 GG 1.17 Come non detto. VERLIB non e` una funzione, ma una
+*             variabile. Cambia poco.
+* 10/06/98 GG 1.18 Aggiute le funzioni MD_SET_AXIS e MD_SAVE_AXIS. La seconda
+*             vuole qplc 1.7.0.5 almeno.
+* 22/01/99 GG 1.19 Aggiunta la funzione MD_ORIG per la lettura della
+*             tabella delle origini.
+* 18/02/99 GG 1.20 Aggiunta la funzione MD_SAVE_USER, che salva fisicamente
+*             una tabella utente. Ci vuole qplc >= 1.8.0.19 .
+* 02/03/00 GG 1.21 Aggiunte le funzioni WRAXQ (manipolazione assi), 
+*             MID (estrazione di sottostringa), LEN (lunghezza di una
+*             stringa) e ASCII (estrazione di un carattere da una stringa).
+* 13/07/00 GG 1.22 Aggiunto il blocco funzionale VMSGV.
+*)
+
+(*************)
+(* FLIP-FLOP *)
+(*************)
+
+(* Flip-Flop con "set" dominante. *)
+
+function_block SR
+var_input
+	S1 : bool;
+	R : bool;
+end_var
+var_output
+	Q1 : bool;
+end_var
+end_function_block
+
+(* Flip-Flop con "reset" dominante. *)
+
+function_block RS
+var_input
+	S : bool;
+	R1 : bool;
+end_var
+var_output
+	Q1 : bool;
+end_var
+end_function_block
+
+
+(* Rising edge detector *)
+
+function_block R_TRIG
+var_input
+	CLK : bool;
+end_var
+var_output
+	Q : bool;
+end_var
+var
+	sts : bool;
+end_var
+end_function_block
+
+
+(* Falling edge detector *)
+
+function_block F_TRIG
+var_input
+	CLK : bool;
+end_var
+var_output
+	Q : bool;
+end_var
+var
+	sts : bool;
+end_var
+end_function_block
+
+(*************)
+(* CONTATORI *)
+(*************)
+
+(* Up counter *)
+
+function_block CTU
+var_input
+	CU : bool;
+	R : bool;
+	PV : dint; (* Lo standard parlerebbe di "int"... *)
+end_var
+var_output
+	Q : bool;
+	CV : dint; (* Lo standard parlerebbe di "int"... *)
+end_var
+var
+	cu_old : bool;
+end_var
+end_function_block
+
+(* Down counter *)
+
+function_block CTD
+var_input
+	CD : bool;
+	LD : bool;
+	PV : dint; (* Lo standard parlerebbe di "int"... *)
+end_var
+var_output
+	Q : bool;
+	CV : dint; (* Lo standard parlerebbe di "int"... *)
+end_var
+var
+	cd_old : bool;
+end_var
+end_function_block
+
+(* Up-down counter *)
+
+function_block CTUD
+var_input
+	CU : bool;
+	CD : bool;
+	R : bool;
+	LD : bool;
+	PV : dint; (* Lo standard parlerebbe di "int"... *)
+end_var
+var_output
+	QU : bool;
+	QD : bool;
+	CV : dint; (* Lo standard parlerebbe di "int"... *)
+end_var
+var
+	cu_old : bool;
+	cd_old : bool;
+end_var
+end_function_block
+
+(*********)
+(* TIMER *)
+(*********)
+
+(* Generatore d'impulso (monostabile, piu` o meno). *)
+
+function_block TPULSE (* Poveri noi ! Abbiamo gia`
+                         un segnale di scambio TP ! *)
+var_input
+	IN : bool;
+	PT : time;
+end_var
+var_output
+	Q : bool;
+	ET : time;
+end_var
+var
+	sts : time;
+end_var
+end_function_block
+
+(* Salita ritardata. *)
+
+function_block TON
+var_input
+	IN : bool;
+	PT : time;
+end_var
+var_output
+	Q : bool;
+	ET : time;
+end_var
+var
+	in_old : bool;
+	sts : time;
+end_var
+end_function_block
+
+(* Discesa ritardata. *)
+
+function_block TOF
+var_input
+	IN : bool;
+	PT : time;
+end_var
+var_output
+	Q : bool;
+	ET : time;
+end_var
+var
+	in_old : bool;
+	sts : time;
+end_var
+end_function_block
+
+(**********************)
+(* MESSAGGI ED ERRORI *)
+(**********************)
+
+(* Emissione di un errore *)
+
+function_block ERROR
+var_input
+	CODE : dint;
+end_var
+var
+	code_old : dint;
+end_var
+end_function_block
+
+(* Emissione di un messaggio *)
+(* Funziona come la ERROR, ma quando si mette a 0 il codice, *)
+(* il messaggio si cancella. *)
+
+function_block MESSAGE
+var_input
+	CODE : dint;
+end_var
+var
+	code_old : dint;
+end_var
+end_function_block
+
+(* Emissione/sovrascrittura di un messaggio con codice numerico aggiuntivo *)
+
+function_block MSGUPD
+var_input
+	CODE : dint;
+	VALUE : dint;
+end_var
+var
+	code_old : dint;
+	value_old : dint;
+end_var
+end_function_block
+
+(* I seguenti due blocchi funzionali sono l'evoluzione dei precedenti. *)
+(* Permettono di gestire messaggi ed errori in modo piu` pulito (minore *)
+(* necessita` di salti). L'ingresso ENABLE abilita l'emissione. Il suo *)
+(* fronte di salita provoca l'emissione dell'errore o del messaggio, *)
+(* il fronte di discesa le cancellazione (ma se la cancellazione *)
+(* degli errori non e` ancora stata realizzata, quella dei messaggi si`). *)
+(* L'ingresso RESET provoca la riemissione immediata dell'errore o del *)
+(* messaggio, se ENABLE vale TRUE. *)
+
+(* Emissione di un errore *)
+
+function_block VERR
+var_input
+	CODE : dint;
+	ENABLE : bool;
+	RESET : bool;
+end_var
+var
+	code_old : dint;
+	enable_old : bool;
+	reset_old : bool;
+end_var
+end_function_block
+
+(* Emissione di un messaggio *)
+
+function_block VMSG
+var_input
+	CODE : dint;
+	ENABLE : bool;
+	RESET : bool;
+end_var
+var
+	code_old : dint;
+	enable_old : bool;
+	reset_old : bool;
+end_var
+end_function_block
+
+(* Emissione/sovrascrittura di un messaggio con codice numerico aggiuntivo *)
+
+function_block VMSGUPD
+var_input
+	CODE : dint;
+	VALUE : dint;
+	ENABLE : bool;
+	RESET : bool;
+end_var
+var
+	enable_old : bool;
+	reset_old : bool;
+	code_old : dint;
+	value_old : dint;
+end_var
+end_function_block
+
+(* Emissione e sovrascrittura opzionale di un messaggio *)
+(* con codice numerico aggiuntivo *)
+
+function_block VMSGV
+var_input
+	CODE : dint;
+	VALUE : dint;
+	ENABLE : bool;
+	RESET : bool;
+	UPDATE : bool;
+	VALOK : bool;
+end_var
+var
+	enable_old : bool;
+	reset_old : bool;
+	code_old : dint;
+	value_old : dint;
+end_var
+end_function_block
+
+(* Emissione e sovrascrittura opzionale di un messaggio *)
+(* con codice numerico in virgola mobile aggiuntivo *)
+
+function_block VMSGR
+var_input
+	CODE : dint;
+	VALUE : real;
+	ENABLE : bool;
+	RESET : bool;
+	UPDATE : bool;
+	VALOK : bool;
+end_var
+var
+	enable_old : bool;
+	reset_old : bool;
+	code_old : dint;
+	value_old : real;
+end_var
+end_function_block
+
+(************************)
+(* MANIPOLAZIONE DI BIT *)
+(************************)
+
+(* FUNZIONI A NORME IEC-1131/3 *)
+
+(* Rotazione a sinistra di POS posizioni. *)
+
+function ROL : DWORD
+var_input
+	X : DWORD;
+	POS : UINT;
+end_var
+end_function
+
+(* Rotazione a destra di POS posizioni. *)
+
+function ROR : DWORD
+var_input
+	X : DWORD;
+	POS : UINT;
+end_var
+end_function
+
+(* Shift a sinistra di POS posizioni. *)
+
+function SHL : DWORD
+var_input
+	X : DWORD;
+	POS : UINT;
+end_var
+end_function
+
+(* Shift a destra di POS posizioni. *)
+
+function SHR : DWORD
+var_input
+	X : DWORD;
+	POS : UINT;
+end_var
+end_function
+
+(* FUNZIONI NON STANDARD (CNi) *)
+
+(* Estrazione del campo di bit di posizione POS e lunghezza LEN *)
+(* dall'accumulatore (quantita` a 32 bit). *)
+
+function BITFIELD : DWORD
+var_input
+	X : DWORD;
+	POS : UINT;
+	LEN : UINT;
+end_var
+end_function
+
+(* Spegnimento del bit BITN nell'accumulatore (quantita` a 32 bit). *)
+
+function BITRES : DWORD
+var_input
+	X : DWORD;
+	BITN : UINT;
+end_var
+end_function
+
+(* Accensione del bit BITN nell'accumulatore (quantita` a 32 bit). *)
+
+function BITSET : DWORD
+var_input
+	X : DWORD;
+	BITN : UINT;
+end_var
+end_function
+
+(* Controllo del bit BITN nell'accumulatore (quantita` a 32 bit). *)
+
+function BITTEST : BOOL
+var_input
+	X : DWORD;
+	BITN : UINT;
+end_var
+end_function
+
+(************************************************)
+(* MANIPOLAZIONE DI QUANTITA` IN VIRGOLA MOBILE *)
+(************************************************)
+
+(* ATTENZIONE ! I nomi nella forma F<op> (es. FADD) sono obsoleti. *)
+(* Saranno mantenuti ancora per qualche versione, dopodiche` spariranno *)
+(* e non saranno piu` supportati. Al loro posto si usino le forme *)
+(* <op>_REAL (es. ADD_REAL), perfettamente equivalenti e previsti dallo *)
+(* standard. *)
+
+(* Somma di valori REAL *)
+
+function ADD_REAL : REAL
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+function FADD : REAL (* OBSOLETA *)
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+(* Sotrazione di valori REAL *)
+
+function SUB_REAL : REAL
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+function FSUB : REAL (* OBSOLETA *)
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+(* Moltiplicazione di valori REAL *)
+
+function MUL_REAL : REAL
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+function FMUL : REAL (* OBSOLETA *)
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+(* Divisione di valori REAL *)
+
+function DIV_REAL : REAL
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+function FDIV : REAL (* OBSOLETA *)
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+(* Conversione a REAL di un valore DINT *)
+
+function DINT_TO_REAL : REAL
+var_input
+	X : DINT;
+end_var
+end_function
+
+(* Conversione a DINT di un valore REAL *)
+
+function REAL_TO_DINT : DINT
+var_input
+	X : REAL;
+end_var
+end_function
+
+(* Conversione a DINT di una stringa *)
+
+function STRING_TO_DINT : DINT
+var_input
+	STR : STRING;
+end_var
+end_function
+
+(* Conversione a REAL di una stringa *)
+
+function STRING_TO_REAL : REAL
+var_input
+	STR : STRING;
+end_var
+end_function
+
+(* Confronto (x > y) di valori REAL *)
+
+function GT_REAL : BOOL
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+function FGT : BOOL (* OBSOLETA *)
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+(* Confronto (x >= y) di valori REAL *)
+
+function GE_REAL : BOOL
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+function FGE : BOOL (* OBSOLETA *)
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+(* Confronto (x < y) di valori REAL *)
+
+function LT_REAL : BOOL
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+function FLT : BOOL (* OBSOLETA *)
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+(* Confronto (x <= y) di valori REAL *)
+
+function LE_REAL : BOOL
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+function FLE : BOOL (* OBSOLETA *)
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+(***********************)
+(* LIBRERIA MATEMATICA *)
+(***********************)
+
+(* Valore assoluto di INTERI *)
+
+function ABS : DINT
+var_input
+	X : DINT;
+end_var
+end_function
+
+(* Valore assoluto di REALI *)
+
+function ABS_REAL : REAL
+var_input
+	X : REAL;
+end_var
+end_function
+
+(* Conversione da REAL a DINT con troncamento. *)
+
+function TRUNC : DINT
+var_input
+	X : REAL;
+end_var
+end_function
+
+(* Radice quadrata di grandezze REAL *)
+
+function SQRT : REAL
+var_input
+	X : REAL;
+end_var
+end_function
+
+(* Seno di grandezze REAL *)
+
+function SIN : REAL
+var_input
+	X : REAL;
+end_var
+end_function
+
+(* Coseno di grandezze REAL *)
+
+function COS : REAL
+var_input
+	X : REAL;
+end_var
+end_function
+
+(* Tangente di grandezze REAL *)
+
+function TAN : REAL
+var_input
+	X : REAL;
+end_var
+end_function
+
+(* Arcoseno di grandezze REAL *)
+
+function ASIN : REAL
+var_input
+	X : REAL;
+end_var
+end_function
+
+(* Arcocoseno di grandezze REAL *)
+
+function ACOS : REAL
+var_input
+	X : REAL;
+end_var
+end_function
+
+(* Arcotangente di grandezze REAL *)
+
+function ATAN : REAL
+var_input
+	X : REAL;
+end_var
+end_function
+
+(* Logaritmo naturale di grandezze REAL *)
+
+function LN : REAL
+var_input
+	X : REAL;
+end_var
+end_function
+
+(* Logaritmo decimale di grandezze REAL *)
+
+function LOG : REAL
+var_input
+	X : REAL;
+end_var
+end_function
+
+(* Esponenziale di grandezze REAL *)
+
+function EXP : REAL
+var_input
+	X : REAL;
+end_var
+end_function
+
+(* Elevamento a potenza (x ^ y) di grandezze REAL *)
+
+function EXPT : REAL
+var_input
+	X : REAL;
+	Y : REAL;
+end_var
+end_function
+
+(*****************************************)
+(* LETTURA DELLA VERSIONE DELLA LIBRERIA *)
+(*****************************************)
+
+(* Questa funzione fornisce il numero di versione della libreria IL.
+ Si tratta di un valore decimale, in cui coppie di cifre codificano
+versione, sottoversione, release, sottorelease. *)
+
+var_external
+	VERLIB : dint;
+end_var
+
+(*********************)
+(* DATI MACCHINA XNC *)
+(*********************)
+
+(* Questa funzione fornisce lo stato del server dei dati macchina.
+ Da` uno dei seguenti valori come risultato :
+
+	<0 : Errore : server dati macchina assente o malmesso.
+	0 : Dati macchina stabili.
+	1 : Dati macchina in corso di modifica.
+	2 : Dati macchina modificati.
+	3 : Dati macchina ricaricati, per esempio con "diskman".
+	4 : Dati macchina in corso di caricamento. *)
+
+function MD_STATUS : dint
+end_function
+
+(* Questa funzione legge dalla tabella dei dati generali il
+ dato macchina a quattro byte (float) il cui
+ nome e` dato nel secondo parametro. Il terzo parametro definisce
+ il formato d'uscita del dato :
+
+	'F' o 'f' : Il risultato va interpretato come reale.
+	'I' o 'i' : Il risultato va interpretato come intero.
+	'S' o 's' : Il risultato e` un intero, ottenuto moltiplicando
+                    il dato macchina originale per il valore
+                    del primo parametro.
+*)
+
+function MD_GENERAL : dint
+var_input
+	SCALE : real; (* Fattore di scala per il formato 'S' *)
+
+	NAME : string; (* Nome del dato macchina di interesse. *)
+	FORMAT : string; (* Stringa di formato. *)
+end_var
+end_function
+
+(* Questa funzione legge dalla tabella di sistema indicata dal secondo
+ parametro il dato macchina a quattro byte il cui
+ nome e` dato nel terzo parametro. Il quarto parametro e` l'indice
+ di colonna del dato, con base = 1. "SCALE" e "FORMAT" sono interpretati
+ come in "MD_GENERAL". *)
+
+function MD_USER : dint
+var_input
+	SCALE : real; (* Fattore di scala per il formato 'S'. *)
+
+	TAB_NAME : string; (* Nome della tabella utente. *)
+	D_NAME : string; (* Nome del dato macchina di interesse. *)
+	INDEX : dint; (* Indice nella tabella utente. *)
+	FORMAT : string; (* Stringa di formato. *)
+end_var
+end_function
+
+(* Questa funzione scrive nella tabella di sistema indicata dal secondo
+ parametro il dato macchina (inteso come valore di tipo REAL)
+ nome e` dato nel terzo parametro. Il quarto parametro e` l'indice
+ di colonna del dato, con base = 1. *)
+
+function MD_SET_USER : dint
+var_input
+	VAL : real; (* Valore da scrivere. *)
+	TAB_NAME : string; (* Nome della tabella utente. *)
+	D_NAME : string; (* Nome del dato macchina di interesse. *)
+	INDEX : dint; (* Indice nella tabella utente. *)
+end_var
+end_function
+
+(* Questa funzione legge dalla tabella dell'asse indicato dal secondo
+ parametro il dato macchina a quattro byte il cui nome e` dato nel terzo
+ parametro.
+ "SCALE" e "FORMAT" sono interpretati come in "MD_GENERAL". *)
+
+function MD_AXIS : dint
+var_input
+	SCALE : real; (* Fattore di scala per il formato 'S'. *)
+
+	AXIS : dint; (* Indice dell'asse. *)
+	D_NAME : string; (* Nome del dato macchina di interesse. *)
+	FORMAT : string; (* Stringa di formato. *)
+end_var
+end_function
+
+(* Questa funzione scrive nella tabella dell'asse indicato dal secondo
+ parametro il dato macchina (inteso come valore di tipo REAL) il cui
+ nome e` dato nel terzo parametro. *)
+
+function MD_SET_AXIS : dint
+var_input
+	VAL : real; (* Valore da scrivere. *)
+	AXIS : dint; (* Indice dell'asse. *)
+	D_NAME : string; (* Nome del dato macchina di interesse. *)
+end_var
+end_function
+
+(* Questa funzione salva fisicamente la tabella assi del centro
+ associato all'asse di indice dato nell'accumulatore. *)
+
+function MD_SAVE_AXIS : dint
+var_input
+	AXIS : dint; (* Indice dell'asse. *)
+end_var
+end_function
+
+(* Questa funzione salva fisicamente la tabella utente il
+ cui nome si trova nell'accumulatore *)
+
+function MD_SAVE_USER : dint
+var_input
+	TAB_NAME : string; (* Nome della tabella. *)
+end_var
+end_function
+
+(* Questa funzione legge la tabella dell'attrezzaggio per il cambio
+ utensile. *)
+
+function MD_TOOLCHG : dint
+var_input
+	SCALE : real; (* Fattore di scala per il formato 'S'. *)
+
+	CENTER : dint; (* Indice del centro. *)
+	TOOLPOS : dint; (* Posizione del portautensile. *)
+	TTYPE : dint; (* Tipo di magazzino: *)
+	             (* 0: random, 1: fisso, 2: revolver, -1: tutti *)
+	D_NAME : string; (* Nome del dato macchina di interesse. *)
+	FORMAT : string; (* Stringa di formato. *)
+end_var
+end_function
+
+(* Questa funzione legge la tabella di configurazione dei mandrini. *)
+
+function MD_CONF : dint
+var_input
+	SCALE : real; (* Fattore di scala per il formato 'S'. *)
+
+	CENTER : dint; (* Indice del centro. *)
+	MAND : string; (* Nome del mandrino. *)
+	NCONF : dint; (* Numero della configurazione. *)
+	D_NAME : string; (* Nome del dato macchina di interesse. *)
+	FORMAT : string; (* Stringa di formato. *)
+end_var
+end_function
+
+(* Funzione per la lettura delle tabelle origine. *)
+
+function MD_ORIG : dint
+var_input
+	SCALE : real; (* Fattore di scala per il formato 'S'. *)
+
+	O_NAME : string; (* Nome dell'origine. *)
+	D_NAME : string; (* Nome del dato macchina di interesse. *)
+	FORMAT : string; (* Stringa di formato. *)
+end_var
+end_function
+
+(* Lettura della quota corrente di un asse *)
+
+function RDAX : real
+var_input
+	INDEX : dint; (* Indice dell'asse. *)
+end_var
+end_function
+
+(* Questa funzione legge varie grandezze di stato relative agli assi
+ o all'interprete/smistatore. *)
+
+function RDAXQ : real
+var_input
+	SCALE : real; (* Fattore di scala per il formato 'S'. *)
+
+	OP : dint; (* Codice della grandezza richiesta. *)
+	INDEX : dint; (* Indice (dell'asse, tipicamente). *)
+	P1 : dint; (* Primo parametro aggiuntivo. *)
+	P2 : dint; (* Secondo parametro aggiuntivo. *)
+	FORMAT : string; (* Stringa di formato. *)
+end_var
+end_function
+
+(* Questa funzione scrive varie grandezze relative agli assi
+ o all'interprete/smistatore. Il risultato e` FALSE o TRUE
+ a seconda che vi siano stati errori oppure no. *)
+
+function WRAXQ : bool
+var_input
+	VAL : real; (* Valore da impostare. *)
+
+	OP : dint; (* Codice della grandezza da modificare. *)
+	INDEX : dint; (* Indice (dell'asse, tipicamente). *)
+	P1 : dint; (* Primo parametro aggiuntivo. *)
+	P2 : dint; (* Secondo parametro aggiuntivo. *)
+end_var
+end_function
+
+(*****************************)
+(* MANIPOLAZIONE DI STRINGHE *)
+(*****************************)
+
+(* Questa funzione estrae dalla stringa IN la sottostringa di
+ lunghezza L che inizia alla posizione P. *)
+
+function MID : string
+var_input
+	IN : string; (* Stringa da cui estrarre la sottostringa. *)
+
+	L : dint; (* Lunghezza della sottostringa. *)
+	P : dint; (* Posizione della sottostringa. Parte da 1. *)
+end_var
+end_function
+
+(* Questa funzione calcola la lunghezza della stringa data. *)
+
+function LEN : dint
+var_input
+	IN : string; (* Stringa di cui si vuol conoscere la lunghezza. *)
+end_var
+end_function
+
+(* Questa funzione restituisce il codice ASCII del carattere alla
+ posizione P della stringa STR. Vale 0 se la posizione scelta
+ va oltre la fine della stringa. *)
+
+function ASCII : dint
+var_input
+	P : dint; (* Posizione del carattere. *)
+
+	STR : string; (* Stringa de cui si vuole estrarre il carattere. *)
+end_var
+end_function
+
+(*****************************************)
+(* PRIMITIVE DI TRASMISSIONE E RICEZIONE *)
+(*****************************************)
+
+(* Trasmissione di NB byte *)
+
+function_block SEND_BYTES
+var_input
+	CH : dint;
+	NB : uint;
+	ENABLE : bool;
+	RESET : bool;
+	BUFFER : array[0..63] of byte;
+end_var
+var_output
+	NB_SENT : uint;
+	DONE : bool := TRUE;
+	ERR : bool;
+end_var
+var
+	enable_old : bool;
+	status : array[0..15] of byte;
+end_var
+end_function_block
+
+(* Ricezione di NB byte *)
+
+function_block RECV_BYTES
+var_input
+	CH : dint;
+	NB : uint;
+	ENABLE : bool;
+	RESET : bool;
+end_var
+var_output
+	BUFFER : array[0..63] of byte;
+	NB_RECV : uint;
+	DONE : bool;
+	ERR : bool;
+end_var
+var
+	status : array[0..15] of byte;
+end_var
+end_function_block
+
+(* Trasmissione di una stringa. *)
+
+function_block SEND_STRING
+var_input
+	CH : dint;
+	STR : string;
+	ENABLE : bool;
+	RESET : bool;
+end_var
+var_output
+	NB_SENT : uint;
+	DONE : bool := TRUE;
+	ERR : bool;
+end_var
+var
+	enable_old : bool;
+	status : array[0..15] of byte;
+end_var
+end_function_block
+
+(* Ricezione di una stringa. *)
+
+function_block RECV_STRING
+var_input
+	CH : dint;
+	LASTCHR : byte;
+	ENABLE : bool;
+	RESET : bool;
+end_var
+var_output
+	DONE : bool;
+	STR : string;
+	NB_RECV : uint;
+	ERR : bool;
+end_var
+var
+	buffer : array[0..63] of byte;
+	status : array[0..15] of byte;
+end_var
+end_function_block
+

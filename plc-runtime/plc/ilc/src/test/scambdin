@@ -1,0 +1,112 @@
+
+(* Versione 2.3 *)
+
+VAR_GLOBAL
+   START_ID                  AT %MD*     : ARRAY[0..5] OF UDINT ;
+   INHOLD                    AT %MX*     : ARRAY[0..5] OF BOOL ;
+   NOHOLD                    AT %MX*     : ARRAY[0..5] OF BOOL ;
+   STOPLOOP                  AT %MX*     : ARRAY[0..5] OF BOOL ;
+   STOPLES                   AT %MX*     : ARRAY[0..5] OF BOOL ;
+   INT_BUSY                  AT %MX*     : ARRAY[0..5] OF BOOL ;
+   HLD_AXPR                  AT %MX*     : ARRAY[0..39] OF BOOL ;
+   QUOTAS                    AT %MD*     : ARRAY[0..39] OF REAL ;
+   TARGET                    AT %MD*     : ARRAY[0..39] OF REAL ;
+   EME_CEN                   AT %MX*     : ARRAY[0..5] OF BOOL ;
+   XCAMMA1                   AT %MX*     : ARRAY[0..5] OF BOOL ;
+   XCAMMA2                   AT %MX*     : ARRAY[0..5] OF BOOL ;
+   XCAMMA                    AT %MX*     : ARRAY[0..5] OF BOOL ;
+   GENERIC                   AT %MX*     : ARRAY[0..15] OF BOOL ;
+   MSG_CLEAR		     AT %MX*	 : BOOL ;
+   MVOL0		     AT %MX*	 : BOOL ;
+   MVOL1		     AT %MX*	 : BOOL ;
+   SWAP		     	     AT %MX*	 : BOOL ;
+   SEMPOST	     	     AT %MX*	 : BOOL ;
+   ASSE_SEL                  AT %MD*     : UDINT ;
+   CNTPZ                     AT %MD*     : UDINT ;
+   PRESET                    AT %MD*     : UDINT ;
+   STPLC                     AT %MD*     : UDINT ;
+   DISTINTA                  AT %MX*     : BOOL ;
+   MESSAGGI                  AT %MX*     : BOOL ;
+   STOPAX		     AT %MX*     : ARRAY[0..39] OF BOOL ;
+   ABLPESO	     	     AT %MX*	 : BOOL ;
+   PLCR		     	     AT %MX*	 : BOOL ;
+   FLC		     	     AT %MX*	 : BOOL ;
+   FLR		     	     AT %MX*	 : BOOL ;
+   SCALOVE                   AT %MD*     : UDINT ;
+   VOLAX		     AT %MX*     : ARRAY[0..39] OF BOOL ;
+   MODVOL	     	     AT %MX*	 : BOOL ;
+   MODVOL1	     	     AT %MX*	 : BOOL ;
+   RANK                      AT %MD*     : UDINT ;
+   ST_RANK	     	     AT %MX*	 : BOOL ;
+   ACK_RANK	     	     AT %MX*	 : BOOL ;
+   AZZIC	     	     AT %MX*	 : BOOL ;
+   TGL_PRG                   AT %MX*     : ARRAY[0..5] OF BOOL ;
+   CORREN                    AT %MD*     : UDINT ;
+   C_VUOTO                   AT %MD*     : UDINT ;
+   C_MIN                     AT %MD*     : UDINT ;
+   C_MAX                     AT %MD*     : UDINT ;
+   C_MIN_A                   AT %MD*     : UDINT ;
+   C_MAX_A                   AT %MD*     : UDINT ;
+   C_MIN_V                   AT %MD*     : UDINT ;
+   C_MAX_V                   AT %MD*     : UDINT ;
+   RAGGIO                    AT %MD*     : ARRAY[0..5] OF REAL ;
+   MODOINT                   AT %MD*     : ARRAY[0..5] OF UDINT ;
+   MODOCRU                   AT %MD*     : ARRAY[0..5] OF UDINT ;
+   CONSPLC                   AT %MX*     : ARRAY[0..5] OF BOOL ;
+   ABINT                     AT %MX*     : ARRAY[0..5] OF BOOL ;
+   T_MENO	     	     AT %MX*	 : BOOL ;
+   T_PIU	     	     AT %MX*	 : BOOL ;
+   T_VEL	     	     AT %MX*	 : BOOL ;
+   NOMOV                     AT %MX*     : ARRAY[0..15] OF BOOL ;
+   AUTOAPP	     	     AT %MX*	 : BOOL ;
+   SEMIAUT                   AT %MX*     : ARRAY[0..5] OF BOOL ;
+   BREAK                     AT %MX*     : ARRAY[0..5] OF BOOL ;
+   RETRACE                   AT %MX*     : ARRAY[0..5] OF BOOL ;
+   NCORREN                   AT %MD*     : ARRAY[0..7] OF UDINT ;
+   NC_VUOT                   AT %MD*     : ARRAY[0..7] OF UDINT ;
+   NC_MIN                    AT %MD*     : ARRAY[0..7] OF UDINT ;
+   NC_MAX                    AT %MD*     : ARRAY[0..7] OF UDINT ;
+   NC_MINA                   AT %MD*     : ARRAY[0..7] OF UDINT ;
+   NC_MAXA                   AT %MD*     : ARRAY[0..7] OF UDINT ;
+   NC_MINV                   AT %MD*     : ARRAY[0..7] OF UDINT ;
+   NC_MAXV                   AT %MD*     : ARRAY[0..7] OF UDINT ;
+   NI_VUOT                   AT %MX*     : ARRAY[0..7] OF BOOL ;
+   NI_MIN                    AT %MX*     : ARRAY[0..7] OF BOOL ;
+   NI_MAX                    AT %MX*     : ARRAY[0..7] OF BOOL ;
+   NI_BLOC                   AT %MX*     : ARRAY[0..7] OF BOOL ;
+   NINC_US                   AT %MX*     : ARRAY[0..7] OF BOOL ;
+   NDEC_US                   AT %MX*     : ARRAY[0..7] OF BOOL ;
+   NCONTAM                   AT %MX*     : ARRAY[0..7] OF BOOL ;
+   ERRORI                    AT %MD*     : UDINT ;
+   MODVIS                    AT %MD*     : UDINT ;
+   IDPRG                     AT %MD*     : ARRAY[0..5] OF UDINT ;
+   IDPRGANT                  AT %MD*     : UDINT ;
+   NUMPAS                    AT %MD*     : ARRAY[0..5] OF UDINT ;
+   YAS_STS                   AT %MD*     : ARRAY[0..39] OF UDINT ;
+   YAS_I_O                   AT %MD*     : ARRAY[0..39] OF UDINT ;
+   YAS_ALM                   AT %MD*     : ARRAY[0..39] OF UDINT ;
+   SERVOON                   AT %MX*     : ARRAY[0..39] OF BOOL ;
+   DRIVEOK                   AT %MX*     : ARRAY[0..39] OF BOOL ;
+   ATTR_ST                   AT %MD*     : ARRAY[0..5] OF UDINT ;
+   TERMPAS                   AT %MX*     : ARRAY[0..39] OF BOOL ;
+   PN_ANT                    AT %MD*     : BOOL ;
+   NCOMINV                   AT %MX*     : ARRAY[0..15] OF BOOL ;
+   NABINV                    AT %MX*     : ARRAY[0..15] OF BOOL ;
+   NINVES                    AT %MX*     : ARRAY[0..15] OF BOOL ;
+   NINVERR                   AT %MX*     : ARRAY[0..15] OF BOOL ;
+   NOUT_RA                   AT %MX*     : ARRAY[0..15] OF BOOL ;
+   CODINV                    AT %MD*     : ARRAY[0..15] OF UDINT;
+   RACINV                    AT %MX*     : ARRAY[0..15] OF REAL ;
+   DECINV                    AT %MX*     : ARRAY[0..15] OF REAL ;
+   VELINV                    AT %MX*     : ARRAY[0..15] OF REAL ;
+   CORREZ                    AT %MX*     : ARRAY[0..39] OF REAL ;
+   ABIMESS	     	     AT %MX*	 : BOOL ;
+   NRIGA                     AT %MD*     : UDINT ;
+
+END_VAR
+
+(* Note vers 2.2: *)
+(* Aggiunti NCOMINV NABINV NINVES NINVERR NOUT_RA CODINV RACINV DECINV VELINV *)
+
+(* Note vers 2.3: *)
+(* Aggiunti ABIMESS CORREZ *)

@@ -1,0 +1,12 @@
+ALTER TABLE storico_linee_spedizione add column lnnmced     INTEGER;
+
+ALTER
+EOF
+ALTER TABLE storico_bancali add column bnnmced     INTEGER;
+
+ALTER
+EOF
+ALTER TABLE storico_colli_bancale add column cpnmced   INTEGER;
+
+ALTER
+EOF

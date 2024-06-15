@@ -1,0 +1,1665 @@
+FUNCTION_BLOCK AZZGLOB
+
+  VAR
+	ACONDIZ : BOOL:= 0;  (* Flags di condizioni OK per azz. *)
+	CE_AZGL : DINT:= 0;  (* Codice errore sel. azz. globale *)
+	CE_MODA : DINT:= 0;  (* Codice errore sel. modo azz. *)
+	CMDAZGL : BOOL:= 0;  (* Flags comando sel. azz. globale *)
+	CMDMODA : BOOL:= 0;  (* Flags comando sel. modo azz. *)
+	ER_AZGL : BOOL:= 0;  (* Errore su selezione azz. globale *)
+	ER_MODA : BOOL:= 0;  (* Errore su selezione modo azz. *)
+	OK_AZGL : BOOL:= 0;  (* Selezione azz. globale eseguita *)
+	OK_MODA : BOOL:= 0;  (* Selezione modo azz. eseguita *)
+	ORALLAZ : BOOL:= 0;  (* Or di tutti i tipi di azz. *)
+	RUNCMD : BOOL:= 0;  (* Flags di comando in corso *)
+	CMODA : CMDGEST;
+	CAZGL : CMDGEST;
+  END_VAR
+
+  VAR_INPUT
+	ENABLE : BOOL:= 0;  (* Abilitazione azzeramento globale *)
+  END_VAR
+
+  VAR_OUTPUT
+	ENDCMD : BOOL:= 0;  (* Fine comando sel. azz. globale *)
+	ERRCMD : BOOL:= 0;  (* Errore comando sel. azz. globale *)
+  END_VAR
+	
+(* --------------------------------------------------------- *)
+(*      Versione 2.0                                         *)
+(*      Function block di gestione selezione                 *)
+(*      azzeramento globale della macchina                   *)
+(*                                                           *)
+(*	INPUT:  ENABLE=Abilitazione all' azzeramento         *)
+(*	OUTPUT:	ENDCMD=Fine comando                          *)
+(*		ERRCMD=Errore comando                        *)
+(* --------------------------------------------------------- *)
+
+	LD	0
+	ST	ENDCMD
+	ST	ERRCMD
+
+	LD	AZZERAMENTO
+	OR	AZZCEN
+	OR	AZZSIN
+	OR	AZZMAN
+	ST	ORALLAZ
+
+	LD	EXE
+	OR	CPE
+	OR	AZZIC
+	STN	ACONDIZ        
+
+	LD	22		(* Cmd di SELEZIONA MODO MACCHINA *)
+	ST	CMODA.CODE
+	LD	1		(* Modo Macchina Azzeramento *)
+	ST	CMODA.DATA0
+	LD	0
+	ST	CMODA.DATA1
+	LD	0
+	ST	CMODA.DATA2
+	LD	0
+	ST	CMODA.DATA3
+	LD	ENABLE
+	AND	ACONDIZ
+	ANDN	ORALLAZ
+	S	CMDMODA
+	ST	CMODA.ENABLE
+	S	RUNCMD
+	CAL	CMODA		(* FUNCTION BLOCK CMDGEST *)
+	LD	CMODA.CERR
+	ST	CE_MODA
+	LD	CMODA.ENDRX        
+	ST	OK_MODA
+	R	RUNCMD
+	LD	CMODA.RXERR        
+	ST	ER_MODA
+
+	LD	14		(* Cmd di sel. AZZERAMENTO GLOBALE *)
+	ST	CAZGL.CODE
+	LD	0
+	ST	CAZGL.DATA0
+	LD	0
+	ST	CAZGL.DATA1
+	LD	0
+	ST	CAZGL.DATA2
+	LD	0
+	ST	CAZGL.DATA3
+	LD	ENABLE
+	OR(	OK_MODA
+	ANDN	ER_MODA
+	)
+	ANDN	RUNCMD
+	ANDN	AZZERAMENTO
+	AND	ACONDIZ
+	S	CMDAZGL
+	ST	CAZGL.ENABLE
+	CAL	CAZGL		(* FUNCTION BLOCK CMDGEST *)
+	LD	CAZGL.CERR
+	ST	CE_AZGL
+	LD	CAZGL.ENDRX
+	ST	OK_AZGL
+	LD	CAZGL.RXERR
+	ST	ER_AZGL
+
+	LD	ENABLE
+	ANDN	ACONDIZ
+	JMPC	FINITO		(* Salta se no si puo' azz.glo *)
+	LD	ENABLE
+	AND	AZZERAMENTO
+	JMPC	FINITO		(* Salta se e' gia' azz.glo *)
+
+	LD	CMDMODA
+	AND	OK_MODA
+	ANDN	CMDAZGL
+	JMPC	FINITO		(* Salta se comando finito *)
+
+	LD	CMDAZGL
+	AND	OK_AZGL
+	ANDN	CMDMODA
+	JMPC	FINITO		(* Salta se comando finito *)
+
+	LD	CMDMODA
+	AND	CMDAZGL
+	AND	OK_MODA
+	AND	OK_AZGL
+	JMPC	FINITO		(* Salta se comandi finiti *)
+
+	RET
+
+FINITO:	LD	1
+	ST	ENDCMD
+	LD	CMDMODA
+	AND	ER_MODA
+	ORN	ACONDIZ
+	S	ERRCMD
+	LD	CMDAZGL
+	AND	ER_AZGL
+	ORN	ACONDIZ
+	S	ERRCMD
+	LD	0
+	ST	CMDMODA
+	ST	CMDAZGL
+	
+END_FUNCTION_BLOCK
+
+
+FUNCTION_BLOCK CMDEXE
+
+  VAR
+	ACK_R : BOOL:= 0;
+	R_ACK : R_TRIG;
+  END_VAR
+
+  VAR_INPUT
+	ABLE : BOOL:= 0;  (* Riflette il fronte di salita di ack_op *)
+  END_VAR
+
+  VAR_OUTPUT
+	CODE : DINT:= 0;  (* Codice di ritorno dell'errore *)
+	DATO0 : DINT:= 0;  (* Primo dato del codice errore *)
+	DATO1 : DINT:= 0;  (* Secondo dato codice errore *)
+	DATO2 : DINT:= 0;  (* Terzo dato codice errore *)
+	DATO3 : DINT:= 0;  (* Quarto dato codice errore *)
+	ESITO : BOOL:= 0;  (* Esito del comando inviato *)
+  END_VAR
+
+(* ------------------------------------------------------------- *)
+(*      Versione 2.0                                             *)
+(*      Function block che esamina il risultato del              *) 
+(*      comando trasmesso al CN                                  *)
+(*                                                               *)
+(*	INPUT :		                                         *)
+(*		ABLE    : Fronte di salita di ACK_OP             *)
+(*	OUTPUT :                                                 *)
+(*		COD_ERR : Codice dell'eventuale errore           *)
+(*		DATA0   : Primo dato della risposta CN           *)
+(*		DATA1   : Secondo dato della risposta CN         *)
+(*		DATA2   : Terzo dato della risposta CN           *)
+(*		DATA3   : Quarto dato della risposta CN          *)
+(*		ESITO   : Esito della ricezione                  *)
+(*				0 comando non finito             *)
+(*				1 comando finito OK              *)
+(*				2 comando finito non OK          *)
+(* ------------------------------------------------------------- *)
+
+	LD	0            
+	ST	ESITO           
+	
+	LD	ABLE
+	JMPCN	NO_SALITA
+	
+	LD	ERR_OP
+	JMPCN	CMD_OK
+	
+	LD	2
+	ST	ESITO
+	JMP	CMD_NOOK
+	
+CMD_OK:
+	LD	1
+	ST	ESITO
+	
+CMD_NOOK:
+	LD	COD_OP
+	ST	CODE
+	
+	LD	DATA_OP[0]
+	ST	DATO0
+	LD	DATA_OP[1]
+	ST	DATO1
+	LD	DATA_OP[2]
+	ST	DATO2
+	LD	DATA_OP[3]
+	ST	DATO3
+	
+	LD	0
+	ST	RIC_OP
+	ST	COD_OP
+	
+NO_SALITA:
+
+END_FUNCTION_BLOCK
+
+
+FUNCTION_BLOCK CMDGEST
+
+  VAR
+	ACK_R : BOOL:= 0;
+	APFASE : DINT:= 0;  (* Variabile di fase della trasmissione *)
+	ERR_C : BOOL:= 0;  (* Codice di errore inviato dal CN *)
+	RISULT : BOOL:= 0;  (* Esito della trasmissione *)
+	R_ACK : R_TRIG;
+	TX : CMDTX;
+	EXEC : CMDEXE;
+  END_VAR
+
+  VAR_INPUT
+	CODE : DINT:= 0;  (* Codice comando da inviare *)
+	DATA0 : DINT:= 0;  (* Primo dato associato al comando *)
+	DATA1 : DINT:= 0;  (* Secondo dato da associare al comando *)
+	DATA2 : DINT:= 0;  (* Terzo dato associato comando *)
+	DATA3 : DINT:= 0;  (* Quarto dato associato comando *)
+	ENABLE : BOOL:= 0;  (* Abilitazione all'invio comando *)
+  END_VAR
+
+  VAR_OUTPUT
+	CERR : DINT:= 0;  (* Codice errore rilevato *)
+	ENDRX : BOOL:= 0;  (* Comando eseguito *)
+	OUT0 : DINT:= 0;  (* Primo dato di risposta dal CN *)
+	OUT1 : DINT:= 0;  (* Secondo dato di risposta del CN *)
+	OUT2 : DINT:= 0;  (* Terzo dato di risposta del CN *)
+	OUT3 : DINT:= 0;  (* Quarto dato di risposta dal CN *)
+	RXERR : BOOL:= 0;  (* Errore esecuzione comando *)
+  END_VAR
+
+(* ------------------------------------------------------------- *)
+(*      Versione 2.0                                             *)
+(*      Function block di gestione comando verso il Controllo    *)
+(*                                                               *)
+(*	INPUT :		                                         *)
+(*		ENABLE  : Abilitazione all'invio comando         *)
+(*		CODE    : Codice comando                         *)
+(*		DATA0   : Primo dato associato al comando        *)
+(*		DATA1   : Secondo dato associato al comando      *)
+(*		DATA2   : Terzo dato associato al comando        *)
+(*		DATA3   : Quarto dato associato al comando       *)
+(*                                                               *)
+(*	OUTPUT :	                                         *)
+(*		ENDRX	: Comando eseguito 		         *)
+(*		RXERR   : Errore esecuzione comando              *)
+(*		CERR	: Eventuale codice errore                *)
+(*		OUT0    : Primo dato di ritorno CN               *)
+(*		OUT1    : Secondo dato di ritorno CN             *)
+(*		OUT2    : Terzo dato di ritorno CN               *)
+(*		OUT3    : Quarto dato di ritorno CN              *)
+(* ------------------------------------------------------------- *)
+
+	LD	0                                    
+	ST	RXERR
+	ST	ENDRX
+	
+	LD	ACK_OP
+	ST	R_ACK.CLK
+	CAL	R_ACK		(* FUNCTION BLOCK R_TRIG *)
+	LD	R_ACK.Q
+	ST	ACK_R
+	
+	LD	ENABLE          
+	OR	APFASE
+	JMPCN	NO_EXE
+	
+	LD	APFASE
+	EQ	0
+	JMPCN	NO_FASE0
+	
+	LD	1
+	ST	APFASE
+	RET
+
+NO_FASE0:
+
+	LD	APFASE
+	EQ	1           
+	JMPCN	NO_FASE1	
+	
+	LD	CODE
+	ST	TX.CODICE
+	LD	DATA0
+	ST	TX.DATO0
+	LD	DATA1
+	ST	TX.DATO1
+	LD	DATA2
+	ST	TX.DATO2
+	LD	DATA3
+	ST	TX.DATO3
+	CAL	TX		(* FUNCTION BLOCK CMDTX *)
+	LD	TX.ESITO
+	ST	RISULT
+
+	LD	RISULT
+	JMPCN	NO_FASE1
+	
+	LD	2
+	ST	APFASE
+	RET
+
+NO_FASE1:
+
+	LD	APFASE
+	EQ	2
+	JMPCN	NO_EXE
+
+	LD	ACK_R        
+	ST	EXEC.ABLE
+	CAL	EXEC		(* FUNCTION BLOCK CMDEXE *)
+	LD	EXEC.CODE
+	ST	ERR_C
+	LD	EXEC.DATO0
+	ST	OUT0
+	LD	EXEC.DATO1
+	ST	OUT1
+	LD	EXEC.DATO2
+	ST	OUT2
+	LD	EXEC.DATO3
+	ST	OUT3
+	LD	EXEC.ESITO
+	ST	RISULT
+
+	LD	RISULT
+	JMPCN	NO_EXE
+	
+	LD	1
+	ST	ENDRX
+	
+	LD	RISULT
+	EQ	2
+	JMPCN	NO_EXE2
+		
+	LD	COD_OP
+	ST	CERR
+	LD	1
+	ST	RXERR
+	
+NO_EXE2:
+
+	LD	0
+	ST	APFASE
+	
+NO_EXE:
+
+END_FUNCTION_BLOCK
+
+
+FUNCTION_BLOCK APPASSO
+
+  VAR
+	CE_APSS : DINT:= 0;  (* Codice Errore autoaprendi passo *)
+	CMDAPSS : BOOL:= 0;  (* Comando autoaprendi passo inviato *)
+	ER_APSS : BOOL:= 0;  (* Errore su autoaprendi passo *)
+	OK_APSS : BOOL:= 0;  (* Fine comando autoaprendi passo *)
+	CAPSS : CMDGEST;
+  END_VAR
+
+  VAR_INPUT
+	ENABLE : BOOL:= 0;  (* Abilitazione autoapp. passo *)
+	PARATP : BOOL:= 0;  (* Flags di tabella ParAtp *)
+	VLBR3D : REAL:= 0;  (* Valore del Raccordo BR3D *)
+  END_VAR
+
+  VAR_OUTPUT
+	ENDCMD : BOOL:= 0;  (* Fine comando autoapprendi passo *)
+	ERRCMD : BOOL:= 0;  (* Errore comando autoapprendi passo *)
+  END_VAR
+
+(* --------------------------------------------------------- *)
+(*      Versione 2.0                                         *)
+(*      Function block di gestione                           *)
+(*      autoapprendimento di un passo di programma           *)
+(*                                                           *)
+(*	INPUT:  ENABLE=Abilitazione autoap. passo            *)
+(*		VLBR3D=Valore del raccordo BR3D (-1=no BR3D) *)
+(*		PARATP=Flags si dati tabella PARAPLC         *)
+(*	OUTPUT:	ENDCMD=Fine comando                          *)
+(*		ERRCMD=Errore comando                        *)
+(* --------------------------------------------------------- *)
+
+	LD	0
+	ST	ENDCMD
+	ST	ERRCMD
+
+	LD	44      	(* Cmd di AUTOAPPRENDI PASSO *)
+	ST	CAPSS.CODE
+	LD	0
+	ST	CAPSS.DATA0
+	LD	VLBR3D
+	EQ	-1
+	JMPC	NOBR3D
+	LD	1
+	JMP	SIBR3D
+NOBR3D:	LD	0
+SIBR3D:	ST	CAPSS.DATA1
+	LD	VLBR3D  
+	ST	CAPSS.DATA2
+	LD	PARATP
+	ST	CAPSS.DATA3
+	LD	ENABLE
+	AND	AUTOAPP
+	AND	AUTOMATICO
+	S	CMDAPSS
+	ST	CAPSS.ENABLE
+	CAL	CAPSS		(* FUNCTION BLOCK CMDGEST *)
+	LD	CAPSS.CERR
+	ST	CE_APSS
+	LD	CAPSS.ENDRX
+	ST	OK_APSS     	
+	LD	CAPSS.RXERR
+	ST	ER_APSS
+
+	LD	ENABLE
+	ANDN	CMDAPSS
+	JMPC	FINITO		(* Fine per impossibilita' Tx cmd *)
+
+	LD	CMDAPSS
+	AND	OK_APSS
+	JMPC	FINITO		(* Fine per cmd completato *)
+
+	RET
+
+FINITO: LD	1
+	ST	ENDCMD
+	LD	ER_APSS
+	ORN	CMDAPSS
+	ST	ERRCMD
+	LD	0
+	ST	CMDAPSS
+
+END_FUNCTION_BLOCK
+
+
+FUNCTION_BLOCK APPON
+
+  VAR
+	ACONDIZ : BOOL:= 0;  (* Flags di OK per entrata autoap. *)
+	CE_MATM : DINT:= 0;  (* Codice Errore sel. modo automatico *)
+	CE_SIAP : DINT:= 0;  (* Codice Errore entrata autoap. *)
+	CMDMATM : BOOL:= 0;  (* Flags comando sel. modo automatico *)
+	CMDSIAP : BOOL:= 0;  (* Flags comando entrata autoap. *)
+	ER_MATM : BOOL:= 0;  (* Errore su sel. modo automatico *)
+	ER_SIAP : BOOL:= 0;  (* Errore su entrata autoapprendimento *)
+	OK_MATM : BOOL:= 0;  (* Fine comando sel. modo automatico *)
+	OK_SIAP : BOOL:= 0;  (* Fine comando entrata autoap. *)
+	RUNCMD : BOOL:= 0;  (* Flags di comando in corso *)
+	CSIAP : CMDGEST;
+	CMATM : CMDGEST;
+  END_VAR
+
+  VAR_INPUT
+	ENABLE : BOOL:= 0;  (* Abilitazione entrata autoap. (edit) *)
+  END_VAR
+
+  VAR_OUTPUT
+	ENDCMD : BOOL:= 0;  (* Fine comando entrata autoap. *)
+	ERRCMD : BOOL:= 0;  (* Errore comando entrata autoap. *)
+  END_VAR
+	
+(* --------------------------------------------------------- *)
+(*      Versione 2.0                                         *)
+(*      Function block di gestione                           *)
+(*      entrata in autoapprendimento della macchina          *)
+(*                                                           *)
+(*	INPUT:  ENABLE=Abilitazione entrata autoap.          *)
+(*	OUTPUT:	ENDCMD=Fine comando                          *)
+(*		ERRCMD=Errore comando                        *)
+(* --------------------------------------------------------- *)
+
+	LD	0
+	ST	ENDCMD
+	ST	ERRCMD
+
+	LD	22		(* Cmd di SELEZIONA MODO MACCHINA *)
+	ST	CMATM.CODE
+	LD	4		(* Modo Macchina Automatico *)
+	ST	CMATM.DATA0
+	LD	0
+	ST	CMATM.DATA1
+	LD	0
+	ST	CMATM.DATA2
+	LD	0  
+	ST	CMATM.DATA3
+	LD	ENABLE
+	AND	ASSICAL
+	ANDN	AUTOMATICO
+	S	CMDMATM
+	ST	CMATM.ENABLE
+	S	RUNCMD
+	CAL	CMATM		(* FUNCTION BLOCK CMDGEST *)
+	LD	CMATM.CERR
+	ST	CE_MATM
+	LD	CMATM.ENDRX
+	ST	OK_MATM
+	R	RUNCMD
+	LD	CMATM.RXERR
+	ST	ER_MATM
+	
+	LD	42		(* Cmd di entrata AUTOAPPRENDIMENTO *)
+	ST	CSIAP.CODE
+	LD	0
+	ST	CSIAP.DATA0
+	LD	0
+	ST	CSIAP.DATA1
+	LD	0
+	ST	CSIAP.DATA2
+	LD	0
+	ST	CSIAP.DATA3
+	LD	ENABLE
+	OR(	OK_MATM
+	ANDN	ER_MATM
+	)
+	AND	ASSICAL
+	ANDN	AUTOAPP
+	AND	AUTOMATICO
+	ANDN	RUNCMD
+	S	CMDSIAP
+	ST	CSIAP.ENABLE
+	CAL	CSIAP		(* FUNCTION BLOCK CMDGEST *)
+	LD	CSIAP.CERR
+	ST	CE_SIAP
+	LD	CSIAP.ENDRX
+	ST	OK_SIAP
+	LD	CSIAP.RXERR
+	ST	ER_SIAP
+
+	LD	ENABLE
+	ANDN	ASSICAL
+	JMPC	FINITO		(* salta se ASSICAL=0 *)
+	LD	ENABLE
+	AND	AUTOAPP
+	AND	AUTOMATICO
+	JMPC	FINITO		(* salta se AUTOAP+AUTOMATICO *)
+
+	LD	CMDMATM
+	AND	OK_MATM
+	ANDN	CMDSIAP
+	JMPC	FINITO		(* salta se comando finito *)
+	LD	CMDSIAP
+	AND	OK_SIAP
+	ANDN	CMDMATM
+	JMPC	FINITO		(* salta se comando finito *)
+
+	LD	CMDMATM
+	AND	CMDSIAP
+	AND	OK_MATM
+	AND	OK_SIAP
+	JMPC	FINITO		(* salta se comandi finito *)
+
+	RET
+	
+FINITO:	LD	1
+	ST	ENDCMD
+	LD	ER_MATM
+	AND	CMDMATM
+	ORN	ASSICAL
+	S	ERRCMD
+	LD	ER_SIAP
+	AND	CMDSIAP
+	ORN	ASSICAL
+	S	ERRCMD
+	LD	0
+	ST	CMDMATM
+	ST	CMDSIAP
+
+END_FUNCTION_BLOCK
+
+
+FUNCTION_BLOCK CMDTX
+
+  VAR_INPUT
+	CODICE : DINT:= 0;  (* Codice del comando da inviare *)
+	DATO0 : DINT:= 0;  (* Primo dato associato al comando *)
+	DATO1 : DINT:= 0;  (* Secondo dato associato al comando *)
+	DATO2 : DINT:= 0;  (* Terzo dato associato al comando *)
+	DATO3 : DINT:= 0;  (* Quarto dato associato al comando *)
+  END_VAR
+
+  VAR_OUTPUT
+	ESITO : BOOL:= 0;  (* Risultato della trasmissione *)
+  END_VAR
+
+(* ------------------------------------------------------------- *)
+(*      Versione 2.0                                             *)
+(*      Function block che gestisce la trasmissione              *)
+(*      di un comando al Controllo                               *)
+(*                                                               *)
+(*	INPUT:                                                   *)
+(*		CODICE :  Codice del comando da inviare          *)
+(*		DATO0  :  Primo dato associato al comando        *)
+(*		DATO1  :  Secondo dato associato al comando      *)
+(*		DATO2  :  Terzo dato associato al comando        *)
+(*		DATO3  :  Quarto dato associato al comando       *)
+(*                                                               *)
+(*	OUTPUT:		                                         *)
+(*		ESITO  :  Esito della trasmissione               *)
+(*			  0 non ok 1 ok                          *)
+(* ------------------------------------------------------------- *)
+
+	LD	0        
+	ST	ESITO
+	
+	LDN	ACK_OP
+	ANDN	RIC_OP
+	JMPCN	NO_OK
+	
+	LD	CODICE
+	ST	COD_OP
+	LD	DATO0
+	ST	DATA_OP[0]
+	LD	DATO1
+	ST	DATA_OP[1]
+	LD	DATO2
+	ST	DATA_OP[2]
+	LD	DATO3
+	ST	DATA_OP[3]
+	LD	1
+	ST	RIC_OP
+	ST	ESITO
+	
+NO_OK:
+
+END_FUNCTION_BLOCK
+
+
+FUNCTION_BLOCK SPEGNIM
+
+  VAR
+	CE_RBTO : DINT:= 0;  (* Codice errore reboot *)
+	ER_RBTO : BOOL:= 0;  (* Errore su comando di REBOOT *)
+	OK_RBTO : BOOL:= 0;  (* Comando di REBOOT eseguito *)
+	CRBTO : CMDGEST;
+  END_VAR
+
+  VAR_INPUT
+	ENABLE : BOOL:= 0;  (* Abilitazione comando di REBOOT *)
+  END_VAR
+
+  VAR_OUTPUT
+	ENDCMD : BOOL:= 0;  (* Fine comando reboot *)
+	ERRCMD : BOOL:= 0;  (* Errore comando reboot *)
+  END_VAR
+
+(* --------------------------------------------------------- *)
+(*      Versione 2.0                                         *)
+(*      Function block di gestione                           *)
+(*      reboot della macchina (shutdown)                     *)
+(*                                                           *)
+(*	INPUT:  ENABLE=Abilitazione reboot                   *)
+(*	OUTPUT:	ENDCMD=Fine comando                          *)
+(*		ERRCMD=Errore comando                        *)
+(* --------------------------------------------------------- *)
+
+	LD	0
+	ST	ENDCMD
+	ST	ERRCMD
+
+	LD	20		(* Cmd di REBOOT *)
+	ST	CRBTO.CODE
+	LD	1		(* Flags di reboot con conferma *)
+	ST	CRBTO.DATA0
+	LD	0
+	ST	CRBTO.DATA1    
+	LD	0
+	ST	CRBTO.DATA2
+	LD	0
+	ST	CRBTO.DATA3
+	LD	ENABLE
+	ST	CRBTO.ENABLE 
+	CAL	CRBTO		(* FUNCTION BLOCK CMDGEST *)
+	LD	CRBTO.CERR
+	ST	CE_RBTO
+	LD	CRBTO.ENDRX
+	ST	OK_RBTO
+	LD	CRBTO.RXERR
+	ST	ER_RBTO
+
+	LD	OK_RBTO
+	ST	ENDCMD
+	LD	OK_RBTO
+	AND	ER_RBTO
+	ST	ERRCMD
+
+END_FUNCTION_BLOCK
+
+
+FUNCTION_BLOCK SCALASS
+
+  VAR
+	CE_SCAL : DINT:= 0;  (* Codice Errore scalibrazione asse/i *)
+	ER_SCAL : BOOL:= 0;  (* Errore su scalibrazione asse/i *)
+	OK_SCAL : BOOL:= 0;  (* Fine comando scalibrazione asse/i *)
+	CSCAL : CMDGEST;
+  END_VAR
+
+  VAR_INPUT
+	ASSESC : DINT:= 0;  (* Numero asse da scalibrare (-1=Tutti) *)
+	ENABLE : BOOL:= 0;  (* Abilitazione scalibrazione asse/i *)
+  END_VAR
+
+  VAR_OUTPUT
+	ENDCMD : BOOL:= 0;  (* Fine comando azzeramento manaule *)
+	ERRCMD : BOOL:= 0;  (* Errore comando azzeramento manaule *)
+  END_VAR
+
+(* --------------------------------------------------------- *)
+(*      Versione 2.0                                         *)
+(*      Function block di gestione                           *)
+(*      scalibrazione di tutti o di un asse della macchina   *)
+(*                                                           *)
+(*	INPUT:  ENABLE=Abilitazione scalibrazione asse/i     *)
+(*		ASSEZM=Numero asse da scalibrare (-1=Tutti)  *)
+(*	OUTPUT:	ENDCMD=Fine comando                          *)
+(*		ERRCMD=Errore comando                        *)
+(* --------------------------------------------------------- *)
+
+	LD	0
+	ST	ENDCMD
+	ST	ERRCMD
+
+	LD	30		(* Cmd Scalibrazione asse/i *)
+	ST	CSCAL.CODE
+	LD	ASSESC		(* Asse da scalibrare *)
+	ST	CSCAL.DATA0
+	LD	0
+	ST	CSCAL.DATA1
+	LD	0
+	ST	CSCAL.DATA2
+	LD	0
+	ST	CSCAL.DATA3
+	LD	ENABLE
+	ST	CSCAL.ENABLE
+	CAL	CSCAL		(* FUNCTION BLOCK CMDGEST *)
+	LD	CSCAL.CERR
+	ST	CE_SCAL
+	LD	CSCAL.ENDRX
+	ST	OK_SCAL
+	LD	CSCAL.RXERR
+	ST	ER_SCAL
+	
+	LD	OK_SCAL
+	ST	ENDCMD
+	LD	OK_SCAL
+	AND	ER_SCAL
+	ST	ERRCMD
+
+END_FUNCTION_BLOCK
+
+
+FUNCTION_BLOCK APPOFF
+
+  VAR
+	CE_NOAP : DINT:= 0;  (* Codice Errore uscita autoap. *)
+	ER_NOAP : BOOL:= 0;  (* Errore su uscita autoap. *)
+	OK_NOAP : BOOL:= 0;  (* Fine comando uscita autoap. *)
+	CNOAP : CMDGEST;
+  END_VAR
+
+  VAR_INPUT
+	ENABLE : BOOL:= 0;  (* Abilitazione uscita autoap. (EDIT) *)
+  END_VAR
+
+  VAR_OUTPUT
+	ENDCMD : BOOL:= 0;  (* Fine comando uscita autoap. *)
+	ERRCMD : BOOL:= 0;  (* Errore comando uscita autoap. *)
+  END_VAR
+
+(* --------------------------------------------------------- *)
+(*      Versione 2.0                                         *)
+(*      Function block di gestione                           *)
+(*      uscita dall' autoapprendimento della macchina        *)
+(*                                                           *)
+(*	INPUT:  ENABLE=Abilitazione uscita autoap.           *)
+(*	OUTPUT:	ENDCMD=Fine comando                          *)
+(*		ERRCMD=Errore comando                        *)
+(* --------------------------------------------------------- *)
+
+	LD	0
+	ST	ENDCMD
+	ST	ERRCMD
+
+	LD	43 		(* Cmd di uscita AUTOAPPRENDIMENTO *)
+	ST	CNOAP.CODE
+	LD	0
+	ST	CNOAP.DATA0
+	LD	0
+	ST	CNOAP.DATA1
+	LD	0
+	ST	CNOAP.DATA2
+	LD	0
+	ST	CNOAP.DATA3
+	LD	ENABLE
+	ST	CNOAP.ENABLE
+	CAL	CNOAP		(* FUNCTION BLOCK CMDGEST *)
+	LD	CNOAP.CERR
+	ST	CE_NOAP
+	LD	CNOAP.ENDRX
+	ST	OK_NOAP    
+	LD	CNOAP.RXERR
+	ST	ER_NOAP
+	
+	LD	OK_NOAP
+	ST	ENDCMD
+	LD	OK_NOAP
+	AND	ER_NOAP
+	ST	ERRCMD
+	
+END_FUNCTION_BLOCK
+
+
+FUNCTION_BLOCK AZZMANU
+
+  VAR
+	CE_AZZM : DINT:= 0;  (* Codice Errore azzeramento manuale *)
+	ER_AZZM : BOOL:= 0;  (* Errore su azzeramento manuale *)
+	OK_AZZM : BOOL:= 0;  (* Fine comando azzeramento manuale *)
+	CAZZM : CMDGEST;
+  END_VAR
+
+  VAR_INPUT
+	ASSEZM : DINT:= 0;  (* Numero asse da azzerare manualmente *)
+	ENABLE : BOOL:= 0;  (* Abilitazione azzeramento manuale *)
+	ZQUOTA : REAL:= 0.0;  (* Quota di azzeramento manuale *)
+  END_VAR
+
+  VAR_OUTPUT
+	ENDCMD : BOOL:= 0;  (* Fine comando azzeramento manaule *)
+	ERRCMD : BOOL:= 0;  (* Errore comando azzeramento manaule *)
+  END_VAR
+
+(* --------------------------------------------------------- *)
+(*      Versione 2.0                                         *)
+(*      Function block di gestione                           *)
+(*      azzeramento manuale di un asse della macchina        *)
+(*                                                           *)
+(*	INPUT:  ENABLE=Abilitazione azz. manuale asse        *)
+(*		ASSEZM=Asse da azzerare manualmente          *)
+(*		ZQUOTA=Quota di azzeramento                  *)
+(*	OUTPUT:	ENDCMD=Fine comando                          *)
+(*		ERRCMD=Errore comando                        *)
+(* --------------------------------------------------------- *)
+
+	LD	0
+	ST	ENDCMD
+	ST	ERRCMD
+
+	LD	36		(* Cmd Azz.MANUALE asse *)
+	ST	CAZZM.CODE
+	LD	ASSEZM		(* Asse da Azzerare *)
+	ST	CAZZM.DATA0
+	LD	ZQUOTA		(* Quota di azzeramento *)
+	ST	CAZZM.DATA1
+	LD	0
+	ST	CAZZM.DATA2
+	LD	0
+	ST	CAZZM.DATA3
+	LD	ENABLE
+	ST	CAZZM.ENABLE
+	CAL	CAZZM		(* FUNCTION BLOCK CMDGEST *)
+	LD	CAZZM.CERR
+	ST	CE_AZZM
+	LD	CAZZM.ENDRX
+	ST	OK_AZZM
+	LD	CAZZM.RXERR
+	ST	ER_AZZM
+	
+	LD	OK_AZZM
+	ST	ENDCMD
+	LD	OK_AZZM
+	AND	ER_AZZM
+	ST	ERRCMD
+
+END_FUNCTION_BLOCK
+
+
+FUNCTION_BLOCK GESTMDI
+
+  VAR
+	FASE : DINT:= 0;  (* Fase Funzione *)
+	SLOT : DINT:= 0;  (* Numero slot (0-15) *)
+  END_VAR
+
+  VAR_INPUT
+	ACCX : REAL:= 0.0;  (* Percentuale accel. *)
+	ANTX : REAL:= 0.0;  (* Anticipo *)
+	AX : DINT:= 0;  (* Nr. interno asse *)
+	CODICE : DINT:= 0;  (* Codice movimento *)
+	ENABLE : BOOL:= 0;  (* Abilitazione movimento *)
+	QUOTAX : REAL:= 0.0;  (* Quota target *)
+	RAGGR : DINT:= 0;  (* Nr. raggruppamento (0-7) *)
+	RESET : BOOL:= 0;  (* Reset posizionamento *)
+	SIAC : BOOL:= 0;  (* Si accelerazione *)
+	SIAN : BOOL:= 0;  (* Si anticipo *)
+	SIVE : BOOL:= 0;  (* Si velocita' *)
+	VELX : REAL:= 0.0;  (* Velocita' asse *)
+  END_VAR
+
+  VAR_OUTPUT
+	ERROMDI : BOOL:= 0;  (* Flags di errore esec. comando *)
+	FINEMDI : BOOL:= 0;  (* Flag fine comando *)
+	RESULT : DINT:= 0;  (* Risultato finale *)
+  END_VAR
+
+(* --------------------------------------------------------- *)
+(*      Versione 2.0                                         *)
+(*      Function block di gestione MDI da PLC                *)
+(*      E' in grado di pilotare un singolo asse.             *)
+(*      Nel caso di comando contemporaneo di N assi si       *)
+(*      dovranno utilizzare N istanze diverse tramite RAGGR  *)
+(*      Governa contemporaneamente 8 assi al massimo         *)
+(*      N.B. QUOTAX,VELX,ANTX e ACCX devono essere dei float *)
+(*      quindi bisogna sempre mettere il "punto" !!!         *)
+(*                                                           *)
+(*	INPUT:  ENABLE=Abilitazione posizionamento asse      *)
+(*		RESET= Reset posizionamento		     *)
+(*		CODICE	0= Posizionamento assoluto           *)
+(*			1= Posizionamento incrementale       *)
+(*			2= Posizionamento a parcheggio       *)
+(*		AX	Nr. Interno Asse (da 0 a 99)         *)
+(*		RAGGR	Nr. istanza (da 0 a 7)               *)
+(*		QUOTAX	Quota Obiettivo/Incrementale Asse    *)
+(*		SIVE	Flag velocita'                       *)
+(*		VELX	Velocita' asse (solo se SIVE=1)      *)
+(*		SIAC	Flag accelerazione                   *)
+(*		ACCX	Accelerazione asse (solo se SIAC=1)  *)
+(*		SIAN	Flag anticipo                        *)
+(*		ANTX	Anticipo asse (solo se SIAN=1)       *)
+(*	OUTPUT:	FINEMDI	=1 Comando concluso                  *)
+(*		ERROMDI =1 Attributo di errore esec. comando *)
+(*		RESULT =risultato a comando concluso:        *)
+(*			O   Okay: Fine posizionamento        *)
+(*			1   Rilevato NOMOV[RAGGR]            *)
+(*			2   Dati Errati in Ingresso          *)
+(*			3   Raggruppamento Occupato          *)
+(*			4   Raggruppamento Errato (>=8)      *)
+(*			5   Okay: rilevato STOP_GRU[RAGGR]   *)
+(* --------------------------------------------------------- *)
+
+	LD	ENABLE
+	OR	FASE
+	JMPC	SIST		(* Test se fare qualcosa *)
+
+	LD	0
+	ST	FINEMDI
+	JMP	NOST
+
+SIST:	LD	FASE
+	EQ	0
+	JMPCN	NOF0
+
+(* Con enable a 1 e fase=0 calcola il Raggruppamento libero *)
+
+	LD	RAGGR
+	LT	8		(* Test se minore di 8 *)
+	JMPC	OKRAGG		(* Salta se e' minore di 8 *)
+
+	LD	0
+	ST	RAGGR
+	LD	1
+	ST	FINEMDI
+	ST	ERROMDI
+	LD	4		(* Codice di raggruppamento errato *)
+	ST	RESULT
+	JMP	NOST
+
+OKRAGG: LD	0
+	ST	FINEMDI
+	LD	NOMOV[RAGGR]
+	OR	STOP_GRU[RAGGR]
+	JMPC	NOST
+
+	LD	RAGGR
+	ST	SLOT		(* Assumiamo SLOT=RAGGR (da 0 a 7) *)
+
+(* Con enable a 1 e fase=0 passa in fase=1 *)
+
+	LD	1
+	ST	FASE
+	JMP	NOST
+
+NOF0:	LD	FASE
+	EQ	1
+	JMPCN	NOF1
+
+(* Fase 1 : eventuale innesco posizionamento *)
+
+	LD	START_GRU[RAGGR]          
+	OR	ACK_GRU[RAGGR]
+	JMPCN	SIS		(* Test raggruppamento impegnato *)
+
+	LD	1
+	ST	FINEMDI
+	LD	3
+	ST	RESULT		(* Out di raggruppamento occupato *)
+	LD	0
+	ST	FASE
+	LD	1
+	ST	ERROMDI
+	JMP	NOST
+
+SIS:	LD	RAGGR          
+	EQ	0
+	JMPCN	NO0
+	
+(* raggruppamento 0 *)
+	
+	LD	AX  
+	ST	DEFGR0[0,0] 
+	LD	SLOT
+	ST	DEFGR0[0,1]
+	LD	-1
+	ST	DEFGR0[1,0]
+	ST	DEFGR0[1,1]
+	JMP	CONV 
+	
+NO0:
+	LD	RAGGR
+	EQ	1
+	JMPCN	NO1  
+	
+(* raggruppamento 1 *)
+	
+	LD	AX  
+	ST	DEFGR1[0,0] 
+	LD	SLOT
+	ST	DEFGR1[0,1]
+	LD	-1
+	ST	DEFGR1[1,0]
+	ST	DEFGR1[1,1]
+	JMP	CONV  
+
+NO1:
+	LD	RAGGR 
+	EQ	2
+	JMPCN	NO2 
+	
+(* raggruppamento 2 *)
+	
+	LD	AX  
+	ST	DEFGR2[0,0] 
+	LD	SLOT
+	ST	DEFGR2[0,1]
+	LD	-1
+	ST	DEFGR2[1,0]
+	ST	DEFGR2[1,1]
+	JMP	CONV 
+	
+NO2:
+	LD	RAGGR
+	EQ	3
+	JMPCN	NO3  
+	
+(* raggruppamento 3 *)
+	
+	LD	AX  
+	ST	DEFGR3[0,0] 
+	LD	SLOT
+	ST	DEFGR3[0,1]
+	LD	-1
+	ST	DEFGR3[1,0]
+	ST	DEFGR3[1,1]
+	JMP	CONV
+	
+NO3:
+	LD	RAGGR
+	EQ	4
+	JMPCN	NO4  
+	
+(* raggruppamento 4 *)
+	
+	LD	AX  
+	ST	DEFGR4[0,0] 
+	LD	SLOT
+	ST	DEFGR4[0,1]
+	LD	-1
+	ST	DEFGR4[1,0]
+	ST	DEFGR4[1,1]
+	JMP	CONV  
+	
+NO4:
+	LD	RAGGR
+	EQ	5
+	JMPCN	NO5 
+	
+(* raggruppamento 5 *)
+	
+	LD	AX  
+	ST	DEFGR5[0,0]  
+	LD	SLOT
+	ST	DEFGR5[0,1]
+	LD	-1
+	ST	DEFGR5[1,0]
+	ST	DEFGR5[1,1]
+	JMP	CONV 
+	
+NO5:
+	LD	RAGGR
+	EQ	6
+	JMPCN	NO6
+	
+(* raggruppamento 6 *)
+	
+	LD	AX  
+	ST	DEFGR6[0,0] 
+	LD	SLOT
+	ST	DEFGR6[0,1]
+	LD	-1
+	ST	DEFGR6[1,0]
+	ST	DEFGR6[1,1]
+	JMP	CONV
+
+NO6:
+
+(* raggruppamento 7 *)
+
+	LD	AX  
+	ST	DEFGR7[0,0] 
+	LD	SLOT
+	ST	DEFGR7[0,1]
+	LD	-1 
+	ST	DEFGR7[1,0]
+	ST	DEFGR7[1,1]
+
+CONV:
+
+	LD	CODICE
+	EQ	0
+	JMPCN	NOC0
+	
+(* posizionamento assoluto *)
+	
+	LD	0   
+	ST	FLAGS[SLOT]
+
+	JMP	NOCV
+	
+NOC0:
+	LD	CODICE
+	EQ	1
+	JMPCN	NOC1
+	
+(* posizionamento incrementale *)
+	
+	LD	1   
+	ST	FLAGS[SLOT]
+	JMP	NOCV
+	
+NOC1:	LD	CODICE
+	EQ	2
+	JMPC	SIC2  
+	
+(* Codice errato *)
+	
+	LD	1
+	ST	FINEMDI
+	LD	2
+	ST	RESULT		(* Out di dati in input errati *)
+	LD	0
+	ST	FASE
+	LD	1
+	ST	ERROMDI
+	JMP	NOST
+	
+SIC2:
+	LD	2
+	ST	FLAGS[SLOT]
+
+NOCV:	
+	LD	SIVE
+	JMPCN	NOSIVE
+	
+	LD	FLAGS[SLOT]
+	ADD	4
+	ST	FLAGS[SLOT] 
+	
+NOSIVE:
+	LD	SIAC
+	JMPCN	NOSIAC
+	
+	LD	FLAGS[SLOT]
+	ADD	8
+	ST	FLAGS[SLOT]
+	
+NOSIAC:
+	LD	SIAN
+	JMPCN	NOSIAN
+	
+	LD	FLAGS[SLOT]
+	ADD	16
+	ST	FLAGS[SLOT]
+
+NOSIAN:	LD	QUOTAX
+	ST	QUOTA[SLOT]		   
+	LD	VELX
+	ST	VEL[SLOT]
+	LD	ACCX
+	ST	ACCEL[SLOT]
+	LD	ANTX
+	ST	ANT[SLOT]
+	LD	1
+	ST	START_GRU[RAGGR]
+	LD	2
+	ST	FASE		(* set fase 2 = attesa ACK_GRU o NOMOV *)
+	JMP	NOST
+
+NOF1:	LD	FASE
+	EQ	2
+	JMPCN	NOF2
+
+(* Fase attesa ACK_GRU o NOMOV *)
+
+	LD	NOMOV[RAGGR]        
+	JMPCN	NONO	
+		
+	LD	1    
+	ST	FINEMDI
+	ST	ERROMDI
+	LD	0  
+	ST	FASE
+	ST	START_GRU[RAGGR]
+	LD	1
+	ST	RESULT			(* Out di rilevazione NOMOV *)
+	JMP	NOST
+
+NONO:	LD	ACK_GRU[RAGGR]
+	JMPCN	NOST
+	
+	LD	0
+	ST	START_GRU[RAGGR]
+	LD	3
+	ST	FASE
+	JMP	NOST
+
+NOF2:	LD	FASE
+	EQ	3
+	JMPCN	NOST    
+	
+(* Fase attesa ACK_GRU=0 (fase=3) *)
+	
+	LD	ACK_GRU[RAGGR]     
+	JMPC	NOST
+
+	LD	1
+	ST	FINEMDI
+	LD	0
+	ST	FASE
+	ST	RESULT
+	ST	ERROMDI
+	LD	STOP_GRU[RAGGR]
+	JMPCN	NOST
+
+	LD	0
+	ST	STOP_GRU[RAGGR]
+	LD	5
+	ST	RESULT
+
+NOST:
+
+(* Gestione STOP_GRU *)
+
+	LD	RESET
+	JMPCN	FINE1
+	LD	FASE
+	EQ	3
+	JMPCN	FINE1
+
+	ST	STOP_GRU[RAGGR]
+FINE1:
+
+
+END_FUNCTION_BLOCK
+
+
+FUNCTION_BLOCK OSCIAX
+
+  VAR
+	AMPOS : REAL:= 0.0;  (* Ampiezza oscillazione *)
+	DELTAOS : REAL:= 0.0;  (* Step di spostamento oscillazione *)
+	ENDPOS : BOOL:= 0;  (* Fronte down ACK_GRU = Asse OS pos. *)
+	ENDTIME : BOOL:= 0;  (* Fine tempo di attesa *)
+	FL_FREC : BOOL:= 0;  (* Freccia ON di Inizio/Fine *)
+	FRECC_A : REAL:= 0.0;  (* Freccia di Apertura *)
+	FRECC_C : REAL:= 0.0;  (* Freccia di Chiusura *)
+	GOPOS : BOOL:= 0;  (* Fronte up ACK_GRU = Asse OS com. *)
+	GOTIME : BOOL:= 0;  (* Start timer attesa SX,CR,DX *)
+	PRIMOOS : BOOL:= 0;  (* Primo posizionamento *)
+	QTAOS : REAL:= 0.0;  (* Quota obiettivo *)
+	RUN_OSC : BOOL:= 0;  (* Flags di oscillatore in start *)
+	TMPCR : DINT:= 0;  (* Tempo attesa al Centro *)
+	TMPDX : DINT:= 0;  (* Tempo di attesa Destra *)
+	TMPSX : DINT:= 0;  (* Tempo attesa SX *)
+	ULTIMOS : BOOL:= 0;  (* Ultimo posizionamento *)
+	VALTIME : DINT:= 0;  (* Valore di attesa (millisecondi) *)
+	VELOS : REAL:= 0.0;  (* Velocita' Oscillazione *)
+	ATTESA : TON;
+	FS_ACKG : R_TRIG;
+	FD_ACKG : F_TRIG;
+  END_VAR
+
+  VAR_INPUT
+	AMPO : REAL:= 0.0;  (* Ampiezza Oscillazione *)
+	AXOS : DINT:= 0;  (* Numero d'Ordine Asse Oscillatore *)
+	FRCA : REAL:= 0.0;  (* Freccia di apertura *)
+	FRCC : REAL:= 0.0;  (* Freccia di chiusura *)
+	STARTO : BOOL:= 0;  (* Abilitazione START oscillatore *)
+	STOPO : BOOL:= 0;  (* Abilitazione STOP oscillatore *)
+	TACR : DINT:= 0;  (* Tempo attesa Centro *)
+	TADX : DINT:= 0;  (* Tempo attesa Sx *)
+	TASX : DINT:= 0;  (* Tempo attesa Sx *)
+	VELO : REAL:= 0.0;  (* Velocita' oscillazione *)
+  END_VAR
+
+
+(* --------------------------------------------------------- *)
+(*      Versione 2.0                                         *)
+(*      Function block di gestione                           *)
+(*      movimentazione asse oscillante                       *)
+(*	Se STARTO=STOPO=1 --> modifica dati oscillatore      *)
+(*      N.B. Usa il raggruppamento numero 7                  *)
+(*                                                           *)
+(*	INPUT:  STARTO=abilitazione start oscillatore        *)
+(*		STOPO=abilitazione stop oscillatore          *)
+(*		AXOS=numero asse che deve oscillare          *)
+(*		AMPO=ampiezza oscillazione                   *)
+(*		VELO=velocita' oscillazione                  *)
+(*		TASX=tempo attesa sx                         *)
+(*		TACR=tempo attesa centro                     *)
+(*		TADX=tempo attesa sx                         *)
+(*		FRCA=freccia di apertura                     *)
+(*		FRCC=freccia di chiusura                     *)
+(*	OUTPUT:	Nessuno	                                     *)
+(* --------------------------------------------------------- *)
+
+
+(* Gestione Timer di attesa Sinistra Centro Destra *)
+(* ----------------------------------------------- *)
+
+	LD	GOTIME
+	ST	ATTESA.IN
+	LD	VALTIME
+	ST	ATTESA.PT
+	CAL	ATTESA		(* FUNCTION BLOCK TON *)
+	LD	ATTESA.Q
+	ST	ENDTIME
+
+(* Rilevazione fronti salita e discesa ACK_GRU[7] *)
+(* ---------------------------------------------- *)
+
+	LD	ACK_GRU[7]
+	ST	FD_ACKG.CLK
+	CAL	FD_ACKG		(* FUNCTION BLOCK F_TRIG *)
+	LD	FD_ACKG.Q
+	ST	ENDPOS
+
+	LD	ACK_GRU[7]
+	ST	FS_ACKG.CLK
+	CAL	FS_ACKG		(* FUNCTION BLOCK R_TRIG *)
+	LD	FS_ACKG.Q
+	ST	GOPOS
+
+(* Rilevazione abilitazioni start, stop  e modifica *)
+(* ------------------------------------------------ *)
+
+	LD	STARTO
+	JMPC	SI_STR
+
+	LD	STOPO
+	ANDN	STARTO
+	JMPC	SI_STP
+	JMP	NOFSSTM
+
+(* --------------------------------------------------- *)	
+(* Rilevazione START/MOD: leggi dati e start asse OS=0 *)
+(* --------------------------------------------------- *)
+
+SI_STR:	LD	AXOS
+	ST	DEFGR7[0,0]	(* Asse da posizionare=OS *)
+	LD	7
+	ST	DEFGR7[0,1]	(* Indice tabella dati *)
+	LD	-1
+	ST	DEFGR7[1,0]  	(* Fine tabella *)
+	LD	4
+	ST	FLAGS[7]	(* Mov. assoluto con velocita' *)
+	LD	AMPO		(* Ampiezza Oscillazione *)
+	DIV_REAL 2.0
+	ST	AMPOS
+	LD	VELO		(* Velocita' oscillazione *)
+	ST	VELOS
+	LD	TASX		(* Tempo attesa Sx *)
+	ST	TMPSX
+	LD	TACR		(* Tempo attesa Centro *)
+	ST	TMPCR
+	LD	TADX		(* Tempo attesa Dx *)
+	ST	TMPDX
+	LD	FRCA		(* Freccia di apertura *)
+	ST	FRECC_A
+	ST	FRECC_C
+	LD	AMPOS
+	DIV_REAL FRECC_A
+	ST	DELTAOS
+	LD	VELOS
+	ST	VEL[7]      	(* Velocita' oscillazione *)
+	LD	STOPO
+	AND	RUN_OSC
+	JMPC	MODOSC		(* Salta se modifica *)
+	LD	AMPOS
+	EQ	0
+	JMPC	NOFSSTM		(* Salta se non c'e' oscillazione *)
+	LD	0.0
+	ST	QTAOS
+	ST	QUOTA[7]   	(* Prima quota obiettivo *)
+	LD	1
+	ST	START_GRU[7]	(* Start posizionamento asse *)
+	LD	1
+	ST	FL_FREC		(* Set 'Freccia' di inizio *)
+	ST	PRIMOOS		(* Set primo posizionamento *)
+	ST	RUN_OSC		(* Set oscillatore in start *)
+	JMP	NOFSSTM
+
+(* Gestione modifica valori oscillazione *)
+
+MODOSC:	LD	FL_FREC
+	JMPC	NOFSSTM
+	LD	AMPOS
+	ST	QTAOS
+	JMP	NOFSSTM
+
+(* ----------------------------------------- *)
+(* Rilevazione STOP: innesca fermata asse OS *)
+(* ----------------------------------------- *)
+
+SI_STP:	LD	FRCC		(* Freccia di chiusura *)
+	ST	FRECC_C
+	LD	AMPOS
+	DIV_REAL FRECC_C
+	MUL_REAL -1.0
+	ST	DELTAOS
+	LD	1
+	ST	FL_FREC		(* Set 'Freccia di fine' *)
+
+NOFSSTM:
+
+(* -------------------------------- *)
+(* Rilevazione Timer Attesa scaduto *)
+(* -------------------------------- *)
+
+	LD	ENDTIME
+	AND	RUN_OSC
+	JMPCN	NOENDT
+
+	LD	0
+	ST	GOTIME		(* Reset timer *)
+	LD	QUOTA[7]
+	EQ	0
+	JMPC	NOTCR		(* Salta se QUOTA[7]==0 *)
+	LD	QUOTA[7]
+	LT_REAL	0.0
+	JMPC	NOTSX		(* Salta se QUOTA[7]<0 *)
+	LD	QUOTA[7]
+	GT_REAL	0.0
+	JMPC	NOTDX		(* Salta se QUOTA[7]>0 *)
+	JMP	NOTCR		(* Salta perche' QUOTA[7]==0 *)
+NOENDT:
+
+(* ---------------------------- *)
+(* Gestione asse OS posizionato *)
+(* ---------------------------- *)
+
+	LD	ENDPOS		(* Fronte discesa ACK_GRU[7] *)
+	AND	RUN_OSC
+	JMPCN	NOENDP
+
+	LD	QUOTA[7]
+	EQ	0
+	JMPC	OSCR		(* Salta se QUOTA[7]==0 *)
+	LD	QUOTA[7]
+	LT_REAL	0.0
+	JMPC	OSSX		(* Salta se QUOTA[7]<0 *)
+	LD	QUOTA[7]
+	GT_REAL	0.0
+	JMPC	OSDX		(* Salta se QUOTA[7]>0 *)
+	JMP	OSCR		(* Salta perche' QUOTA[7]==0 *)
+
+(* Asse OS posizionato a DX *)
+(* ------------------------ *)
+
+OSDX:	LD	TMPDX
+	EQ	0
+	JMPC	NOTDX          (* Salta se Tempo attesa DX=0 *)
+
+(* Fai partire il timer di attesa a Destra *)
+
+	LD	TMPDX
+	ST	VALTIME
+	LD	1
+	ST	GOTIME         (* Start timer per l'attesa DX *)
+	JMP	NOENDP
+
+(* Comanda il posizionamento al Centro o a Sinistra *)
+
+NOTDX:	LD	TMPCR
+	EQ	0
+	JMPC	OSQSX         	(* Salta se Tempo attesa CR=0 *)
+	JMP	OSQCR        	(* Start OS al centro *)
+
+(* Asse OS posizionato a SX *)
+(* ------------------------ *)
+
+OSSX:	LD	TMPSX
+	EQ	0
+	JMPC	NOTSX           (* Salta se Tempo attesa SX=0 *)
+
+(* Fai partire il timer di attesa a Sinistra *)
+
+	LD	TMPSX
+	ST	VALTIME
+	LD	1
+	ST	GOTIME         	(* Start timer per l'attesa SX *)
+	JMP	NOENDP
+
+(* Comanda il posizionamento al Centro o a Destra *)
+
+NOTSX:	LD	TMPCR
+	EQ	0
+	JMPC	OSQDX         	(* Salta se Tempo attesa CR=0 *)
+	JMP	OSQCR        	(* Start OS al centro *)
+	
+(* Asse OS posizionato al Centro *)
+(* ----------------------------- *)
+
+OSCR:	LD	PRIMOOS
+	JMPC	PRIMOP		(* Salta se primo posiz. *)
+	LD	ULTIMOS
+	JMPC	ULTIMP		(* Salta se ultimo posiz. *)
+	LD	TMPCR
+	EQ	0
+	JMPC	NOTCR           (* Salta se Tempo attesa CR=0 *)
+
+(* Fai partire il timer di attesa al Centro *)
+
+	LD	TMPCR
+	ST	VALTIME
+	LD	1
+	ST	GOTIME         	(* Start timer per l'attesa CR *)
+	JMP	NOENDP
+	
+(* Gestione primo ed ultimo posizionamento *)
+
+PRIMOP:	LD	0
+	ST	PRIMOOS
+	JMP	OSQSX		(* Comanda primo posiz. a SX *)
+ULTIMP:	LD	0
+	ST	ULTIMOS
+	ST	RUN_OSC		(* Reset oscillatore in start *)
+	ST	FL_FREC		(* Reset 'Freccia' attiva *)
+	JMP	NOENDP		(* Fine dell'oscillazione *)
+	
+(* Comanda il posizionamento a Sinistra o a Destra *)
+
+NOTCR:	LD	QTAOS
+	LT_REAL	0.0
+	JMPC	OSQDX		(* Salta se QTAOS<0->Vai a DX *)
+
+(* Posizionamento a Sinistra *)
+(* ------------------------- *)
+
+OSQSX:	LD	FL_FREC
+	JMPCN	NOFREC		(* Salta se no 'Freccia' *)
+	
+	LD	QTAOS
+	ADD_REAL DELTAOS
+	GT_REAL	AMPOS
+	JMPC	MAG_OS		(* Salta se va oltre AMPOS *)
+
+	LD	QTAOS
+	ADD_REAL DELTAOS
+	LT_REAL	0.0
+	JMPC	MIN_0		(* Salta se minore di zero *)
+
+	LD	QTAOS
+	ADD_REAL DELTAOS
+	MUL_REAL -1.0
+	JMP	SIQOS
+	
+MAG_OS:	LD	0
+	ST	FL_FREC		(* Set fine 'Freccia' *)
+	LD	AMPOS
+	MUL_REAL -1.0
+	JMP	SIQOS
+	
+MIN_0:	LD	1
+	ST	ULTIMOS
+	LD	0
+	ST	FL_FREC		(* Set fine 'Freccia' *)
+	LD	0.0
+	JMP	SIQOS
+
+NOFREC:	LD	QTAOS
+	MUL_REAL -1.0
+SIQOS:	ST	QTAOS
+	ST	QUOTA[7]
+	LD	1
+	ST	START_GRU[7]	(* Start posizionamento OS=SX *)
+	JMP	NOENDP
+
+(* Posizionamento a Destra *)
+(* ----------------------- *)
+	
+OSQDX:	LD	QTAOS
+	MUL_REAL -1.0
+	ST	QTAOS
+	ST	QUOTA[7]
+	LD	1
+	ST	START_GRU[7]	(* Start posizionamento OS=DX *)
+	JMP	NOENDP
+
+(* Posizionamento al Centro *)
+(* ------------------------ *)
+	
+OSQCR:	LD	0.0
+	ST	QTAOS
+	ST	QUOTA[7]
+	LD	1
+	ST	START_GRU[7]	(* Start posizionamento OS=CR *)
+
+NOENDP:	LD	RUN_OSC
+	JMPCN	NOOSC
+
+(* Handshake con CN per posizionamento OS *)
+(* -------------------------------------- *)
+
+	LD	GOPOS		(* Fronte salita ACK_GRU[7] *)
+	R	START_GRU[7]
+	LD	ENDPOS		(* Fronte discesa ACK_GRU[7] *)
+	R	STOP_GRU[7]
+
+NOOSC:
+
+END_FUNCTION_BLOCK

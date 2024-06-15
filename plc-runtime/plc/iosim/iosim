@@ -1,0 +1,136 @@
+#!../wishDeb/wishDeb
+
+
+
+
+######################################
+#                                    #
+#  Definizione var globali           #
+#				     #
+######################################
+
+
+global tcl_platform VERSIONE HOME Congela NomeFile AutoCaricamento
+global Lingua font_usato font_fisso FileLingua SAVEPATH
+
+
+###########################################
+
+
+
+set VERSIONE "1.2.0.1"
+
+
+###########################################
+
+
+	#########
+	#       #
+	# MAIN	#
+	#	#
+	#########
+
+
+#  INIZIALIZZO LE VARIABILI DI AMBIENTE
+if { $tcl_platform(platform) == "unix" } {
+# UNIX
+	set HOME .
+	set SAVEPATH /home/d_xnc/plc
+  	set font_usato -adobe-helvetica-medium-r-normal--*-100-*-*-*-*-iso8859-*
+	set font_fisso -misc-fixed-medium-r-normal-*-*-*-*-*-*-*-*-*
+     } else {
+# WINDOWS
+	set HOME C:\home\iosim
+	set SAVEPATH C:\
+  	set font_usato -adobe-helvetica-medium-r-normal--*-140-*-*-*-*-iso8859-*
+	set font_fisso -misc-fixed-medium-r-normal-*-*-*-*-*-*-*-*-*
+
+	#####################################
+	# carico dal registro di windows 95 #
+	# il path di installazione	    #
+	#####################################
+	ReadDefaults
+}
+
+if [file exist $HOME/default] {
+  # Caricamento default
+  source $HOME/default
+} 
+
+# Aggiungo al percorso di ricerca sub anche ./lib
+set Ios_tools_library "$HOME/lib"
+set auto_path [concat [list $Ios_tools_library] $auto_path]
+
+
+
+##############################
+# Apertura file delle lingue #
+##############################
+
+if [file exist $HOME/lin_iosim] {
+  set fId [open $HOME/lin_iosim r]
+  set FileLingua [read $fId]
+  close $fId
+} else {
+ puts "errore caricamento lingue"
+}
+
+
+# setto la possibilita' di attivare i bottoni con Enter
+bind Button <Return> {
+    %W invoke
+}
+
+# set Default a plc non collegato
+
+set Congela True
+
+wm withdraw .
+set w .iosim
+toplevel $w 
+bind $w <Destroy> {exit}
+wm title $w "[CaricaLingua $FileLingua Titolo]                   \
+			(iosim [CaricaLingua $FileLingua Versione] $VERSIONE)"
+
+###################################
+# Analisi delle opzioni di lancio #
+###################################
+
+# argv ==> lista con gli argomenti della linea di comando
+# argc ==> numero elementi nella lista
+
+InterpretaOpzioni $w $argv $argc
+
+
+
+
+set IconBitmap $HOME/icone/iosim.xbm
+if [file exist $IconBitmap] {
+  wm iconbitmap $w "@$IconBitmap"
+}
+
+
+# carico le ICONE
+get_pixmaps $w
+
+# Scelta HOST da debuggare
+if { [SwitchHost $w ] != "OK" } {
+	exit
+	}
+
+# disegno la finestra principale
+windows $w 
+
+# wm geometry $w 640x480
+wm minsize $w 400 200
+
+Reload $w
+
+# Carico l'eventuale file dato con l'opzione -f
+if { $AutoCaricamento == "True" } {
+	set Matrice(NomeFile) $NomeFile
+	$Matrice(WidgetNomeFile) configure\
+              -text "[CaricaLingua $FileLingua Configuraz]: $Matrice(NomeFile)"
+	update idletasks
+	ApriPure
+	}

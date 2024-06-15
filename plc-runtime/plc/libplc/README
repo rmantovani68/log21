@@ -1,0 +1,394 @@
+
+
+Mon Dec 16 12:06:39 MET 1996
+
+                NOTE SUL DEBUG IN TEMPO REALE DI QPLC
+                -------------------------------------
+
+ Il debug in tempo reale di QPLC e` realizzato tramite oggetti che
+chiameremo "liste di watch", e consistono in insiemi di punti di break
+che l'esecutore inserisce "al volo" nel codice del programma. Ad ogni ciclo
+sono inseriti nel codice alle posizioni opportune i primi punti di break di
+ogni lista. L'attraversamento di un punto di break ne provoca la cancellazione,
+e l'inserimento del successivo della lista, o del primo se si quello corrente
+e` l'ultimo. Inoltre sono eseguite le azioni associate al break (tipicamente
+si tratta della registrazione del valore di alcuni operandi nell'area di
+debug). Opzionalmente, le azioni possono essere selettivamente legate
+al verificarsi di una condizione logica. Sia le azioni, sia la condizione
+logica sono caratteristiche della lista di watch, non del singolo breakpoint.
+ Le liste di watch permettono di osservare il comportamento di
+una sequenza di linee di programma IL. All'insieme di linee dovrebbe
+corrispondere un insieme di punti di break. Ogni punto di break e`
+associato alle seguenti informazioni :
+
+	indirizzo di break
+	operandi da registrare nell'area di debug
+
+ Gli operandi sono significativi solo se tra le azioni caratteristiche
+della lista di watch c'e` anche la registrazione dell'operando nell'area di
+debug (si parlera` piu` avanti dell'area di debug. Per ora e` sufficiente
+dire che si tratta di un blocco di memoria nel quale sono memorizzati in
+sequenza gli "eventi").
+ Alla lista di watch sono associate invece le seguenti informazioni :
+
+	azioni da eseguire
+	maschera per l'applicazione della condizione alle azioni
+	condizione da verificare
+	parametri per le azioni e la condizione
+
+ Esistono azioni per la registrazione di dati nell'area di debug, per
+l'lincremento di un contatore, per l'abilitazione di altre liste di watch
+e per la manipolazione di un registro di stato, contenente 32 flag che
+si possono utilizzare per la verifica di condizioni di break.
+ Tipicamente, per utilizzare una lista di watch si deve seguire questa
+procedura :
+
+	- Creazione di una lista. Si devono specificare le informazioni
+	caratteristiche della lista.
+	 Si ottiene un codice identificativo da utilizzare in seguito.
+	- Aggiunta dei breakpoint alla lista. Per ogni breakpoint,
+	 si specifichi la posizione di inserimento nel codice e
+	 le caratteristiche degli operandi da tracciare (sono ammessi
+	 "operandi nulli", che non producono registrazioni).
+	- Abilitazione della lista. L'esecutore inizia ad includere
+	 i breakpoint ed intercettarli.
+	- Lettura dell'area di debug.
+
+ Queste sono le funzioni che realizzano i passi descritti :
+
+ int plcCreateWatchList(watch_descr_t *wprop,int *pwid);
+ int plcDeleteWatchList(int wid);
+ int plcAddBreak(int wid,watch_t *brk);
+ int plcEnableWatchList(int wid);
+ int plcDisbleWatchList(int wid);
+
+ Tutte queste funzioni valgono 0 in caso di successo, altrimenti :
+ PLCERR_TIMEOUT : timeout nella comunicazione col PLC.
+ PLCERR_REMERR  : errore restituito dal kernel PLC.
+
+**********************************************************
+**********************************************************
+* int plcCreateWatchList(watch_descr_t *wprop,int *pwid) *
+**********************************************************
+**********************************************************
+
+ Questa funzione crea una nuova lista di watch vuota, avente le
+proprieta` descritte nella struttura puntata da "wprop". Nell'intero
+puntato da "pwid" e` restituito il codice identificativo del nuovo
+oggetto. Lo si dovra` utilizzare nelle successive operazioni.
+ La struttura "watch_descr_t" ha la forma seguente :
+
+typedef struct _watch_descr_t {
+
+/**********/
+/* AZIONI */
+/**********/
+
+	unsigned short act;
+
+/* Questo e` il significato dei bit di "act". Ogni bit ad 1 corrisponde ad
+ una diversa azione compiuta dal breakpoint. */
+#define WATCH_A_SET   0x01 /* FLAGS |= opa1 */
+#define WATCH_A_RESET 0x02 /* FLAGS &= ~opa2 */
+#define WATCH_A_TOOGGLE 0x04 /* FLAGS ^= opa2 */
+#define WATCH_A_INC   0x08 /* Incrementa il contatore associato alla lista
+                            di watch se si sta percorrendo il primo break
+                            della stessa. */
+#define WATCH_A_CYC   0x10 /* Registra il numero di ciclo corrente
+                            in un apposito campo della struttura di stato
+                            della lista di watch. */
+#define WATCH_A_LOG   0x20 /* Registra l'evento nel buffer di debug.
+                            Ogni breakpoint della lista scarichera` nell'area
+                            di debug gli operandi richiesti. */
+#define WATCH_A_LOGFL 0x40 /* Registra anche il valore di FLAGS nell'area
+                            di debug ogni volta che si attraversa il primo
+                            break della lista. */
+#define WATCH_A_BRK   0x80 /* Ripristina il watchpoint indicato da "apar". */
+
+/*************************/
+/* MASCHERA DELLE AZIONI */
+/*************************/
+
+/* Maschera delle azioni eseguite solo se la condizione e` vera */
+	unsigned short condact;
+/* I bit del campo "condact" servono a disattivare le corrispondenti
+ azioni in "act" quando la condizione descritta da "cond" e` falsa. */
+
+/**************/
+/* CONDIZIONI */
+/**************/
+
+	unsigned short cond;
+
+/* Questi sono i possibili valori del campo "cond" : */
+#define WATCH_C_FALSE 0x00 /* Condizione sempre falsa */
+#define WATCH_C_TRUE  0x01 /* Condizione sempre vera */
+#define WATCH_C_AND   0x02 /* Condizione vera se (FLAGS & opc) == opc */
+#define WATCH_C_OR    0x03 /* Condizione vera se (FLAGS & opc) != 0 */
+#define WATCH_C_NOR   0x04 /* Condizione vera se (FLAGS & opc) == 0 */
+#define WATCH_C_TGT   0x05 /* Condizione vera se ctot > opc */
+#define WATCH_C_TLE   0x06 /* Condizione vera se ctot <= opc */
+#define WATCH_C_TEQ   0x07 /* Condizione vera se ctot == opc */
+#define WATCH_C_CGT   0x08 /* Condizione vera se ccurr > opc */
+#define WATCH_C_CLE   0x09 /* Condizione vera se ccurr <= opc */
+#define WATCH_C_CEQ   0x0a /* Condizione vera se ccurr == opc */
+#define WATCH_C_RZ    0x0b /* Condizione vera se REG(opc) == 0 */
+#define WATCH_C_NRZ   0x0c /* Condizione vera se REG(opc) != 0 */
+#define WATCH_C_MZ    0x0d /* Condizione vera se MEM(opc) == 0 */
+#define WATCH_C_NMZ   0x0e /* Condizione vera se MEM(opc) != 0 */
+
+/* LEGENDA : "FLAGS" indica il registro dei flag di uso generale,
+             manipolabile dalle azioni WATCH_A_SET, _RESET e _TOOGGLE.
+             "ctot" indica il numero di passaggi per la lista
+             di watch da quando e` stata creata.
+             "ccurr" e` il numero di passaggi per la lista di watch
+             nel ciclo di Plc corrente.
+             "ctot" e "ccurr" sono incrementati dall'azione WATCH_A_INC.
+             REG(x) indica il registro di CPU "x".
+             MEM(x) indice il byte di indirizzo "x". */
+
+/********************************/
+/* PARAMETRO PER L'AZIONE "BRK" */
+/********************************/
+
+/* Eventule parametro associato all'azione, utilizzato per ora
+ solo dall'azione WATCH_A_BRK. */
+
+	unsigned short apar;
+
+/************/
+/* OPERANDI */
+/************/
+
+	unsigned long opc;      /* Operando utilizzato nella valutazione
+                                 delle condizioni. */
+	unsigned long opa1;     /* Operando utilizzato dall'azione "SET". */ 
+	unsigned long opa2;     /* Operando utilizzato dalle azioni "RESET"
+                                 e "TOOGGLE". */
+} watch_descr_t;
+
+ 
+***********************************
+***********************************
+* int plcDeleteWatchList(int wid) *
+***********************************
+***********************************
+
+ Questa funzione rimuove la lista di watch "wid".
+
+
+*****************************************
+*****************************************
+* int plcAddBreak(int wid,watch_t *brk) *
+*****************************************
+*****************************************
+
+ Questa funzione aggiunge il breakpoint descritto dalla struttura puntata
+da "brk" alla lista di break "wid". La struttura descrivente il breakpoint
+e` la seguente :
+
+typedef struct _watch_t {
+/* Posizione in memoria : indirizzo assoluto del breakpoint
+ nello spazio di indirizzamento del Plc. */
+	unsigned char * addr;
+/* Descrizione dell'operando da seguire (perche` sia gestito, deve essere
+ attivata l'azione WATCH_A_LOG nella descrizione della lista di watch). */
+	i386_operand_t operand;
+} watch_t;
+
+ La struttura "operand" descrive l'operando o gli operandi che si desidera
+siano copiati nell'area di debug. Ha la seguente forma :
+
+typedef struct _i386_operand_t {
+	char r1; /* 0 : ignorare. */
+	char r2; /* 0 : ignorare. */
+	char scale; /* Se == 0, accesso diretto ad r1 ed r2 */
+	char size; /* Se == 0, non e` richiesta alcuna registrazione. */
+	unsigned long off; /* Offset, eventualmente nullo. */
+
+	char ar;  /* Altro registro da osservare. */
+	          /* Non fa parte dell'indirizzo. */
+	          /* 0 : ignorare. */
+} i386_operand_t;
+
+ I campi "r1","r2","scale" ed "off" codificano il caso piu` generale
+di indirizzamento riconosciuto dalle istruzioni del processore Intel 386
+e dai suoi successori. La CPU calcola l'indirizzo finale dell'operando
+secondo l'espressione seguente :
+
+           indirizzo = registro[r1] + registro[r2]*scale + off
+
+ dove "scale" puo` valere 1,2,4 o 8. "0" in "r1" o "r2" fa si` che
+il corrispondente registro non sia considerato nel calcolo (si assume
+il valore 0 al suo posto). Se "scale" vale 0, l'esecutore copiera`
+nell'area di debug il valore dei registri "r1" ed "r2" anziche` il contenuto
+della memoria.
+ Il campo "size" contiene la dimensione dell'operando in byte. Se vale 0,
+l'esecutore non aggiungera` alcunche` all'area di debug.
+ Il campo "ar" contiene l'indice di un ulteriore registro che il debugger
+dovra` copiare nell'area di debug, oppure 0 se la prestazione non interessa.
+ Gli indici da utilizzare per i registri sono codificati in "plclink.h",
+ed hanno la forma "R_nome_del_registro" (per esempio "R_EAX"). Queste
+costanti seguono le stesse convenzioni utilizzate dal compilatore IL nella
+generazione della informazioni di debug (simboli "$VA..."), cosicche` si
+possono ricavare da queste gli indici dei registri semplicemente sottraendo
+il carattere '0' dai caratteri che codificano i registri nella symbol table.
+
+***********************************
+***********************************
+* int plcEnableWatchList(int wid) *
+* int plcDisbleWatchList(int wid) *
+***********************************
+***********************************
+
+ Queste due funzioni abilitano o disabilitano la lista di watch "wid".
+ Ad una lista abilitata non si possono aggiungere nuovi break.
+ Una lista disabilitata non e` cancellata, ma semplicemente resa
+temporaneamente inattiva.
+
+**************************************
+**************************************
+* brk_event * plcGetDebugEvent(void) *
+**************************************
+**************************************
+
+ Questa funzione fornisce un puntatore al prossimo evento letto dall'area
+di debug. Il puntatore si riferisce ad una copia dell'area di debug allocata
+dinamicamente dalla libreria stessa la prima volta che e` chiamata questa
+funzione. Letture successive danno successivi eventi verificatisi nello
+stesso ciclo di Plc, oppure NULL se non ci sono altri eventi relativi
+al ciclo. Si usi la funzione "plcLastDebugEventList" per caricare una nuova
+lista di eventi (cioe` quella relativa all'ultimo ciclo di Plc occorso).
+ In caso di successo, questa funzione restituisce il puntatore ad
+una struttura che descrive l'evento, che ha la forma seguente :
+
+typedef struct _brk_event {
+/* Dimensione dell'intera struttura. Posso pretendere che si salvino
+ comunque meno di 64k di dati in un colpo solo ? */
+	unsigned short be_size;
+/* Indice della lista di watch, come ottenuto da "plcCreateWatchList". */
+	char be_id;
+/* ZERO o piu` byte di dati. Sono i valori delle variabili o dei registri. */
+	char be_data[1]; /* Trucco ! E` un campo di dimensione variabile */
+} brk_event;
+
+ E` cura del chiamante interpretare correttamente i dati in "be_data".
+ Il kernel di Qplc scrive in questo campo i valori degli operandi specificati
+nei punti di break nell'ordine in cui i punti stessi sono attraversati.
+
+************************************************
+************************************************
+* brk_event_list * plcLastDebugEventList(void) *
+************************************************
+************************************************
+
+ Questa funzione copia in un'area privata (allocata dinamicamente 
+dalla libreria stessa la prima volta che e` chiamata questa
+funzione, e ogni volta che e` chiamata la "plcResetDebugEventList")
+l'ultima lista di eventi prodotta dal Plc. La funzione vale NULL
+se non ci sono eventi, se ci sono errori (mancanza di memoria o dell'area
+di debug del Plc), oppure se, dalla precedente chiamata della funzione,
+non si sono piu` verificati eventi di debug.
+ La lista di eventi immagazzinata puo` essere esplorata con la
+funzione "plcGetDebugEvent".
+ In caso di successo, questa funzione restituisce il puntatore ad
+una struttura che descrive la lista di eventi, ed ha la forma seguente :
+
+typedef struct _brk_event_list {
+/* Dimensione dell'intero blocco di dati. */
+	unsigned long bl_size;
+/* Ciclo di Plc durante il quale sono stati registrati gli eventi. */
+	unsigned long bl_cycle;
+/* Lista degli eventi. Ce ne sara` sempre almeno uno. */
+	brk_event bl_event[1]; /* Il solito trucco. */
+} brk_event_list;
+
+ L'unico campo interessante e` "bl_cycle", che registra il numero
+di ciclo di Plc al quale si riferiscono gli eventi. Gli altri campi
+non dovrebbero essere utilizzati direttamente dal programmatore, perche`
+il loro significato potrebbe cambiare in futuro. La funzione
+"plcGetDebugEvent" dovrebbe essere sufficiente per esplorare in modo
+pulito la lista di eventi.
+
+************************************
+************************************
+* int plcResetDebugEventList(void) *
+************************************
+************************************
+
+ Questa funzione dovrebbe essere chiamata se, dopo che si sono verificati
+errori gravi nel colloquio col Plc (quelli che tipicamente fanno apparire
+il semaforo giallo), si ripristina la normalita`. In situazioni di questo
+tipo, il sistema di accesso all'area di debug deve essere reinizializzato,
+perche` i segnali di scambio utilizzati dalla libraria potrebbero essere
+stati ridefiniti con caratteristiche diverse, per esempio a seguito di
+un'interruzione e successiva ripartenza, con opzioni diverse, di qplc.
+ Nel funzionamento ordinario del Plc, questa funzione non dovrebbe mai
+essere necessaria.
+ Questa funzione vale 0 in caso di successo, -1 in caso di errore (mancanza
+di memoria, o assenza dei segnali di scambio di debug).
+
+*************************************************************
+*************************************************************
+* brk_history * plcLoadDebugHistory(brk_event_list ** p_el) *
+*************************************************************
+*************************************************************
+
+ Questa funzione copia in un'area privata (allocata dinamicamente 
+dalla libreria stessa la prima volta che e` chiamata questa
+funzione, e ogni volta che e` chiamata la "plcResetDebugEventList")
+l'insieme delle liste di eventi immagazzinate dal Plc. La funzione vale NULL
+se non ci sono eventi, se ci sono errori (mancanza di memoria o dell'area
+di debug del Plc), oppure se, dalla precedente chiamata della funzione,
+non si sono piu` verificati eventi di debug.
+ Il parametro "p_el", se diverso da NULL, deve puntare ad una variabile
+nella quale la funzione scarichera` il puntatore al descrittore dell'ultimo
+evento trovato, oppure NULL se, dalla chiamata precedente, non si sono
+verificati nuovi eventi. Di fatto, e` lo stesso risultato che restituirebbe
+la funzione "plcLastDebugEventList", di cui questa e` un'estensione.
+ L'insieme delle liste puo` essere esplorato con la funzione
+"plcIndexDebugEventList", che permette di spostare il puntatore di lettura
+delle liste in una posizione specificata.
+ Ogni lista di eventi immagazzinata puo` essere esplorata con la
+funzione "plcGetDebugEvent".
+ In caso di successo, questa funzione restituisce il puntatore ad
+una struttura che descrive l'insieme di liste di eventi, ed ha la forma
+seguente :
+
+typedef struct _brk_history {
+/* Ciclo di Plc corrispondente al primo degli eventi registrati. */
+	unsigned long bh_first_cycle;
+/* Ciclo di Plc corrispondente all'ultimo degli eventi registrati. */
+	unsigned long bh_last_cycle;
+/* Numero di liste di eventi registrate. */
+	int bh_list_count;
+} brk_history;
+
+******************************************************
+******************************************************
+* brk_event_list * plcIndexDebugEventList(int index) *
+******************************************************
+******************************************************
+
+ Questa funzione sposta la posizione di lettura delle liste di eventi
+al posto "index". La lista di eventi selezionata puo` essere esplorata con la
+funzione "plcGetDebugEvent".
+ In caso di successo, questa funzione restituisce il puntatore ad
+una struttura che descrive l'insieme di liste di eventi, altrimenti vale NULL.
+
+
+ L'area di debug consiste in un insieme di segnali di scambio speciali,
+ai quali la libreria accede per ricavare le liste degli eventi. Il file
+"plclink.h" contiene le definizioni dei loro nomi :
+
+#define DEBSHV_CYCLE  "$DEB_CYCLE"    /* Ciclo corrente (long) */
+#define DEBSHV_BUFFER "$DEB_BUFFER"   /* Area contenente gli eventi. */
+#define DEBSHV_BSIZE  "$DEB_BSIZE"    /* Dimensione dell'area degli eventi. */
+#define DEBSHV_EVENTS "$DEB_EVENTS"   /* Puntatori agli insiemi di eventi */
+                                      /* dello stesso ciclo (long). Vale */
+                                      /* -1 se non punta a niente di valido. */
+#define DEBSHV_NEVT   "$DEB_NEVT"     /* Numero di elementi di $DEB_EVENTS. */
+#define DEBSHV_LASTEV "$DEB_LASTEV"   /* Ultimo elemento di $DEB_EVENTS */
+                                      /* aggiornato dal PLC. */
+
+

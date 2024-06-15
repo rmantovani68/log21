@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/easy-picking/edit">
+    <file preprocess="xml-stripblanks">main-window.ui</file>
+    <file preprocess="xml-stripblanks">edit-collo-window.ui</file>
+    <file preprocess="xml-stripblanks">edit-imballo-window.ui</file>
+    <file preprocess="xml-stripblanks">edit-operatore-window.ui</file>
+    <file preprocess="xml-stripblanks">edit-opeset-window.ui</file>
+    <file preprocess="xml-stripblanks">edit-ordine-window.ui</file>
+    <file preprocess="xml-stripblanks">edit-prodotto-window.ui</file>
+    <file preprocess="xml-stripblanks">edit-ubicazione-window.ui</file>
+    <file preprocess="xml-stripblanks">edit-settore-window.ui</file>
+    <file preprocess="xml-stripblanks">search-window.ui</file>
+    <file>edit.css</file>
+  </gresource>
+  <gresource prefix="/images">
+    <file>../../images/ael_logo.png</file>
+    <file>../../images/ael_logo_small.png</file>
+    <file>../../images/cobo-logo.png</file>
+    <file>../../images/easy-picking.png</file>
+    <file>../../images/gdm-foot-logo.png</file>
+    <file>../../images/gnome-64.png</file>
+    <file>../../images/gnome-about-logo.png</file>
+    <file>../../images/logo-64x64.png</file>
+    <file>../../images/logo_azienda-64x64.png</file>
+    <file>../../images/logo-gnome.png</file>
+    <file>../../images/logo-mondadori.png</file>
+    <file>../../images/logo-mondadori-small.png</file>
+    <file>../../images/mondadori.png</file>
+    <file>../../images/Package.png</file>
+    <file>../../images/postgresql-elephant-medium.png</file>
+    <file>../../images/postgresql-elephant.png</file>
+    <file>../../images/postgresql-elephant-small.png</file>
+    <file>../../images/rcs-logo.png</file>
+    <file>../../images/vt3-logo-64x64.png</file>
+  </gresource>
+</gresources>

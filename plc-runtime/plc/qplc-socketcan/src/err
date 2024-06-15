@@ -1,0 +1,603 @@
+In file included from main.c:163:
+qplc.h:91:19: nvram.h: No such file or directory
+In file included from main.c:163:
+qplc.h:354: error: parse error before "nvram_t"
+qplc.h:354: warning: no semicolon at end of struct or union
+qplc.h:357: error: parse error before "nvram2"
+qplc.h:357: warning: type defaults to `int' in declaration of `nvram2'
+qplc.h:357: warning: data definition has no type or storage class
+qplc.h:504: error: parse error before '}' token
+qplc.h:504: warning: type defaults to `int' in declaration of `qplc_statics'
+qplc.h:504: warning: data definition has no type or storage class
+qplc.h:511: error: parse error before "main_status"
+qplc.h:511: warning: type defaults to `int' in declaration of `main_status'
+qplc.h:511: warning: data definition has no type or storage class
+main.c:180: error: parse error before "main_status"
+main.c:180: warning: type defaults to `int' in declaration of `main_status'
+main.c:180: warning: redundant redeclaration of `main_status' in same scope
+qplc.h:511: warning: previous declaration of `main_status'
+main.c:180: warning: data definition has no type or storage class
+main.c:212: warning: initialization discards qualifiers from pointer target type
+main.c:213: warning: initialization discards qualifiers from pointer target type
+main.c:215: error: request for member `blocking_pipe' in something not a structure or union
+main.c:215: error: initializer element is not constant
+main.c:215: error: (near initialization for `options[0].param1')
+main.c:217: error: initializer element is not constant
+main.c:217: error: (near initialization for `options[0]')
+main.c:218: warning: initialization discards qualifiers from pointer target type
+main.c:219: warning: initialization discards qualifiers from pointer target type
+main.c:221: error: request for member `chkaddr' in something not a structure or union
+main.c:221: error: initializer element is not constant
+main.c:221: error: (near initialization for `options[1].param1')
+main.c:223: error: initializer element is not constant
+main.c:223: error: (near initialization for `options[1]')
+main.c:224: warning: initialization discards qualifiers from pointer target type
+main.c:225: warning: initialization discards qualifiers from pointer target type
+main.c:227: error: request for member `debug' in something not a structure or union
+main.c:227: error: initializer element is not constant
+main.c:227: error: (near initialization for `options[2].param1')
+main.c:229: error: initializer element is not constant
+main.c:229: error: (near initialization for `options[2]')
+main.c:230: warning: initialization discards qualifiers from pointer target type
+main.c:231: warning: initialization discards qualifiers from pointer target type
+main.c:233: error: request for member `debug_buffer_size' in something not a structure or union
+main.c:233: error: initializer element is not constant
+main.c:233: error: (near initialization for `options[3].param1')
+main.c:235: error: initializer element is not constant
+main.c:235: error: (near initialization for `options[3]')
+main.c:236: warning: initialization discards qualifiers from pointer target type
+main.c:237: warning: initialization discards qualifiers from pointer target type
+main.c:239: error: request for member `n_debug_events' in something not a structure or union
+main.c:239: error: initializer element is not constant
+main.c:239: error: (near initialization for `options[4].param1')
+main.c:241: error: initializer element is not constant
+main.c:241: error: (near initialization for `options[4]')
+main.c:242: warning: initialization discards qualifiers from pointer target type
+main.c:243: warning: initialization discards qualifiers from pointer target type
+main.c:245: error: request for member `defaultio' in something not a structure or union
+main.c:245: error: initializer element is not constant
+main.c:245: error: (near initialization for `options[5].param1')
+main.c:246: error: request for member `defaultio' in something not a structure or union
+main.c:247: error: initializer element is not constant
+main.c:247: error: (near initialization for `options[5]')
+main.c:248: warning: initialization discards qualifiers from pointer target type
+main.c:249: warning: initialization discards qualifiers from pointer target type
+main.c:251: error: request for member `devconf' in something not a structure or union
+main.c:251: error: initializer element is not constant
+main.c:251: error: (near initialization for `options[6].param1')
+main.c:252: error: request for member `devconf' in something not a structure or union
+main.c:253: error: initializer element is not constant
+main.c:253: error: (near initialization for `options[6]')
+main.c:254: warning: initialization discards qualifiers from pointer target type
+main.c:255: warning: initialization discards qualifiers from pointer target type
+main.c:257: error: request for member `qlen_exec_to_sv' in something not a structure or union
+main.c:257: error: initializer element is not constant
+main.c:257: error: (near initialization for `options[7].param1')
+main.c:259: error: initializer element is not constant
+main.c:259: error: (near initialization for `options[7]')
+main.c:260: warning: initialization discards qualifiers from pointer target type
+main.c:261: warning: initialization discards qualifiers from pointer target type
+main.c:263: error: request for member `go_anyway' in something not a structure or union
+main.c:263: error: initializer element is not constant
+main.c:263: error: (near initialization for `options[8].param1')
+main.c:265: error: initializer element is not constant
+main.c:265: error: (near initialization for `options[8]')
+main.c:266: warning: initialization discards qualifiers from pointer target type
+main.c:267: warning: initialization discards qualifiers from pointer target type
+main.c:269: error: request for member `halt' in something not a structure or union
+main.c:269: error: initializer element is not constant
+main.c:269: error: (near initialization for `options[9].param1')
+main.c:271: error: initializer element is not constant
+main.c:271: error: (near initialization for `options[9]')
+main.c:272: warning: initialization discards qualifiers from pointer target type
+main.c:273: warning: initialization discards qualifiers from pointer target type
+main.c:275: error: request for member `inax_wd_period' in something not a structure or union
+main.c:275: error: initializer element is not constant
+main.c:275: error: (near initialization for `options[10].param1')
+main.c:277: error: initializer element is not constant
+main.c:277: error: (near initialization for `options[10]')
+main.c:278: warning: initialization discards qualifiers from pointer target type
+main.c:279: warning: initialization discards qualifiers from pointer target type
+main.c:281: error: request for member `max_extensions' in something not a structure or union
+main.c:281: error: initializer element is not constant
+main.c:281: error: (near initialization for `options[11].param1')
+main.c:283: error: initializer element is not constant
+main.c:283: error: (near initialization for `options[11]')
+main.c:284: warning: initialization discards qualifiers from pointer target type
+main.c:285: warning: initialization discards qualifiers from pointer target type
+main.c:287: error: request for member `n_max_edge_bool' in something not a structure or union
+main.c:287: error: initializer element is not constant
+main.c:287: error: (near initialization for `options[12].param1')
+main.c:289: error: initializer element is not constant
+main.c:289: error: (near initialization for `options[12]')
+main.c:290: warning: initialization discards qualifiers from pointer target type
+main.c:291: warning: initialization discards qualifiers from pointer target type
+main.c:293: error: request for member `n_max_edge_long' in something not a structure or union
+main.c:293: error: initializer element is not constant
+main.c:293: error: (near initialization for `options[13].param1')
+main.c:295: error: initializer element is not constant
+main.c:295: error: (near initialization for `options[13]')
+main.c:296: warning: initialization discards qualifiers from pointer target type
+main.c:297: warning: initialization discards qualifiers from pointer target type
+main.c:299: error: request for member `max_halt_cycle' in something not a structure or union
+main.c:299: error: initializer element is not constant
+main.c:299: error: (near initialization for `options[14].param1')
+main.c:301: error: initializer element is not constant
+main.c:301: error: (near initialization for `options[14]')
+main.c:302: warning: initialization discards qualifiers from pointer target type
+main.c:303: warning: initialization discards qualifiers from pointer target type
+main.c:305: error: request for member `max_il_prog_mod' in something not a structure or union
+main.c:305: error: initializer element is not constant
+main.c:305: error: (near initialization for `options[15].param1')
+main.c:307: error: initializer element is not constant
+main.c:307: error: (near initialization for `options[15]')
+main.c:308: warning: initialization discards qualifiers from pointer target type
+main.c:309: warning: initialization discards qualifiers from pointer target type
+main.c:311: error: request for member `mdata' in something not a structure or union
+main.c:311: error: initializer element is not constant
+main.c:311: error: (near initialization for `options[16].param1')
+main.c:313: error: initializer element is not constant
+main.c:313: error: (near initialization for `options[16]')
+main.c:314: warning: initialization discards qualifiers from pointer target type
+main.c:315: warning: initialization discards qualifiers from pointer target type
+main.c:317: error: request for member `min_overrun' in something not a structure or union
+main.c:317: error: initializer element is not constant
+main.c:317: error: (near initialization for `options[17].param1')
+main.c:319: error: initializer element is not constant
+main.c:319: error: (near initialization for `options[17]')
+main.c:320: warning: initialization discards qualifiers from pointer target type
+main.c:321: warning: initialization discards qualifiers from pointer target type
+main.c:323: error: request for member `no_fault' in something not a structure or union
+main.c:323: error: initializer element is not constant
+main.c:323: error: (near initialization for `options[18].param1')
+main.c:325: error: initializer element is not constant
+main.c:325: error: (near initialization for `options[18]')
+main.c:326: warning: initialization discards qualifiers from pointer target type
+main.c:327: warning: initialization discards qualifiers from pointer target type
+main.c:329: error: request for member `no_mod_hatsh' in something not a structure or union
+main.c:329: error: initializer element is not constant
+main.c:329: error: (near initialization for `options[19].param1')
+main.c:331: error: initializer element is not constant
+main.c:331: error: (near initialization for `options[19]')
+main.c:332: warning: initialization discards qualifiers from pointer target type
+main.c:333: warning: initialization discards qualifiers from pointer target type
+main.c:335: error: request for member `no_mod_prog480' in something not a structure or union
+main.c:335: error: initializer element is not constant
+main.c:335: error: (near initialization for `options[20].param1')
+main.c:337: error: initializer element is not constant
+main.c:337: error: (near initialization for `options[20]')
+main.c:338: warning: initialization discards qualifiers from pointer target type
+main.c:339: warning: initialization discards qualifiers from pointer target type
+main.c:341: error: request for member `no_mod_user' in something not a structure or union
+main.c:341: error: initializer element is not constant
+main.c:341: error: (near initialization for `options[21].param1')
+main.c:343: error: initializer element is not constant
+main.c:343: error: (near initialization for `options[21]')
+main.c:344: warning: initialization discards qualifiers from pointer target type
+main.c:345: warning: initialization discards qualifiers from pointer target type
+main.c:347: error: request for member `max_overrun' in something not a structure or union
+main.c:347: error: initializer element is not constant
+main.c:347: error: (near initialization for `options[22].param1')
+main.c:349: error: initializer element is not constant
+main.c:349: error: (near initialization for `options[22]')
+main.c:350: warning: initialization discards qualifiers from pointer target type
+main.c:351: warning: initialization discards qualifiers from pointer target type
+main.c:353: error: request for member `mod_hatsh_path' in something not a structure or union
+main.c:353: error: initializer element is not constant
+main.c:353: error: (near initialization for `options[23].param1')
+main.c:354: error: request for member `mod_hatsh_path' in something not a structure or union
+main.c:355: error: initializer element is not constant
+main.c:355: error: (near initialization for `options[23]')
+main.c:356: warning: initialization discards qualifiers from pointer target type
+main.c:357: warning: initialization discards qualifiers from pointer target type
+main.c:359: error: request for member `mod_prog480_path' in something not a structure or union
+main.c:359: error: initializer element is not constant
+main.c:359: error: (near initialization for `options[24].param1')
+main.c:360: error: request for member `mod_prog480_path' in something not a structure or union
+main.c:361: error: initializer element is not constant
+main.c:361: error: (near initialization for `options[24]')
+main.c:362: warning: initialization discards qualifiers from pointer target type
+main.c:363: warning: initialization discards qualifiers from pointer target type
+main.c:365: error: request for member `mod_user_path' in something not a structure or union
+main.c:365: error: initializer element is not constant
+main.c:365: error: (near initialization for `options[25].param1')
+main.c:366: error: request for member `mod_user_path' in something not a structure or union
+main.c:367: error: initializer element is not constant
+main.c:367: error: (near initialization for `options[25]')
+main.c:368: warning: initialization discards qualifiers from pointer target type
+main.c:369: warning: initialization discards qualifiers from pointer target type
+main.c:371: error: request for member `ioconf_path' in something not a structure or union
+main.c:371: error: initializer element is not constant
+main.c:371: error: (near initialization for `options[26].param1')
+main.c:372: error: request for member `ioconf_path' in something not a structure or union
+main.c:373: error: initializer element is not constant
+main.c:373: error: (near initialization for `options[26]')
+main.c:374: warning: initialization discards qualifiers from pointer target type
+main.c:375: warning: initialization discards qualifiers from pointer target type
+main.c:377: error: request for member `period' in something not a structure or union
+main.c:377: error: initializer element is not constant
+main.c:377: error: (near initialization for `options[27].param1')
+main.c:379: error: initializer element is not constant
+main.c:379: error: (near initialization for `options[27]')
+main.c:380: warning: initialization discards qualifiers from pointer target type
+main.c:381: warning: initialization discards qualifiers from pointer target type
+main.c:383: error: request for member `posix_poll' in something not a structure or union
+main.c:383: error: initializer element is not constant
+main.c:383: error: (near initialization for `options[28].param1')
+main.c:385: error: initializer element is not constant
+main.c:385: error: (near initialization for `options[28]')
+main.c:386: warning: initialization discards qualifiers from pointer target type
+main.c:387: warning: initialization discards qualifiers from pointer target type
+main.c:389: error: request for member `prio_exec' in something not a structure or union
+main.c:389: error: initializer element is not constant
+main.c:389: error: (near initialization for `options[29].param1')
+main.c:391: error: initializer element is not constant
+main.c:391: error: (near initialization for `options[29]')
+main.c:392: warning: initialization discards qualifiers from pointer target type
+main.c:393: warning: initialization discards qualifiers from pointer target type
+main.c:395: error: request for member `quiet' in something not a structure or union
+main.c:395: error: initializer element is not constant
+main.c:395: error: (near initialization for `options[30].param1')
+main.c:397: error: initializer element is not constant
+main.c:397: error: (near initialization for `options[30]')
+main.c:398: warning: initialization discards qualifiers from pointer target type
+main.c:399: warning: initialization discards qualifiers from pointer target type
+main.c:401: error: request for member `remote_debug' in something not a structure or union
+main.c:401: error: initializer element is not constant
+main.c:401: error: (near initialization for `options[31].param1')
+main.c:403: error: initializer element is not constant
+main.c:403: error: (near initialization for `options[31]')
+main.c:404: warning: initialization discards qualifiers from pointer target type
+main.c:405: warning: initialization discards qualifiers from pointer target type
+main.c:407: error: request for member `reset_shm' in something not a structure or union
+main.c:407: error: initializer element is not constant
+main.c:407: error: (near initialization for `options[32].param1')
+main.c:409: error: initializer element is not constant
+main.c:409: error: (near initialization for `options[32]')
+main.c:410: warning: initialization discards qualifiers from pointer target type
+main.c:411: warning: initialization discards qualifiers from pointer target type
+main.c:413: error: request for member `old_save_io' in something not a structure or union
+main.c:413: error: initializer element is not constant
+main.c:413: error: (near initialization for `options[33].param1')
+main.c:415: error: initializer element is not constant
+main.c:415: error: (near initialization for `options[33]')
+main.c:416: warning: initialization discards qualifiers from pointer target type
+main.c:417: warning: initialization discards qualifiers from pointer target type
+main.c:419: error: request for member `shv_init' in something not a structure or union
+main.c:419: error: initializer element is not constant
+main.c:419: error: (near initialization for `options[34].param1')
+main.c:421: error: initializer element is not constant
+main.c:421: error: (near initialization for `options[34]')
+main.c:422: warning: initialization discards qualifiers from pointer target type
+main.c:423: warning: initialization discards qualifiers from pointer target type
+main.c:425: error: request for member `package' in something not a structure or union
+main.c:425: error: initializer element is not constant
+main.c:425: error: (near initialization for `options[35].param1')
+main.c:427: error: initializer element is not constant
+main.c:427: error: (near initialization for `options[35]')
+main.c:428: warning: initialization discards qualifiers from pointer target type
+main.c:429: warning: initialization discards qualifiers from pointer target type
+main.c:431: error: request for member `err_sigla' in something not a structure or union
+main.c:431: error: initializer element is not constant
+main.c:431: error: (near initialization for `options[36].param1')
+main.c:433: error: initializer element is not constant
+main.c:433: error: (near initialization for `options[36]')
+main.c:434: warning: initialization discards qualifiers from pointer target type
+main.c:435: warning: initialization discards qualifiers from pointer target type
+main.c:437: error: request for member `simul' in something not a structure or union
+main.c:437: error: initializer element is not constant
+main.c:437: error: (near initialization for `options[37].param1')
+main.c:439: error: initializer element is not constant
+main.c:439: error: (near initialization for `options[37]')
+main.c:440: warning: initialization discards qualifiers from pointer target type
+main.c:441: warning: initialization discards qualifiers from pointer target type
+main.c:443: error: request for member `soft_tm' in something not a structure or union
+main.c:443: error: initializer element is not constant
+main.c:443: error: (near initialization for `options[38].param1')
+main.c:445: error: initializer element is not constant
+main.c:445: error: (near initialization for `options[38]')
+main.c:446: warning: initialization discards qualifiers from pointer target type
+main.c:447: warning: initialization discards qualifiers from pointer target type
+main.c:449: error: request for member `stand_alone' in something not a structure or union
+main.c:449: error: initializer element is not constant
+main.c:449: error: (near initialization for `options[39].param1')
+main.c:451: error: initializer element is not constant
+main.c:451: error: (near initialization for `options[39]')
+main.c:452: warning: initialization discards qualifiers from pointer target type
+main.c:453: warning: initialization discards qualifiers from pointer target type
+main.c:455: error: request for member `nstdout' in something not a structure or union
+main.c:455: error: initializer element is not constant
+main.c:455: error: (near initialization for `options[40].param1')
+main.c:457: error: initializer element is not constant
+main.c:457: error: (near initialization for `options[40]')
+main.c:458: warning: initialization discards qualifiers from pointer target type
+main.c:459: warning: initialization discards qualifiers from pointer target type
+main.c:461: error: request for member `tcp_prio' in something not a structure or union
+main.c:461: error: initializer element is not constant
+main.c:461: error: (near initialization for `options[41].param1')
+main.c:463: error: initializer element is not constant
+main.c:463: error: (near initialization for `options[41]')
+main.c:464: warning: initialization discards qualifiers from pointer target type
+main.c:465: warning: initialization discards qualifiers from pointer target type
+main.c:467: error: request for member `timer_bug' in something not a structure or union
+main.c:467: error: initializer element is not constant
+main.c:467: error: (near initialization for `options[42].param1')
+main.c:469: error: initializer element is not constant
+main.c:469: error: (near initialization for `options[42]')
+main.c:470: warning: initialization discards qualifiers from pointer target type
+main.c:471: warning: initialization discards qualifiers from pointer target type
+main.c:473: error: request for member `use_inax' in something not a structure or union
+main.c:473: error: initializer element is not constant
+main.c:473: error: (near initialization for `options[43].param1')
+main.c:475: error: initializer element is not constant
+main.c:475: error: (near initialization for `options[43]')
+main.c:476: warning: initialization discards qualifiers from pointer target type
+main.c:477: warning: initialization discards qualifiers from pointer target type
+main.c:479: error: request for member `verify' in something not a structure or union
+main.c:479: error: initializer element is not constant
+main.c:479: error: (near initialization for `options[44].param1')
+main.c:480: error: request for member `stand_alone' in something not a structure or union
+main.c:480: error: initializer element is not constant
+main.c:480: error: (near initialization for `options[44].param2')
+main.c:481: error: initializer element is not constant
+main.c:481: error: (near initialization for `options[44]')
+main.c:482: warning: initialization discards qualifiers from pointer target type
+main.c:483: warning: initialization discards qualifiers from pointer target type
+main.c:485: error: request for member `verify' in something not a structure or union
+main.c:485: error: initializer element is not constant
+main.c:485: error: (near initialization for `options[45].param1')
+main.c:486: error: request for member `stand_alone' in something not a structure or union
+main.c:486: error: initializer element is not constant
+main.c:486: error: (near initialization for `options[45].param2')
+main.c:487: error: initializer element is not constant
+main.c:487: error: (near initialization for `options[45]')
+main.c: In function `format_exe_name':
+main.c:498: warning: traditional C rejects ISO C style function definitions
+main.c:502: error: request for member `exe_path' in something not a structure or union
+main.c:503: error: request for member `exe_path' in something not a structure or union
+main.c:504: error: request for member `exe_path' in something not a structure or union
+main.c:505: error: request for member `exe_base' in something not a structure or union
+main.c:505: error: request for member `exe_path' in something not a structure or union
+main.c:508: error: request for member `exe_path' in something not a structure or union
+main.c:511: error: request for member `exe_base' in something not a structure or union
+main.c:513: error: request for member `ver_sig' in something not a structure or union
+main.c:513: error: request for member `exe_base' in something not a structure or union
+main.c: In function `load_default_conf':
+main.c:523: warning: traditional C rejects ISO C style function definitions
+main.c:528: error: request for member `exe_path' in something not a structure or union
+main.c:529: error: request for member `devconf' in something not a structure or union
+main.c:530: error: request for member `drivers' in something not a structure or union
+main.c:531: error: request for member `max_extensions' in something not a structure or union
+main.c:532: error: request for member `exe_base' in something not a structure or union
+main.c:532: error: request for member `exe_path' in something not a structure or union
+main.c:533: error: request for member `err_sigla' in something not a structure or union
+main.c:534: error: request for member `stand_alone' in something not a structure or union
+main.c:535: error: request for member `mdata' in something not a structure or union
+main.c:536: error: request for member `chkaddr' in something not a structure or union
+main.c:537: error: request for member `blocking_pipe' in something not a structure or union
+main.c:538: error: request for member `quiet' in something not a structure or union
+main.c:539: error: request for member `posix_poll' in something not a structure or union
+main.c:540: error: request for member `verify' in something not a structure or union
+main.c:541: error: request for member `old_save_io' in something not a structure or union
+main.c:542: error: request for member `debug' in something not a structure or union
+main.c:543: error: request for member `simul' in something not a structure or union
+main.c:544: error: request for member `no_fault' in something not a structure or union
+main.c:545: error: request for member `package' in something not a structure or union
+main.c:546: error: request for member `nstdout' in something not a structure or union
+main.c:547: error: request for member `start_prio' in something not a structure or union
+main.c:547: warning: implicit declaration of function `getprio'
+main.c:548: error: request for member `tcp_prio' in something not a structure or union
+main.c:549: error: request for member `timer_bug' in something not a structure or union
+main.c:550: error: request for member `use_inax' in something not a structure or union
+main.c:551: error: request for member `reset_shm' in something not a structure or union
+main.c:552: error: request for member `prio_exec' in something not a structure or union
+main.c:553: error: request for member `min_overrun' in something not a structure or union
+main.c:554: error: request for member `max_overrun' in something not a structure or union
+main.c:555: error: request for member `period' in something not a structure or union
+main.c:556: error: request for member `inax_wd_period' in something not a structure or union
+main.c:557: error: request for member `go_anyway' in something not a structure or union
+main.c:558: error: request for member `halt' in something not a structure or union
+main.c:559: error: request for member `remote_debug' in something not a structure or union
+main.c:560: error: request for member `shv_init' in something not a structure or union
+main.c:561: error: request for member `shv_mkedge' in something not a structure or union
+main.c:562: error: request for member `soft_tm' in something not a structure or union
+main.c:563: error: request for member `qlen_exec_to_sv' in something not a structure or union
+main.c:564: error: request for member `max_il_prog_mod' in something not a structure or union
+main.c:565: error: request for member `curr_prog_id' in something not a structure or union
+main.c:566: error: request for member `ver_kernel' in something not a structure or union
+main.c:567: error: request for member `m_data' in something not a structure or union
+main.c:568: error: request for member `isaker_sysv_sem_key' in something not a structure or union
+main.c:569: error: request for member `isaker_sysv_sem_id' in something not a structure or union
+main.c:570: error: request for member `sysv_shm_key' in something not a structure or union
+main.c:571: error: request for member `sysv_shm_id' in something not a structure or union
+main.c:572: error: request for member `nvram1_name' in something not a structure or union
+main.c:572: error: `NVRAM_LBL_PLC' undeclared (first use in this function)
+main.c:572: error: (Each undeclared identifier is reported only once
+main.c:572: error: for each function it appears in.)
+main.c:573: error: request for member `nvram1' in something not a structure or union
+main.c:574: error: request for member `nvram1' in something not a structure or union
+main.c:575: error: request for member `nvram1_free' in something not a structure or union
+main.c:576: error: request for member `nvram2_name' in something not a structure or union
+main.c:576: error: `NVRAM_LBL_PLC480' undeclared (first use in this function)
+main.c:577: error: request for member `nvram2' in something not a structure or union
+main.c:578: error: request for member `nvram2' in something not a structure or union
+main.c:579: error: request for member `nvram2_free' in something not a structure or union
+main.c:580: error: request for member `shm_addr' in something not a structure or union
+main.c:581: error: request for member `shm_size' in something not a structure or union
+main.c:582: error: request for member `osys' in something not a structure or union
+main.c:583: error: request for member `shvn' in something not a structure or union
+main.c:584: error: request for member `shvh' in something not a structure or union
+main.c:585: error: request for member `p_shvn' in something not a structure or union
+main.c:586: error: request for member `p_shvn_size' in something not a structure or union
+main.c:587: error: request for member `p_shheap' in something not a structure or union
+main.c:588: error: request for member `p_shheap_size' in something not a structure or union
+main.c:589: error: request for member `shvk' in something not a structure or union
+main.c:590: error: request for member `shvk_tab_len' in something not a structure or union
+main.c:591: error: request for member `shvh_tab_len' in something not a structure or union
+main.c:592: error: request for member `mod_hatsh' in something not a structure or union
+main.c:593: error: request for member `shvkey_to_descr' in something not a structure or union
+main.c:594: error: request for member `mod_hatsh_op' in something not a structure or union
+main.c:595: error: request for member `mod_hatsh_op' in something not a structure or union
+main.c:596: error: request for member `mod_user' in something not a structure or union
+main.c:597: error: request for member `mod_user_op' in something not a structure or union
+main.c:598: error: request for member `mod_user_op' in something not a structure or union
+main.c:599: error: request for member `mod_plc480' in something not a structure or union
+main.c:600: error: request for member `mod_plc480_op' in something not a structure or union
+main.c:601: error: request for member `mod_plc480_op' in something not a structure or union
+main.c:602: error: request for member `drivers' in something not a structure or union
+main.c:603: error: request for member `drivers' in something not a structure or union
+main.c:604: error: request for member `drivers' in something not a structure or union
+main.c:605: error: request for member `drivers' in something not a structure or union
+main.c:606: error: request for member `drivers' in something not a structure or union
+main.c:607: error: request for member `mod_hatsh_path' in something not a structure or union
+main.c:608: error: request for member `mod_user_path' in something not a structure or union
+main.c:609: error: request for member `mod_prog480_path' in something not a structure or union
+main.c:610: error: request for member `ioconf_path' in something not a structure or union
+main.c:611: error: request for member `defaultio' in something not a structure or union
+main.c:612: error: request for member `no_mod_user' in something not a structure or union
+main.c:613: error: request for member `no_mod_hatsh' in something not a structure or union
+main.c:614: error: request for member `no_mod_prog480' in something not a structure or union
+main.c:615: error: request for member `n_edge_bool' in something not a structure or union
+main.c:616: error: request for member `n_max_edge_bool' in something not a structure or union
+main.c:617: error: request for member `p_edge_bool' in something not a structure or union
+main.c:618: error: request for member `p_image_bool' in something not a structure or union
+main.c:619: error: request for member `n_edge_long' in something not a structure or union
+main.c:620: error: request for member `n_max_edge_long' in something not a structure or union
+main.c:621: error: request for member `p_edge_long' in something not a structure or union
+main.c:622: error: request for member `p_image_long' in something not a structure or union
+main.c:623: error: request for member `p_cnok' in something not a structure or union
+main.c:624: error: request for member `p_exec_status' in something not a structure or union
+main.c:625: error: request for member `p_superv_status' in something not a structure or union
+main.c:626: error: request for member `debug_buffer_size' in something not a structure or union
+main.c:627: error: request for member `n_debug_events' in something not a structure or union
+main.c:629: error: request for member `ver_sig' in something not a structure or union
+main.c:630: error: request for member `ver_sig' in something not a structure or union
+main.c:630: error: request for member `exe_path' in something not a structure or union
+main.c:631: error: request for member `ver_sig' in something not a structure or union
+main.c:632: error: request for member `ver_sig' in something not a structure or union
+main.c:633: error: request for member `ver_sig' in something not a structure or union
+main.c:634: error: request for member `ver_sig' in something not a structure or union
+main.c: In function `read_config_file':
+main.c:642: warning: traditional C rejects ISO C style function definitions
+main.c:643: error: request for member `ioconf_path' in something not a structure or union
+main.c: In function `usagerr':
+main.c:651: warning: traditional C rejects ISO C style function definitions
+main.c:655: error: request for member `exe_base' in something not a structure or union
+main.c:656: error: request for member `exe_base' in something not a structure or union
+main.c:660: warning: implicit declaration of function `exit'
+main.c: In function `opt_setflag':
+main.c:672: warning: traditional C rejects ISO C style function definitions
+main.c: In function `opt_setstring':
+main.c:684: warning: traditional C rejects ISO C style function definitions
+main.c:687: warning: passing arg 3 of `__builtin_strncpy' as unsigned due to prototype
+main.c: In function `opt_setint':
+main.c:696: warning: traditional C rejects ISO C style function definitions
+main.c: In function `scan_command_line':
+main.c:714: warning: traditional C rejects ISO C style function definitions
+main.c: In function `init_cn_msgs':
+main.c:743: warning: traditional C rejects ISO C style function definitions
+main.c:744: error: request for member `stand_alone' in something not a structure or union
+main.c: In function `init_cn_mdata':
+main.c:766: warning: traditional C rejects ISO C style function definitions
+main.c:767: error: request for member `mdata' in something not a structure or union
+main.c:767: error: request for member `stand_alone' in something not a structure or union
+main.c: In function `terminate':
+main.c:779: warning: traditional C rejects ISO C style function definitions
+main.c:788: error: request for member `mod_hatsh_op' in something not a structure or union
+main.c:792: error: request for member `shm_addr' in something not a structure or union
+main.c:796: error: request for member `exe_base' in something not a structure or union
+main.c: In function `sigexit_intercept':
+main.c:807: warning: traditional C rejects ISO C style function definitions
+main.c: In function `create_shm':
+main.c:860: warning: traditional C rejects ISO C style function definitions
+main.c:866: error: request for member `isaker_sysv_sem_id' in something not a structure or union
+main.c:867: error: request for member `isaker_sysv_sem_key' in something not a structure or union
+main.c:868: error: request for member `isaker_sysv_sem_id' in something not a structure or union
+main.c:869: warning: passing arg 1 of `util_fatal' discards qualifiers from pointer target type
+main.c:871: error: request for member `isaker_sysv_sem_id' in something not a structure or union
+main.c:872: warning: passing arg 1 of `util_fatal' discards qualifiers from pointer target type
+main.c:874: error: request for member `isaker_sysv_sem_id' in something not a structure or union
+main.c:875: warning: passing arg 1 of `util_fatal' discards qualifiers from pointer target type
+main.c:880: error: request for member `sysv_shm_id' in something not a structure or union
+main.c:880: warning: implicit declaration of function `shmget'
+main.c:880: error: request for member `sysv_shm_key' in something not a structure or union
+main.c:881: error: request for member `shm_size' in something not a structure or union
+main.c:883: error: request for member `sysv_shm_id' in something not a structure or union
+main.c:884: error: request for member `reset_shm' in something not a structure or union
+main.c:885: error: request for member `sysv_shm_id' in something not a structure or union
+main.c:885: error: request for member `sysv_shm_key' in something not a structure or union
+main.c:886: error: request for member `shm_size' in something not a structure or union
+main.c:889: error: request for member `sysv_shm_id' in something not a structure or union
+main.c:890: warning: passing arg 1 of `util_fatal' discards qualifiers from pointer target type
+main.c:891: error: request for member `shm_addr' in something not a structure or union
+main.c:891: warning: implicit declaration of function `shmat'
+main.c:891: error: request for member `sysv_shm_id' in something not a structure or union
+main.c:893: error: request for member `shm_addr' in something not a structure or union
+main.c:894: warning: passing arg 1 of `util_fatal' discards qualifiers from pointer target type
+main.c:900: error: request for member `shm_addr' in something not a structure or union
+main.c:904: error: request for member `shm_addr' in something not a structure or union
+main.c:906: error: request for member `reset_shm' in something not a structure or union
+main.c:910: error: request for member `shm_addr' in something not a structure or union
+main.c:910: error: request for member `shm_size' in something not a structure or union
+main.c:920: error: request for member `shm_addr' in something not a structure or union
+main.c:920: error: request for member `shm_addr' in something not a structure or union
+main.c:925: error: request for member `osys' in something not a structure or union
+main.c:927: error: request for member `shm_addr' in something not a structure or union
+main.c:928: error: request for member `shm_addr' in something not a structure or union
+main.c:930: error: request for member `shvk' in something not a structure or union
+main.c:932: error: request for member `shm_addr' in something not a structure or union
+main.c:933: error: request for member `shm_addr' in something not a structure or union
+main.c:935: error: request for member `shvh' in something not a structure or union
+main.c:937: error: request for member `shm_addr' in something not a structure or union
+main.c:938: error: request for member `shm_addr' in something not a structure or union
+main.c:940: error: request for member `shvn' in something not a structure or union
+main.c:942: error: request for member `shm_addr' in something not a structure or union
+main.c:943: error: request for member `shm_addr' in something not a structure or union
+main.c:945: error: request for member `p_shvn' in something not a structure or union
+main.c:946: error: request for member `shm_addr' in something not a structure or union
+main.c:947: error: request for member `p_shvn_size' in something not a structure or union
+main.c:948: error: request for member `shm_addr' in something not a structure or union
+main.c:950: error: request for member `p_shheap' in something not a structure or union
+main.c:951: error: request for member `shm_addr' in something not a structure or union
+main.c:952: error: request for member `p_shheap_size' in something not a structure or union
+main.c:953: error: request for member `shm_addr' in something not a structure or union
+main.c:960: error: request for member `isaker_sysv_sem_id' in something not a structure or union
+main.c:961: warning: passing arg 1 of `util_fatal' discards qualifiers from pointer target type
+main.c: In function `install_drivers_1':
+main.c:976: warning: traditional C rejects ISO C style function definitions
+main.c: In function `install_drivers_2':
+main.c:989: warning: traditional C rejects ISO C style function definitions
+main.c: In function `cn_init':
+main.c:1000: warning: traditional C rejects ISO C style function definitions
+main.c:1011: error: request for member `stand_alone' in something not a structure or union
+main.c:1012: error: request for member `no_mod_hatsh' in something not a structure or union
+main.c:1013: error: request for member `mod_hatsh_op' in something not a structure or union
+main.c:1014: error: request for member `mod_hatsh_op' in something not a structure or union
+main.c:1016: error: request for member `mod_hatsh_op' in something not a structure or union
+main.c:1001: warning: unused variable `vec'
+main.c:1001: warning: unused variable `ovec'
+main.c: In function `null_hat':
+main.c:1028: warning: traditional C rejects ISO C style function definitions
+main.c: In function `null_shoes':
+main.c:1029: warning: traditional C rejects ISO C style function definitions
+main.c: At top level:
+main.c:1036: warning: return type of `main' is not `int'
+main.c: In function `main':
+main.c:1036: warning: traditional C rejects ISO C style function definitions
+main.c:1048: error: request for member `package' in something not a structure or union
+main.c:1050: error: request for member `posix_poll' in something not a structure or union
+main.c:1054: error: request for member `verify' in something not a structure or union
+main.c:1062: error: request for member `quiet' in something not a structure or union
+main.c:1068: error: request for member `verify' in something not a structure or union
+main.c:1091: error: request for member `old_save_io' in something not a structure or union
+main.c:1112: error: request for member `mod_hatsh_op' in something not a structure or union
+main.c:1114: error: request for member `stand_alone' in something not a structure or union
+main.c:1117: error: request for member `halt' in something not a structure or union
+main.c:1118: warning: passing arg 2 of `plcError' discards qualifiers from pointer target type
+main.c:1120: error: request for member `mod_hatsh_op' in something not a structure or union
+main.c:1121: error: request for member `mod_hatsh_op' in something not a structure or union
+main.c:1128: error: request for member `p_cnok' in something not a structure or union
+main.c:1129: error: request for member `p_cnok' in something not a structure or union
+main.c:1135: error: request for member `shm_addr' in something not a structure or union
+main.c:1136: error: request for member `shm_addr' in something not a structure or union
+make: *** [main.o] Error 1

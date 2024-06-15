@@ -1,0 +1,7 @@
+cd /home/edit_plc/prog
+../ilc -il -header ../util/scambio ../util/illib.ilc -code $1.plc -os $1.plc.s  $1.msd -os $1.msd.s $1.crc -os $1.crc.s
+as $1.plc.s -o $1.plc.o
+as $1.msd.s -o $1.msd.o
+as $1.crc.s -o $1.crc.o
+ld -r ../ilc0.o $1.plc.o $1.msd.o $1.crc.o ../ilcn.o ../libil.a -o user.o
+/bin/ld -r user.o -o user.oo

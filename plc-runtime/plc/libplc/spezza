@@ -1,0 +1,15 @@
+
+spezza $(NOMETEMP).h: $(NOMELIB).c
+	awk  -v "NOMETEMP=$(NOMETEMP)" '\
+BEGIN { n=0; file=NOMETEMP ".h"; nomeinclude=file;\
+		print "/* " file " */" > file; }\
+$$0 == "/*LIB*/" {\
+		++n;\
+		close(file);\
+		file = sprintf("%s%03d.c",NOMETEMP,n);\
+		print "/* " file " */" > file;\
+		print "#include \"" nomeinclude "\"" >> file;\
+		next;\
+	}\
+{ print $$0 >> file; }' $(NOMELIB).c
+

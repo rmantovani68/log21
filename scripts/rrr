@@ -1,0 +1,4 @@
+echo "CREATE FUNCTION anno(timestamp) returns text as 'select to_char(\$1,''YYYY'')' language 'sql';"                                                | psql -h database mr
+echo "CREATE FUNCTION anno(timestamptz) returns text as 'select to_char(\$1,''YYYY'')' language 'sql';"                                              | psql -h database mr
+
+ 

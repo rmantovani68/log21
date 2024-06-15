@@ -1,0 +1,89 @@
+--------------------Configuration: ilc - Win32 Release--------------------
+Begining build with project "D:\cni\ilc\src\ilc.dsp", at root.
+Active configuration is Win32 (x86) Console Application (based on Win32 (x86) Console Application)
+
+Project's tools are:
+			"32-bit C/C++ Compiler for 80x86" with flags "/nologo /ML /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"Release/ilc.pch" /YX /Fo"Release/" /Fd"Release/" /FD /c "
+			"Win32 Resource Compiler" with flags "/l 0x409 /d "NDEBUG" "
+			"Browser Database Maker" with flags "/nologo /o"Release/ilc.bsc" "
+			"COFF Linker for 80x86" with flags "kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /incremental:no /pdb:"Release/ilc.pdb" /machine:I386 /out:"Release/ilc.exe" "
+			"Custom Build" with flags ""
+			"<Component 0xa>" with flags ""
+
+Creating temp file "C:\TEMP\RSP16.tmp" with contents </nologo /ML /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"Release/ilc.pch" /YX /Fo"Release/" /Fd"Release/" /FD /c 
+"D:\cni\ilc\src\cexpr.c"
+"D:\cni\ilc\src\compiler.c"
+"D:\cni\ilc\src\debug.c"
+"D:\cni\ilc\src\emitter.c"
+"D:\cni\ilc\src\errs.c"
+"D:\cni\ilc\src\main.c"
+"D:\cni\ilc\src\parser.c"
+"D:\cni\ilc\src\parser_op.c"
+"D:\cni\ilc\src\pass1.c"
+"D:\cni\ilc\src\pass2.c"
+"D:\cni\ilc\src\rdfile.c"
+"D:\cni\ilc\src\scanner.c"
+"D:\cni\ilc\src\symtab.c"
+"D:\cni\ilc\src\util.c"
+"D:\cni\ilc\src\ver.c"
+>
+Creating command line "cl.exe @C:\TEMP\RSP16.tmp" 
+Creating temp file "C:\TEMP\RSP17.tmp" with contents <kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /incremental:no /pdb:"Release/ilc.pdb" /machine:I386 /out:"Release/ilc.exe" 
+.\Release\cexpr.obj
+.\Release\compiler.obj
+.\Release\debug.obj
+.\Release\emitter.obj
+.\Release\errs.obj
+.\Release\main.obj
+.\Release\parser.obj
+.\Release\parser_op.obj
+.\Release\pass1.obj
+.\Release\pass2.obj
+.\Release\rdfile.obj
+.\Release\scanner.obj
+.\Release\symtab.obj
+.\Release\util.obj
+.\Release\ver.obj>
+Creating command line "link.exe @C:\TEMP\RSP17.tmp" 
+Compiling...
+cexpr.c
+D:\cni\ilc\src\cexpr.c(262) : warning C4002: too many actual parameters for macro 'db_printf'
+D:\cni\ilc\src\cexpr.c(263) : warning C4002: too many actual parameters for macro 'db_printval'
+D:\cni\ilc\src\cexpr.c(360) : warning C4244: '=' : conversion from 'double ' to 'float ', possible loss of data
+compiler.c
+debug.c
+emitter.c
+D:\cni\ilc\src\emitter.c(462) : warning C4090: 'function' : different 'const' qualifiers
+D:\cni\ilc\src\emitter.c(462) : warning C4024: '_em_emit' : different types for formal and actual parameter 1
+D:\cni\ilc\src\emitter.c(479) : warning C4090: 'function' : different 'const' qualifiers
+D:\cni\ilc\src\emitter.c(479) : warning C4024: '_em_emit' : different types for formal and actual parameter 1
+D:\cni\ilc\src\emitter.c(483) : warning C4090: 'function' : different 'const' qualifiers
+D:\cni\ilc\src\emitter.c(483) : warning C4024: '_em_emit' : different types for formal and actual parameter 1
+D:\cni\ilc\src\emitter.c(507) : warning C4090: '=' : different 'const' qualifiers
+errs.c
+main.c
+D:\cni\ilc\src\main.c(228) : warning C4101: 'p' : unreferenced local variable
+parser.c
+D:\cni\ilc\src\parser.c(222) : warning C4090: 'function' : different 'const' qualifiers
+D:\cni\ilc\src\parser.c(222) : warning C4024: 'scRegisterKeywords' : different types for formal and actual parameter 1
+parser_op.c
+pass1.c
+pass2.c
+rdfile.c
+scanner.c
+D:\cni\ilc\src\scanner.c(47) : warning C4047: 'initializing' : 'struct SCNKW *' differs in levels of indirection from 'char ** '
+D:\cni\ilc\src\scanner.c(1331) : warning C4013: 'atoi' undefined; assuming extern returning int
+symtab.c
+util.c
+ver.c
+Linking...
+Creating temp file "C:\TEMP\RSP18.bat" with contents <@echo off
+copy Release\ilc.exe ..\bin\win32\ilc.exe
+>
+Creating command line "C:\TEMP\RSP18.bat" 
+
+        1 file(s) copied.
+
+
+
+ilc.exe - 0 error(s), 15 warning(s)

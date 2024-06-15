@@ -1,0 +1,108 @@
+
+
+  Modifiche apportate a qplc dalla versione 1.8.0.4 alla 1.8.0.16
+  ---------------------------------------------------------------
+
+  - Corretto un bug nel calcolo dell'indirizzo delle variabili della
+    sezione COMMON da debugger remoto.
+  - Aggiunto il comando remoto "set", che permette di scrivere un valore
+    su di una variabile data per nome. Sintassi:
+
+       set variabile indice1 indice2 dato [dato...]
+
+    dove "variabile" e` il nome di una variabile, "indice1" e "indice2"
+    sono indici, significativi solo per i segnali di scambio, e "dato"
+    e` il valore esadecimale da scrivere nella variabile. Il numero di cifre
+    di "dato" decide di quanti byte debba essere inteso il valore. Sono
+    riconosciute le taglie di un byte (1-2 cifre) due byte (3-4 cifre)
+    e quattro byte (5-8 cifre). Altre taglie provocano errore 4.
+    Successivi valori sono assegnati ad indirizzi via via crescenti.
+    E` assicurata la scrittura atomica dei singoli valori, ma non tra
+    un valore ed il successivo. Percio`, se "QUATTRO" e` una variabile a
+    quattro byte, i due seguenti comandi sono equivalenti riguardo
+    al contenuto finale della memoria, ma non riguardo alla temporizzazione:
+
+      set QUATTRO 0 0 12345678
+      set QUATTRO 0 0 78 56 34 12
+
+    il secondo infatti puo` essere interrotto dall'esecutore, che potrebbe
+    leggere un valore errato dalla variabile.
+ - Aggiunta l'opzione "p" al comando remoto "list".
+   "list p" emette le lista delle associazioni di I/O correnti. La
+   lista e` composta da un certo numero di linee
+
+	D-<name> <mode> <nbit> <addr> <key>
+
+   dove "name" e` il nome del segnale, "mode" e` la modalita` di
+   associazione (1=input, 2=output), "nbit" e` la dimensione in bit,
+   "addr" e` l'indirizzo della variabile associata, "key" e` una chiave
+   da utilizzare nel comando "setin" per riferirsi al segnale. La lista
+   termina con la linea "D ."
+ - Aggiunto il comando remoto "setin", che serve a forzare il valore
+   di un segnale di input.
+   "setin <key> <val>" forza al valore "val" il segnale di input di
+   chiave "key". La chiave si ottiene col comando "list p".
+ - Aggiunta l'opzione "-simul", che simula la presenza di ogni tipo di
+   hardware richiesto (cosicche` nessun programma potra` dare errore
+   per mancanza di qualche segnale di I/O), ma disabilita ogni accesso
+   fisico ai segnali. E` utile in fase di debug, dove gli input vengono
+   forzati dal debugger col comando "setin", e gli output sono visualizzati
+   nella finestra delle variabili.
+ - Aggiunta la funzione "shvAddrToVar", che converte un indirizzo nel
+   segnale di scambio corrispondente. Solo per uso interno.
+ - Aggiunto il comando remoto "sym", che trova il simbolo piu` vicino
+   all'indirizzo dato. La risposta puo` essere
+
+	D S <nome> <indice1> <indice2>
+  
+    oppure
+
+	D I <nome> <offset> <file>
+
+     La prima forma si ottiene quando l'indirizzo corrisponde ad un elemento
+    di un segnale di scambio. "indice1" e "indice2" sono gli indici
+    dell'elemento.
+     La seconda forma si riferisce a simboli ordinari di moduli IL o C.
+     "offset" e` lo scostamento dell'indirizzo rispetto al valore del
+    simbolo trovato, e "file" e` il nome del file contenete il programma
+    a cui il simbolo si riferisce.
+     Se non si trova alcuna corrispondenza ragionevole, si ha errore 4.
+    NOTA: il comando non e` in grado di riconoscere i simboli contenuti
+    staticamente nell'eseguibile "qplc".
+ - Aggiunta la possibilita` di rendere opzionale un segnale di I/O
+   premettendo un "_" al suo nome.
+ - Aggiunta la gestione del file di configurazione degli I/O.
+   Si chiama "ioconf.qplc", salvo diversa indicazione con la nuova
+   opzione "-path-ioconf <file>". Se il file e` assente, qplc si
+   comporta nella maniera consueta. Se e` presente, qplc lo legge
+   e in base al suo contenuto realizza, rifiuta o simula le associazioni
+   di I/O richiesta dal programma PLC. La funzione interna che risente
+   della configurazione e` "ioAttach". Sintassi e significato del
+   file di configurazioni sono descritti dettagliatamente nel
+   documento "ioconf.txt".
+   Il file di configurazione viene ora riletto ad ogni GO.
+   NOTA: Data la cronica lentezza con cui i nuovi messaggi di errore
+   vengono adottati, distribuiti e tradotti, errori di sintassi del file
+   di configurazione provocano solo un messaggio in inglese su STDERR.
+ - Modificata la visualizzazione degli errori hardware. E` stata aggiunta
+   la ricerca dei moduli in fault. Ora il messaggio emesso comprende anche
+   l'indice del modulo in errore. (Da un punto di vista della qualita` del
+   codice, la modifica fa schifo. Il meccanismo di segnalazione degli
+   errori hardware andrebbe rivisto).
+ - Aggiunto il supporto per i moduli speciali LAE.
+    Si tratta di quattro nuovi tipi di segnale, che compaiono come "figli"
+   dei primi otto bit di output dei moduli finora utilizzati come "tastiera
+   Selco". I nomi di questi segnali sono "DELAY", "PULSE", "TRIGL" e "OUTL".
+    I primi due sono output a 16 bit, e configurano i due timer relativi
+   al bit che li controlla, gli altri due sono output a 1 bit, e configurano
+   rispettivamente la polarita` del trigger (salita/discesa) e dell'uscita
+   attiva (alta/bassa). I secondi otto bit del modulo sono le abilitazioni
+   delle uscite. I primi otto bit di ingresso mappani gli otto ingressi,
+   i secondi otto le uscite speciali, i terzi le uscite ordinarie.
+ - Corretta la funzione interna "util_stop_thread" in modo che eviti di
+   chiamare la system cal ldi cancellazione di un thread con parametro
+   uguale a -1. Nelle versioni precedenti, all'entrata in HALT si poteva
+   avere l'inaspettata cancellazione del thread principale. La condizione
+   si e` finora verificata solo in occasione di HALT provocato da divisione
+   per zero. Si tratta probabilmente di un'incongruenza a livello di kernel.
+

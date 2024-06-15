@@ -1,0 +1,9 @@
+button, entry {
+  color: #ff00ea;
+  font: 24px "Comic Sans";
+}
+
+label {
+  color: green;
+  font: 48px "Comic Sans";
+}

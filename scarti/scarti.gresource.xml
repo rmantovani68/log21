@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/easy-picking/scarti">
+    <file preprocess="xml-stripblanks">main-window.ui</file>
+    <file>scarti.css</file>
+  </gresource>
+  <gresource prefix="/images">
+    <file>../images/ael_logo.png</file>
+    <file>../images/ael_logo_small.png</file>
+    <file>../images/cobo-logo.png</file>
+    <file>../images/easy-picking.png</file>
+    <file>../images/gdm-foot-logo.png</file>
+    <file>../images/gnome-64.png</file>
+    <file>../images/gnome-about-logo.png</file>
+    <file>../images/logo-64x64.png</file>
+    <file>../images/logo_azienda-64x64.png</file>
+    <file>../images/logo-gnome.png</file>
+    <file>../images/logo-mondadori.png</file>
+    <file>../images/logo-mondadori-small.png</file>
+    <file>../images/mondadori.png</file>
+    <file>../images/Package.png</file>
+    <file>../images/postgresql-elephant-medium.png</file>
+    <file>../images/postgresql-elephant.png</file>
+    <file>../images/postgresql-elephant-small.png</file>
+    <file>../images/rcs-logo.png</file>
+    <file>../images/vt3-logo-64x64.png</file>
+  </gresource>
+</gresources>

@@ -1,0 +1,77 @@
+# ---------------------------------------------
+# File di definizione stili per main
+# Progetto Easy Picking 3.0 - Wella Rebuild
+# Data creazione 13-10-2000
+# Autori : Stefano Tarroni - Roberto Mantovani
+# Copyright A&L srl 2003-2021
+# ---------------------------------------------
+
+# ------------------------------------
+# dichiarazione della pixmap directory
+# ------------------------------------
+pixmap_path "../pixmaps"
+
+
+# -----------------
+# definizione stili
+# -----------------
+style "clist_font" {
+	font = "9x15bold"
+}
+style "dlgbox_font" {
+	font = "9x15bold"
+}
+style "large_font" {
+	font = "9x15bold"
+}
+
+style "stato_linea" {
+	font = "-adobe-Courier-Bold-R-Normal--18-180-75-75-M-110-ISO8859-1"
+}
+
+style "sfondo_logo" {
+   bg[NORMAL] = { 0.6, 0.6, 0.6 }
+}
+
+
+# ----------------------------
+# associazione stili -> widget
+# ----------------------------
+
+class "GtkCList" style "clist_font"
+class "GtkWindow" style "clist_font"
+widget "dlg_distribuzione*clist_distribuzione*label*" style "clist_font"
+widget "dlg_about*lb_version" style "large_font"
+
+#widget "*sw_list*GtkLabel" style "clist_font"
+widget "*sw_*GtkLabel" style "clist_font"
+widget "*eb_logo" style "sfondo_logo"
+
+widget "main_window*lb_stato_linea" style "stato_linea"
+widget "main_window*lb_rx" style "stato_linea"
+widget "main_window*lb_tx" style "stato_linea"
+
+widget "dlg_stampa*txt_stampa" style "clist_font"
+
+
+# style "sfondo" {
+#  	bg_pixmap[NORMAL]   = ".xpm"
+# 	bg_pixmap[ACTIVE]   = ".xpm"
+#   bg_pixmap[PRELIGHT] = ".xpm"
+# }
+#
+# style "label" {
+#   font = "" 
+#   fg[NORMAL] = { 0.2, 0.5, 0.3 }
+#   bg[ACTIVE] = { 0.6, 0.0, 0.9 }
+#   bg[SELECTED] = { 0.0, 0.0, 0.0 }
+#   fg[ACTIVE] = { 1.0, 1.0, 1.0 }
+# }
+#
+#  font = "-Adobe-Courier-Bold-R-Normal--14-130-75-75-M-80-ISO8859-1"
+#	 font = "-Adobe-Courier-Bold-R-Normal--18-180-75-75-M-110-ISO8859-1"
+#	 font = "-Adobe-Courier-Bold-R-Normal--21-200-75-75-m-120-ISO8859-1"
+#	 font = "-Adobe-Courier-Bold-R-Normal--24-240-75-75-M-150-ISO8859-1"
+#  font = "-Adobe-Courier-Medium-R-Normal--11-110-75-75-M-70-ISO8859-1"
+#  font = "-Adobe-Courier-Medium-R-Normal--14-140-75-75-M-90-ISO8859-1"
+#  font = "-adobe-utopia-bold-r-normal--17-160-75-75-p-94-iso8859-1"

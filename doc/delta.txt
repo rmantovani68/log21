@@ -1,0 +1,97 @@
+Situazione alla data 25-03-2002
+-------------------------------
+Installato sistema Easy Picking 3.0
+
+Gestione Linea
+- Progressivo Lancio a partire da 1000
++ Preconfezionato Pallet
+- Stampa da Storico (XAB/DDT/Packing List)
+
+Pesatura
+
+Edit
+
+Equilibratura
++ Inserire Categoria FF in edit articoli
+- Selezione settori da utilizzare per l'equilibratura
++ Stampa lista ubicazioni+articoli 
+
+Varie
+- Calcolo rimanenze per articolo (lista)
+
+(Sgarzi)
+- Gestione del personale
+- Gestione Costi Cedola
+- Statistica operatore con gestione errori
+- Statistica operatore con media oraria di prelievo
+
+Situazione alla data 05-12-2002
+-------------------------------
+Mancanze segnalate dal responsabile
+
+  - Gestione Linea -
+1 - Possibilita' di cambiare il numero cedola
+    DA FARE - Con verifica di congruenza    
+2 - Stampa per linea di distribuzione non funzionante
+    CORRETTO : in storico non si devono gestire gli stati ordine
+
+  - Equilibratura -
+3 - Manca la possibilita' di equilibrare specificando il numero di settori
+    DA FARE 
+4 - L'equilibratura automatica salta a sua scelta delle ubicazioni
+    DA VERIFICRE 
+5 - Non gestisce i prodotti piu' voluminosi
+    NON RAGIONA SUL VOLUME DEI PRODOTTI
+		Dovrebbe piazzare i volumi piu' grandi all'inizio della linea
+6 - Equilibria in maniera errata
+7 - Non tiene conto dei preconfezionati
+    DA FARE - Eseguire tests e gestire il preconfezionato
+
+  - Monitoraggio -
+8 - Assente completamente
+
+  - Storico -
+9 - Fa vedere solamente le spedizioni della cedola in corso
+
+  - Controllo Analisi Volumetrica -
+10- Non funzionante
+    DA SISTEMARE
+
+  - Situazione cedola -
+11- Non funzionante
+    Funziona - da migliorare graficamente
+
+  - Funzioni di EP 2.0 non riportate -
+12- Non e' possibile stampare e soprattutto caricare 2 cedole contemporanamente
+    CHIEDERE SGARZI
+
+Monitoraggio
+  - Funzioni principali del monitoraggio -
+1 - Media oraria per colli,copie,totale e per operatore compresi gli operatori fuori linea.
+  - e' presente
+2 - Calcolo tempo evasione per lancio
+  - presente , ma da verificare (totali)
+3 - Media scarti e conto di scarti dovuti al peso e per no read da scanner
+    DA FARE 
+4 - Media totale e parziale (giornaliera e oraria)
+  - e' presente
+5 - Dettaglio fine cedola su medie e anomalie.
+
+Situazione Backup
+
+Gestione Scarti/Rese
+-------------------
+Consuntivo (vedi ../scripts/totale_scarti.sh)
+cancellazione totale
+
+Gestione Fine Linea
+-------------------
+Lampada controllata da PLC per avvertire l'operatore di anomalie
+(lettura errata/collo non evaso/linea di spedizione non conruente)
+
+
+Situazione alla data 13-01-2002
+-------------------------------
+1 - Lista Distribuzione
+    Selezionando piu' linee stampa solo la prima distinta.
+2 - Gestione Flag di forzatura manuale di evasione

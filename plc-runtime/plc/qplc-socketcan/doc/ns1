@@ -1,0 +1,32 @@
+
+
+  Modifiche apportate a qplc dalla versione 1.7.0.6 alla 1.8.0.4
+  --------------------------------------------------------------
+
+ - Aggiunta la variabile di configurazione "wdtime", che
+   contiene il tempo d'intervento del watchdog della IOS espresso
+   in cicli di PLC.
+ - Aggiunta la possibilita` di usare la scheda INAX come temporizzatore.
+   L'esecutore puo` cosi` funzionare con periodo inferiore a 10 ms.
+   L'opzione "-use-inax" abilita questa modalita`. Nel funzionamento
+   ordinario e` necessaria la presenza del processo "intx", che controlla
+   normalmente la scheda INAX; nel funzionamento stand-alone, e` qplc
+   stesso a programmare la scheda. L'opzione "-period n" controlla ancora
+   la durata del periodo dell'esecutore. Se il periodo non coincide con
+   quello impostato da "intx", e` approssimato al primo multiplo intero
+   del valore corrente.
+   Per evitare blocchi dell'esecutore dovuti a problemi di "intx", e`
+   anche utilizzato un timer Lynx ordinario con funzione di watchdog. Il
+   suo periodo e` normalmente 30 ms, ma puo` essere variato con la nuova
+   opzione "-inax-wd-period n".
+   Questa prestazione richiede il driver INAX 3.0 .
+ - Corretto un errore nel calcolo dell'indice della scheda in timeout.
+   La segnalazione di fault (giusta, di per se`) poteva indicare il
+   numero di scheda sbagliato.
+ - Aggiunta l'opzione "-min-overrun", che serve a
+   specificare il numero di cicli in overrun concessi al
+   programma senza che venga emesso l'errore di ciclo troppo lungo.
+ - Corretta una piccola incongruenza formale in exec.c (innocua).
+ - Distribuita in BiEsse.
+
+ 

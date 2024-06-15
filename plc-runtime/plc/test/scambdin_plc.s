@@ -1,0 +1,10 @@
+	.file	"scambdin.plc.test"
+	.text
+ilc.compiled:
+$BF7363616D6264696E2E706C632E74657374:
+	.long	.L1,.L2,0x0
+.L2:
+	.long	0x0,0x41414141
+	.align	4
+.L1:
+$EF7363616D6264696E2E706C632E74657374:

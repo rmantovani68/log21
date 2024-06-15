@@ -1,0 +1,10 @@
+echo ftp_receive_log_sequence; pg_dump -h database mondadori -O -s -t ftp_receive_log_sequence   > ftp_receive_log_sequence.dump.sql
+echo ftp_receive_log         ; pg_dump -h database mondadori -O -s -t ftp_receive_log            > ftp_receive_log.dump.sql
+echo ftp_send_log_sequence   ; pg_dump -h database mondadori -O -s -t ftp_send_log_sequence      > ftp_send_log_sequence.dump.sql
+echo ftp_send_log            ; pg_dump -h database mondadori -O -s -t ftp_send_log               > ftp_send_log.dump.sql
+echo ftp_sender_log_sequence ; pg_dump -h database mondadori -O -s -t ftp_sender_log_sequence    > ftp_sender_log_sequence.dump.sql
+echo ftp_sender_log          ; pg_dump -h database mondadori -O -s -t ftp_sender_log             > ftp_sender_log.dump.sql
+echo mail_queue_sequence     ; pg_dump -h database mondadori -O -s -t mail_queue_sequence        > mail_queue_sequence.dump.sql
+echo mail_queue              ; pg_dump -h database mondadori -O -s -t mail_queue                 > mail_queue.dump.sql
+echo mail_sender_log_sequence; pg_dump -h database mondadori -O -s -t mail_sender_log_sequence   > mail_sender_log_sequence.dump.sql
+echo mail_sender_log         ; pg_dump -h database mondadori -O -s -t mail_sender_log            > mail_sender_log.dump.sql

@@ -1,0 +1,625 @@
+
+          <object class="GtkMenuBar" id="mb_main">
+            <property name="name">mb_main</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <child>
+              <object class="GtkMenuItem" id="archivio_menu">
+                <property name="name">archivio_menu</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Archivio</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="archivio_menu_menu">
+                    <property name="name">archivio_menu_menu</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                      <object class="GtkImageMenuItem" id="pbm_carica_stato">
+                        <property name="label" translatable="yes">Carica Stato</property>
+                        <property name="name">pbm_carica_stato</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="double-buffered">False</property>
+                        <property name="action-name">main.carica-stato</property>
+                        <property name="use-stock">False</property>
+                        <accelerator key="C" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="pbm_salva_stato">
+                        <property name="label" translatable="yes">Salva Stato</property>
+                        <property name="name">pbm_salva_stato</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.salva-stato</property>
+                        <property name="use-stock">False</property>
+                        <accelerator key="L" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="i0">
+                        <property name="name">i0</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="pbm_carica_ultimo_stato_salvato">
+                        <property name="label" translatable="yes">Carica Ultimo Stato Salvato</property>
+                        <property name="name">pbm_carica_ultimo_stato_salvato</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.carica-ultimo-stato-salvato</property>
+                        <property name="use-stock">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="i1">
+                        <property name="name">i1</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="pbm_pulizia_dati_ricezione">
+                        <property name="label" translatable="yes">Pulizia Dati Ricevuti</property>
+                        <property name="name">pbm_pulizia_dati_ricezione</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.pulizia-dati-ricezione</property>
+                        <property name="use-stock">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="pbm_pulizia_dati_produzione">
+                        <property name="label" translatable="yes">Pulizia Dati di Produzione</property>
+                        <property name="name">pbm_pulizia_dati_produzione</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.pulizia-dati-produzione</property>
+                        <property name="use-stock">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="pbm_aggiorna_archivi">
+                        <property name="label" translatable="yes">Aggiornamento Archivi</property>
+                        <property name="name">pbm_aggiorna_archivi</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.aggiorna-archivi</property>
+                        <property name="use-stock">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="i2">
+                        <property name="name">i2</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="pb_ricezione_dati">
+                        <property name="label" translatable="yes">Ricezione Dati</property>
+                        <property name="name">pb_ricezione_dati</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.ricezione-dati</property>
+                        <property name="use-stock">False</property>
+                        <accelerator key="R" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="pbm_spedizione_dati">
+                        <property name="label" translatable="yes">Spedizione Dati</property>
+                        <property name="name">pbm_spedizione_dati</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.spedizione-dati</property>
+                        <property name="use-stock">False</property>
+                        <accelerator key="S" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="pbm_invia_file_ftp">
+                        <property name="label" translatable="yes">Invia Dati via FTP</property>
+                        <property name="name">pbm_invia_file_ftp</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.invia-file-ftp</property>
+                        <property name="use-stock">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="pbm_storicizzazione_dati">
+                        <property name="label" translatable="yes">Storicizzazione Dati</property>
+                        <property name="name">pbm_storicizzazione_dati</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.storicizzazione-dati</property>
+                        <property name="use-stock">False</property>
+                        <accelerator key="T" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="i3">
+                        <property name="name">i3</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="pbm_exit">
+                        <property name="label">gtk-quit</property>
+                        <property name="name">pbm_exit</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.uscita</property>
+                        <property name="use-underline">True</property>
+                        <property name="use-stock">True</property>
+                        <property name="accel-group">accelgroup1</property>
+                        <accelerator key="q" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="edit_menu">
+                <property name="name">edit_menu</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Edit</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="edit_menu_menu">
+                    <property name="name">edit_menu_menu</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                      <object class="GtkMenuItem" id="pbm_seleziona_tutto">
+                        <property name="name">pbm_seleziona_tutto</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.select-all</property>
+                        <property name="label" translatable="yes">Seleziona Tutto</property>
+                        <accelerator key="A" signal="activate" modifiers="GDK_MOD1_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="pbm_deseleziona_tutto">
+                        <property name="name">pbm_deseleziona_tutto</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.unselect-all</property>
+                        <property name="label" translatable="yes">Deselziona tutto</property>
+                        <accelerator key="D" signal="activate" modifiers="GDK_MOD1_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="i4">
+                        <property name="name">i4</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="pbm_reset_stato_ordine">
+                        <property name="name">pbm_reset_stato_ordine</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.reset-stato-ordine</property>
+                        <property name="label" translatable="yes">Reset Stato Ordine</property>
+                        <accelerator key="R" signal="activate" modifiers="GDK_MOD1_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="pbm_setta_stato_ordine">
+                        <property name="name">pbm_setta_stato_ordine</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.set-stato-ordine</property>
+                        <property name="label" translatable="yes">Set Stato Ordine</property>
+                        <accelerator key="S" signal="activate" modifiers="GDK_MOD1_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="i5">
+                        <property name="name">i5</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="pbm_configurazione">
+                        <property name="label">gtk-preferences</property>
+                        <property name="name">pbm_configurazione</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.preferences</property>
+                        <property name="use-underline">True</property>
+                        <property name="use-stock">True</property>
+                        <accelerator key="C" signal="activate" modifiers="GDK_MOD1_MASK"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="visualizza_menu">
+                <property name="name">visualizza_menu</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Visualizza</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="visualizza_menu_menu">
+                    <property name="name">visualizza_menu_menu</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                      <object class="GtkImageMenuItem" id="aggiorna_lista">
+                        <property name="name">aggiorna_lista</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.refresh-lista-ordini</property>
+                        <property name="use-stock">False</property>
+                        <accelerator key="W" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separator22">
+                        <property name="name">separator22</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="pbm_carico_settori">
+                        <property name="name">pbm_carico_settori</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.carico-settori</property>
+                        <property name="label" translatable="yes">Carico Settori</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="stampe_menu">
+                <property name="name">stampe_menu</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Stampe</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="stampe_menu_menu">
+                    <property name="name">stampe_menu_menu</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                      <object class="GtkMenuItem" id="pbm_stampa_etichette">
+                        <property name="name">pbm_stampa_etichette</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.stampa-etichette-ordine</property>
+                        <property name="label" translatable="yes">Stampa Etichette</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separator11">
+                        <property name="name">separator11</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="pbm_stampa_packing_list">
+                        <property name="name">pbm_stampa_packing_list</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.stampa-packing-list-ordine</property>
+                        <property name="label" translatable="yes">Stampa Packing List</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="pbm_stampa_dati_ordine">
+                        <property name="name">pbm_stampa_dati_ordine</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.stampa-dati-ordine</property>
+                        <property name="label" translatable="yes">Stampa Dati Ordine</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separator20">
+                        <property name="name">separator20</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="pbm_stampa_xab">
+                        <property name="name">pbm_stampa_xab</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.stampa-xab</property>
+                        <property name="label" translatable="yes">Stampa XAB</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separator27">
+                        <property name="name">separator27</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="pbm_stampa_dettagli_spedizione">
+                        <property name="name">pbm_stampa_dettagli_spedizione</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.stampa-dettagli-spedizione</property>
+                        <property name="label" translatable="yes">Stampa Dettaglio Spedizione</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separator25">
+                        <property name="name">separator25</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="pbm_stampa_distribuzione">
+                        <property name="name">pbm_stampa_distribuzione</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.stampa-distribuzione</property>
+                        <property name="label" translatable="yes">Stampa Distribuzione</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="impianto_menu">
+                <property name="name">impianto_menu</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Impianto</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="impianto_menu_menu">
+                    <property name="name">impianto_menu_menu</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                      <object class="GtkImageMenuItem" id="pbm_start_impianto">
+                        <property name="label" translatable="yes">Start Impianto</property>
+                        <property name="name">pbm_start_impianto</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.start-impianto</property>
+                        <property name="use-stock">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="pbm_stop_impianto">
+                        <property name="label" translatable="yes">Stop Impianto</property>
+                        <property name="name">pbm_stop_impianto</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.stop-impianto</property>
+                        <property name="use-stock">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="i9">
+                        <property name="name">i9</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="pbm_reset_settori">
+                        <property name="name">pbm_reset_settori</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.reset-settori</property>
+                        <property name="label" translatable="yes">Reset Settori</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="pbm_reset_di_un_settore">
+                        <property name="name">pbm_reset_di_un_settore</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.reset-settore</property>
+                        <property name="label" translatable="yes">Reset Settore</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separator4">
+                        <property name="name">separator4</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="pbm_test_ios">
+                        <property name="name">pbm_test_ios</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.test-ios</property>
+                        <property name="label" translatable="yes">Test IOS</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="opzioni_menu">
+                <property name="name">opzioni_menu</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Opzioni</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="opzioni_menu_menu">
+                    <property name="name">opzioni_menu_menu</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                      <object class="GtkMenuItem" id="pbm_lancio_ordini">
+                        <property name="name">pbm_lancio_ordini</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.lancio-ordini-selezionati</property>
+                        <property name="label" translatable="yes">Lancio Ordini</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="pbm_cambia_priorita">
+                        <property name="name">pbm_cambia_priorita</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.cambia-priorita</property>
+                        <property name="label" translatable="yes">Cambia Priorità</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separator14">
+                        <property name="name">separator14</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="pbm_distribuzione">
+                        <property name="label" translatable="yes">Lista Distribuzione</property>
+                        <property name="name">pbm_distribuzione</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.distribuzione</property>
+                        <property name="use-stock">False</property>
+                        <accelerator key="D" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="lista_ordini_filtrati">
+                        <property name="label" translatable="yes">Ordini Filtrati</property>
+                        <property name="name">lista_ordini_filtrati</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.ordini-filtrati</property>
+                        <property name="use-stock">False</property>
+                        <accelerator key="O" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separator23">
+                        <property name="name">separator23</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="pbm_calcola_colli">
+                        <property name="label" translatable="yes">Calcola Colli</property>
+                        <property name="name">pbm_calcola_colli</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.calcolo-colli</property>
+                        <property name="use-stock">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="pbm_calcolo_consumo_imballi">
+                        <property name="label" translatable="yes">Calcolo Consumo Imballi</property>
+                        <property name="name">pbm_calcolo_consumo_imballi</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.consumo-imballi</property>
+                        <property name="use-stock">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separator24">
+                        <property name="name">separator24</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="pbm_rimanenza">
+                        <property name="name">pbm_rimanenza</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.rimanenza</property>
+                        <property name="label" translatable="yes">Rimanenza</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separator26">
+                        <property name="name">separator26</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="pbm_cambio_utente">
+                        <property name="label" translatable="yes">Cambio Utente</property>
+                        <property name="name">pbm_cambio_utente</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.cambio-utente</property>
+                        <property name="use-stock">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="pbm_cambio_password">
+                        <property name="label" translatable="yes">Cambio Password</property>
+                        <property name="name">pbm_cambio_password</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.cambio-password</property>
+                        <property name="use-stock">False</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="help_menu">
+                <property name="name">help_menu</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Aiuto</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="help_menu_menu">
+                    <property name="name">help_menu_menu</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                      <object class="GtkImageMenuItem" id="pbm_about">
+                        <property name="label" translatable="yes">About</property>
+                        <property name="name">pbm_about</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.about</property>
+                        <property name="use-stock">False</property>
+                        <accelerator key="F1" signal="activate"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="pbm_help">
+                        <property name="label" translatable="yes">Help</property>
+                        <property name="name">pbm_help</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="action-name">main.help</property>
+                        <property name="use-stock">False</property>
+                        <accelerator key="H" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>

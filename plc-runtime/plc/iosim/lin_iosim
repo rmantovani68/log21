@@ -1,0 +1,492 @@
+;
+;	Stringa:  File
+;
+File.ita=File;
+File.ing=File;
+File.fra=File;
+File.ted=Datei;
+File.spa=File;
+File.por=File;
+File.ola=Bestand;
+File.dan=Fil;
+File.sve=Fil;
+File.nor=Fil;
+File.fin=Tiedosto;
+;
+;	Stringa:  Edit
+;
+Edit.ita=Edit;
+Edit.ing=Edit;
+Edit.fra=Edit;
+Edit.ted=Edit;
+Edit.spa=Edit;
+Edit.por=Edit;
+Edit.ola=Edit;
+Edit.dan=Rediger;
+Edit.sve=Edit;
+Edit.nor=Edit;
+Edit.fin=Edit;
+;
+;	Stringa:  Apri
+;
+Apri.ita=Apri;
+Apri.ing=Open;
+Apri.fra=Ouvrir;
+Apri.ted=Öffnen;
+Apri.spa=Abre;
+Apri.por=Abre;
+Apri.ola=Openen;
+Apri.dan=Åbn;
+Apri.sve=Öppna;
+Apri.nor=Åpne;
+Apri.fin=Avaa;
+;
+;	Stringa:  Salva
+;
+Salva.ita=Salva;
+Salva.ing=Save;
+Salva.fra=Sauver;
+Salva.ted=Sichern;
+Salva.spa=Salva;
+Salva.por=Salva;
+Salva.ola=Opslaan;
+Salva.dan=Gem;
+Salva.sve=Spara;
+Salva.nor=Lagre;
+Salva.fin=Tallenna;
+;
+;	Stringa:  SalvaCome
+;
+SalvaCome.ita=Salva come;
+SalvaCome.ing=Save as;
+SalvaCome.fra=Sauver comme;
+SalvaCome.ted=Sichern als;
+SalvaCome.spa=Salva como;
+SalvaCome.por=Salva como;
+SalvaCome.ola=Opslaan als;
+SalvaCome.dan=Gem som;
+SalvaCome.sve=Spara som;
+SalvaCome.nor=Lagre med navn;
+SalvaCome.fin=Tallenna nimellÄ;
+;
+;	Stringa:  Uscita
+;
+Uscita.ita=Uscita;
+Uscita.ing=Exit;
+Uscita.fra=Sortie;
+Uscita.ted=Exit;
+Uscita.spa=Salida;
+Uscita.por=SaÍda;
+Uscita.ola=Afsluiten;
+Uscita.dan=Udgang;
+Uscita.sve=Avsluta;
+Uscita.nor=GÅ ut;
+Uscita.fin=Poistu;
+;
+;	Stringa:  Opzioni
+;
+Opzioni.ita=Opzioni;
+Opzioni.ing=Option;
+Opzioni.fra=Options;
+Opzioni.ted=Optionen;
+Opzioni.spa=Opciones;
+Opzioni.por=OpÇÕes;
+Opzioni.ola=Opties;
+Opzioni.dan=Alternativer;
+Opzioni.sve=Alternativ;
+Opzioni.nor=Funksjonsvalg;
+Opzioni.fin=Vaihtoehdot;
+;
+;       Stringa:  CancellaTutto
+;
+CancellaTutto.ita=Cancella tutta la distinta;
+CancellaTutto.ing=Delete entire list;
+CancellaTutto.fra=Annuler toute la liste;
+CancellaTutto.ted=Gesamte Liste löschen;
+CancellaTutto.spa=Borra toda la lista;
+CancellaTutto.por=Cancelar toda a lista;
+CancellaTutto.ola=Gehele werklijst wissen;
+CancellaTutto.dan=Slet hele arbejdslisten;
+CancellaTutto.sve=Radera hela listan;
+CancellaTutto.nor=Slett hele listen;
+CancellaTutto.fin=Poista koko luettelo;
+;
+;	Stringa:  LabelIO
+;
+LabelIO.ita=I/O;
+LabelIO.ing=I/O;
+LabelIO.fra=I/O;
+LabelIO.ted=I/O;
+LabelIO.spa=I/O;
+LabelIO.por=I/O;
+LabelIO.ola=I/O;
+LabelIO.dan=I/O;
+LabelIO.sve=I/O;
+LabelIO.nor=I/O;
+LabelIO.fin=I/O;
+;
+;	Stringa:  Valore
+;
+Valore.ita=Valore;
+Valore.ing=Value;
+Valore.fra=Value;
+Valore.ted=Value;
+Valore.spa=Value;
+Valore.por=Value;
+Valore.ola=Value;
+Valore.dan=Value;
+Valore.sve=Value;
+Valore.nor=Value;
+Valore.fin=Value;
+;
+;	Stringa:  Servizi
+;
+Servizi.ita=SERVIZI;
+Servizi.ing=SERVICES;
+Servizi.fra=
+Servizi.ted=
+Servizi.spa=SERVICIOS;
+Servizi.por=SERVIÇOS;
+Servizi.ola=
+Servizi.dan=
+Servizi.sve=
+Servizi.nor=
+Servizi.fin=
+;
+;	Stringa:  Cancella_file
+;
+Cancella_file.ita=CANCELLA FILE;
+Cancella_file.ing=DELETE FILE;
+Cancella_file.fra=
+Cancella_file.ted=
+Cancella_file.spa=BORRAR ARCHIVIO;
+Cancella_file.por=CANCELA FILE;
+Cancella_file.ola=
+Cancella_file.dan=
+Cancella_file.sve=
+Cancella_file.nor=
+Cancella_file.fin=
+;
+;	Stringa:  Crea_direttorio
+;
+Crea_direttorio.ita=CREA DIRETTORIO;
+Crea_direttorio.ing=MAKE DIRECTORY;
+Crea_direttorio.fra=;
+Crea_direttorio.ted=;
+Crea_direttorio.spa=CREAR DIRECTORIO;
+Crea_direttorio.por=CRIA DIRETÓRIO;
+Crea_direttorio.ola=;
+Crea_direttorio.dan=;
+Crea_direttorio.sve=;
+Crea_direttorio.nor=;
+Crea_direttorio.fin=;
+;
+;       Stringa:  Cancella_direttorio
+;
+Cancella_direttorio.ita=CANCELLA DIRETTORIO;
+Cancella_direttorio.ing=DELETE DIRECTORY;
+Cancella_direttorio.fra=;
+Cancella_direttorio.ted=;
+Cancella_direttorio.spa=BORRAR DIRECTORIO;
+Cancella_direttorio.por=CANCELA DIRETÓRIO;
+Cancella_direttorio.ola=;
+Cancella_direttorio.dan=;
+Cancella_direttorio.sve=;
+Cancella_direttorio.nor=;
+Cancella_direttorio.fin=;
+;
+;	Stringa:  SI
+;
+SI.ita=SI;
+SI.ing=YES;
+SI.fra=OUI;
+SI.ted=JA;
+SI.spa=SI;
+SI.por=SIM;
+SI.ola=JA;
+SI.dan=JA;
+SI.sve=JA;
+SI.nor=JA;
+SI.fin=KYLLÄ;
+;
+;	Stringa:  NO
+;
+NO.ita=NO;
+NO.ing=NO;
+NO.fra=NON;
+NO.ted=NEIN;
+NO.spa=NO;
+NO.por=NÃO;
+NO.ola=NEE;
+NO.dan=NEJ;
+NO.sve=NEJ;
+NO.nor=NEI;
+NO.fin=EI;
+;
+;	Stringa:  OK
+;
+OK.ita=CONFERMA;
+OK.ing=OK;
+OK.fra=CONFIRMER;
+OK.ted=BESTÄTIGEN;
+OK.spa=CONFIRMA;
+OK.por=CONFIRMA;
+OK.ola=OK;
+OK.dan=GODKEND;
+OK.sve=BEKRÄFTA;
+OK.nor=BEKREFTE;
+OK.fin=VAHVISTA;
+;
+;	Stringa:  ANNULLA
+;
+ANNULLA.ita=ANNULLA;
+ANNULLA.ing=CANCEL;
+ANNULLA.fra=ANNULER;
+ANNULLA.ted=LÖSCHEN;
+ANNULLA.spa=ANULA;
+ANNULLA.por=ANULA;
+ANNULLA.ola=ANNULEREN;
+ANNULLA.dan=ANNULLER;
+ANNULLA.sve=RADERA;
+ANNULLA.nor=ANNULLERE;
+ANNULLA.fin=PERUUTA;
+;
+;	Stringa:  PROGRAMMA
+;
+PROGRAMMA.ita=PROGRAMMA;
+PROGRAMMA.ing=PROGRAM;
+PROGRAMMA.fra=PROGRAMME;
+PROGRAMMA.ted=PROGRAMM;
+PROGRAMMA.spa=PROGRAMA;
+PROGRAMMA.por=PROGRAMA;
+PROGRAMMA.ola=PROGRAMMA;
+PROGRAMMA.dan=PROGRAM;
+PROGRAMMA.sve=PROGRAM;
+PROGRAMMA.nor=PROGRAM;
+PROGRAMMA.fin=OHJELMA;
+;
+;	Stringa:  SalvaFile
+;
+SalvaFile.ita=VUOI SALVARE I DATI MODIFICATI?;
+SalvaFile.ing=DO YOU WANT TO SAVE DATA?;
+SalvaFile.fra=;
+SalvaFile.ted=;
+SalvaFile.spa=CONFIRMAR LOS DATOS MODIFICADOS?;
+SalvaFile.por=GRAVAR LOS DADOS MODIFICADOS?;
+SalvaFile.ola=;
+SalvaFile.dan=;
+SalvaFile.sve=;
+SalvaFile.nor=;
+SalvaFile.fin=;
+;
+;	Stringa:  ErroreFile
+;
+ErroreFile.ita=ERRORE IN APERTURA FILE;
+ErroreFile.ing=ERROR WHILE OPENING THE FILE;
+ErroreFile.fra=;
+ErroreFile.ted=;
+ErroreFile.spa=ERROR EN ABRIR EL ARCHIVO;
+ErroreFile.por=ERROR EN ABRIR FILE;
+ErroreFile.ola=;
+ErroreFile.dan=;
+ErroreFile.sve=;
+ErroreFile.nor=;
+ErroreFile.fin=;
+;
+;	Stringa:  ErroreFileDel
+;
+ErroreFileDel.ita=ERRORE IN CANCELLAZIONE FILE;
+ErroreFileDel.ing=ERROR WHILE DELETING THE FILE;
+ErroreFileDel.fra=;
+ErroreFileDel.ted=;
+ErroreFileDel.spa=ERROR EN BORRAR EL ARCHIVO;
+ErroreFileDel.por=ERROR EN CANCEAR FILE;
+ErroreFileDel.ola=;
+ErroreFileDel.dan=;
+ErroreFileDel.sve=;
+ErroreFileDel.nor=;
+ErroreFileDel.fin=;
+;
+;	Stringa:  ErroreDirCrea
+;
+ErroreDirCrea.ita=ERRORE IN CREAZIONE DIRETTORIO;
+ErroreDirCrea.ing=ERROR WHILE MAKING DIRECTORY;
+ErroreDirCrea.fra=;
+ErroreDirCrea.ted=;
+ErroreDirCrea.spa=ERROR EN CREAR EL DIRECTORIO;
+ErroreDirCrea.por=ERROR EN CRIAR DIRETÓRIO;
+ErroreDirCrea.ola=;
+ErroreDirCrea.dan=;
+ErroreDirCrea.sve=;
+ErroreDirCrea.nor=;
+ErroreDirCrea.fin=;
+;
+;	Stringa:  ErroreDirDel
+;
+ErroreDirDel.ita=ERRORE IN CANCELLAZIONE DIRETTORIO;
+ErroreDirDel.ing=ERROR WHILE DELETING DIRECTORY;
+ErroreDirDel.fra=;
+ErroreDirDel.ted=;
+ErroreDirDel.spa=ERROR EN BORRAR EL DIRECTORIO;
+ErroreDirDel.por=ERROR EN CANCELAR DIRETÓRIO;
+ErroreDirDel.ola=;
+ErroreDirDel.dan=;
+ErroreDirDel.sve=;
+ErroreDirDel.nor=;
+ErroreDirDel.fin=;
+;
+;	Stringa:  ErroreFileWrite
+;
+ErroreFileWrite.ita=ERRORE IN SCRITTURA FILE;
+ErroreFileWrite.ing=ERROR WHILE WRITING FILE;
+ErroreFileWrite.fra=;
+ErroreFileWrite.ted=;
+ErroreFileWrite.spa=ERROR EN ESCRIBIR EL ARCHIVO;
+ErroreFileWrite.por=ERROR EN ESCREVER FILE;
+ErroreFileWrite.ola=;
+ErroreFileWrite.dan=;
+ErroreFileWrite.sve=;
+ErroreFileWrite.nor=;
+ErroreFileWrite.fin=;
+;
+;	Stringa:  FileErrato
+;
+FileErrato.ita=IL FILE SELEZIONATO NON CONTIENE DATI CORRETTI;
+FileErrato.ing=FILES CHOICED DO NOT HAVE CORRECT DATA;
+FileErrato.fra=;
+FileErrato.ted=;
+FileErrato.spa=EL ARCHIVO SELECCIONADO SE CONTENE DATOS ERRADOS;
+FileErrato.por=SELEÇÃO DE UM FILE QUE  CONTÉM DADOS ERRADOS;
+FileErrato.ola=;
+FileErrato.dan=;
+FileErrato.sve=;
+FileErrato.nor=;
+FileErrato.fin=;
+;
+;	Stringa:  ProgrammaCambiato
+;
+ProgrammaCambiato.ita=Programma cambiato;
+ProgrammaCambiato.ing=Program modified;
+ProgrammaCambiato.fra=;
+ProgrammaCambiato.ted=;
+ProgrammaCambiato.spa=;
+ProgrammaCambiato.por=;
+ProgrammaCambiato.ola=;
+ProgrammaCambiato.dan=;
+ProgrammaCambiato.sve=;
+ProgrammaCambiato.nor=;
+ProgrammaCambiato.fin=;
+;
+;       Stringa:  Configuraz
+;
+Configuraz.ita=Configurazione;
+Configuraz.ing=Configuration;
+Configuraz.fra=Configurtion;
+Configuraz.ted=Konfiguration;
+Configuraz.spa=Configuración;
+Configuraz.por=Configuração;
+Configuraz.ola=Configuratie;
+Configuraz.dan=Konfiguration;
+Configuraz.sve=Konfiguration;
+Configuraz.nor=Konfigurasjon;
+Configuraz.fin=Kokoonpanoasetus;
+;
+;
+;       Stringa:  Versione
+;
+Versione.ita=Versione;
+Versione.ing=Version;
+Versione.fra=Version;
+Versione.ted=Versionen;
+Versione.spa=Versiones;
+Versione.por=VersÕes;
+Versione.ola=Versies;
+Versione.dan=Udgaver;
+Versione.sve=Versioner;
+Versione.nor=Versjoner;
+Versione.fin=Versiot;
+;
+;
+;       Stringa:  Titolo
+;
+Titolo.ita=C.N.i. simulatore di I/O per qplc;
+Titolo.ing=C.N.i. I/O simulator for qplc;
+Titolo.fra=C.N.i. I/O simulator for qplc;
+Titolo.ted=C.N.i. I/O simulator for qplc;
+Titolo.spa=C.N.i. I/O simulator for qplc;
+Titolo.por=C.N.i. I/O simulator for qplc;
+Titolo.ola=C.N.i. I/O simulator for qplc;
+Titolo.dan=C.N.i. I/O simulator for qplc;
+Titolo.sve=C.N.i. I/O simulator for qplc;
+Titolo.nor=C.N.i. I/O simulator for qplc;
+Titolo.fin=C.N.i. I/O simulator for qplc;
+;
+;	Stringa:  PlcAssente
+;
+PlcAssente.ita=PLC ASSENTE !!!!!!!!;
+PlcAssente.ing=PLC NOT PRESENT !!!!!!!!;
+PlcAssente.fra=PLC NOT PRESENT !!!!!!!!;
+PlcAssente.ted=PLC NOT PRESENT !!!!!!!!;
+PlcAssente.spa=PLC NOT PRESENT !!!!!!!!;
+PlcAssente.por=PLC NOT PRESENT !!!!!!!!;
+PlcAssente.ola=PLC NOT PRESENT !!!!!!!!;
+PlcAssente.dan=PLC NOT PRESENT !!!!!!!!;
+PlcAssente.sve=PLC NOT PRESENT !!!!!!!!;
+PlcAssente.nor=PLC NOT PRESENT !!!!!!!!;
+PlcAssente.fin=PLC NOT PRESENT !!!!!!!!;
+;
+;	Stringa:  ErroreLista
+;
+ErroreLista.ita=Ricevuto errore dal PLC durante la richiesta lista I/O;
+ErroreLista.ing=Error during I/O listing rx;
+ErroreLista.fra=Error during I/O listing rx;
+ErroreLista.ted=Error during I/O listing rx;
+ErroreLista.spa=Error during I/O listing rx;
+ErroreLista.por=Error during I/O listing rx;
+ErroreLista.ola=Error during I/O listing rx;
+ErroreLista.dan=Error during I/O listing rx;
+ErroreLista.sve=Error during I/O listing rx;
+ErroreLista.nor=Error during I/O listing rx;
+ErroreLista.fin=Error during I/O listing rx;
+;
+;	Stringa:  ErroreTipoSconosciuto
+;
+ErroreTipoSconosciuto.ita=Ricevuto un I/O di tipo sconosciuto;
+ErroreTipoSconosciuto.ing=Unknown I/O type;
+ErroreTipoSconosciuto.fra=Unknown I/O type;
+ErroreTipoSconosciuto.ted=Unknown I/O type;
+ErroreTipoSconosciuto.spa=Unknown I/O type;
+ErroreTipoSconosciuto.por=Unknown I/O type;
+ErroreTipoSconosciuto.ola=Unknown I/O type;
+ErroreTipoSconosciuto.dan=Unknown I/O type;
+ErroreTipoSconosciuto.sve=Unknown I/O type;
+ErroreTipoSconosciuto.nor=Unknown I/O type;
+ErroreTipoSconosciuto.fin=Unknown I/O type;
+;
+;	Stringa:  ErroreSetting
+;
+ErroreSetting.ita=Errore durante il settaggio di;
+ErroreSetting.ing=Error during setting of;
+ErroreSetting.fra=Error during setting of;
+ErroreSetting.ted=Error during setting of;
+ErroreSetting.spa=Error during setting of;
+ErroreSetting.por=Error during setting of;
+ErroreSetting.ola=Error during setting of;
+ErroreSetting.dan=Error during setting of;
+ErroreSetting.sve=Error during setting of;
+ErroreSetting.nor=Error during setting of;
+ErroreSetting.fin=Error during setting of;
+;
+;	Stringa:  SelezionaHost
+;
+SelezionaHost.ita=Seleziona Macchina;
+SelezionaHost.ing=Host selection;
+SelezionaHost.fra=;
+SelezionaHost.ted=;
+SelezionaHost.spa=Selecciona Host;
+SelezionaHost.por=Selecciona Host;
+SelezionaHost.ola=;
+SelezionaHost.dan=;
+SelezionaHost.sve=;
+SelezionaHost.nor=;
+SelezionaHost.fin=;

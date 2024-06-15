@@ -1,0 +1,9 @@
+[Unit]
+Description=QPLC Startup Script
+After=network.target
+
+[Service]
+ExecStart=/opt/sorter/plc/start_qplc.sh
+
+[Install]
+WantedBy=default.target

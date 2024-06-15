@@ -1,0 +1,61 @@
+#!/bin/sh
+#
+# This script will be executed *after* all the other init scripts.
+# You can put your own initialization stuff in here if you don't
+# want to do the full Sys V style init stuff.
+
+# Installo il driver per ioscni
+/sbin/modprobe ioscni
+#  Configurazione delle seriali CNI
+/bin/setserial /dev/ttyS4 port 0x1a0 irq 11 \
+	autoconfig '^skip_test' fourport \
+	set_multiport port1 0x1bf match1 0x00 mask1 0x03
+/bin/setserial /dev/ttyS5 port 0x1a8 irq 11 \
+	autoconfig '^skip_test' fourport \
+	set_multiport port1 0x1bf match1 0x00 mask1 0x03
+/bin/setserial /dev/ttyS6 port 0x1c0 irq 10 \
+	autoconfig '^skip_test' fourport \
+	set_multiport port1 0x1df match1 0x00 mask1 0x03
+/bin/setserial /dev/ttyS7 port 0x1c8 irq 10 \
+	autoconfig '^skip_test' fourport \
+	set_multiport port1 0x1df match1 0x00 mask1 0x03
+
+# rm 01-02-2001 : trucco per gestire correttamente le maledette etichettatrici Alfajet 3000
+/bin/setserial /dev/ttyS6 uart 8250
+/bin/setserial /dev/ttyS7 uart 8250
+
+stty 9600 raw -echo ixon ixoff < /dev/ttyS6
+stty 9600 raw -echo ixon ixoff < /dev/ttyS7
+
+# rm 19-01-2001 : lancio plc
+cd /u/prj/buffetti/plc; ./go plc-objs/user < /dev/null > /dev/null 2>&1 &
+
+if [ -f /etc/redhat-release ]; then
+    R=$(cat /etc/redhat-release)
+
+    arch=$(uname -m)
+    a="a"
+    case "_$arch" in
+	    _a*) a="an";;
+	    _i*) a="an";;
+    esac
+    
+    NUMPROC=`egrep -c "^cpu[0-9]+" /proc/stat`
+    if [ "$NUMPROC" -gt "1" ]; then
+        SMP="$NUMPROC-processor "
+        if [ "$NUMPROC" = "8" -o "$NUMPROC" = "11" ]; then
+            a="an"
+	else
+	    a="a"
+        fi
+    fi
+
+    # This will overwrite /etc/issue at every boot.  So, make any changes you
+    # want to make to /etc/issue here or you will lose them when you reboot.
+    echo "" > /etc/issue
+    echo "$R" >> /etc/issue
+    echo "Kernel $(uname -r) on $a $SMP$(uname -m)" >> /etc/issue
+
+    cp -f /etc/issue /etc/issue.net
+    echo >> /etc/issue
+fi

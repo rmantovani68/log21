@@ -1,0 +1,29 @@
+CONFIGURATION NONAME_CONTROL
+
+ VAR_GLOBAL
+	IN1 AT %IXios.0.0.1.0.8 : BOOL:= 0;
+	IN2 AT %IXios.0.0.1.0.9 : BOOL:= 0;
+	IN3 AT %IXIOS.0.0.1.0.11 : BOOL:= 0;
+	IN4 AT %IXIOS.0.0.1.0.12 : BOOL:= 0;
+	IN5 AT %IXIOS.0.0.1.0.13 : BOOL:= 0;
+	TEST AT %IXIOS.0.0.1.0.48 : BOOL:= 0;
+	OUT2 AT %QXIOS.0.0.1.0.48 : BOOL:= 0;
+	OUT3 AT %QXIOS.0.0.1.0.49 : BOOL:= 0;
+	OUT4 AT %QXIOS.0.0.1.0.50 : BOOL:= 0;
+	OUT5 AT %QXIOS.0.0.1.0.51 : BOOL:= 0;
+	OUT6 AT %QXIOS.0.0.1.0.52 : BOOL:= 0;
+	USCI AT %QXios.0.0.1.0.53 : BOOL:= 0;
+	USCI2 AT %QXios.0.0.1.0.54 : BOOL:= 0;
+ END_VAR
+
+ RESOURCE unica ON sola_cpu_presente
+
+  PROGRAM G : NONAME
+
+   (* Input *)
+    (
+
+  (* Output *)
+   );
+ END_RESOURCE
+END_CONFIGURATION

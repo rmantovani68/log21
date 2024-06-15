@@ -1,0 +1,98 @@
+
+SHELL=/bin/sh
+
+DEVCNI=/usr/local/cni
+DEFS=/u2/beppe/qplc/src
+
+LOCALDEFS=-DDEBUG
+
+CC = gcc
+CFLAGS=-O \
+       -Wall -Wtraditional -Wshadow -Wpointer-arith -Wcast-qual \
+       -Wcast-align -Wwrite-strings -Wconversion -Waggregate-return \
+       -Wstrict-prototypes -Wmissing-prototypes -Wredundant-decls \
+       -Wnested-externs \
+       -mposix -D_POSIX_SOURCE -mthreads -DLynx \
+       $(LOCALDEFS) \
+       -I$(DEFS) -I$(DEVCNI)/include
+LD=gcc
+LD_R=ld -r
+#LDFLAGS=-mposix -D_POSIX_SOURCE -mthreads -L$(DEVCNI)/lib
+LDFLAGS=-mposix -D_POSIX_SOURCE -mthreads -L$(DEVCNI)/lib \
+        -Xlinker -Ttext -Xlinker 0x10000
+LDRFLAGS=-L$(DEVCNI)/lib
+LIBS=
+AR=ar
+ARFLAGS=q
+RANLIB=ranlib
+
+VERLIB=$(DEVCNI)/VERSIONE
+
+.c.o:
+	$(CC) -c $(CFLAGS) $<
+
+
+all::	libil.a
+
+SOURCES= ctd.c ctu.c ctud.c \
+	tof.c ton.c tp.c \
+	f_trig.s r_trig.s rs.s sr.s \
+	er.c msg.c verr.c vmsg.c msgupd.c vmsgupd.c vmsgv.c vmsgr.c \
+	bitfield.s bitres.s bitset.s bittest.s \
+	rol.s ror.s shl.s shr.s \
+	fadd.s fsub.s fmul.s fdiv.s dint_to_real.s real_to_dint.s \
+	fgt.s fge.s flt.s fle.s \
+	abs.s fabs.s trunc.s sin.s cos.s ln.s exp.s log.s tan.s \
+	sqrt.s asin.s acos.s atan.s expt.s \
+	md_general.c md_user.c md_status.c md_axis.c md_toolchg.c md_conf.c \
+	send_bytes.c recv_bytes.c send_string.c recv_string.c \
+	string_to_dint.c string_to_real.c rdax.c rdaxq.c \
+	md_set_user.c md_set_axis.c md_save_axis.c md_orig.c \
+	md_save_user.c md_save_orig.c wraxq.c mid.c len.c ascii.c
+
+OBJS= ctd.o ctu.o ctud.o \
+	tof.o ton.o tp.o \
+	f_trig.o r_trig.o rs.o sr.o \
+	er.o msg.o verr.o vmsg.o msgupd.o vmsgupd.o vmsgv.o vmsgr.o \
+	bitfield.o bitres.o bitset.o bittest.o \
+	rol.o ror.o shl.o shr.o \
+	fadd.o fsub.o fmul.o fdiv.o dint_to_real.o real_to_dint.o \
+	fgt.o fge.o flt.o fle.o \
+	abs.o fabs.o trunc.o sin.o cos.o ln.o exp.o log.o tan.o \
+	sqrt.o asin.o acos.o atan.o expt.o \
+	md_general.o md_user.o md_status.o md_axis.o md_toolchg.o md_conf.o \
+	send_bytes.o recv_bytes.o send_string.o recv_string.o \
+	string_to_dint.o string_to_real.o rdax.o rdaxq.o \
+	md_set_user.o md_set_axis.o md_save_axis.o md_orig.o \
+	md_save_user.o md_save_orig.o wraxq.o mid.o len.o ascii.o \
+	ver.o
+
+libil.a: $(OBJS)
+	rm -f libil.a
+	ar q libil.a $(OBJS)
+	ranlib libil.a
+
+
+ver.o:	ver.c
+ver.c:	$(SOURCES) $(HEADERS) Makefile 
+	@if [ -r VERSIONE ]; then \
+		versione=`awk '{ split($$0,a,"."); print a[1] "." a[2] "." a[3] "." (a[4]+1); }' VERSIONE` ;\
+	else \
+		versione=1.0.0.0; \
+	fi; \
+	echo 'Numero di versione proposto per ILC Runtime : '"$$versione"; \
+	echo 'Premi ENTER se va bene, oppure scrivine uno tu.'; \
+	read a; \
+	if [ "$$a" ]; then versione="$$a"; fi; \
+	echo "$$versione" > VERSIONE; \
+	echo -en 'static char Versione[] = "@(#) '"$$versione" > ver.c; \
+	echo -en '\\t\\t[' >> ver.c; \
+	echo -en "`date +"%d/%m/%Y %H:%M:%S"`" >> ver.c; \
+	echo -en ']\\tlib:' >> ver.c; \
+	awk '/^vers/{print $$3 "\";"; }' $(VERLIB) >> ver.c
+	versione_n=`awk '{ split($$0,a,"."); printf "%2d%02d%02d%02d\n",a[1],a[2],a[3],a[4]; }' VERSIONE` ;\
+	echo -en 'int VERLIB = '"$$versione_n"';\n' >> ver.c; \
+
+tags:	$(SOURCES)
+	ctags $(SOURCES)
+

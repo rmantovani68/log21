@@ -1,0 +1,241 @@
+#!/bin/bash
+
+#
+# Creazione tabelle / indici / sequenze / funzioni
+#
+
+#
+# default values
+#
+PGDB=`cat ../doc/DB_NAME`
+PGHOST=`cat ../doc/DB_HOST`
+
+echo 'Creazione Tabelle' > crea_tabelle.out
+
+echo 'Creazione Tabelle'
+
+echo -n 'Nome Database ['$PGDB'] ? : '
+read DBNAME
+echo -n 'Nome Host ['$PGHOST'] ? : '
+read DBHOST
+
+if [ a"$DBNAME" != a''  ]
+then
+export PGDB=$DBNAME
+fi
+
+if [ a"$DBHOST" != a''  ]
+then
+export PGHOST=$DBHOST
+fi
+
+export PGUSER=roberto
+export PGPASSWORD=3zin
+
+echo "PGDB :" $PGDB
+echo "PGHOST :" $PGHOST
+echo "PGUSER :" $PGUSER
+echo "PGPASSWORD :" $PGPASSWORD
+
+# psql -U $PGUSER -h $PGHOST -d $PGDB -f install_plpgsql.sql >> crea_tabelle.out 2>&1 ; echo -n .
+
+echo 'Creazione insert_update_triggers' >> crea_tabelle.out 2>&1 
+psql -U $PGUSER -h $PGHOST -d $PGDB -f insert_update_triggers.sql >> crea_tabelle.out 2>&1 ; echo -n .
+
+# Sequenze progressive 
+echo 'CREATE SEQUENCE proglancio increment 1 minvalue 0 maxvalue 999999 start 1000;'                | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo 'CREATE SEQUENCE sequence_anno increment 1 minvalue 2000 maxvalue 4000 start 2000;'            | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo 'CREATE SEQUENCE sequence_xab increment 1 minvalue 0 maxvalue 999999 start 1;'                 | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo 'CREATE SEQUENCE sequence_distinta increment 1 minvalue 0 maxvalue 999999 start 1;'            | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo 'CREATE SEQUENCE sequence_cedola increment 1 minvalue 0 maxvalue 999999 start 1;'              | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+
+# Funzioni di rappresentazione codice ubicazione e prodotto
+echo "DROP FUNCTION IF EXISTS  fila(bpchar);"               | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ;echo "CREATE FUNCTION fila(bpchar) returns text as 'select substr(\$1,1,3)' language 'sql';"        | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "DROP FUNCTION IF EXISTS  montante(bpchar);"           | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ;echo "CREATE FUNCTION montante(bpchar) returns text as 'select substr(\$1,4,3)' language 'sql';"    | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "DROP FUNCTION IF EXISTS  colonna(bpchar);"            | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ;echo "CREATE FUNCTION colonna(bpchar) returns text as 'select substr(\$1,7,3)' language 'sql';"     | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "DROP FUNCTION IF EXISTS  piano(bpchar);"              | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ;echo "CREATE FUNCTION piano(bpchar) returns text as 'select substr(\$1,10,3)' language 'sql';"      | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "DROP FUNCTION IF EXISTS  ubicazione(bpchar);"         | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ;echo "CREATE FUNCTION ubicazione(bpchar) returns text as 'select substr(\$1,1,3)||''.''||substr(\$1,4,3)||''.''||substr(\$1,7,3)||''.''||substr(\$1,10,3)' language 'sql';" | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "DROP FUNCTION IF EXISTS  ubicazione_ridotta(bpchar);" | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ;echo "CREATE FUNCTION ubicazione_ridotta(bpchar) returns text as 'select substr(\$1,1,3)||''.''||substr(\$1,7,3)||''.''||substr(\$1,10,3)' language 'sql';" | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "DROP FUNCTION IF EXISTS  ubicazione_rid(bpchar);"     | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ;echo "CREATE FUNCTION ubicazione_ridotta(bpchar) returns text as 'select substr(\$1,1,1)||''.''||substr(\$1,8,2)||''.''||substr(\$1,12,1)' language 'sql';" | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "DROP FUNCTION IF EXISTS  codprod_ridotto(bpchar);"    | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ;echo "CREATE FUNCTION codprod_ridotto(bpchar) returns text as 'select substr(\$1,6,7)' language 'sql';" | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+
+# Funzioni di gestione data/ora (using to_char())
+
+echo "DROP FUNCTION IF EXISTS  data_YYYYMMDDHHMMSS(timestamp);"        | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "DROP FUNCTION IF EXISTS  data_YYYYMMDDHHMMSS(timestamptz);"      | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "DROP FUNCTION IF EXISTS  data_YYYYMMDD(timestamp);"              | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "DROP FUNCTION IF EXISTS  data_YYYYMMDD(timestamptz);"            | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "DROP FUNCTION IF EXISTS  data_YYYYMMDD(text);"                   | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "DROP FUNCTION IF EXISTS  data_DDMMYY(timestamp);"                | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "DROP FUNCTION IF EXISTS  data_DDMMYY(timestamptz);"              | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "DROP FUNCTION IF EXISTS  ora(timestamp);"                        | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "DROP FUNCTION IF EXISTS  ora(timestamptz);"                      | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "DROP FUNCTION IF EXISTS  data(timestamp);"                       | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "DROP FUNCTION IF EXISTS  data(timestamptz);"                     | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "DROP FUNCTION IF EXISTS  data_ora(timestamp);"                   | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "DROP FUNCTION IF EXISTS  data_ora(timestamptz);"                 | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "DROP FUNCTION IF EXISTS  ora_HH(timestamp);"                     | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "DROP FUNCTION IF EXISTS  ora_HH(timestamptz);"                   | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "DROP FUNCTION IF EXISTS  ora_MM(timestamp);"                     | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "DROP FUNCTION IF EXISTS  ora_MM(timestamptz);"                   | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "DROP FUNCTION IF EXISTS  ora_SS(timestamp);"                     | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "DROP FUNCTION IF EXISTS  ora_SS(timestamptz);"                   | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "DROP FUNCTION IF EXISTS  data_DDMMYYYYcolonHHMMSS(timestamp);"   | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "DROP FUNCTION IF EXISTS  data_DDMMYYYYcolonHHMMSS(timestamptz);" | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+
+
+echo "CREATE FUNCTION data_YYYYMMDDHHMMSS(timestamp) returns text as 'select to_char(\$1,''YYYYMMDDHH24MISS'')' language 'sql';"                     | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "CREATE FUNCTION data_YYYYMMDDHHMMSS(timestamptz) returns text as 'select to_char(\$1,''YYYYMMDDHH24MISS'')' language 'sql';"                   | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "CREATE FUNCTION data_YYYYMMDD(timestamp) returns text as 'select to_char(\$1,''YYYYMMDD'')' language 'sql';"                                   | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "CREATE FUNCTION data_YYYYMMDD(timestamptz) returns text as 'select to_char(\$1,''YYYYMMDD'')' language 'sql';"                                 | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "CREATE FUNCTION data_YYYYMMDD(text) returns text as 'select substr(\$1,7,2)||''/''||substr(\$1,5,2)||''/''||substr(\$1,3,2)' language 'sql';"  | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "CREATE FUNCTION data_DDMMYY(timestamp) returns text as 'select to_char(\$1,''DDMMYY'')' language 'sql';"                                       | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "CREATE FUNCTION data_DDMMYY(timestamptz) returns text as 'select to_char(\$1,''DDMMYY'')' language 'sql';"                                     | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "CREATE FUNCTION ora(timestamp) returns text as 'select to_char(\$1,''HH24:MI:SS'')' language 'sql';"                                           | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "CREATE FUNCTION ora(timestamptz) returns text as 'select to_char(\$1,''HH24:MI:SS'')' language 'sql';"                                         | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "CREATE FUNCTION data(timestamp) returns text as 'select to_char(\$1,''DD-MM-YYYY'')' language 'sql';"                                          | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "CREATE FUNCTION data(timestamptz) returns text as 'select to_char(\$1,''DD-MM-YYYY'')' language 'sql';"                                        | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "CREATE FUNCTION data_ora(timestamp) returns text as 'select data(\$1)||'' ''||ora(\$1)' language 'sql';"                                       | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "CREATE FUNCTION data_ora(timestamptz) returns text as 'select data(\$1)||'' ''||ora(\$1)' language 'sql';"                                     | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "CREATE FUNCTION ora_HH(timestamp) returns text as 'select to_char(\$1,''HH24'')' language 'sql';"                                              | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "CREATE FUNCTION ora_HH(timestamptz) returns text as 'select to_char(\$1,''HH24'')' language 'sql';"                                            | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "CREATE FUNCTION ora_MM(timestamp) returns text as 'select to_char(\$1,''MI'')' language 'sql';"                                                | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "CREATE FUNCTION ora_MM(timestamptz) returns text as 'select to_char(\$1,''MI'')' language 'sql';"                                              | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "CREATE FUNCTION ora_SS(timestamp) returns text as 'select to_char(\$1,''SS'')' language 'sql';"                                                | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "CREATE FUNCTION ora_SS(timestamptz) returns text as 'select to_char(\$1,''SS'')' language 'sql';"                                              | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "CREATE FUNCTION data_DDMMYYYYcolonHHMMSS(timestamp) returns text as 'select to_char(\$1,''DDMMYYYY:HH24MISS'')' language 'sql';"               | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "CREATE FUNCTION data_DDMMYYYYcolonHHMMSS(timestamptz) returns text as 'select to_char(\$1,''DDMMYYYY:HH24MISS'')' language 'sql';"             | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+
+echo "CREATE FUNCTION anno(timestamp) returns text as 'select to_char(\$1,''YYYY'')' language 'sql';"                                                | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "CREATE FUNCTION anno(timestamptz) returns text as 'select to_char(\$1,''YYYY'')' language 'sql';"                                              | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+
+# tabelle operative - ripulire
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/cedole.cfg      -t cedole     >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/ric_ord.cfg     -t ric_ord    >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/ric_art.cfg     -t ric_art    >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/ric_note.cfg    -t ric_note   >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/ric_quad.cfg    -t ric_quad   >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/catalogo.cfg    -t catalogo   >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/col_prod.cfg    -t col_prod   >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/rig_prod.cfg    -t rig_prod   >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/quad_prod.cfg   -t quad_prod  >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/eventi.cfg      -t eventi     >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/operatori.cfg   -t operatori  >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/mov_ubi.cfg     -t mov_ubi    >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/ubicazioni.cfg  -t ubicazioni >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/imballi.cfg     -t imballi    >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/settori.cfg     -t settori    >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/displays.cfg    -t displays   >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/province.cfg    -t province   >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/regioni.cfg     -t regioni    >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/nota_linee.cfg  -t nota_linee >> crea_tabelle.out 2>&1 ; echo -n .
+
+# import 
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/import_ric_ord.cfg     -t import_ric_ord    >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/import_ric_art.cfg     -t import_ric_art    >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/import_catalogo.cfg    -t import_catalogo   >> crea_tabelle.out 2>&1 ; echo -n .
+
+# export 
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/flusso_cedola.cfg      -t flusso_cedola     >> crea_tabelle.out 2>&1 ; echo -n .
+
+# storico - ripulire
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/cedole.cfg      -t cedole_stor   >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/ric_ord.cfg     -t ric_ord_stor  >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/ric_art.cfg     -t ric_art_stor  >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/ric_note.cfg    -t ric_note_stor >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/col_prod.cfg    -t col_prod_stor >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/rig_prod.cfg    -t rig_prod_stor >> crea_tabelle.out 2>&1 ; echo -n .
+
+
+# Tabelle per gestione instradamento - eliminare
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/ttcs.cfg -t ttcs >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/ttfc.cfg -t ttfc >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/ttfp.cfg -t ttfp >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/ttgc.cfg -t ttgc >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/ttls.cfg -t ttls >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/ttlv.cfg -t ttlv >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/ttrc.cfg -t ttrc >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/ttts.cfg -t ttts >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/ttve.cfg -t ttve >> crea_tabelle.out 2>&1 ; echo -n .
+
+# Tabella descrizione spedizione per cedola - eliminare
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/ttds.cfg -t ttds >> crea_tabelle.out 2>&1 ; echo -n .
+
+# gestione colli scartati
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/colli_scartati.cfg -t colli_scartati >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/colli_fuori_linea.cfg -t colli_fuori_linea >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/scarti.cfg -t scarti >> crea_tabelle.out 2>&1 ; echo -n .
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/scarti_flags.cfg -t scarti_flags >> crea_tabelle.out 2>&1 ; echo -n .
+
+# Tabella delle letture (storico)
+echo 'CREATE SEQUENCE sequence_scarti increment 1 minvalue 1 maxvalue 99999999 start 1;' | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "\
+CREATE TABLE storico_scarti (
+	key       INTEGER DEFAULT NEXTVAL('sequence_scarti'),
+	sscdpro   TEXT DEFAULT 'CODICE',
+	sscdflg   TEXT,
+	ssprgid   INTEGER,
+	sstmread  TIMESTAMP
+);" | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+
+# caricamento funzioni sql per controllo cedola
+psql -U $PGUSER -h $PGHOST $PGDB -f ../scripts/mondadori.sql >> crea_tabelle.out 2>&1 ; echo -n .
+
+# Tabella linee di spedizione (storico)
+echo 'CREATE SEQUENCE sequence_linee_spedizione increment 1 minvalue 1 maxvalue 99999999 start 1;' | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "\
+CREATE TABLE storico_linee_spedizione (
+	key_linea   INTEGER,
+	tminit      TIMESTAMP,
+	tmclose     TIMESTAMP,
+	lnnmced     INTEGER,
+	lntpspe     VARCHAR(20) DEFAULT 'TPSPE',
+	lncdlin     VARCHAR(20) DEFAULT 'CDLIN',
+	stato       VARCHAR(1) DEFAULT ' '
+);" | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+
+echo 'CREATE UNIQUE INDEX storico_linee_spedizione_key ON storico_linee_spedizione (key_linea);' | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+
+
+# Tabella bancali di spedizione (storico)
+echo 'CREATE SEQUENCE sequence_bancali increment 1 minvalue 1 maxvalue 99999999 start 1;' | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "\
+CREATE TABLE storico_bancali (
+	key_linea   INTEGER,
+	key_bancale INTEGER,
+	tminit      TIMESTAMP,
+	tmclose     TIMESTAMP,
+	bnnmced     INTEGER,
+	bnnmbnc     INTEGER,
+	bntpspe     VARCHAR(20) DEFAULT 'TPSPE',
+	bncdlin     VARCHAR(20) DEFAULT 'CDLIN',
+	stato       VARCHAR(1) DEFAULT ' '
+);" | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+
+echo 'CREATE INDEX storico_bancali_key ON storico_bancali (key_linea);' | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo 'CREATE UNIQUE INDEX storico_bancali_key_bancale ON storico_bancali (key_bancale);' | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+
+# Tabella letture colli su bancali (storico)
+echo 'CREATE SEQUENCE sequence_colli_bancale increment 1 minvalue 1 maxvalue 99999999 start 1;' | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo "\
+CREATE TABLE storico_colli_bancale (
+	key_collo    INTEGER,
+	key_bancale  INTEGER,
+	key_linea    INTEGER,
+	ordprog   VARCHAR(20) DEFAULT 'CODICE',
+	cpnmced   INTEGER,
+	cptpspe   VARCHAR(20) DEFAULT 'TPSPE',
+	cpcdlin   VARCHAR(20) DEFAULT 'CDLIN',
+	cpnmcol   INTEGER,
+	cppsrea   INTEGER,
+	cppspre   INTEGER,
+	tmread    TIMESTAMP
+);" | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+
+echo 'CREATE UNIQUE INDEX storico_colli_bancale_key ON storico_colli_bancale (ordprog,cpnmcol);' | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo 'CREATE UNIQUE INDEX storico_colli_bancale_key_collo ON storico_colli_bancale (key_collo);' | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo 'CREATE INDEX storico_colli_bancale_key_bancale ON storico_colli_bancale (key_bancale);' | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+echo 'CREATE INDEX storico_colli_bancale_key_linea ON storico_colli_bancale (key_linea);' | psql -U $PGUSER -h $PGHOST $PGDB >> crea_tabelle.out 2>&1 ; echo -n .
+
+echo
+echo 'Terminato'

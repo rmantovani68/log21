@@ -1,0 +1,25 @@
+echo   eventi    ;echo 'truncate table eventi;'       | psql mondadori
+echo   catalogo  ;echo 'truncate table catalogo;'     | psql mondadori
+echo   displays  ;echo 'truncate table displays;'     | psql mondadori
+echo   imballi   ;echo 'truncate table imballi;'      | psql mondadori
+echo   operatori ;echo 'truncate table operatori;'    | psql mondadori
+echo   province  ;echo 'truncate table province;'     | psql mondadori
+echo   quad_prod ;echo 'truncate table quad_prod;'    | psql mondadori
+echo   regioni   ;echo 'truncate table regioni;'      | psql mondadori
+echo   ric_art   ;echo 'truncate table ric_art;'      | psql mondadori
+echo   ric_note  ;echo 'truncate table ric_note;'     | psql mondadori
+echo   ric_ord   ;echo 'truncate table ric_ord;'      | psql mondadori
+echo   ric_quad  ;echo 'truncate table ric_quad;'     | psql mondadori
+echo   col_prod  ;echo 'truncate table col_prod;'     | psql mondadori
+echo   rig_prod  ;echo 'truncate table rig_prod;'     | psql mondadori
+echo   settori   ;echo 'truncate table settori;'      | psql mondadori
+echo   ttcs      ;echo 'truncate table ttcs;'         | psql mondadori
+echo   ttfc      ;echo 'truncate table ttfc;'         | psql mondadori
+echo   ttfp      ;echo 'truncate table ttfp;'         | psql mondadori
+echo   ttgc      ;echo 'truncate table ttgc;'         | psql mondadori
+echo   ttls      ;echo 'truncate table ttls;'         | psql mondadori
+echo   ttlv      ;echo 'truncate table ttlv;'         | psql mondadori
+echo   ttrc      ;echo 'truncate table ttrc;'         | psql mondadori
+echo   ttts      ;echo 'truncate table ttts;'         | psql mondadori
+echo   ttve      ;echo 'truncate table ttve;'         | psql mondadori
+echo   ubicazioni;echo 'truncate table ubicazioni;'   | psql mondadori

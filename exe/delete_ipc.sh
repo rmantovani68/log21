@@ -1,0 +1,14 @@
+# ----------------------------------------
+# Cancellazione dei processi e dei dati
+# IPC utlizzati nell'impianto wella
+# ----------------------------------------
+echo 'Cancellazione dati in corso ...'
+ps -ax  | while read a b c d e; do case "$e" in */balance*) echo kill -15 $a; kill -15 $a;;  esac; done 
+ps -ax  | while read a b c d e; do case "$e" in */main*) echo kill -15 $a; kill -15 $a;;  esac; done 
+ps -ax  | while read a b c d e; do case "$e" in */peso*) echo kill -15 $a; kill -15 $a;;  esac; done 
+ps -ax  | while read a b c d e; do case "$e" in */display*) echo kill -15 $a; kill -15 $a;;  esac; done 
+ps -ax  | while read a b c d e; do case "$e" in */socket_server*) echo kill -15 $a; kill -15 $a;;  esac; done 
+ipcs -q | while read a b c; do case "$a" in 0x000010[01][0-9a-f]) echo ipcrm msg $b; ipcrm msg $b ; ;;  esac; done 
+ipcs -q | while read a b c; do case "$a" in 0x000005[01][0-9a-f]) echo ipcrm msg $b; ipcrm msg $b ; ;;  esac; done 
+ipcs -m | while read a b c; do case "$a" in 0x000005[01][0-9a-f]) echo ipcrm shm $b; ipcrm shm $b ; ;;  esac; done 
+echo 'Cancellazione dati Terminata'

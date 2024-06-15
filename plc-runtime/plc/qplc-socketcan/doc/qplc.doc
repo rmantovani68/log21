@@ -1,0 +1,500 @@
+
+
+                      NOTE D'USO DI QPLC
+                      ------------------
+
+Mon Sep  8 10:48:25 MET DST 1997
+Note aggiornate a qplc 1.5.2.4
+
+1) Lancio dell'esecutore
+
+ La tipica linea di lancio di qplc nel file "lancia" he la forma seguente:
+
+ via qplc '-reset -timer-bug -period <periodo (millisec.)> -exec-queue-len 500'
+
+ L'opzione "-timer-bug" corregge un problema di LynxOS 2.3.0, che approssima
+per eccesso il periodo dei timer.
+ A differenza di isaker, non c'e` bisogno di modificare la priorita` del
+processo al lancio.
+
+2) Compatibilita` con isaker
+
+ qplc e` capace di eseguire programmi C scritti per isaker. I nomi dei
+file e le convenzioni di chiamata sono uguali, ad eccezione delle
+funzionalita` raccolte nel file "plc480.c" della distribuzione di isaker.
+ Non sono piu` necessari i file ISA11, ISA13 e PlcDb : la definizione dei
+segnali di scambio standard fa parte del codice di qplc, ed esiste la
+possibilita` di definirne di nuovi attraverso opportune funzioni.
+
+3) Programmazione in C
+
+ La produzione del modulo "prog.oo" da un sorgente C non ha subito modifiche.
+ I file "cniplc.h" e "isagraf.h", benche` ancora utilizzabili, devono essere
+considerati obsoleti. In loro vece si usi "plcapi.h", che contiene anche le
+definizioni di alcune funzioni specifiche di qplc.
+ Il file "plc480.c", come si e` detto, non fa piu` parte della distribuzione.
+La definizione di azioni di inizializzazione particolari (lunghe letture di
+dati macchina, manipolazione o costruzione delle tabelle MSD, generazione di
+segnali di scambio non standard...) e` demandata alla funzione "PlcInit", che
+puo` comparire nel programma principale assieme all'usuale "PlcMain". Se
+presente, questa funzione e` chiamata ad ogni GO, prima che l'esecutore inizi
+il ciclo ordinario. Dato che e` chiamata fuori ciclo, non e` soggetta alle
+limitazioni tipiche dell'esecuzione ordinaria : sono permesse lunghe letture
+di tabelle, complicati controlli di configurazione, creazione di nuovi
+elementi nella tabella dei segnali di scambio, e perfino operazioni
+potenzialmente bloccanti come la chiamata della funzione "printf". Si consiglia
+percio` di raccogliervi tutte le operazioni che devono essere eseguite una
+volta per tutte. Si tenga solo presente che durante l'esecuzione di "PlcInit"
+l'accesso ai segnali di I/O non e` ammesso.
+
+3 bis) Programmazione in "nuovo stile".
+
+ Come e` noto, il programma in stile 480 non e` altro che un particolare
+modulo "user" con una parte statica compresa nel nucleo dell'esecutore, ed
+una parte dinamica caricata dal file "prog.oo". La parte statica non fa
+altro che definire alcune variabili e convertire alcuni segnali per simulare
+un ambiente analogo a quello che si trovava sul controllo RT 480.
+ Con l'andare del tempo, pero`, questa architettura ha mostrato molti limiti,
+per questo la CNi cerca di incoraggiare i programmatori di Plc in C ad
+abbandonarla, ed utilizzare direttamente il paradigma "user".
+ Scrivere un modulo "user.oo" e` molto semplice. Si tratta di definire
+il simbolo "module_name" come segue:
+
+	char module_name[] = "U_CODE";
+
+e di scrivere le tre funzioni seguenti, che saranno chiamate allo start,
+allo stop, e durante l'elaborazione ordinaria:
+
+int UserStart(int * code)
+
+ Questa funzione e` chiamata allo start, fuori dal ciclo di esecuzione. Non
+soffre quindi delle limitazioni che caratterizzano i programmi Plc.
+ Tipicamente, all'interno di questa funzione avra` luogo la definizione
+dei segnali di I/O e la loro associazione alle variabili del programma
+tramite la funzione "ioAttach" (vedi oltre) e la lettura di tabelle
+di configurazione dai dati macchina.
+ Il parametro "code" non e` attualmente utilizzato.
+ Il valore di ritorno della funzione puo` essere 0 o 1, ad indicare
+rispettivamente fallimento o successo. In caso di fallimento (valore = 0)
+l'esecutore si pone in HALT senza iniziare affatto il programma.
+
+int UserMain(int start)
+
+ Questa e` la procedura principale del Plc, chiamata durante il ciclo
+di lavoro ordinario. Il parametro "start" vale 1 al primo ciclo, 0
+ai successivi. Il valore di ritorno e` attualmente ignorato, ma si
+consiglia di porlo a 0 per evitare sorprese in futuro.
+
+void UserStop(void)
+
+ Questa funzione e` chiamata ogni volta che l'esecutore entra nello stato
+di HALT (ma non in caso di FAULT, che e` uno stato anomalo provocato in genere
+da malfunzionamenti gravi). Il suo codice e` eseguito all'interno del ciclo
+del Plc, percio` soffre delle stesse limitazioni di UserMain. Al suo interno
+la manipolazione dei segnali di I/O non e` ammessa (e` ammessa solo dentro
+UserMain).
+ L'utente medio probabilmente non avra` bisogno di utilizzare questa funzione,
+che dovra` pero` essere comunque definita.
+ A partire dalla versione 1.5.0.0 di qplc, c'e` la possibilita` che UserStop
+sia chiamata piu` di una volta a seguito di una singola entrata in HALT.
+Percio` il programmatore dovra` prevedere questa possibilita` e scrivere la
+funzione in modo che possa essere richiamata piu` volte senza problemi. Per
+facilitare questo compito e` stata aggiunta la funzione "plcHaltCycle", che
+restituisce il numero di ripetizioni della funzione nell'ambito di una
+singola azione di HALT. Alla prima chiamata di UserStop dopo l'HALT,
+"plcHaltCycle" vale 0.
+ Il programmatore puo` anche desiderare che la funzione UserStop sia chiamata
+piu` di una volta, per esempio quando il lavoro che essa deve compiere
+richieda piu` di un ciclo di Plc. In questo caso si deve utilizzare la
+funzione "plcRepeatHalt", che informa l'esecutore che al ciclo successivo
+dovra` essere ripetuta la chiamata di UserStop.
+ E` possibile limitare il numero di richiami con l'opzione "-max-halt" della
+linea di comando di qplc. Ponendo il suo argomento ad un valore diverso da
+zero, l'esecutore accettera` al massimo il numero di ripetizioni indicato,
+dopodiche` segnalera` un errore e si porra` in HALT senza ulteriori indugi.
+ Bisogna ricordare comunque che la ripetizione della chiamata puo` avvenire
+anche su iniziativa di altre componenti del Plc, percio` il caso di chiamata
+multipla va sempre previsto. Il seguente frammento di codice esemplifica
+il caso piu` complicato :
+
+	void UserStop(void)
+	{
+	static int ripetimi; /* Flag indicante che la ripetizione
+	                       della chiamata di questa funzione e`
+	                       avvenuta su richiesta delle funzione
+	                       stessa, e non su iniziativa di altre
+	                       componenti del Plc. */
+
+		if (plcHaltCycle() == 0) {
+
+		/* Prima chiamata dopo l'entrata in HALT. */
+
+			ripetimi = 1;
+
+			inizializzazioni_varie();
+		}
+
+		if (ripetimi) {
+
+			faccio_quel_che_devo_fare();
+
+			ripetimi = 0;
+
+		/* C'e` bisogno di "fare un altro giro" ? */
+
+			if (ho_forse_bisogno_di_essere_richiamata()) {
+
+			/* Si`. Regitra il fatto nel flag e richiede una
+			 nuova esecuzione. */
+
+				ripetimi = 1;
+				plcRepeatCycle();
+			}
+		}
+		else {
+
+		/* No, non ho chiesto io di essere rieseguita. */
+
+		}
+	}
+
+
+4) Funzioni di libreria
+
+ Sono disponibili le seguenti nuove funzioni, i prototipi delle quali sono
+raccolti in "plcapi.h" :
+
+
+	void plcHalt(void) 
+	 Questa funzione forza lo stato di HALT dell'esecutore.
+
+	void plcFault(void) 
+	 Questa funzione forza lo stato di FAULT dell'esecutore.
+	 Il FAULT e` un halt irreversibile, in cui tutte le uscite sono
+	 in uno stato sicuro, e tutti i moduli di I/O sono sganciati.
+	 Di solito questo provoca la caduta dell'alimentazione della macchina
+	 utensile. qplc entra spontaneamente in questo stato quando rileva
+	 problemi hardware di qualche tipo o quando il ciclo di Plc non
+	 termina entro limiti accettabili.
+ 
+	void plcError(long code, char * format, ...)
+	 Questa funzione visualizza un errore di codice "code" e testo
+	 "format". "format" ha una forma simile a quella di "printf", con
+	 parecchie limitazioni : non sono riconosciuti i campi opzionali
+	 per dimensionare e giustificare la stringa emessa, ne` i prefissi
+	 "-", "l" ed "h", e non sono gestiti i formati "X", "g" ed "e".
+	 I soli formati ammessi sono "s", "c", "x", "d", "u", "o"
+	 "f" e "b". Quest'ultimo provoca l'emissione di un intero in
+	 notazione binaria.
+	 NOTA : "plcError" e` un'evoluzione della funzione "sys_err".
+	 Quest'ultima e` mantenuta per compatibilita`, ma deve essere
+	 considerata obsoleta.
+
+	plcRuntimeError(long code, unsigned long pc)
+	 Questa funzione emette un errore di codice "code" associato
+	 all'indirizzo "pc". La funzione cerca di tradurre l'indirizzo assoluto
+	 "pc" in una stringa nella forma "modulo+offset", allo scopo di
+	 facilitare il debug. L'indirizzo "pc" puo` essere ottenuto con
+	 la funzione "util_get_pc(int level)", che restituisce il program
+	 counter relativo al livello di annidamento di funzione "level".
+	 "plcRuntimeError" e` presente principalmente per debug, se ne
+	 sconsiglia l'uso per l'emissione degli ordinari errori "di lavoro".
+	 La libreria run-time del linguaggio IL la utilizza per segnalare
+	 alcune situazioni di errore grave, come indici di vettore fuori
+	 dai limiti ammessi.
+
+	void plcMessage(long code, char * format, ...)
+	void plcUpdateMessage(long code, char * format, ...)
+	 Emissione di un messaggio. Il significato dei parametri e` lo stesso
+	 di "plcError". Il messaggio comparira` nella finestra "MESSAGGI"
+	 del CN.  Il parametro "code" indica il numero d'ordine del messaggio
+	 nella finestra. Con versioni recenti del processo "quote" e` pero`
+	 possibile trattare i messaggi nello stesso modo degli errori, passando
+	 cioe` attraveso il meccanismo di associazione codice-testo che
+	 facilita l'internazionalizzazione del programma. Questo si ottiene
+	 scrivendo il carattere "\001" (CTRL-A) come primo elemento della
+	 stringa di formato. La funzione "plcUpdateMessage" si avvale di
+	 una prestazione disponibile in quote a partire dalla versione
+	 2.6.0.15, grazie alla quale il messaggio in lingua puo` essere
+	 completato da una stringa qualsiasi (quella che compare dopo il
+	 CTRL-A), ed essere sovrascritto da successivi messaggi con lo stesso
+	 codice ma stringa di estensione diversa. Con "plcMessage", i messaggi
+	 successivi, anche con codice uguale, sono semplicemente accodati.
+
+	void plcWarning(long code, char * format, ...)
+	 Emissione di una stringa sul canale "stderr". La stringa comparira`
+	 nella finestra "Messaggi di errore -> STDERR" del CN. Puo` essere
+	 utile in fase di debug. Aggiungendo l'opzione "-stdout" al lancio di
+	 qplc, il canale STDERR resta quallo caratteristico della shell
+	 genitrice, cioe`, tipicamente, il teminale di controllo.
+
+	void plcDelerr(long code)
+	void plcDelmess(long code)
+	 Funzioni per la rimozione rispettivamente di messaggi ed errori
+	 dalle apposite finestre del CN.
+	 NOTA 1 : La cancellazione degli errori e` realizzata solo nelle
+	 versioni piu` recenti del processo "quote".
+	 NOTA 2 : Queste funzioni, come quelle per l'emissione di messaggi,
+	 warning ed errori, implicano una comunicazione tra processi basata
+	 su di una coda interna. La dimensione di questa coda puo` essere
+	 configurata da linea di comando (opzione -exec-queue-len), in ogni
+	 caso e` limitata. Un errore abbastanza comune nella
+	 programmazione di Plc consiste nel provocare raffiche di eventi,
+	 per esempio chiamando ad ogni ciclo la stessa funzione di errore.
+	 Ogni evento provoca l'attivazione di varie unita` di esecuzione,
+	 l'ultima delle quali e` il visualizzatore degli errori. E` facile
+	 sovraccaricare il sistema in questo modo, soprattutto se si e`
+	 impostato un periodo di ciclo breve. Le funzioni equivalenti del
+	 linguaggio IL prevedono automatismi volti a rendere meno probabile
+	 l'evenienza, ma in C tutti i controlli sono a carico del
+	 programmatore.
+
+	long plcPeriod(void)
+	 Periodo dell'esecutore in millisecondi.
+
+	unsigned long plcTime(void)
+	unsigned long plcTimeH(void)
+	 Tempo trascorso dal lancio dell'applicazione (millisecondi).
+	 E` una quantita` a 64 bit, della quale "plcTime" restituisce la
+	 meta` "bassa", e "plcTimeH" la meta` alta. Nella maggior parte
+	 delle applicazioni basta il risultato della prima funzione,
+	 che ha una periodicita` di circa 49 giorni.
+
+	unsigned long plcNCycle(void)
+	 Il numero di ciclo di Plc corrente.
+
+	unsigned long util_call_il(void (*prog)(void *statics), void *statics)
+	 Questa funzione permette di chiamare un programma o un blocco
+	 funzionale compilati con il compilatore IL che fa parte del sistema
+	 di sviluppo di qplc. "prog" e` l'indirizzo della subroutine, "statics"
+	 e` il puntatore all'area delle variabili interne del programma o
+	 del blocco funzionale. Le procedure del linguaggio IL usano
+	 esclusivamente blocchi di memoria statici per il passaggio dei
+	 parametri e per le variabili interne.
+
+	int shvCreate(shv_t * v, int * change)
+	int shvDefine(shv_t * v, int * change)
+	 Queste funzioni permettono di creare dinamicamente segnali di
+	 scambio. "v" punta ad una struttura che descrive le caratteristiche
+	 del segnale di scambio (nome, tipo, dimensioni, ...), "change"
+	 deve puntare ad una variabile intera, che all'uscita conterra`
+	 un valore di verso da zero se il segnale di scambio esiste
+         (era gia` stato creato) ma non ha le caratteristiche attese.
+         Per l'esattezza, la variabile puntata si interpreta come flag
+         nel caso di "shvCreate", e come campo di bit nel caso di "shvDefine"
+         ogni bit indica il conflitto su una diversa proprieta`.
+         Le seguenti macro definiscono i vari bit significativi :
+
+          SHV_CHG_SIZE   /* Diversa grandezza in bit del tipo. */
+          SHV_CHG_DIM1   /* Prima dimensione diversa. */
+          SHV_CHG_DIM2   /* Seconda dimensione diversa. */
+          SHV_CHG_KEY    /* Chiave diversa da quella richiesta. */
+          SHV_CHG_EDGE   /* Proprieta` EDGE diversa. */
+          SHV_CHG_RETAIN /* Proprieta` RETAIN diversa. */
+          SHV_CHG_CONTIG /* Proprieta` CONTIG diversa. */
+          SHV_CHG_TYPE   /* Tipi non compatibili. */
+          SHV_CHG_ITYPE  /* Tipi non identici (puo` non essere grave). */
+          SHV_CHG_RESET  /* Flag di RESET precedentemente impostato. */
+
+         Il valore di ritorno di entrambe le funzioni
+	 e` la chiave di accesso al nuovo segnale di scambio, oppure -1
+	 in caso di errori. La chiave del segnale puo` essere utilizzata
+	 allo stesso modo delle costanti predefinite contenute in "plcsym.h".
+	 Se all'uscita "*change" non vale 0, la struttura "*v" contiene le
+	 vere caratteristiche del segnale di scambio. Il programmatore
+	 dovra` decidere se le differenti caratteristiche siano compatibili
+	 o no con quelle richieste (NOTA: "shvDefine" segnala alcuni
+         cambiamenti di caratteristiche che invece "sahvCreate" ignora,
+         come per esempio la differenza signed-unsigned nei tipi interi).
+	 La struttura di descrizione ha la forma seguente :
+
+	 typedef struct _shv_t {
+		char name[MAX_SHV_NAME+1]; /* Nome */
+		int dim1; /* Prima dimensione (1 per gli scalari) */
+		int dim2; /* Seconda dimensione (1 per scalari e vettori) */
+		int size; /* Dimensione in byte - Ignorato in ingresso, */
+		          /* modificato dalla funzione in uscita. */
+		int mode; /* Proprieta`/tipo del segnale di scambio. */
+		          /* I valori di maggior interesse per il */
+			  /* programmatore Plc sono i seguenti : */
+			/* SHV_MODE_TYPE_BOOL : Tipo booleano. Il piu` usato. */
+			/* SHV_MODE_TYPE_LONG : Tipo long. */
+			/* SHV_MODE_TYPE_FLOAT : Tipo float. */
+		int key;  /* Chiave di accesso. Da porre a -1 in ingresso, */
+		          /* a meno che non si sia CERTI di poter disporre */
+		          /* di una chiave fissata (e solo la CNi puo` */
+		          /* esserlo). Questo campo, in uscita, contiene */
+			  /* la chiave d'accesso del segnale. */
+		long next; /* Questi due campi sono riservati. Devono essere */
+		long next_hash; /* posti a zero OGNI VOLTA. */
+	 } shv_t;
+
+	int ioAttach(char * name, void * addr, int size, int mode);
+	 Collega una variabile di indirizzo e dimensione dati ad un
+	 segnale di input o di output ("mode" decide: si usino le macro
+	 DRIVER_MODE_INPUT e DRIVER_MODE_OUTPUT). La variabile e`
+	 descritta da una stringa nella forma "nome.istanza.altro...",
+	 dove "nome" e` il nome del driver, "istanza" e` il numero di
+	 istanza dello stesso, "altro" e` una sequenza di caratteri qualsiasi,
+	 la cui interpretazione e` a carico del driver.
+	 "size" e` la dimensione della variabile associata IN BIT (e vale 1
+	 per variabili di un byte interpretate come valori booleani, che e`
+	 il caso piu` frequente).
+	 La funzione vale 1 se tutto e` andato bene, 0 in caso di errore
+	 (segnale o dispositivo inesistenti, segnale gia` associato ad altra
+	 variabile...).
+
+	int ioExtendedOp(long ex, int cmd, void * user);
+	 Questa funzione deve essere utilizzata per accedere a servizi tipici
+	 di certi dispositivi che non possono per loro natura rientrare nel
+	 modello classico dei segnali di I/O del PLC (lettura-esecuzione-
+	 -scrittura).
+	 Un esempio di dispositivo di questo tipo e` la linea seriale.
+	 Il parametro "ex" e` un valore a 32 bit che si ottiene leggendo la
+	 variabile che e` stata associata al dispositivo con "ioAttach".
+	 Il parametro "cmd" e` un codice che individua lo specifico servizio
+	 al quale si vuole accedere (per esempio DREXTOP_STREAM_OP_SEND per
+	 trasemttere un messaggio su di una linea seriale).
+	 Il parametro "user" e` interpretato diversamente a seconda del
+	 servizio.
+	 Per esempio, nel caso di trasmissioni o ricezioni seriali
+	 sara` un puntatore ad un oggetto di tipo "stream_rxtx_t".
+	 La funzione vale 1 se tutto e` andato bene, 0 in caso di errori
+	 (gravi, cioe` servizio inesistente o codice "ex" sconosciuto).
+
+	int util_safe_ltob(char *buff, int bsize, long v, int b);
+	int util_safe_gcvt(char *buff, int bsize, double v, int b);
+	char * util_safe_vsprintf(char *dest, int bsize,
+	                          char *fmt, va_list args);
+	char * util_safe_sprintf(char *dest, int bsize, char *fmt, ...);
+	 Queste funzioni sono versioni ridotte delle equivalenti
+	 "ltob" (conversione di un long in una stringa in base "b"),
+	 "gcvt" (conversione di un double in stringa),
+	 "vsprintf" ed "sprintf". Prevedono un parametro in piu`, che
+	 e` la lunghezza della stringa destinazione, ed evitano di
+	 scrivere oltre. In piu`, non eseguono allocazioni dinamiche,
+	 e sono percio` adatte ad essere utilizzate durante l'esecuzione
+	 ordinaria del PLC. Le stringhe di formato seguono le stesse
+	 regole che valgono per quelle della funzione "plcError".
+
+	unsigned long plcHaltCycle(void);
+	 Questa funzione restituisce il numero di cicli dell'esecutore
+	 dal momento dell'entrata in HALT. La sua chiamata ha senso solo
+	 all'interno dei metodi "Stop" dei programmi PLC. Il primo ciclo di
+	 HALT e` lo 0. Lo scopo di questa funzione e` permettere alle
+	 procedure di HALT di capire se siano state richiamate a seguito
+	 della richiesta di ripetizione di qualche altra componente del Plc.
+	 Si veda il punto 3 bis per una trattazione dettagliata.
+
+	void plcRepeatHalt(void);
+	 Questa funzione inoltra la richiesta di riesecuzione delle procedure
+	 di HALT da parte dell'esecutore al ciclo successivo. E` utile quando,
+	 in una procedura di HALT, si debbano compiere azioni che richiedano
+	 piu` di un ciclo di PLC per essere eseguite.
+	 Si veda il punto 3 bis per una trattazione dettagliata.
+
+5) Compilazione
+
+ Rispetto ad isaker, ci sono ben poche novita`. Il nome della libreria
+che contiene il nucleo di qplc e` "libqplc.a". E` possibile generare un
+eseguibile monolitico indicando l'oggetto contenente il programma
+(tipicamente "prog.o", dal quale si ricava anche il modulo a caricamento
+dinamico, "prog.oo") nella lista di link. Il seguente frammento di
+"Makefile" e` adatto a generare una versione monolitica di qplc :
+
+LOCAL_INCL= # Inclusioni specifiche del programma Plc
+DEVCNI=/usr/local/cni
+SHELL=/bin/bash
+CC=gcc
+LD=gcc
+LD_R=ld -r
+CFLAGS=-g \
+       -mposix -D_POSIX_SOURCE -mthreads -DLynx \
+       -I$(LOCAL_INCL) -I$(DEVCNI)/include
+LDFLAGS=-mposix -D_POSIX_SOURCE -mthreads \
+        -L$(LOCAL_LIB) -L$(DEVCNI)/lib \
+        -Xlinker -Ttext -Xlinker 0x10000
+LIBS=-lqplc -lserax -l_serverdm -lsock -ldevcni -lxerr -lbsd
+
+.c.o:
+	$(CC) -c $(CFLAGS) $<
+
+OBJS= ... # Lista degli oggetti che compongono l'applicaizone
+
+all:: qplc prog.oo
+
+prog.o: $(OBJS)
+	$(LD_R) $(OBJS) -o prog.o
+
+#
+# Generazione dell'esecutore monolitico, buono per debug.
+#
+
+qplc: prog.o
+	$(LD) $(LDFLAGS) prog.o $(LIBS) -o qplc
+
+#
+# Generazione del modulo caricabile dinamicamente, consigliabile
+# per la distribuzione.
+#
+
+prog.oo: prog.o
+	/bin/ld -r prog.o -o prog.oo
+
+6) Debug
+
+ Anche per la fase di debug ci sono pochi cambiamenti. "gdb" permette
+il debug di applicazioni caricate dinamicamente, ma la procedura da
+seguire e` macchinosa e spesso ci sono problemi dovuti alla presenza di
+simboli con lo stesso nome. E` molto piu` semplice produrre un esecutore
+monolitico da utilizzare in debug, come descritto al punto (5).
+ Quando si lancia qplc in debug conviene aggiungere alcune opzioni alla
+linea di comando, per evitare alcuni effetti indesiderati dovuti all'arresto
+per break del programma. Quello che segue e` il tipico comando di lancio
+di qplc da GDB :
+
+gdb> run -reset -debug -period 20 -exec-queue-len 500
+
+ Si noti che qplc, anche se contiene un programma in forma statica, tenta
+in ogni caso di caricare dinamicamente i moduli in plc-obj/ . Per evitare
+che questo accada si puo` aggiungere l'opzione "-no-prog480", che inibisce
+il caricamento di "prog.oo", oppure "-no-user" per "user.oo", o ancora
+"-no-hatsh" per "hatsh.oo".
+ Se si desidera (o, piu` probabilmente, si e` costretti a) tracciare un
+programma caricato dinamicamente, bisogna seguire i seguenti passi :
+
+ - Impostare un breakpoint sulla funzione "exec_main", che e` quella che
+   viene chiamata quando l'esecutore ha terminato le inizializzazioni ed
+   i caricamenti.
+ - Far partire il programma con le opzioni gia` indicate, e attendere
+   che si fermi sul breakpoint.
+ - A seconda che si debba seguire "prog.oo", "user.oo" o "hatsh.oo", si
+   stampi il contenuto delle variabili "main_status.mod_plc480->text",
+   "main_status.mod_user->text", "main_status.mod_hatsh->text". Esempio :
+
+	print main_status.mod_plc480->text
+
+ - Ricordando il risultato ottenuto col comando precedente, si scriva
+
+	add-symbol-file <nome dell'oggetto caricato> <valore ottenuto>
+
+   GDB chiedera` conferma prima di eseguire l'operazione. Come "nome
+   dell'oggetto caricato" conviene, se possibile, dare il nome dell'oggetto
+   ".o" dal quale e` stato ottenuto il ".oo". Il primo infatti contiene
+   anche le informazioni di linea, che si perdono nella conversione.
+ - Ora GDB ha acquisito le informazioni del modulo. C'e` pero` la possibilita`
+   di conflitto di nomi di funzione, percio` conviene sempre impostare
+   i breakpoint indicando file e numero di linea piuttosto che un nome
+   di funzione. La sovrapposizione di simboli puo` creare problemi anche
+   nella visualizzazione di variabili. Purtroppo non sempre si riesce a
+   porvi rimedio. Se si ha l'impressione che le variabili non siano
+   aggiornate quando dovrebbero esserlo si sta probabilmente assistendo
+   ad uno di questi conflitti.
+ - Se si fa ripartire da capo il qplc, bisogna prima disattivare i break
+   impostati su parti caricate dinamicamente (comando "disable"), e
+   riabilitarli solo quando il programma si ferma su "exec_main". Se i
+   parametri di lancio non cambiano tra un "run" ed il successivo (GDB ricorda
+   le opzioni di lancio, cosi` "run" senza argomenti rilancia il programma
+   con le stesse opzioni della volta precedente), e` abbastanza probabile
+   che i moduli siano ricaricati allo stesso indirizzo.
+

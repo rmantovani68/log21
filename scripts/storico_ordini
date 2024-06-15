@@ -1,0 +1,160 @@
+PACKING LIST ORDINE 61598
+colli|peso_pre|peso_reale|  data_eva|ora_eva 
+-----+--------+----------+----------+--------
+    3|   37950|     37610|03-04-2002|07:04:16
+(1 row)
+
+EOF
+COLLI
+collo|peso_pre|peso_reale|  data_eva|ora_eva 
+-----+--------+----------+----------+--------
+    1|   17440|     17260|02-04-2002|15:48:25
+    2|   17570|     17430|03-04-2002|07:03:27
+    3|    2940|      2920|03-04-2002|07:04:15
+(3 rows)
+
+EOF
+RIGHE
+      codice|titolo                        |peso|collo
+------------+------------------------------+----+-----
+000000615890|GLAMORAMA        ET           |1473|    1
+000007684690|AMAZZONIA VIAGGIO IMPOS.      | 987|    1
+000000450142|ALMANACCO APOCALITICO         | 365|    1
+000000450601|CONTRABBANDIERI               | 217|    1
+000000450602|MISSIONE NICK                 | 131|    1
+000000616116|AMATO BENE         COR        | 378|    1
+000000450227|RAGAZZO CANNONE               | 214|    1
+000000450145|TERRA DEL MITO                |1014|    1
+000000448971|ULTIMI CATARI                 |2708|    1
+000000450634|MONETE                        |1082|    1
+000000616234|QUANDO ERAVAMO ORFANI  ET     | 450|    1
+000008274331|SCELTE DIFFICILI              | 518|    1
+000008274360|BENESSERE TOTALE N.E          | 235|    1
+000000616264|FILUMENA MARTURANO+VIDEO      | 930|    1
+000008681279|LIBERTA' COME FINE            | 470|    1
+000000450271|ALI AI PIEDI                  |1752|    1
+000007684692|STRAPPO ANIMA                 | 908|    1
+000000450650|PICCOLO ATLANTE JIAHD         | 600|    1
+000002003302|TUO PERSONAL TRAINER          | 454|    1
+000000450593|BAMBINA DICEVA SEMPRE NO      | 134|    1
+000008089634|CARTOLINE                     |1338|    1
+000000450592|BAMBINO VERO UOMO             | 134|    1
+000000450603|CHITTY CHITTY BANG BANG       | 115|    1
+000000616148|QUESTA PAZZA FEDE   ETSL      | 912|    2
+000000681439|(5)  LISTINO 2002.I           |4300|    2
+000000616152|VENTISETTESIMA CITTA'         | 808|    2
+000008274395|200 E TRE MODI IMP.LETTO      | 260|    2
+000008274333|ERA GLACIALE                  | 262|    2
+000000450310|FURIA                         |3745|    2
+000008681279|LIBERTA' COME FINE            | 470|    2
+000000450404|STORIA ATTRAV.STORIE          | 125|    2
+000000450147|BURATTINAIO                   | 492|    2
+000002003331|LAVANDERIE PARAD.FISCALI      | 272|    2
+000002003244|CONVERSAZIONE ANGELI          | 330|    2
+000008490150|CIGARETTE GIRL                | 670|    2
+000007684660|CUORE IN GABBIA               | 205|    2
+000005152031|MEDIASTORIA                   | 980|    2
+000000450157|PER TUO BENE                  | 300|    2
+000002003308|SE VITA PARADOSSO             | 350|    2
+000000450155|HAGAKURE                      | 540|    2
+000007684699|STATO DELLE ANIME             | 508|    2
+000002003298|ULTIMO RIFUGIO                | 888|    2
+000002450638|NOI EUROPEI                   | 420|    2
+000000450310|FURIA                         |1605|    3
+000000616263|CABBALA OCCULTISMO  PBENS     | 490|    3
+000008729169|DIO LI FA POI LI ACCOPPA      | 120|    3
+000000616248|STORIA E FILOSOFIA,PBENS      | 295|    3
+(47 rows)
+
+EOF
+PACKING LIST ORDINE 61599
+colli|peso_pre|peso_reale|  data_eva|ora_eva 
+-----+--------+----------+----------+--------
+    7|  129310|    129590|02-04-2002|16:20:38
+(1 row)
+
+EOF
+COLLI
+collo|peso_pre|peso_reale|  data_eva|ora_eva 
+-----+--------+----------+----------+--------
+    1|   17010|     16785|02-04-2002|16:14:33
+    2|   19100|     19165|02-04-2002|16:15:55
+    3|   18500|     18605|02-04-2002|16:16:14
+    4|   18500|     18615|02-04-2002|16:20:29
+    5|   18500|     18595|02-04-2002|16:20:03
+    6|   18500|     18595|02-04-2002|16:18:59
+    7|   19200|     19230|02-04-2002|16:20:37
+(7 rows)
+
+EOF
+RIGHE
+      codice|titolo                        | peso|collo
+------------+------------------------------+-----+-----
+000000615890|GLAMORAMA        ET           | 4910|    1
+000000616116|AMATO BENE         COR        | 1512|    1
+000000616234|QUANDO ERAVAMO ORFANI  ET     | 2250|    1
+000000616264|FILUMENA MARTURANO+VIDEO      | 3100|    1
+000002450638|NOI EUROPEI                   | 2100|    1
+000000616148|QUESTA PAZZA FEDE   ETSL      | 2280|    1
+000000616148|QUESTA PAZZA FEDE   ETSL      | 2280|    2
+000000681439|(5)  LISTINO 2002.I           |16340|    2
+000000681439|(5)  LISTINO 2002.I           |18060|    3
+000000681439|(5)  LISTINO 2002.I           |18060|    4
+000000681439|(5)  LISTINO 2002.I           |18060|    5
+000000681439|(5)  LISTINO 2002.I           |18060|    6
+000000681439|(5)  LISTINO 2002.I           |14620|    7
+000000616152|VENTISETTESIMA CITTA'         | 4040|    7
+(14 rows)
+
+EOF
+PACKING LIST ORDINE 61600
+colli|peso_pre|peso_reale|  data_eva|ora_eva 
+-----+--------+----------+----------+--------
+    3|   20310|     20260|02-04-2002|14:53:57
+(1 row)
+
+EOF
+COLLI
+collo|peso_pre|peso_reale|  data_eva|ora_eva 
+-----+--------+----------+----------+--------
+    1|    9020|      8985|02-04-2002|14:52:39
+    2|    9020|      9005|02-04-2002|14:52:51
+    3|    2270|      2270|02-04-2002|14:53:57
+(3 rows)
+
+EOF
+RIGHE
+      codice|titolo                        |peso|collo
+------------+------------------------------+----+-----
+000000616264|FILUMENA MARTURANO+VIDEO      |8370|    1
+000000616264|FILUMENA MARTURANO+VIDEO      |8370|    2
+000000616264|FILUMENA MARTURANO+VIDEO      |1860|    3
+(3 rows)
+
+EOF
+PACKING LIST ORDINE 61601
+colli|peso_pre|peso_reale|  data_eva|ora_eva 
+-----+--------+----------+----------+--------
+    1|   11160|     11140|03-04-2002|07:03:59
+(1 row)
+
+EOF
+COLLI
+collo|peso_pre|peso_reale|  data_eva|ora_eva 
+-----+--------+----------+----------+--------
+    1|   11160|     11140|03-04-2002|07:03:57
+(1 row)
+
+EOF
+RIGHE
+      codice|titolo                        |peso|collo
+------------+------------------------------+----+-----
+000007684692|STRAPPO ANIMA                 |2270|    1
+000008089634|CARTOLINE                     |1338|    1
+000000448971|ULTIMI CATARI                 |3385|    1
+000000681439|(5)  LISTINO 2002.I           |1720|    1
+000000450310|FURIA                         |1605|    1
+000000616263|CABBALA OCCULTISMO  PBENS     | 245|    1
+(6 rows)
+
+EOF

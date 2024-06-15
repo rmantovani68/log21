@@ -1,0 +1,484 @@
+
+
+Revisione 3.2 Mon Mar 19 19:31:54 MET 2001
+relativa alla versione di qplc 1.8.1.28
+
+                 DESCRIZIONE DEI DISPOSITIVI GESTITI DA QPLC
+                 -------------------------------------------
+
+ Attualmente qplc gestisce direttamente i seguenti dispositivi:
+
+ - Moduli IOS di ingresso o uscita
+ - Uscita LED della scheda CX
+ - Ingressi e uscite delle schede UDC3 ed MPP3
+ - Tasti riservati
+ - Ingressi e uscite analogiche (tramite controllo del gestore assi)
+ - Linee seriali (e potenzialmente canali asincroni in genere)
+
+ Ogni categoria di dispositivi ha un nome univoco. Ogni ingresso o uscita
+e` rappresentato da una stringa alfanumerica nella forma
+
+  <nome dispositivo>.<indice dispositivo>.<parametri>[.<parametri>..]
+
+ Il nome del dispositivo puo` essere indifferentemente maiuscolo o minuscolo.
+ L'indice di dispositivo puo` mancare, se questo non provoca ambiguita`,
+nel qual caso si sottointende "0".
+ I parametri sono stringhe il cui significato dipende dal particolare
+dispositivo.
+
+ Moduli IOS, I/O UDC3 ed MPP3, porta LED CX e CNOK della IOSLK2
+ --------------------------------------------------------------
+
+ Per i moduli IOS, i segnali sono descritti da una delle seguenti stringhe :
+
+   Per i comuni segnali di I/O sui moduli
+
+    IOS.<indice scheda>.<indice cpu>.<modulo>.<byte>.<bit>
+ 
+    esempio:
+    IOS.0.0.2.1.5
+     |  | | | | |
+     |  | | | | Bit 5...
+     |  | | | del byte 1...
+     |  | | del modulo 2...
+     |  | collegato alla CPU 0...
+     |  della scheda 0...
+     di tipo IOS.
+
+   Questi segnali devono essere associati a variabili di tipo BOOL (1 bit).
+
+   Alcuni moduli speciali sono visti, da un punto di vista formale, come
+   moduli ordinari con un numero non standard di ingressi e uscite.
+   Attualmente sono gestiti in questo modo le tastiere S24T (tastiera 24
+   tasti+24 LED delle macchine Selco) e i moduli speciali per LAE.
+   In entrambi i casi, gli ingressi sono equiparati ad ingressi IOS ordinari,
+   con indice di byte sempre uguale a zero, ed indice di bit compreso
+   tra 0 e 23. le uscite a bit sono indicate allo stesso modo, ma con
+   indice di bit compreso tra 24 e 47.
+   Per i moduli S24T, gli ingressi riportano lo stato dei tasti, e le uscite
+   corrispondono ai LED.
+   Per i moduli LAE valgono le seguenti convenzioni:
+
+   - Gli ingressi da 0 a 7 riflettono lo stato degli ingressi fisici.
+   - Gli ingressi da 8 a 15 riflettono lo stato delle uscite speciali
+     a meno delle abiliazioni.
+   - Gli ingressi da 16 a 23 riflettono lo stato delle uscite ordinarie.
+   - Le uscite da 24 a 31 sono le abilitazioni delle otto uscite fisiche
+     speciali.
+   - Le uscite da 32 a 39 pilotano le otto uscite ordinarie.
+   - I bit da 40 a 47 non sono attualmente utilizzati.
+
+   Ai bit 24..31 dei moduli LAE sono poi associate quattro grandezze di
+   configurazione, che controllano il funzionamento delle uscite speciali.
+   Sono rappresentate da uscite, e si indicano aggiungendo al nome del bit
+   una delle seguenti parole:
+
+    .TRIGL : Uscita a bit (BOOL). Controlla la polarita` del fronte attivo in
+             ingresso: Il valore 0 indica "fronte di discesa", 1 indica
+             "salita".
+    .DELAY : Uscita a 16 bit (UINT). Controlla il ritardo tra trigger e
+             impulso d'uscita, espresso in millisecondi.
+    .PULSE : Uscita a 16 bit (UINT). Controlla la durata dell'impulso
+             d'uscita, espresso in millisecondi.
+    .OUTL  : Uscita a bit (BOOL). Controlla la polarita` dell'impulso
+             d'uscita (0: attivo alto, 1: attivo basso).
+
+    esempio: (tastiera S24T)
+    IOS.0.0.2.0.3
+     |  | | | | |
+     |  | | | | Quarto tasto (cominciano da 0)...
+     |  | | | ...
+     |  | | del modulo 2...
+     |  | collegato alla CPU 0...
+     |  della scheda 0...
+     di tipo IOS.
+
+    esempio: (modulo LAE)
+    IOS.0.0.2.0.25.PULSE
+     |  | | | | |    |
+     |  | | | | |    Durata dell'impulso prodotto sull'
+     |  | | | | ...uscita 1...
+     |  | | | ...
+     |  | | del modulo LAE 2...
+     |  | collegato alla CPU 0...
+     |  della scheda 0...
+     di tipo IOS.
+
+   NOTA:
+   Poiche` il controllore IOS non e` in grado di distinguere il modello
+   di modulo speciale collegato, c'e` il pericolo di confondere un modulo
+   assi con un modulo per tastiera Selco. E` cura del programmatore (o
+   dell'elettricista) evitare che cio` accada.
+ 
+   Per l'uscita DAC ad 8 bit della scheda CX (montaggio completo)
+
+    IOS.<indice scheda>.DAC
+
+    L'associazione deve avvenire con variabili ad 8 bit (es. tipo BYTE).
+    L'indice della scheda e` di solito 0 (unica scheda CX del compatto).
+
+   Per accessi a moduli DAC :
+
+    IOS.<indice scheda>.<indice cpu>.<modulo>.DAC
+
+    esempio:
+    IOS.0.0.3.DAC
+     |  | | |  |
+     |  | | |  Uscita DAC...
+     |  | | del modulo 3...
+     |  | collegato alla CPU 0...
+     |  della scheda 0...
+     di tipo IOS.
+
+    L'associazione deve avvenire con variabili a 16 bit (es. tipo INT).
+    
+    NOTA : Il convertitore D/A attualmente installato sui moduli ha una
+   risoluzione di 12 bit, mentre la variabile associata e` di 16. Il PLC
+   non controlla eventuali overflow, il controllo e` a carico del
+   programmatore.
+
+   Per accessi a moduli SDA2 (DAC doppio con segnale DIR):
+
+    IOS.<indice scheda>.<indice cpu>.<modulo>.SDA.<canale>.<tipo>
+
+   "tipo" e` una stringa che descrive la modalita` di utilizzo del
+   canale analogico e dell'uscita booleana associata. Puo` avere una
+   delle seguenti forme:
+
+    BP : Uscita bipolare, 12 bit significativi con segno. L'uscita
+         binaria e` pilotata direttamente dal modulo, ed e` portata ad 1
+         ogni volta che la tensione d'uscita e` diversa da zero.
+         Questo segnale deve essere associato ad una variabile a 16 bit.
+    UN : Uscita unipolare, 12 bit significativi senza segno. L'uscita
+         binaria e` pilotata direttamente dal modulo, ed e` portata ad 1
+         ogni volta che la tensione d'uscita e` diversa da zero.
+         Questo segnale deve essere associato ad una variabile a 16 bit.
+    US : Uscita unipolare, 11 bit significativi senza segno. L'uscita
+         binaria e` disponibile al programma PLC, ed accessibile
+         attraverso il segnale OUT (vedi sotto).
+         Questo segnale deve essere associato ad una variabile a 16 bit.
+    OUT: Uscita binaria, non disponibile se si utilizzano i segnali
+         BP o UN. Deve essere associata ad una variabile di tipo BOOL.
+
+    esempio:
+    IOS.0.0.3.SDA.1.US
+     |  | | |  |  | |
+     |  | | |  |  | Modalita` unipolare, risoluzione 11 bit...
+     |  | | |  |  seconda uscita analogica...
+     |  | | |  del modulo SDA2...
+     |  | | ad indirizzo 3...
+     |  | collegato alla CPU 0...
+     |  della scheda 0...
+     di tipo IOS.
+
+   Per accessi a moduli ADC (IAN451) :
+
+    IOS.<indice scheda>.<indice cpu>.<modulo>.ADC.<0-3>
+    IOS.<indice scheda>.<indice cpu>.<modulo>.ADCN.<0-3>
+
+    La prima forma produce valori conpresi tra -1024 e +1024,
+    mentre la seconda forma produce valori tra -32768 e +32767.
+    In entrambi i casi, comunque, la risoluzione e` di 11 bit
+    con gli attuali moduli ADC.
+    
+    esempio:
+    IOS.0.0.3.ADC.2
+     |  | | |  |  |
+     |  | | |  |  Secondo ingresso...
+     |  | | |  ...ADC (range -1024,+1023)...
+     |  | | del modulo 3...
+     |  | collegato alla CPU 0...
+     |  della scheda 0...
+     di tipo IOS.
+
+    Si tratta di ingessi a 16 bit con segno.
+    L'associazione deve avvenire con variabili a 16 bit (es. tipo INT).
+
+   Per accessi a moduli SDIS (controllano fino a 16 display decimali) :
+
+    IOS.<indice scheda>.<indice cpu>.<modulo>.SDIS.<0-15>
+    IOS.<indice scheda>.<indice cpu>.<modulo>.SDIS.<0-15>.DEC
+
+    La prima forma rappresenta il valore a 32 bit con segno da visualizzare,
+    mentre la seconda forma e` un segnale d'uscita booleano che
+    attiva la visualizzazione dei decimali. La variabile visualizzata
+    si intende infatti espressa in centesimi. Se l'uscita "DEC" vale 0,
+    sara` mostrato il valore della variabile a meno delle due cifre
+    meno significative; se vale 1, sara` mostrata anche la seconda cifra,
+    preceduta dal punto decimale.
+    NOTA: C'e` incongruenza tra l'indice di display che si imposta tramite
+    switch e l'indice che il display mostra appena viene alimentato.
+    Quest'ultimo parte infatti da 1, mentre il codice binario rappresentato
+    dagli switch parte da 0. Si e` scelta quest'ultima convenzione
+    nella rappresentazione del segnale, cosicche` l'indice di display
+    e` compreso tra 0 e 15.
+    
+    esempio:
+    IOS.0.0.3.SDIS.12
+     |  | | |  |   |
+     |  | | |  |   Dodicesimo display...
+     |  | | |  ...collegato ad un modulo SDIS...
+     |  | | di indirizzo IOS 3...
+     |  | collegato alla CPU 0...
+     |  della scheda 0...
+     di tipo IOS.
+
+    Come si e` detto, le uscite "SDIS.n" devono essere associate a
+   variabili di 32 bit con segno (tipo DINT del linguaggio IL),
+   mentre le uscite "SDIS.n.DEC" devono essere associate a variabili
+   a un bit (BOOL).
+
+   Per accessi diretti ai byte di un modulo
+
+    IOS.<indice scheda>.<indice cpu>.<modulo>.<byte>
+
+    esempio:
+    IOS.0.0.3.2
+     |  | | | |
+     |  | | | Byte 2...
+     |  | | del modulo 3...
+     |  | collegato alla CPU 0...
+     |  della scheda 0...
+     di tipo IOS.
+
+    L'associazione deve avvenire con variabili a 8 bit (es. tipo BYTE).
+
+    NOTA : Questa prestazione e` riservata ad applicazioni particolari,
+   per esempio la gestione diretta di moduli speciali. Se ne sconsiglia
+   l'uso quando non e` indispensabile.
+
+   Per accessi diretti a byte arbitrari di un controllore IOS
+
+    IOS.<indice scheda>.<indice cpu>.BYTE.<byte>
+
+    esempio:
+    IOS.0.0.BYTE.555
+     |  | |  |    |
+     |  | |  +----Accesso diretto al byte 555...
+     |  | della CPU 0...
+     |  della scheda 0...
+     di tipo IOS.
+
+    L'associazione deve avvenire con variabili a 8 bit (es. tipo BYTE).
+
+    NOTA : Questa prestazione e` ad uso esclusivo della CNi, la quale
+   si riserva di modificare la sintassi e la funzionalita` senza preavviso.
+   L'uso improprio di questa prestazione puo` provocare malfunzionamenti e
+   riduce la sicurezza del PLC, per questo e` normalmente disabilitata. Per
+   abilitarla bisogna specificare nelle linea di comando di qplc l'opzione di
+   configurazione del driver IOS "direct=1".
+
+   Per accessi ai segnali di I/O delle schede UDC3 ed MPP3
+
+    IOS.<indice scheda>.UDC.<bit>
+  oppure
+    IOS.<indice scheda>.MPP.<bit>
+
+   Le due forme sono perfettamente equivalenti.
+
+    esempio:
+    IOS.0.UDC.2
+     |  |  |  |
+     |  |  |  Uscita 2...
+     |  |  della porta UDC...
+     |  della scheda 0...
+     di tipo IOS.
+
+   Si noti che la stessa stringa puo` descrivere sia un segnale di ingresso
+   che un segnale di uscita UDC3 o MPP3. Non c'e` pero` ambiguita`, dato
+   che nell'utilizzo del segnale si deve comunque specificare se si intende
+   accedere in lettura o in scrittura alla porta.
+   La scheda UDC3 possiede 16 ingressi e 11 uscite.
+   La scheda MPP3 possiede 16 ingressi (i primi quettro possono essere
+   condivisi dal gestore degli assi per controllare i micro di fine corsa)
+   e 7 uscite.
+
+   Questi segnali devono essere associati a variabili di tipo BOOL (1 bit).
+
+   Per accessi alla porta LED della scheda compatta (CX)
+
+    IOS.<indice scheda>.LED.<bit>
+
+    esempio:
+    IOS.0.LED.2
+     |  |  |  |
+     |  |  |  Uscita 2...
+     |  |  della porta LED...
+     |  della scheda 0...
+     di tipo IOS.
+
+    Questi segnali devono essere associati a variabili di tipo BOOL (1 bit).
+
+    NOTA : La porta LED della scheda CX e` attualmente inutilizzata. Su XNC
+    compatto, i LED della tastiera sono pilotati dal gestore della tastiera
+    (dispositivo "KEYB", si veda oltre).
+
+   Per l'uscita CNOK della scheda IOSLK2
+
+    IOS.<indice scheda>.CNOK
+
+    L'associazione deve avvenire con variabili ad 1 bit (es. tipo BOOL).
+    L'indice della scheda e` di solito 0 (unica scheda IOSLK2 presente).
+
+    NOTA: Poiche` la scheda IOSLK2 puo` assumere varie personalita` a
+    seconda della configurazione, l'uscita CNOK e` ammessa dal sistema
+    operativo anche in presenza di schade IOS tradizionali (che appaiono
+    di tipo "single" in /dev/klog) e IOSLK semplici (tipo "IOSLK").
+    Queste infatti sono due delle tre modalita` di lavoro della IOSLK2.
+    In presenza di schede di tipo vecchio ("single" o "IOSLK") QPLC
+    permettera` erroneamente di collegare una variabile all'inesistente
+    uscita CNOK. A parte l'ineleganza formale, questa cosa non ha
+    comunque conseguenze.
+
+
+ Tasti speciali e LED della tastiera compatta
+ --------------------------------------------
+
+ Qplc tratta alcuni tasti della tastiera CN come ingressi. Nella comune
+configurazione per XNC, comunque, tali ingressi sono automaticamente
+assegnati a segnali di scambio predefiniti. Pertanto, in condizioni normali,
+non dovrebbe essere necessario accedere direttamente ai segnali dei tasti.
+ Comunque, gli ingressi associati ai tasti si indicano con
+
+   keyb.0.<dimensione del dato>.<indice>
+
+dove "dimensione" puo` essere 1 per tasti ordinari, oppure 8 o 32 per
+gli ingressi dei cosiddetti "override" (che producono valori compresi tra 0
+e 255, e possono essere associati a variabili a 8 o 32 bit).
+ "indice" ha un valore compreso tra 0 e 35 per gli ingressi booleani, e
+tra 0 e 3 per gli ingressi "override". I tasti ordinari del PLC hanno
+indici compresi tra 0 e 31. I codici da 32 a 35 rappresentano i seguenti
+quattro tasti speciali :
+
+	 32 = START
+	 33 = STOP
+	 34 = CLEAR
+	 35 = RESET
+
+ I tasti devono essere associati a variabili di tipo BOOL (1 bit).
+ Dalla versione 1.5.2.4 di qplc e` riconosciuta l'opzione di configurazione
+"ignerr={0|1}". Ponendola ad 1, il Plc ignorera` l'assenza della tastiera
+speciale, cosa utile in fase di debug perche` evita l'emissione di errori
+noiosi.
+ Il dispositivo "KEYB" controlla anche i LED del CN compatto. Nella massima
+configurazione sono presenti 24 LED, accessibili come uscite booleane. La
+sintassi che li descrive e` la seguente :
+
+    KEYB.0.LED.<bit>
+
+    esempio:
+    KEYB.0.LED.2
+      |  |  |  |
+      |  |  |  Uscita 2...
+      |  |  della porta LED...
+      +- della tatiera 0 (l'unica).
+
+   Questi segnali devono essere associati a variabili di tipo BOOL (1 bit).
+   Nel linguaggio IL si indichera` l'uscita con
+
+	%QXkeyb.0.led.2
+
+ NOTA : per ovviare ad alcune limitazioni del controllore di tastiera, qplc
+ evita di modificare troppo velocemente lo stato dei LED. Attualmente il
+ minimo intervallo di tempo ammesso tra due variazioni di stato dei LED
+ e` di 200 millisecondi. Variazioni piu` rapide non hanno effetto.
+
+ Assi
+ ----
+
+ Il dispositivo "ax" permette di controllare DAC o ADC posti sul
+bus CABX controllato da una CPAX o da un programma che la emuli.
+Per ogni "linea" (la "linea" e` un'estensione del concetto di "scheda CPAX",
+le linee sono definite in apposite tabelle dei dati macchina, rif. Sarti)
+e` possibile avere fino a quattro collegamenti di input o di output con
+variabili a 16 bit. Gli input controllano ADC, gli output DAC. La stringa che
+descrive un segnale di input o di output ha la forma seguente :
+
+  ax.<linea>.<posto CABX>.<tipo scheda>.<porta>
+
+dove
+
+   linea : vedere l'apposita tabella dei dati macchina ("protee"),
+   posto CABX : un numero da 0 a 15, indicante il dispositivo
+           collegato al bus CABX coinvolto,
+   tipo scheda : "1" o "rcx" per RCX,
+                 "2" o "adx" per ADX,
+                 "3" o "mpp" per uscita DAC MPP3,
+   porta : 1 o 2 : primo o secondo canale di input o di output.
+
+Esempio
+
+   ax.0.12.rcx.2 : secondo input od output della scheda RCX
+                   nel posto 12 della linea 0.
+
+   Questi segnali devono essere associati a variabili a 16 bit (es. INT).
+
+   Nel linguaggio IL si indichera` l'input con
+
+	%IWax.0.12.rcx.2
+
+   e l'output con
+
+	%QWax.0.12.rcx.2
+
+ Linee seriali
+ -------------
+
+ Le linee seriali (ed in generale i dispositivi ad esse riconducibili)
+sono accessibili tramite il driver "ser". Poiche` i canali seriali
+sono per loro natura asincroni, il modello di gestione degli I/O tipico
+dei programmi PLC mal si adatta ad essi. Il loro uso e` possibile tramite
+apposite primitive di trasmissione e ricezione, che necessitano di un
+parametro che rappresenta il dispositivo di interesse. Tale parametro e`
+un valore calcolato dal PLC stesso all'entrata in GO, quando sono esaminate
+tutte le associazioni tra variabili di programma e segnali di I/O. Se un
+programma necessita di dispositivi seriali, deve contenere un'associazioni di
+INPUT tra una variabile a 32 bit (tipo "DINT" in IL o "long" in C) ed un
+dispositivo descritto dalla stringa
+
+	ser.<dispositivo>.<parametri>
+
+dove "dispositivo" e` una stringa che il sistema converte in minuscolo
+ed interpreta come un nome in "/dev" (es. COM1 = /dev/com1), e "parametri"
+e` una stringa nella forma
+
+	<velocita`><parita`><bit di dato><bit di stop>
+
+dove "velocita`" e` un numero tra 110 e 38400, "parita`" puo` essere
+"n" (niente parita`), "o" (parita` dispari) o "e" (parita` pari),
+"bit di dato" e` un numero tra 5 ed 8, "bit di stop" puo` valere "1" o "2"
+Esempio :
+
+	ser.com2.9600n81
+
+indica "/dev/com2" a 9600 baud, niente parita`, 8 bit di dato, un bit di stop.
+ Nel linguaggio IL si indichera` il dispositivo con
+
+	%IDser.com2.9600n81
+
+ Come si e` detto, la variabile associata a questo segnale deve essere
+utilizzata come parametro di apposite funzioni di trasmissione o ricezione,
+mentre non ha senso utilizzarla come ingresso o uscita ordinaria.
+
+ Scheda di acquisizione Bus Gage (Bobbio)
+ ----------------------------------------
+
+ La scheda di acquisizione Bus Gage contiene un ADC ed un DAC a 12 bit.
+ Il DAC genera la tensione di "zero" per il sensore collegato
+all'ADC. Le letture dell'ADC rappresentano scostamenti rispetto al
+valore di zero.
+ Entrambi i dispositivi sono mappati da variabili a 16 bit con segno:
+
+	%IWbgage.0 : ingresso ADC
+	%QWbgage.0 : uscita DAC
+
+ E` spesso utile convertire il valore a 12 bit prodotto dall'ADC nella
+tensione corrispondente. Il fattore di conversione e` 0.004882813 .
+
+	(* Esempio di conversione da valore sull'ADC in tensione. *)
+
+		LD	BGAGE
+		DINT_TO_REAL
+		MUL_REAL	0.004882813
+		ST	VOLT
+

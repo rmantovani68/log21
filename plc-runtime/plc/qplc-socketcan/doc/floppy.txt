@@ -1,0 +1,58 @@
+
+
+Tue Nov 18 14:00:19 MET 1997
+
+
+               NOTE RIGUARDANTI PROBLEMI CON FLOPPY DISK SU XNC
+               ------------------------------------------------
+
+ Si e` scoperta una limitazione hardware su molte motherboard con processore
+Pentium. Essa consiste nella possibilita` di interferenza tra scritture a 32
+bit ad indirizzi di memoria collegati a dispositivi sul bus ISA e operazioni
+col floppy disk. Si e` visto che una sequenza di quattro o piu` operazioni di
+scrittura a 32 bit ravvicinate su dispositivi (per esempio IOS, CPAX, INAX)
+provoca il fallimento della lettura di una traccia del floppy.
+ Il seguente frammento di programma Plc in C e` in grado di evidenziare il
+problema :
+
+	extern char *NVRAM;
+
+	void PlcMain(void)
+	{
+		((long *)NVRAM)[0] = v1;
+		((long *)NVRAM)[1] = v2;
+		((long *)NVRAM)[2] = v3;
+		((long *)NVRAM)[3] = v4;
+	}
+
+ La variabile NVRAM punta al chip di RAM non volatile alloggiato sulla scheda
+IOS. Il suo uso come puntatore a 32 bit provoca il malfunzionamento. Una
+soluzione consiste nell'accedere a 8 o 16 bit al dispositivo :
+
+		((short *)NVRAM)[0] = (short) v1;
+		((short *)NVRAM)[1] = (short) (v1 >> 16);
+		((short *)NVRAM)[2] = (short) v2;
+		((short *)NVRAM)[3] = (short) (v2 >> 16);
+		((short *)NVRAM)[4] = (short) v3;
+		((short *)NVRAM)[5] = (short) (v3 >> 16);
+		((short *)NVRAM)[6] = (short) v4;
+		((short *)NVRAM)[7] = (short) (v4 >> 16);
+
+ Un'altra soluzione, piu` lenta e meno sicura, consiste nell'interrompere
+la sequenza di scritture con la lettura di un byte
+ 
+	char tmp;
+
+		((long *)NVRAM)[0] = v1;
+		tmp = *NVRAM;
+		((long *)NVRAM)[1] = v2;
+		tmp = *NVRAM;
+		((long *)NVRAM)[2] = v3;
+		tmp = *NVRAM;
+		((long *)NVRAM)[3] = v4;
+		tmp = *NVRAM;
+
+ Si consiglia di verificare che le applicazioni non utilizzino scritture
+a 32 bit su dispositivi, e, nel caso, di apportare le modifiche descritte.
+
+

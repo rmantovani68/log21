@@ -1,0 +1,18 @@
+
+configuration conf_2
+resource sola_ed_unica on cpu1
+program prova_2 : p_2 (
+	);
+end_resource
+end_configuration
+
+program p_2
+	ld	tasti[0]
+	jmpcn	nnnnn
+(*
+	ld	tasti[reta]
+*)
+nnnnn:
+
+end_program
+

@@ -1,0 +1,2 @@
+
+../ilc -il -g -w 0 -header ./home/pds/util/scambio ./home/pds/util/illib.ilc  -code ./home/pds/prog/gem1_1.plc -os ./home/pds/prog/gem1_1.plc.s ./home/pds/prog/gem1_1.msd -os ./home/pds/prog/gem1_1.msd.s ./home/pds/prog/gem1_1.crc -os ./home/pds/prog/gem1_1.crc.s ./home/pds/util/scambdin -os ./home/pds/prog/scambdin.s

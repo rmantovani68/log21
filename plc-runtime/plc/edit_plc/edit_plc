@@ -1,0 +1,121 @@
+#!/usr/bin/wish
+
+#!/usr/local/bin/wish
+#
+# 06/12/00 GG Versione 1.0.7.9.
+#          Aggiunta la gestione di tre variabili di ambiente
+#          per redirigere il file di configurazione e il path
+#          di base del pacchetto. La variabile EDITPLC_HOME specifica
+#          la directory di base di edit_plc, dentro la quale trovano posto
+#          i componenti del programma. Se non e` presente,
+#          si usa il tradizionale /home/edit_plc. EDITPLC_PROJECT permette di
+#          definire il path di lavoro di edit_plc. Se non e` presente, si
+#          usa EDITPLC_HOME, oppure /home/edit_plc come ultima risorsa.
+#          EDITPLC_PROJECT indica la posizione da cui edit_plc leggera` il
+#          file "defaults.tcl", che lo configura. Infine, EDITPLC_CONF
+#          indica il nome del file da leggere. Se non e` presente, si
+#          usa "defaults.tcl". Non si tratta di un path assoluto, in quanto
+#          il path utilizzato e` dato da $EDITPLC_PROJECT/$EDITPLC_CONF.
+#
+global Home LineNumber SelectedLine ColonnaAssoluta env ProjectHome
+global Main_Fb modulo_selezionato ModiFile
+global prt_opz_change ComandiDos tcl_platform OldFilename AttivatoDebug
+global InterpreteAttivo LanguageFile LadderEditShow
+global Demo NumeroChiamate VersioneEditor
+global QualeScambio QualeScambdin
+global nc1000
+global ProjectConf
+
+# Nasconde la finestra principale
+wm withdraw .
+
+if {$tcl_platform(platform) == "unix"} {
+  if [ catch { set Home $env(EDITPLC_HOME) } ] {
+    set Home /home/edit_plc
+  }
+  if [ catch { set ProjectHome $env(EDITPLC_PROJECT) } ] {
+    set ProjectHome $Home
+  }
+  if [ catch { set ConfigFile $env(EDITPLC_CONF) } ] {
+    set ConfigFile "defaults.tcl"
+  }
+  set ProjectConf "$ProjectHome/$ConfigFile"
+} else {
+  set RegistroBase [QualeRegistro]
+  if { $RegistroBase == "errore" } {
+    set RegistroBase PDS
+  }
+  set appoggio [ReadReg $RegistroBase PATH]
+  if { $appoggio == "errore_registro" } {
+    tk_messageBox -icon info -message "Fallita lettura registro" -type ok
+    exit
+  } else {
+    set Home $appoggio
+  }
+}
+
+# Inizializzazione di alcune variabili
+set LineNumber 1              
+set SelectedLine 0         
+set modulo_selezionato 0        
+set Main_Fb 0
+set edit_plc_library "$Home/lib"
+set ColonnaAssoluta 0
+set prt_opz_change no
+set OldFilename ""
+set AttivatoDebug 0
+set InterpreteAttivo 0
+set ModiFile 0
+set LadderEditShow 0
+set VersioneEditor 1.0.7.9
+
+# Carico in memoria il file delle lingue
+if [file exists $Home/util/Lingue] {
+  set fId [open $Home/util/Lingue r]
+  set LanguageFile [read $fId]
+  close $fId
+}
+
+if { $tcl_platform(platform) == "unix" } {
+  set ComandiDos(copy) "mcopy -no"
+  set ComandiDos(dir) mdir
+  set ComandiDos(delFile) mdel
+  set ComandiDos(makeDir) "mmd -s"
+  set ComandiDos(delDir) mdeltree
+} else {
+  set ComandiDos(copy) "$Home/cp"
+  set ComandiDos(dir) "$Home/dr +file-type -w 1"
+  set ComandiDos(delFile) "$Home/rm"
+  set ComandiDos(makeDir) "$Home/md"
+  set ComandiDos(delDir) "$Home/rm -r"
+}
+
+set auto_path [concat [list $edit_plc_library] $auto_path]
+
+cd $Home
+
+InputArgv $argv
+CreateImagePixmap
+RimuoviLibrerie
+
+InitilizeEditor
+
+set Wdg [CreateWindow]
+
+ApriFileScambio
+
+# apro il file che contiene le parole chiave
+set inputkw [open $Home/util/keywords r]
+
+if { ($tcl_platform(platform) != "unix") && ($nc1000 == 0) } {
+  set qqq [ProsAvviaProtezione]
+  if { $qqq == -1 } {
+    tk_messageBox -icon info -message "Fallita lettura registro" -type ok
+    exit
+  }
+  if { $qqq == "APP_DEM" } {
+    ProsJollyStringa
+    set NumeroChiamate 0
+    after 150000 VerificaDemo [TopToText $Wdg]
+  }
+}

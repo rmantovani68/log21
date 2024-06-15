@@ -1,0 +1,14 @@
+set HOME .
+set SAVEPATH /home/d_xnc/plc
+set Lingua ita
+if {$tcl_platform(platform) == "unix"} {
+	set font_usato -adobe-helvetica-medium-r-normal--*-100-*-*-*-*-iso8859-*
+	set font_fisso -misc-fixed-medium-r-normal-*-*-*-*-*-*-*-*-*
+	} else {
+	set font_usato -adobe-helvetica-medium-r-normal--*-140-*-*-*-*-iso8859-*
+	set font_fisso -misc-fixed-medium-r-normal-*-*-*-*-*-*-*-*-*
+} 
+set IconBitmap $HOME/icone/iosim.xbm
+
+# Default per unc (micro nc)
+set SocketPlc 8039

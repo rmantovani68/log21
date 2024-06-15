@@ -1,0 +1,16 @@
+set BoardLibrary(SI24)  { 0 24  0 IOS {24-Input} }
+set BoardLibrary(SI8)   { 0  8  0 IOS {8-Input} }
+set BoardLibrary(SI816) { 0  8 16 IOS {8-Input/16-Static Output} }
+set BoardLibrary(SIR88) { 0  8  8 IOS {8-Input/8-Relay Output} }
+set BoardLibrary(SO24)  { 0  0 24 IOS {24-Static Output} }
+set BoardLibrary(SO8)   { 0  0  8 IOS {8-Static Output} }
+set BoardLibrary(SO816) { 0 16  8 IOS {16-Input/8-Static Output} }
+set BoardLibrary(SOR88) { 0  0 16 IOS {8-Static Out/8-Relay Out} }
+set BoardLibrary(S24T) { 0  24 24 IOS {Tastiera 24 tasti} }
+set BoardLibrary(SI816V) { 0  24 24 IOS {8-Input/8-Static Out - 8-Special} }
+set BoardLibrary(SIR88V) { 0  24 24 IOS {8-Input/8-Special Relay Out} }
+set BoardLibrary(UDC3) { 0  16 12 UDC {12-Output/16-Input MicroNC} }
+set BoardLibrary(MPP3) { 0  16 8 MPP {8-Output/16-Input MicroNC} }
+set BoardLibrary(CanOp48) { 0  48 48 IOS {48-Input/48-Output} }
+set BoardLibrary(CanOp64) { 0  64 64 IOS {64-Input/64-Output} }
+set BoardLibrary(CanOp128) { 0  128 128 IOS {128-Input/128-Output} }

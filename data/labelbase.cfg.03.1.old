@@ -1,0 +1,80 @@
+**********************************************************
+* WARNING:  It is unlawful to sell or give away this     *
+*           output to installations which do not have    *
+*           a registered copy of this product.  This     *
+*           output is to be used only by the registered  *
+*           end user, for use on one printer.  See the   *
+*           license agreement for more information.      *
+**********************************************************
+*
+*
+* Delete this line and above to use for printing.
+
+~JSN^XA
+^CW1,R:DOWNLD1.FNT
+^CW2,R:DOWNLD2.FNT
+^CW3,R:DOWNLD3.FNT
+^CW4,R:DOWNLD4.FNT
+^COY,0^MMT^MD+0
+^XZ
+^XA^CI0,167,167^XZ
+^XA
+^PR3^FS
+^MNY^FS
+^FT662,70^ADR,14,10^FDSegnacollo^FS
+^FT651,254^A0R,45,43^FD<IDSC>^FS
+^FT571,78^A0R,45,46^FD<IDNC>^FS
+^FT506,78^A0R,45,47^FD<IDTC>^FS
+^FT652,891^A0R,51,36^FDCEVA Logistics^FS
+^FT600,897^A0R,34,22^FDVia Zaccagnini snc^FS
+^FT563,897^A0R,34,22^FD27049 - Stradella - PV^FS
+^FT405,77^ADR,14,10^FDDestinatario^FS
+^FT363,74^A0R,45,42^FD<IDR1DEST>^FS
+^FT324,74^A0R,34,35^FD<IDINDDEST>^FS
+^FT291,74^A0R,34,34^FD<IDCAPD>^FS
+^FO83,76^GB0,191,178,B^FS
+^FO83,76^GB0,215,178,B^FS
+^FT121,87^A0R,178,120^FR^FD<VT>^FS
+^BY3,3.0,130.0^FS
+^FT89,317^B<IDTPBCVET>R,160,N,N,N^FD<IDBCVET>^FS
+^FT53,81^A0R,34,26^FD<IDDSARR>^FS
+^FT53,374^A0R,34,28^FD<IDBCVET>^FS
+^FT60,1168^A0N,45,35^FD<IDDSVET> <IDRD> - <IDDSARR>^FS
+^BY3,3.0^FS
+^FT93,1345^B2N,134,N,N,N^FD<IDBCCNI>^FS
+^FO47,62^GB238,1065,2,B^FS
+^FO283,62^GB144,821,2,B^FS
+^FO639,62^GB64,1065,2,B^FS
+^FO283,881^GB420,246,2,B^FS
+^FO47,1125^GB656,54,2,B^FS
+^FO47,1177^GB656,221,2,B^FS
+^FT290,231^A0R,34,34^FD<IDLOCD>^FS
+^FT290,711^A0R,34,34^FD<IDPRVD>^FS
+^FO345,923^GB178,0,149,B^FS
+^FT383,939^A0R,178,231^FR^FD<F>^FS
+^FT296,943^A0R,44,22^FD<IDPSCL>^FS
+^FT477,255^A0R,170,109^FD<IDCS>^FS
+^FT619,70^ADR,14,10^FDCollo^FS
+^FT555,70^ADR,14,10^FDTotale Colli^FS
+^FT611,259^ADR,14,10^FDCodice Spedizione^FS
+^FO443,727^GB195,0,150,W^FS
+^FT433,877^A0,170,109^FDAME^FS
+^FT261,506^ADR,14,10^FD<IDCDPRO>^FS
+^FT261,628^ADR,14,10^FD<IDDSTIT>^FS
+^FO425,62^GB216,192,2,B^FS
+^FT483,70^ADR,14,10^FDNumero Copie^FS
+^FT441,78^A0R,45,46^FD<IDCP>^FS
+^FT443,260^A0R,34,32^FD<IDDSNOT>^FS
+^FT206,1381^A0N,29,26^FD<IDBCCNI>^FS
+^FO425,746^GB216,137,2,B^FS
+^ISSTRNWARE,N^FS
+^XZ
+^XA
+^PR3^FS
+^ILSTRNWARE^FS
+^PF0^FS
+^PQ1,0,0,Y
+^XZ
+^XA
+^IDSTRNWARE
+^XZ

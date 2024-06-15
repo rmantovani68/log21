@@ -1,0 +1,771 @@
+# ------------------------------------
+# PRINTLABEL.CFG
+# file di configurazione per le stampe
+# progetto Picking Legamatic-Mondadori
+# ------------------------------------
+
+[printlabel]
+# ----------------------------------------------------
+# Periodo di esecuzione Work Procedure ProcessMsgs()
+# ----------------------------------------------------
+Delay=100
+
+# -------------------------------------
+# Stampante parallela
+# -------------------------------------
+
+# No. righe della stampante parallela
+RigheStampanteParallela=72
+# No. colonne stampante parallela
+ColonneStampanteParallela=80
+
+# No. righe della stampante parallela
+RigheStampanteParallela_A4=81
+# No. colonne stampante parallela
+ColonneStampanteParallela_A4=95
+
+# ------------------------------------------------
+# Posizionamenti dei campi nella stampa della XAB
+# ------------------------------------------------
+
+# Destinatario
+XABPos_00=5,10
+XABPos_01=5,18
+XABPos_02=5,21
+XABPos_03=6,2
+XABPos_04=7,2
+XABPos_05=8,2
+XABPos_06=9,2
+XABPos_07=9,8
+XABPos_08=9,23
+XABPos_09=9,23
+
+# Numero in alto
+XABPos_10=4,61
+
+# Data
+XABPos_11=4,70
+
+# Documento Interno
+XABPos_12=6,34
+XABPos_13=6,39
+XABPos_14=6,48
+
+# Numero a fianco del documento interno
+XABPos_15=6,57
+
+# Spedizione
+XABPos_16=6,74
+
+# Causale del Trasporto
+XABPos_17=9,37
+
+# Contenuto
+XABPos_18=9,57
+
+# Porto
+XABPos_19=9,71
+
+# Destinazione
+XABPos_20=11,10
+XABPos_21=12,2
+XABPos_22=13,2
+XABPos_23=14,2
+XABPos_24=15,2
+XABPos_25=15,8
+XABPos_26=15,25
+
+# Data e ora consegna
+XABPos_27=11,37
+
+# Firma Destinatario
+XABPos_28=11,59
+
+# C/Assegno
+XABPos_29=14,37
+
+# Aspetto esteriore dei beni
+XABPos_30=14,57
+
+# Codice
+XABPos_31=20,1
+
+# Autore
+XABPos_32=20,11
+
+# Titolo
+XABPos_33=20,22
+
+# Quantita' in cifre addebitate
+XABPos_34=20,50
+
+# Quantita' in lettere addebitate
+XABPos_35=20,61
+
+# Prezzo
+XABPos_36=20,70
+
+# I.V.A.
+XABPos_37=20,78
+
+# Vettori
+XABPos_38=62,2
+XABPos_39=63,2
+XABPos_40=64,2
+XABPos_41=65,2
+XABPos_42=66,2
+XABPos_43=67,2
+
+# Quantita
+XABPos_44=59,74
+
+# Peso in Kg.
+XABPos_45=63,71
+
+# Numero colli
+XABPos_46=66,74
+
+# Annotazioni
+XABPos_47=70,2
+
+# Variazioni di destinazione
+XABPos_48=69,44
+
+# Riga di fine bolla
+XABPos_49=57,13
+
+
+# ------------------------------------------------
+# Posizionamenti dei campi nella stampa del doccons
+# ------------------------------------------------
+
+# Destinatario
+DCPos_00=5,10
+DCPos_01=5,18
+DCPos_02=5,21
+DCPos_03=6,2
+DCPos_04=7,2
+DCPos_05=8,2
+DCPos_06=9,2
+DCPos_07=9,8
+DCPos_08=9,23
+DCPos_09=9,23
+
+# Numero in alto
+DCPos_10=4,61
+
+# Data
+DCPos_11=2,73
+
+# Documento Interno
+# Nel caso uso solo la 3 riga per la data odierna!!!
+DCPos_12=6,34
+DCPos_13=6,39
+DCPos_14=2,73
+
+# Numero a fianco del documento interno
+DCPos_15=6,57
+
+# Spedizione
+DCPos_16=2,63
+
+# Causale del Trasporto
+DCPos_17=5,73
+
+# Contenuto
+DCPos_18=9,73
+
+# Porto
+DCPos_19=9,71
+
+# Destinazione
+DCPos_20=5,45
+DCPos_21=6,37
+DCPos_22=7,37
+DCPos_23=8,37
+DCPos_24=9,37
+DCPos_25=9,43
+DCPos_26=9,60
+
+# Data e ora consegna
+DCPos_27=15,2
+
+# Firma Destinatario
+DCPos_28=15,25
+
+# C/Assegno
+DCPos_29=15,40
+
+# Aspetto esteriore dei beni
+DCPos_30=7,73
+
+# Codice
+DCPos_31=20,1
+
+# Autore
+DCPos_32=22,13
+
+# Titolo
+DCPos_33=20,22
+
+# Quantita' in cifre addebitate
+DCPos_34=20,50
+
+# Quantita' in lettere addebitate
+DCPos_35=20,61
+
+# Prezzo
+DCPos_36=20,70
+
+# I.V.A.
+DCPos_37=20,78
+
+# Vettori
+DCPos_38=14,66
+DCPos_39=15,57
+DCPos_40=16,57
+DCPos_41=65,2
+DCPos_42=66,2
+DCPos_43=67,2
+
+# Quantita
+DCPos_44=12,4
+
+# Peso in Kg.
+DCPos_45=12,25
+
+# Numero colli
+DCPos_46=12,9
+
+# Annotazioni
+DCPos_47=12,49
+
+
+# Come nel XAB uso questo campo per piazzare il valore totale dell'ordine
+# Variazioni di destinazione
+DCPos_48=12,36
+
+# Riga di fine bolla
+DCPos_49=57,13
+
+# --------------------------------------------------------
+# Posizionamenti dei campi nella stampa della XAB su Laser
+# --------------------------------------------------------
+
+# Destinatario
+XABPos_A4_00=5,12
+XABPos_A4_01=5,20
+XABPos_A4_02=5,23
+XABPos_A4_03=6,3
+XABPos_A4_04=7,3
+XABPos_A4_05=8,3
+XABPos_A4_06=9,3
+XABPos_A4_07=9,7
+XABPos_A4_08=9,24
+XABPos_A4_09=9,24
+
+# Numero in alto
+XABPos_A4_10=1,71
+
+# Data
+XABPos_A4_11=1,83
+
+# Documento Interno
+XABPos_A4_12=6,43
+XABPos_A4_13=6,48
+XABPos_A4_14=6,57
+
+# Numero a fianco del documento interno
+XABPos_A4_15=6,68
+
+# Spedizione
+XABPos_A4_16=6,86
+
+# Causale del Trasporto
+XABPos_A4_17=10,42
+
+# Contenuto
+XABPos_A4_18=10,68
+
+# Porto
+XABPos_A4_19=10,85
+
+# Destinazione
+XABPos_A4_20=13,12
+XABPos_A4_21=14,3
+XABPos_A4_22=15,3
+XABPos_A4_23=16,3
+XABPos_A4_24=17,3
+XABPos_A4_25=17,3
+XABPos_A4_26=17,26
+
+# Data e ora consegna
+XABPos_A4_27=14,43
+
+# Firma Destinatario
+XABPos_A4_28=14,68
+
+# C/Assegno
+XABPos_A4_29=19,46
+
+# Aspetto esteriore dei beni
+XABPos_A4_30=19,69
+
+# Codice
+XABPos_A4_31=20,2
+
+# Autore
+XABPos_A4_32=20,16
+
+# Titolo
+XABPos_A4_33=20,27
+
+# Quantita' in cifre addebitate
+XABPos_A4_34=20,60
+
+# Quantita' in lettere addebitate
+XABPos_A4_35=20,61
+
+# Prezzo
+XABPos_A4_36=20,71
+
+# I.V.A.
+XABPos_A4_37=20,79
+
+# Vettori
+XABPos_A4_38=88,8
+XABPos_A4_39=89,8
+XABPos_A4_40=90,8
+XABPos_A4_41=93,8
+XABPos_A4_42=94,8
+XABPos_A4_43=95,8
+
+# Quantita
+XABPos_A4_44=85,87
+
+# Peso in Kg.
+XABPos_A4_45=90,85
+
+# Numero colli
+XABPos_A4_46=94,86
+
+# Annotazioni
+XABPos_A4_47=98,4
+
+# Variazioni di destinazione
+XABPos_A4_48=98,55
+
+# Riga di fine bolla
+XABPos_A4_49=57,13
+
+# --------------------------------------------------------
+# Posizionamenti dei campi nella stampa della PL su Laser
+# --------------------------------------------------------
+
+# Destinatario
+PLPos_A4_00=6,13
+PLPos_A4_01=6,21
+PLPos_A4_02=6,24
+PLPos_A4_03=7,4
+PLPos_A4_04=8,4
+PLPos_A4_05=9,4
+PLPos_A4_06=10,4
+PLPos_A4_07=10,8
+PLPos_A4_08=10,25
+PLPos_A4_09=10,25
+
+# Numero in alto
+PLPos_A4_10=4,72
+
+# Data
+PLPos_A4_11=4,84
+
+# Documento Interno
+PLPos_A4_12=7,44
+PLPos_A4_13=7,49
+PLPos_A4_14=7,58
+
+# Numero a fianco del documento interno
+PLPos_A4_15=7,69
+
+# Spedizione
+PLPos_A4_16=7,87
+
+# Causale del Trasporto
+PLPos_A4_17=10,43
+
+# Contenuto
+PLPos_A4_18=10,69
+
+# Porto
+PLPos_A4_19=10,86
+
+# Destinazione
+PLPos_A4_20=13,13
+PLPos_A4_21=14,4
+PLPos_A4_22=15,4
+PLPos_A4_23=16,4
+PLPos_A4_24=17,4
+PLPos_A4_25=17,4
+PLPos_A4_26=17,27
+
+# Data e ora consegna
+PLPos_A4_27=14,43
+
+# Firma Destinatario
+PLPos_A4_28=14,68
+
+# C/Assegno
+PLPos_A4_29=17,45
+
+# Aspetto esteriore dei beni
+PLPos_A4_30=17,69
+
+# Codice
+PLPos_A4_31=20,2
+
+# Autore
+PLPos_A4_32=20,16
+
+# Titolo
+PLPos_A4_33=20,27
+
+# Quantita' in cifre addebitate
+PLPos_A4_34=20,60
+
+# Quantita' in lettere addebitate
+PLPos_A4_35=20,61
+
+# Prezzo
+PLPos_A4_36=20,71
+
+# I.V.A.
+PLPos_A4_37=20,79
+
+# Vettori
+PLPos_A4_38=69,9
+PLPos_A4_39=70,9
+PLPos_A4_40=71,9
+PLPos_A4_41=73,9
+PLPos_A4_42=74,9
+PLPos_A4_43=75,9
+
+# Quantita
+PLPos_A4_44=66,87
+
+# Peso in Kg.
+PLPos_A4_45=71,85
+
+# Numero colli
+PLPos_A4_46=74,87
+
+# Annotazioni
+PLPos_A4_47=78,4
+
+# Variazioni di destinazione
+PLPos_A4_48=78,55
+
+# Riga di fine bolla
+PLPos_A4_49=57,13
+
+
+
+# ----------------------------------------------------
+# Varie stampa XAB (DDT)
+# ----------------------------------------------------
+
+# Numero di codici prodotto stampabili per pagina (39)
+LibriPagina=20
+# Scritta che compare nell'ultima riga della bolla
+FineBolla=TOTALE NR.
+# Voce del campo contenuto
+Contenuto=LIBRI
+# Anno (4 cifre)
+Anno=2002
+# Tipo nota XAB
+TipoNotaXAB=0XB
+# Scritte che compaiono ad ogni salto pagina
+Segue=<SEGUE>
+SegueBAM=SEGUE B.A.M.
+SeguePL=SEGUE PACKING LIST
+Foglio=FOGLIO
+# Righe su cui stampare gli articoli
+#PrimaRigaXAB=23
+#UltimaRigaXAB=58
+PrimaRigaXAB=21
+UltimaRigaXAB=55
+PrimaRigaXAB_A4=25
+UltimaRigaXAB_A4=79
+# Questo valore per ultima riga serve per fare le prove di a capo
+#UltimaRigaXAB_A4=26
+
+# ----------------------------------------------------
+# Varie stampa Packing List
+# ----------------------------------------------------
+
+
+SeguePL=SEGUE PACKING LIST
+
+PrimaRigaPL_A4=23
+UltimaRigaPL_A4=63
+#UltimaRigaPL_A4=26
+
+
+# ----------------------------------------------------
+# Varie stampa Documento di Trasporto
+# ----------------------------------------------------
+
+
+# Valori fittizi, nel documento non servono
+PrimaRigaDC=10
+UltimaRigaDC=11
+
+
+
+# ----------------------------------------------------
+# Varie Distinta riepilogativa
+# ----------------------------------------------------
+
+# Righe su cui stampare le spedizioni
+PrimaRigaDistinta=19
+UltimaRigaDistinta=60
+#Scritte salti pagina
+VecchiaPaginaDistinta=<SEGUE>
+NuovaPaginaDistinta=SEGUE DISTINTA
+# Nome del magazzino
+NomeMagazzino=MAGAZZINO CENTRALE EDITORIALE
+# Data documento
+DataDocumento=DATA DOCUMENTO
+
+
+# ------------------------------------------------------------------
+# Posizionamenti dei campi nella stampa della distinta riepilogativa
+# ------------------------------------------------------------------
+
+# Numero distinta
+DisPos_00=3,64
+# Numero pagina
+DisPos_01=3,71
+# Magazzino
+DisPos_02=5,51
+# Tipo spedizione
+DisPos_03=9,2
+# Descrizione tipo spedizione
+DisPos_04=9,39
+# Tipo spedizione linea scalo sottoscalo
+DisPos_05=9,69
+# Scritta DATA DOCUMENTO
+DisPos_06=12,55
+# Data documento
+DisPos_07=12,71
+# Progressivo spedizione
+DisPos_08=22,1
+# Spedizione
+DisPos_09=22,4
+# Destinatario
+DisPos_10=22,11
+# Destinazione
+DisPos_11=22,32
+# Data BAM
+DisPos_12=22,48
+# Numero pacchi
+DisPos_13=22,58
+# Peso in grammi
+DisPos_14=22,64
+# Numero pezzi
+DisPos_15=22,71
+# Tassa di spedizione
+DisPos_16=22,76
+# Totale spedizioni
+DisPos_17=64,9
+# Totale pacchi
+DisPos_18=64,58
+# Totale peso
+DisPos_19=64,64
+# Totale volumi
+DisPos_20=64,71
+# Totale tassa di spedizione
+DisPos_21=64,77
+# Dati Vettore 1
+DisPos_22=66,3
+DisPos_23=67,3
+DisPos_24=68,3
+# Dati Vettore 2
+DisPos_25=69,3
+DisPos_26=70,3
+DisPos_27=71,3
+# Data e ora ritiro
+DisPos_28=67,43
+DisPos_29=68,43
+
+# ----------------------------------------------------
+# Posizione dei campi nella stampa della RAC
+# Pos_Font_00=[Starting Row],[Starting Column]
+# [Starting Row] 		: 0-LinesPerForm-1
+# [Starting Column] : 0-number of columns 
+# ----------------------------------------------------
+
+# Pos[i]
+# Stoccaggio 
+Pos_00=3,1
+# Quantita'
+Pos_01=3,19
+# Autore
+Pos_02=3,24
+# Titolo
+Pos_03=3,48
+# Codice pezzo
+Pos_04=3,61
+# Prezzo
+Pos_05=3,75
+# Numero spedizione
+Pos_06=23,2
+# Pacco
+Pos_07=23,10
+# Data
+Pos_08=23,16
+# Pagina
+Pos_09=23,25
+# Area
+Pos_10=23,32
+# Codice cliente
+Pos_11=23,43
+# Totale pacchi
+Pos_12=23,63
+# Righe
+Pos_13=23,69
+# Volumi
+Pos_14=23,77
+# Totale righe dell'ordine
+Pos_15=21,44
+# Totale volumi dell'ordine
+Pos_16=21,57 
+# Posizione delle note
+Pos_17=3,3
+# Posizione della scritta di fine ordine righe
+Pos_18=21,38
+# Posizione della scritta di fine ordine volumi
+Pos_19=21,50
+
+# Etichetta
+# Numero spedizione dell'etichetta collo
+Pos_20=4,117
+# Numero pacco dell'etichetta collo
+Pos_21=4,125
+# Sezione contiene libri: riga1, colonna1
+Pos_22=5,91
+# Sezione contiene libri: riga1, colonna2
+Pos_23=5,100
+# Sezione contiene libri: riga1, colonna3
+Pos_24=5,118
+# Sezione contiene libri: riga1, colonna4
+Pos_25=5,122
+# Sezione contiene libri, riga2
+Pos_26=7,91
+# Sezione contiene libri, riga3
+Pos_27=8,91
+# Sezione contiene libri, riga4
+Pos_28=9,91
+# Sezione contiene libri: riga5, colonna1
+Pos_29=10,91
+# Sezione contiene libri: riga5, colonna2
+Pos_30=10,98
+# Sezione contiene libri: riga5, colonna3
+Pos_31=10,122
+# Sezione contiene libri, riga6
+Pos_32=11,91 
+# Peso
+Pos_33=14,126
+# Indicazioni
+Pos_34=16,89
+# Data BAM
+Pos_35=16,114
+# Data stampa
+Pos_36=16,123
+# Formato collo (righe 1-6)
+Pos_37=5,89 
+# Codice sovrappacco (righe 1-6)
+Pos_38=5,94 
+# BarCode (righe 1-6)
+Pos_39=1,110 
+# Descrizione linea di spedizione 
+Pos_40=16,88 
+
+# nPrintingRow[i]
+PrintingRow_00=3
+PrintingRow_01=5
+PrintingRow_02=7
+PrintingRow_03=9
+PrintingRow_04=11
+PrintingRow_05=13
+PrintingRow_06=15
+PrintingRow_07=17
+PrintingRow_08=19
+
+
+# -------------------------------------
+# Varie stampa RAC
+# -------------------------------------
+# nome del file che viene inviato alla stampante
+FileName=printronix
+# Numero di righe stampabili (escluso i totali)
+PrintableRow=9
+# Dimensione del foglio (offset 1)
+LinesPerForm=24
+# Lunghezzza stampabile del campo titolo
+LengthTitle=23
+# Lunghezza stampabile del campo autore
+LengthAuthor=12
+# Identificativo di stampa della riga totali dell'ordine
+Fine=-----FINE-----
+# Righe totali dell'ordine: identifiiiicativo totale righe 
+Righe=RIGHE
+# Volumi totali dell'ordine: identificativvo totale ordini 
+Volumi=VOLUMI
+# Etichetta che viene stampata prima del codice movimento 
+# nella stampa dei totali dell'ordine
+CodMovimento=T.M. 0240 
+# Identificativo di tipo nota RAC
+TipoNotaRAC=002
+# Fine ordine Righe
+FineOrdineRighe=RIGHE
+# Fine ordine Volumi
+FineOrdineVolumi=VOLUMI
+
+[stampe]
+ordine=select ra.racdpro as "CODICE",a.prdstit as "TITOLO PRODOTTO",ra.raqtord as "QT.ORD", ra.racdflg as "FLAG"  from ric_art as ra,catalogo as a  where a.prcdpro=ra.racdpro and ra.ordprog='%ORDPROG%' order by ra.racdpro;
+collo=select r.rpcdflg as "FLAG",r.rpcdpro as "CODICE" ,a.prdstit as "TITOLO PRODOTTO", r.rpqtspe as "QT.", r.rpcdubi as "UBICAZIONE",r.rpqtspe*a.prpesgr::float8/1000 as "PESO TOT.(Kg)", a.prpesgr::float8/1000 as "PESO (Kg)" from rig_prod r,catalogo a where r.rpcdpro=a.prcdpro AND r.ordprog='%ORDPROG%' and r.rpnmcol=%NUMCOLLO% order by r.rpnmcol,r.rpcdubi;
+ordine_storico=select ra.racdpro as "CODICE",a.prdstit as "TITOLO PRODOTTO",ra.raqtord as "QT.ORD", ra.racdflg as "FLAG"  from ric_art_stor as ra,catalogo as a  where a.prcdpro=ra.racdpro and ra.ordprog='%ORDPROG%' order by ra.racdpro;
+collo_storico=select r.rpcdflg as "FLAG",r.rpcdpro as "CODICE" ,a.prdstit as "TITOLO PRODOTTO", r.rpqtspe as "QT.", r.rpcdubi as "UBICAZIONE",r.rpqtspe*a.prpesgr::float8/1000 as "PESO TOT.(Kg)", a.prpesgr::float8/1000 as "PESO (Kg)" from rig_prod_stor r,catalogo a where r.rpcdpro=a.prcdpro AND r.ordprog='%ORDPROG%' and r.rpnmcol=%NUMCOLLO% order by r.rpnmcol,r.rpcdubi;
+
+
+
+
+[Etichetta]
+# -----------------------------------------------------------------------------------------------
+# Definizione dati etichetta
+# -----------------------------------------------------------------------------------------------
+Field_00=<ROCDRID>,       ID_DB_FIELD, ric_ord, rocdrid ,Codice Cliente
+Field_01=<SA>,            ID_DB_FIELD, ric_ord, rocdspa ,NN
+Field_02=<SC>,            ID_DB_FIELD, ric_ord, rocdspc ,NN
+Field_03=<RODSCLI>,       ID_DB_FIELD, ric_ord, rodscli ,NN
+Field_04=<ROCOCLI>,       ID_DB_FIELD, ric_ord, rococli ,NN
+Field_05=<ROINCLI>,       ID_DB_FIELD, ric_ord, roincli ,NN
+Field_06=<CP>,            ID_DB_FIELD, ric_ord, rocpcli ,NN
+Field_07=<ROLOCLI>,       ID_DB_FIELD, ric_ord, rolocli ,NN
+Field_08=<PR>,            ID_DB_FIELD, ric_ord, roprcli ,NN
+Field_09=<RONZCLI>,       ID_DB_FIELD, ric_ord, ronzrid ,NN
+Field_10=<L>,             ID_DB_FIELD, ric_ord, roidvet ,NN
+Field_11=<ORDPROG>,       ID_DB_FIELD, ric_ord, ordprog ,NN
+Field_12=<NC>,            ID_DB_FIELD, col_prod, cpnmcol ,NN
+Field_13=<TC>,            ID_DB_FIELD, ric_ord, ronmcll ,NN
+Field_14=<CPPSPRE>,       ID_DB_FIELD, col_prod, cppspre ,NN
+Field_15=12345678901234,  ID_DB_FIELD, col_prod, cpbrcde ,NN
+Field_16=<RODSNOT>,       ID_DB_FIELD, nn, nn ,NN
+Field_17=<IDUB>,          ID_DB_FIELD, nn, nn ,NN
+Field_18=<IDCDPRO>,       ID_DB_FIELD, nn, nn ,NN
+Field_19=<IDTITLE>,       ID_DB_FIELD, nn, nn ,NN
+Field_20=<IDNMCPE>,       ID_DB_FIELD, nn, nn ,NN
+Field_21=<PREZZO>,        ID_DB_FIELD, nn, nn ,NN
+Field_22=<T>,             ID_DB_FIELD, col_prod, cptpfor ,NN
+

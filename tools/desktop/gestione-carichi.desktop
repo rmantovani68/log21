@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Easy Picking - Gestione Carichi 
+Icon=/usr/share/easy-picking/images/easy-picking-carichi.svg
+Exec=sh -c "cd /opt/easy-picking/exe; ./carichi"
+Terminal=false
+Categories=EasyPicking;

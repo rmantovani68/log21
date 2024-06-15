@@ -1,0 +1,40 @@
+
+(*
+* Thu Nov  6 15:15:11 PST 1997
+*
+* Segnali di scambio dinamici.
+* Versione 1.1
+* 
+* 06/11/97 GG 1.1 Corrette le definizioni di alcuni segnali di scambio
+*             (niente paura, e` stato solo eliminato un warning).
+*)
+
+VAR_GLOBAL
+   START_ID                  AT %MD*     : ARRAY[0..5] OF UDINT ;
+   INHOLD                    AT %MX*     : ARRAY[0..5] OF BOOL ;
+   NOHOLD                    AT %MX*     : ARRAY[0..5] OF BOOL ;
+   INT_BUSY                  AT %MX*     : ARRAY[0..5] OF BOOL ;
+   HLD_AXPR                  AT %MX*     : ARRAY[0..39] OF BOOL ;
+   QUOTAS                    AT %MD*     : ARRAY[0..39] OF REAL ;
+   TARGET                    AT %MD*     : ARRAY[0..39] OF REAL ;
+   EME_CEN                   AT %MX*     : ARRAY[0..5] OF BOOL ;
+   XCAMMA1                   AT %MX*     : ARRAY[0..5] OF BOOL ;
+   XCAMMA2                   AT %MX*     : ARRAY[0..5] OF BOOL ;
+   GENERIC                   AT %MX*     : ARRAY[0..15] OF BOOL ;
+   MSG_CLEAR		     AT %MX*	 : BOOL ;
+   MVOL0		     AT %MX*	 : BOOL ;
+   MVOL1		     AT %MX*	 : BOOL ;
+   SWAP		     	     AT %MX*	 : BOOL ;
+   SEMPOST	     	     AT %MX*	 : BOOL ;
+   ASSE_SEL                  AT %MD*     : UDINT ;
+   CNTPZ                     AT %MD*     : UDINT ;
+   PRESET                    AT %MD*     : UDINT ;
+   STPLC                     AT %MD*     : UDINT ;
+   DISTINTA                  AT %MX*     : BOOL ;
+   MESSAGGI                  AT %MX*     : BOOL ;
+   STOPAX		     AT %MX*     : ARRAY[0..39] OF BOOL ;
+   ABLPESO	     	     AT %MX*	 : BOOL ;
+   PLCR		     	     AT %MX*	 : BOOL ;
+   FLC		     	     AT %MX*	 : BOOL ;
+   FLR		     	     AT %MX*	 : BOOL ;
+END_VAR

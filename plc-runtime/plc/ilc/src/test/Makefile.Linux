@@ -1,0 +1,55 @@
+
+
+SHELL=/bin/sh
+
+DEVCNI=/usr/local/cni
+DEFS=.
+
+LOCALDEFS=-DDEBUG
+
+ILCRTMDIR=../../runtm
+ILCRTMH=$(ILCRTMDIR)/h
+ILCRTMLIB=$(ILCRTMDIR)/lib
+ILCRTMRTM=$(ILCRTMDIR)/loader
+QPLCDIR=/u2/beppe/qplc/src
+
+CC = gcc
+CFLAGS= -O \
+       -Wall -Wtraditional -Wshadow -Wpointer-arith -Wcast-qual \
+       -Wcast-align -Wwrite-strings -Wconversion -Waggregate-return \
+       -Wstrict-prototypes -Wmissing-prototypes -Wredundant-decls \
+       -Wnested-externs \
+       -g \
+       -mposix -D_POSIX_SOURCE -DLynx \
+       $(LOCALDEFS) \
+       -I$(DEFS) -I$(DEVCNI)/include
+LD=gcc
+LD_R=../../../LynxOS/bin/ld-new -r
+#LDFLAGS=-mposix -D_POSIX_SOURCE -mthreads -L$(DEVCNI)/lib
+LDFLAGS=-mposix -D_POSIX_SOURCE -mthreads -L$(DEVCNI)/lib \
+        -g \
+        -Xlinker -Ttext -Xlinker 0x10000
+LDRFLAGS=-L$(DEVCNI)/lib -L$(ILCRTMLIB)
+LIBS=
+AR=ar
+ARFLAGS=q
+RANLIB=ranlib
+
+VERLIB=$(DEVCNI)/VERSIONE
+
+.c.o:
+	$(CC) -c $(CFLAGS) $<
+
+prova::
+	rm -f prova.s user.o user.oo
+	../../bin/Linux/ilc \
+               -blinfo 1 \
+	       -g -header $(ILCRTMH)/scambio $(ILCRTMH)/illib.ilc \
+	       -code prova.ilc -os prova.s -bound-chk 2
+	../../../LynxOS/bin/as-new prova.s -o prova.o
+	$(LD_R) $(LDRFLAGS) \
+	        $(ILCRTMRTM)/ilc0.o prova.o $(ILCRTMRTM)/ilcn.o \
+	        -lil \
+	        -o user.o
+	../../bin/Linux/c2a -u user.o -o user.oo -d user-d.oo
+

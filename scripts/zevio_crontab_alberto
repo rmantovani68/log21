@@ -1,0 +1,21 @@
+#* * * /home/alberto/lib/y >/dev/null 2>&1
+15 0 1 * cd /u/prj/mondadori/export && /bin/tar zcvf backup/backup_export_`/bin/date +\%Y\%m\%d`.tgz  `/bin/find -mtime +31 -type f` --remove-files --exclude='./backup'
+20 0 1 * cd /u/prj/delta-carichi/export && /bin/tar zcvf backup/backup_export_`/bin/date +\%Y\%m\%d`.tgz  `/bin/find -mtime +31 -type f` --remove-files --exclude='./backup'
+30 0 * 7 cd /u/prj/mondadori/export/pdf && /bin/tar zcvf backup/backup_pdf_`/bin/date +\%Y\%m\%d`.tgz  `/bin/find -mtime +7 -type f` --remove-files --exclude='./backup'
+*/2 * * /usr/local/bin/run_autotask.sh >/dev/null 2>&1 & 
+30 21 * * /usr/local/bin/spedisci_consuntivo.sh >/dev/null 2>&1
+*/5 * *  /usr/local/bin/massive_ftp_sender.sh --ftpuser 'a&l' --ftppassword boxline@cedola --ftphost ftphost --remotedir CEDOLA/DAIMPORTARE  --dbhost database --dbname mondadori --localdir /u/prj/mondadori/export/flusso-cedola --backupdir /u/prj/mondadori/export/flusso-cedola/backup 2>&1 
+*/5 * *  /usr/local/bin/massive_ftp_sender.sh --ftpuser 'a&l' --ftppassword boxline@cedola --ftphost ftphost --remotedir ARTICOLI/DAIMPORTARE  --dbhost database --dbname mondadori --localdir /u/prj/delta-carichi/export/flussi-carichi --backupdir /u/prj/delta-carichi/export/flussi-carichi/backup 2>&1 
+
+5,25,45 * * /usr/local/bin/ftp_receive.sh --ftpuser mpf-boxline --ftppassword eonrc44 --ftphost ftp.mondadori.it/output --localdir /u/prj/mondadori/export/ftp-mondadori-import/ --filename cacni* >/dev/null 2>&1
+6,26,46 * * /usr/local/bin/ftp_receive.sh --ftpuser mpf-boxline --ftppassword eonrc44 --ftphost ftp.mondadori.it/output --localdir /u/prj/mondadori/export/ftp-mondadori-import/ --filename tbcni* >/dev/null 2>&1
+7,27,47 * * /usr/local/bin/ftp_receive.sh --ftpuser mpf-boxline --ftppassword eonrc44 --ftphost ftp.mondadori.it/output --localdir /u/prj/mondadori/export/ftp-mondadori-import/ --filename spcni* >/dev/null 2>&1
+8,28,48 * * /usr/local/bin/move_imported_file_to_receive.sh --importdir /u/prj/mondadori/export/ftp-mondadori-import --targetdir /u/prj/mondadori/export --backupdir /u/prj/mondadori/export/ftp-mondadori-import-backup --filename cacni001.txt >/dev/null 2>&1
+8,28,48 * * /usr/local/bin/move_imported_file_to_receive.sh --importdir /u/prj/mondadori/export/ftp-mondadori-import --targetdir /u/prj/mondadori/export --backupdir /u/prj/mondadori/export/ftp-mondadori-import-backup --filename cacni002.txt >/dev/null 2>&1
+8,28,48 * * /usr/local/bin/move_imported_file_to_receive.sh --importdir /u/prj/mondadori/export/ftp-mondadori-import --targetdir /u/prj/mondadori/export --backupdir /u/prj/mondadori/export/ftp-mondadori-import-backup --filename cacni003.txt >/dev/null 2>&1
+9,29,49 * * /usr/local/bin/move_imported_file_to_receive.sh --importdir /u/prj/mondadori/export/ftp-mondadori-import --targetdir /u/prj/mondadori/export --backupdir /u/prj/mondadori/export/ftp-mondadori-import-backup --filename tbcni001.txt >/dev/null 2>&1
+9,29,49 * * /usr/local/bin/move_imported_file_to_receive.sh --importdir /u/prj/mondadori/export/ftp-mondadori-import --targetdir /u/prj/mondadori/export --backupdir /u/prj/mondadori/export/ftp-mondadori-import-backup --filename tbcni002.txt >/dev/null 2>&1
+9,29,49 * * /usr/local/bin/move_imported_file_to_receive.sh --importdir /u/prj/mondadori/export/ftp-mondadori-import --targetdir /u/prj/mondadori/export --backupdir /u/prj/mondadori/export/ftp-mondadori-import-backup --filename tbcni003.txt >/dev/null 2>&1
+10,20,50 * * /usr/local/bin/move_imported_file_to_receive.sh --importdir /u/prj/mondadori/export/ftp-mondadori-import --targetdir /u/prj/mondadori/export --backupdir /u/prj/mondadori/export/ftp-mondadori-import-backup --filename spcni001.txt >/dev/null 2>&1
+10,20,50 * * /usr/local/bin/move_imported_file_to_receive.sh --importdir /u/prj/mondadori/export/ftp-mondadori-import --targetdir /u/prj/mondadori/export --backupdir /u/prj/mondadori/export/ftp-mondadori-import-backup --filename spcni002.txt >/dev/null 2>&1
+10,20,50 * * /usr/local/bin/move_imported_file_to_receive.sh --importdir /u/prj/mondadori/export/ftp-mondadori-import --targetdir /u/prj/mondadori/export --backupdir /u/prj/mondadori/export/ftp-mondadori-import-backup --filename spcni003.txt >/dev/null 2>&1

@@ -1,0 +1,21 @@
+01-08-2006
+
+Per fare funzionare edit_plc occorre usare un eseguibile wishDeb 
+associato alle librerie tcl/8k versione 8.0.
+
+Eseguire le seguenti operazioni :
+
+da root:
+
+cp wishDeb.tcltk8.0.ok /usr/local/bin/wishDeb
+cp libtcl8.0.so /usr/local/lib
+cp libtixsam4.1.8.0.so /usr/local/lib
+cp libtk8.0.so /usr/local/lib
+mkdir /usr/lib/tcl8.0
+chmod a+rwx /usr/lib/tcl8.0
+mkdir /usr/lib/tk8.0
+chmod a+rwx /usr/lib/tk8.0
+cp tcl8.0/* /usr/lib/tcl8.0
+cp tk8.0/* /usr/lib/tk8.0
+
+a questo punto la wishDeb e'  corretta.

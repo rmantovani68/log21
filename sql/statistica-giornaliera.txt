@@ -1,0 +1,4 @@
+ data | cedola | ordini | colli | colli_ff | colli_p | righe | copie | righe_ff | copie_ff | righe_p | copie_p 
+------+--------+--------+-------+----------+---------+-------+-------+----------+----------+---------+---------
+(0 rows)
+

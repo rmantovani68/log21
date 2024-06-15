@@ -1,0 +1,109 @@
+Il PC dovrà avere la configurazione:
+
+ip:192.168.36.23
+
+subnet:255.255.255.0
+
+gw:192.168.36.1
+
+dns:192.168.36.1 8.8.8.8
+
+Se poi ci dai il Mac-Adress facciamo fare la reservation.
+
+Il Database è IBM Informix 12.10.
+
+Usualmente per Linux usiamo i pacchetti:
+
+IBM_Informix_Client_SDK_Install_11_08_2022_11_17_46.log
+IBM_Informix_GLS_Install_11_08_2022_11_17_57.log
+
+Probabilmente ti basta il primo.
+
+Il file di configurazione INFORMIXSQLHOSTS=/opt/informix/etc/sqlhosts è:
+
+generoaix01     onsoctcp        10.236.75.31    9901
+
+generoaix02     onsoctcp        10.236.75.32    9902
+
+
+E dovresti usare la configurazione generoaix02
+
+Database: polo6ext
+
+User sorterp6
+
+Password: Incasgr0up (con lo zero).
+
+
+# to export in /etc/profile or ~/.bashrc
+export INFORMIXDIR=/opt/IBM/Informix_Client-SDK/
+export INFORMIXSERVER=generoaix02
+export INFORMIXSQLHOSTS=/etc/sqlhosts
+export ODBCINI=/etc/odbc.ini
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/IBM/Informix_Client-SDK/lib/esql
+export PATH=$PATH:/opt/IBM/Informix_Client-SDK/bin
+
+
+
+Ciao Roberto,
+
+ho controllato come funziona lato nostro, che era come avevamo fatto anni fa a Stradella.
+
+
+La tabella su Informix è la AEL_COLLI, i campi sono:
+
+AEL_COLLI
+
+Es. Valori
+
+Descrizione Campo
+
+prebolla 3281903 Nr. Prebolla
+nrcollo 1 Nr. Progressivo collo prebolla
+barcode AME057211153 Nr. Segnacollo
+pesot 15428 Peso Teorico
+toll 350 Tolleranza
+forza P=Pesa e controlla - N=Non controlla peso Forzatura Peso
+datains 2023-12-22 17:38:25.113 Data Inserimento record
+pesor 15490 Peso Reale pesatura
+datapesa 2023-12-22 17:52:41.000 Data Pesatura
+esito 0=Controllo OK, 2=Controllo KO Esito Pesatura
+cntpesatura 1 Quante volte è stato pesato
+nrlista Nr. Lista
+tipocollo P3 Tipo Scatola
+baiausc 2 baia Uscita
+
+
+Reticolo inserisce un record ogni volta che un collo viene posto sulla pesa.
+
+La pesa dovrà scannerizzare il BC e leggere la tabella accedendo con il campo BARCODE, recuperando i campi FORZA, il peso teorico (PESOT), la tolleranza (TOLL) e numero pesature fatte (CNTPESATURA).
+
+Se il campo FORZA è ‘P’ la pesa controlla che il peso reale sia all’interno del range PESOT-TOLL w PESOT+TOLL.
+
+Se il peso reale risulta al di fuori del range il collo deve essere scartato e dovrà essere valorizzato il campo ESITO a ‘2’, se entra nella tolleranza il campo ESITO dovrà essere valorizzato a ‘0’.
+
+Dovranno essere valorizzati sempre i campi:
+
+PESOR con il peso reale in grammi,
+
+DATAPESA con il ‘CURRENT’,
+
+CNTPESATURA incrementato di 1 ad ogni pesatura di quel barcode.
+
+NOTA:
+
+SQL> select forza, count(*) from ael_colli group by forza;
++------+------------------+
+| forza|                  |
++------+------------------+
+| N    | 634055           |
+| E    | 9014             |
+| D    | 7357             |
+| P    | 3039956          |
+| F    | 2176             |
+| C    | 69710            |
+| V    | 1631             |
++------+------------------+
+
+verificare con Zambianchi
+

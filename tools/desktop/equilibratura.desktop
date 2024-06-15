@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Easy Picking - Gestione Equilibratura 
+Icon=/usr/share/easy-picking/images/easy-picking-balance.svg
+Exec=sh -c "cd /opt/easy-picking/exe; ./balance"
+Terminal=false
+Categories=EasyPicking;

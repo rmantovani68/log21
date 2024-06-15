@@ -1,0 +1,693 @@
+# +-------------------------------------------------------+
+# | CNI.CFG                                               |
+# | File di configurazione CNI                            |
+# | Progetto Easy Picking 3.0                             |
+# | Autori : Roberto Mantovani - Stefano Tarroni          |
+# +-------------------------------------------------------+
+# | questo file e' diviso in paragrafi (delimitati da []) |
+# | e valori contenuti nei paragrafi (assegnati a items)  |
+# | NB: Il sistema e' case sensitive.                     |
+# +-------------------------------------------------------+
+
+[General Settings]
+# -----------------------------------------------------
+# Se Master=1 la applicazione ha operativita totale
+# -----------------------------------------------------
+Master=1
+IOSConnected=0
+Password=delta
+# -----------------------------------------------------
+# Utilizzato per i suffissi delle tabelle tmp (balance/volum)
+# -----------------------------------------------------
+tmp_suffix=delta
+
+DebugVersion=2
+ColumnCharWidth=10
+
+# ----------------------------------------------------
+# Tipo Ordini ([C]atalogo , Lancio [N]ovita')
+# ----------------------------------------------------
+TipoOrdini=N
+
+TipoUbicazioni=N
+
+# ----------------------------------------------------
+# Chiavi di ricerca in tabelle tt*
+# ----------------------------------------------------
+CDSOC=AM
+CDMAG=0000015
+
+# ----------------------------------------------------
+# Gestione dell'imballo
+# ----------------------------------------------------
+# 0 : Il collo non fa parte del prelievo ed e' cura dell'operatore 
+#     l'apertura dell'imballo specificato in etichetta.
+# 1 : Il collo viene prelevato da una ubicazione (con pressione 
+#     tasto di conferma)  e l'etichetta viene stampata dopo la 
+#     conferma del prelievo imballo.
+# ----------------------------------------------------
+ImballiUbicati=1
+
+# ----------------------------------------------------
+# Soglia in percentuale di riempimento bancale
+# ----------------------------------------------------
+SogliaPallet=20
+
+# ----------------------------------------------------
+# Incremento copie per rottura riga sul pallet
+# ----------------------------------------------------
+IncrementoCopiePallet=100
+
+# ----------------------------------------------------
+# Stampa la packing list insieme alla RAC
+# ----------------------------------------------------
+StampaPackingList=1
+
+# ----------------------------------------------------
+# Utilizza 'a2ps' per stampe
+# ----------------------------------------------------
+a2ps=1
+
+# ----------------------------------------------------
+# Tipo Ordinamento Stampe XAB su A4
+# 1: per codice prodotto
+# 2: per collo e progressivo riga
+# ----------------------------------------------------
+TipoOrdinamentoStampaXAB=1
+
+
+
+# ----------------------------------------------------
+# Reindex archivi dopo start programma
+# ----------------------------------------------------
+Reindex=0
+
+# ----------------------------------------------------
+# Gestione chiusura collo 
+# ----------------------------------------------------
+# 0: no, nel caso di ordini non a collo (Wella) non si chiude il collo
+# 1: si, il collo va chiuso se l'ultima riga ad esso relativa e' stata prelevata
+# ----------------------------------------------------
+ChiusuraCollo=1
+
+# ----------------------------------------------------
+# Gestione Fine ordine 
+# 0:no - prosegue con passaggio 
+#        a settori successivi (tipo Wella) 
+# 1:si - rulliera di scarico
+# ----------------------------------------------------
+#
+FineOrdine=1
+
+# ----------------------------------------------------
+# Gestione stampa RAC
+#	0: tutte dopo il lancio (DOPO_IL_LANCIO)
+# 1: all'inizio del prelievo (INIZIO_PRELIEVO)
+# ----------------------------------------------------
+StampaRAC=1
+
+# ----------------------------------------------------
+# Path relativo ai dati di configurazione e di lavoro
+# Gli archivi utilizzati sono nel sottodirettorio 'db'
+# ----------------------------------------------------
+PathData=../data
+
+# ----------------------------------------------------
+# Path relativo ai file di stampa - temporanei
+# ----------------------------------------------------
+PathStampe=../stampe
+
+# ----------------------------------------------------
+# Path relativo al trace
+# ----------------------------------------------------
+PathTrace=../trace
+
+
+# ----------------------------------------------------
+# Path relativo ai processi eseguibili
+# ----------------------------------------------------
+PathExe=../exe
+
+# ----------------------------------------------------
+# path relativo ai dati di scambio con l'HOST Computer
+# ----------------------------------------------------
+PathExport=../export
+PathCorriereExport=/u/prj/mondadori/export/file-corriere
+PathCorriereExportBackup=/u/prj/mondadori/export/file-corriere-backup
+
+# ----------------------------------------------------
+# path relativo ai dati di scambio con l'HOST Computer [STORICO]
+# ----------------------------------------------------
+PathStorico=../export
+
+# ----------------------------------------------------
+# Monitor di Import/Export Dati 
+# ----------------------------------------------------
+ImportMonitor=ricezione.mon
+ExportMonitor=trasmissione.mon
+
+# ----------------------------------------------------
+# File di Import Dati 
+# ----------------------------------------------------
+#ImportSpedizioni=SPCNI001.TXT
+#ImportCatalogo=CACNI001.TXT
+#ImportTabelle=TBCNI001.TXT
+#ImportSpedizioni=spcni001.txt
+#ImportCatalogo=cacni001.txt
+#ImportTabelle=tbcni001.txt
+
+ImportSpedizioni=LA_TESTATE.TXT
+ImportRighe=LA_RIGHE.TXT
+ImportCatalogo=LA_CATALOGO.TXT
+
+# ----------------------------------------------------
+# File di Export Dati 
+# ----------------------------------------------------
+ExportSpedizioni=LA_BOLLE.TXT
+ExportCorriere=carico.dat
+ExportCorrAgg=corriere.dat
+ExportAnticipato=LA_BOLLE.TXT
+ExportRighe=LA_RIGHE_COLLI.TXT
+
+
+# ----------------------------------------------------
+TPSPE=55
+DSTSP=CONSEGNA MARTEDI 23/03/2004
+# ----------------------------------------------------
+NotaCorriere=CONSEGNA MARTEDI 23/03/2004
+# ----------------------------------------------------
+
+# ----------------------------------------------------
+# Stampanti generiche
+# ----------------------------------------------------
+#PrinterConsole=Kyocera
+PrinterConsole=Kyocera
+PrinterBilancia=Kyocera
+#XABPrinterConsole=Kyocera_FS-C5150DN
+XABPrinterConsole=kyocera_5150
+DISTPrinterConsole=ps2
+PrinterSettori=tally
+
+# ----------------------------------------------------
+# Stampanti di etichette
+# ----------------------------------------------------
+#lg: per ora sparo le etichette su ps2 perche' la zebra e' su parallela di picking
+#    in futuro la si dovrebbe portare in rete, con ps2 attaccata.
+LabelPrinterConsole=ps1
+#LabelPrinterConsole=G420D
+LabelPrinterBilancia=ps1
+
+# ---------------------------------------------
+# Shared Memory Key per dati comuni ai processi
+# ---------------------------------------------
+ShmKey=1280
+
+# ---------------------------------------------
+# Shared Memory Key per stato settori
+# ---------------------------------------------
+SettoriShmKey=1281
+
+MaxColliOrdine=0
+SogliaCopiePrelievo=0
+FormatoMedio=1
+
+InvioPeriodico=1
+OraInvioPeriodico=20
+TipoOrdinePreDistinta=X
+ReindexPeriodico=1
+OraReindexPeriodico=3
+TipoSelezione=3
+Printer=lp0
+CharWidth=8
+ExportSpedizioniStorico=conscni.txt
+ExportMonitorStorico=storico.mon
+PrinterScarti=lp
+
+TipoOrdinePreDisinta=X
+ExportCorrSDA=sda.dat
+
+[DataBase Settings]
+PGPort=5432
+PGHost=localhost
+PGDataBase=mr
+
+DBHost=localhost
+DBName=mr
+ConnectionName=mondadori
+
+[Mail Settings]
+#MailHost=smtp.deltatradingsrl.com
+#MailUser=albertoperusi@deltatradingsrl.com
+#MailPassword=delta@albertop
+
+MailHost=smtp.boxlinesrl.com
+MailUser=flussodatinovita@boxlinesrl.com
+MailPassword=box@flussodatinovita
+
+[main]
+Delay=100
+InvioMailDelay=60000
+SaveStateDelay=60000
+StatisticaDelay=20000
+
+[auto_tasks]
+DebugVersion=2
+DelaySendFileCorriere=5
+DelaySendMailCorriere=60
+DelayCheckCambioStato= 20
+# questa può essere abbassata tanto ne mando 10 alla volta
+# DelayCheckMail=120
+DelayCheckMail=10
+MainId=0
+DelayCheckFlussoUdcRestituiti=100
+
+[PLC]
+# PLC Presente : 1
+PLC=0
+PLCHost=localhost
+PLCService=8039
+
+[Variables]
+VAR_00=CPB,Collo in Bilancia
+VAR_01=CS,Collo Scartato
+VAR_02=CB,Collo Buono
+VAR_03=CICCIA,Ciccia
+
+[procinfo]
+# -----------------------------------------------------------------------------------------------
+# PROCESSI COMPONENTI IL PROGETTO
+# -----------------------------------------------------------------------------------------------
+# Proc_xx=[Process Nome],[QKey],[Execute Process]
+# [Process Name]    : Nome del processo (da usare anche per leggere le configurazioni specifiche)
+# [QKey]            : Chiave della coda messaggi del processo
+# [Priority Offset] : Offset di priorita' del processo 
+# [Execute Process] : Flag di esecuzione (1 -> esegui)
+# -----------------------------------------------------------------------------------------------
+Proc_00=main,            1280,  0,1
+Proc_01=settori,         1281,  0,1
+Proc_02=ios,             1282,  0,1
+Proc_03=volum,           1283,  0,1
+Proc_04=printlabel,      1284,  0,1
+Proc_05=peso,            1285,  0,0
+Proc_06=barcode,         1286,  0,1
+Proc_07=bilancia,        1287,  0,1
+Proc_08=receive,         1288,  0,1
+Proc_09=bancali,         1289,  0,0
+Proc_10=ev2002,          1290,  0,0
+Proc_11=scarti,          1291,  0,0
+Proc_12=barcode_scarti,  1292,  0,0
+Proc_13=check_bancali,   1293,  0,0
+Proc_14=barcode,         1294,  0,0
+Proc_15=barcode,         1294,  0,0
+Proc_16=auto_tasks,      1296,  0,0
+
+# --------------------------------------------------------------
+# PARAGRAFI RELATIVI AI VARI PROCESSI CHE COMPONGONO IL PROGETTO
+# --------------------------------------------------------------
+[peso]
+Delay=20
+BilanciaTimeout=500
+DebugVersion=2
+
+
+# ----------------------------------------------------
+# Gestione controllo peso su:
+# 1 : un singolo collo di produzione (PESATURA_COLLO)
+#	0 : un intero ordine di produzione (PESATURA_ORDINE)
+# ----------------------------------------------------
+GestionePesatura=1
+
+# ----------------------------------------------------
+# Tolleranze peso :
+# Tolleranza=0 -> attiva la tolleranza assoluta (grammi)
+# Tolleranza=1 -> attiva la tolleranza percentuale  
+# Tolleranza=2 -> attiva la tolleranza percentuale con soglia massima  
+# ----------------------------------------------------
+Tolleranza=1
+
+# ----------------------------------------------------
+# Se Tolleranza=0
+# ----------------------------------------------------
+TolleranzaAssoluta=200
+
+# ----------------------------------------------------
+# Se Tolleranza=1
+# ----------------------------------------------------
+TolleranzaPercentuale=2
+
+# ----------------------------------------------------
+# Se Tolleranza=2
+# ----------------------------------------------------
+# FlagSogliaMassima relativo alla tolleranza percentuale
+# 1 : limita la tolleranza percentuale al valore
+#     massimo fissato dal campo SogliaMassima (in grammi)
+# ----------------------------------------------------
+FlagSogliaMassima=1
+SogliaMassima=130
+
+# ----------------------------------------------------
+# SogliaCopiePrelievo 
+# percentuale di copie prelevabili in caso di forzatura ordine
+# ----------------------------------------------------
+SogliaCopiePrelievo=10
+
+# ----------------------------------------------------
+# ScartoColli 
+# Scarta i colli che non vengono letti dallo scanner
+# ----------------------------------------------------
+ScartoColli=1
+
+# ----------------------------------------------------
+# ShowDlgBarcode 
+# Visualizza il dlg box in caso di noread
+# ----------------------------------------------------
+ShowDlgBarcode=0
+
+[printlabel 4]
+MainID=0
+
+[barcode 6]
+# Barcode Bilancia
+
+# porta utilizzata
+CommDevice=/dev/ttyS6
+
+# Parametri di comunicazione
+CommParams=9600,n,8,1
+
+# PID Processo Main
+MainID=5
+
+[bilancia 7]
+#
+# porta utilizzata
+#
+CommDevice=/dev/ttyS7
+#
+# Parametri di comunicazione
+#
+CommParams=9600,n,8,1
+
+# PID Processo Main (peso)
+MainID=5
+
+[barcode 15]
+# Barcode Settori
+
+# porta utilizzata
+CommDevice=/dev/ttyS7
+
+# Parametri di comunicazione
+CommParams=9600,n,8,1
+
+# PID Processo Main
+MainID=0
+
+
+
+
+
+[receive]
+MainId=0
+
+[settori]
+# -----------------------------------------------------------------------------------------------
+# Delay della applicazione in millisecondi 
+# -----------------------------------------------------------------------------------------------
+Delay=20
+# -----------------------------------------------------------------------------------------------
+# Delay della GetOrdine in millisecondi
+# -----------------------------------------------------------------------------------------------
+GetOrderDelay=1000
+
+# -----------------------------------------------------------------------------------------------
+# Massimo numero di tentativi prima di decidere che la luce e' rotta
+# -----------------------------------------------------------------------------------------------
+MaxDamages=5
+
+# -----------------------------------------------------------------------------------------------
+# Numero settori di magazzino -> utilizzato per allocare la shared-memory
+# -----------------------------------------------------------------------------------------------
+NumeroSettori=12
+
+[ios]
+# -----------------------------------------------------------------------------------------------
+# Delay della applicazione in millisecondi 
+# -----------------------------------------------------------------------------------------------
+Delay=10
+# -----------------------------------------------------------------------------------------------
+# Simulazione IOS
+# -----------------------------------------------------------------------------------------------
+Simulazione=1
+# -----------------------------------------------------------------------------------------------
+# Delay in millisecondi per la simulazione pressione tasto
+# -----------------------------------------------------------------------------------------------
+DelaySimulazione=500
+
+# -----------------------------------------------------------------------------------------------
+# numero di schede ios connesse
+# -----------------------------------------------------------------------------------------------
+IOSNumber=1
+
+# -----------------------------------------------------------------------------------------------
+# numero schede PKL presenti
+# -----------------------------------------------------------------------------------------------
+PKLNumber=1
+
+# -----------------------------------------------------------------------------------------------
+# Dati di indirizzamento schede PKL (IOS,CPU,Modulo)
+# -----------------------------------------------------------------------------------------------
+PKL_00=0,0,0
+
+
+# -----------------------------------------------------------------------------------------------
+# Fine definizione dati relativi ai processi componenti la linea
+# -----------------------------------------------------------------------------------------------
+[Selezione Ordini]
+lista_campi=ordprog,rocpcli,roswcol,rotpspe,rocdlin,rocdsca,rocdssc,ronmced
+
+[Tabella Ordini]
+#lista_ordini=select r.rostato as "S", r.roprgln as "PRG", r.ronmced as "CED", substr(r.rodtbam,7,2)||'-'||substr(r.rodtbam,5,2)||'-'||substr(r.rodtbam,3,2) as "DATA",r.ordprog as "CODICE SPEDIZIONE", r.rocdrid as "COD.CLI", r.rodscli as "RAGIONE SOCIALE", r.rotpspe as "TS", r.rocdlin as "LN", r.ronmcll as "COLLI", r.ronmrgh as "RIGHE", r.ronmcpe as "COPIE", r.ropspre::float4/1000 as "PESO PRE(Kg)", r.ropsrea::float4/1000 as "PESO REA(Kg)", r.rolocli as "LOC.", r.rocpcli as "CAP", r.roprcli as "PRV"  from ric_ord as r where r.ordtipo='%ORDTIPO%' order by r.ordprog;
+#lista_ordini_update=select r.rostato as "S", r.roprgln as "PRG", r.ronmced as "CED", substr(r.rodtbam,7,2)||'-'||substr(r.rodtbam,5,2)||'-'||substr(r.rodtbam,3,2) as "DATA",r.ordprog as "CODICE SPEDIZIONE", r.rocdrid as "COD.CLI", r.rodscli as "RAGIONE SOCIALE", r.rotpspe as "TS", r.rocdlin as "LN", r.ronmcll as "COLLI", r.ronmrgh as "RIGHE", r.ronmcpe as "COPIE", r.ropspre::float4/1000 as "PESO PRE(Kg)", r.ropsrea::float4/1000 as "PESO REA(Kg)", r.rolocli as "LOC.", r.rocpcli as "CAP", r.roprcli as "PRV"  from ric_ord as r where r.ordtipo='%ORDTIPO%' and r.ordprog='%KEY%';
+lista_ordini=select r.rostato as "S", r.roswcol as "BANC", r.roprgln as "PRG", r.ronmced as "CED", data(rotmrcz) as "DATA",r.ordprog as "ORDINE", r.rocdrid as "COD.CLI", r.rodscli as "RAGIONE SOCIALE", r.rocdlin as "LN", r.ronmcll as "COLLI", r.ronmrgh as "RIGHE", r.ronmcpe as "COPIE", r.ropspre::float4/1000 as "PESO PRE(Kg)", r.ropsrea::float4/1000 as "PESO REA(Kg)", r.rolocli as "LOC.", r.rocpcli as "CAP", r.roprcli as "PRV",r.rodsnot as "Nota Corriere"  from ric_ord as r where r.ordtipo='%ORDTIPO%' order by r.ordprog;
+lista_ordini_update=select r.rostato as "S", r.roswcol as "BANC", r.roprgln as "PRG", r.ronmced as "CED", data(rotmrcz) as "DATA",r.ordprog as "ORDINE", r.rocdrid as "COD.CLI", r.rodscli as "RAGIONE SOCIALE", r.rocdlin as "LN", r.ronmcll as "COLLI", r.ronmrgh as "RIGHE", r.ronmcpe as "COPIE", r.ropspre::float4/1000 as "PESO PRE(Kg)", r.ropsrea::float4/1000 as "PESO REA(Kg)", r.rolocli as "LOC.", r.rocpcli as "CAP", r.roprcli as "PRV",r.rodsnot as "Nota Corriere"  from ric_ord as r where r.ordtipo='%ORDTIPO%' and r.ordprog='%KEY%';
+lista_ordini_key=5
+
+[Statistica Ordini]
+statistica_ordini=select roswcol as "P/C",rostato as "STATO",count(rostato) as "ORDINI",sum(ronmcll) as "COLLI",sum(ronmrgh) as "RIGHE",sum(ronmcpe) as "COPIE" from ric_ord where ordtipo='%ORDTIPO%' group by roswcol,rostato;
+
+[Equilibratura]
+lista_cedole=select ronmced as "CEDOLA",count(ronmced) as "ORDINI",sum(ronmrgh) as "RIGHE",sum(ronmcpe) as "COPIE" from ric_ord where ordtipo='%ORDTIPO%' group by ronmced order by ronmced;
+lista_cedole_key=0
+
+lista_articoli=select bacdpro as "CODICE", prdstit as "TITOLO", prlungh as "LUNGH.", prlargh as "LARGH.", praltez as "ALT.", ((prlargh::float8*praltez::float8*prlungh::float8)/1000)::int4 as "VOLUME (CC)",prpesgr as "PESO (gr)", ubicazione(bacdubi) as "UBICAZIONE", bacdset as "SETTORE", banmrgh as "RIGHE", banmcpe as "COPIE UBICATE", banmcpt as "COPIE TOTALI", bacdflg as "M/A", baswffo as "SW F.F.", baqtffo as "QT.F.F.", baqtpcf as "QT.PCF", bafcpcf as "F.PCF", bastato as "P/S" from bal_art_tmp_delta_%ORDTIPO%, catalogo where bacdpro=prcdpro;
+lista_articoli_update=select bacdpro as "CODICE", prdstit as "TITOLO", prlungh as "LUNGH.", prlargh as "LARGH.", praltez as "ALT.", ((prlargh::float8*praltez::float8*prlungh::float8)/1000)::int4 as "VOLUME (CC)",prpesgr as "PESO", ubicazione(bacdubi) as "UBICAZIONE", bacdset as "SETTORE", banmrgh as "RIGHE", banmcpe as "COPIE UBICATE", banmcpt as "COPIE TOTALI", bacdflg as "M/A", baswffo as "SW F.F.", baqtffo as "QT.F.F.", baqtpcf as "QT.PCF", bafcpcf as "F.PCF", bastato as "P/S" from bal_art_tmp_delta_%ORDTIPO%, catalogo where bacdpro=prcdpro and bacdpro='%KEY%';
+lista_articoli_key=0;
+
+stampa_articoli=select bacdpro as "CODICE", prdstit as "TITOLO", prlungh as "LUNGH.", prlargh as "LARGH.", praltez as "ALT.", prpesgr as "PESO ", ubicazione_ridotta(bacdubi) as "UBICAZIONE", banmrgh as "RIGHE  ", banmcpt as "COPIE  " from bal_art_tmp_delta_%ORDTIPO%, catalogo where bacdpro=prcdpro order by fila(bacdubi),colonna(bacdubi)::int2,piano(bacdubi)::int2;
+stampa_articoli_descr=Stampa Articoli Cedola
+
+ubicazioni=select UBICAZIONE as "UBICAZIONE", CODPROD as "PRODOTTO",  ISOLA as "ISOLA",    SETTORE as "SETTORE",  PRIORITA as "PRIORITA'",  UBCDFLG as "FLAG",  UBITIPO as "TIPO",  CNISTATO as "STATO" from ubicazioni order by fila(ubicazione),montante(ubicazione)::int2,colonna(ubicazione)::int2,piano(ubicazione)::int2;  
+ubicazioni_descr=Ubicazioni di magazzino
+
+[Fine Linea]
+ColloKeyField=2
+ColloNumField=4
+
+SELECT_CMD=select c.cpstato as "S",c.cpcdflg as "F",c.ordprog as "ORDINE", r.rodscli as "RAGIONE SOCIALE", c.cpnmcol as "NUM.COLLO", c.cppspre::float4/1000 as "PESO D.", c.cppsrea::float4/1000 as "PESO R.", (c.cppsrea-c.cppspre)::float4/1000 as "DIFF.",data(c.cptmeva) as "DATA E.", ora(c.cptmeva) as "ORA E." from col_prod c,ric_ord r where r.ordprog=c.ordprog and data(c.cptmeva)=data('now') and c.cpstato in ('E','S','F');
+UPDATE_CMD=select c.cpstato as "S",c.cpcdflg as "F",c.ordprog as "ORDINE", r.rodscli as "RAGIONE SOCIALE", c.cpnmcol as "NUM.COLLO", c.cppspre::float4/1000 as "PESO D.", c.cppsrea::float4/1000 as "PESO R.", (c.cppsrea-c.cppspre)::float4/1000 as "DIFF.",data(c.cptmeva) as "DATA E.", ora(c.cptmeva) as "ORA E." from col_prod c,ric_ord r where r.ordprog=c.ordprog and c.ordprog='%ORDPROG%' and c.cpnmcol=%NUMCOLLO%;
+
+[Stampa Packing List Ordine]
+SELECT_CMD=select r.rpcdpro as "CODICE",substr(a.prdstit,1,15) as "TITOLO PRODOTTO",sum(r.rpqtspe) as "QUANTITA'", sum(u.ubqtcas) as "GIACENZA", u.ubicazione as "UBICAZIONE" from rig_prod as r,catalogo as a,ubicazioni as u  where u.ubicazione=r.rpcdubi and a.prcdpro=r.rpcdpro and r.ordprog='%ORDPROG%' group by r.rpcdpro,u.ubicazione,a.prdstit,u.priorita order by u.priorita;
+SELECT_CMD_STOR=select distinct(r.rpcdpro) as "CODICE",a.prdstit as "TITOLO PRODOTTO",sum(r.rpqtspe) as "QUANTITA'",r.rpcdubi as "UBICAZIONE" from rig_prod_stor as "r",catalogo as "a" where a.prcdpro=r.rpcdpro and r.ordprog='%ORDPROG%' group by r.rpcdpro,r.rpqtspe,a.prdstit,r.rpcdubi order by r.rpcdubi,r.rpcdpro,r.rpqtspe;
+
+[Stampa Packing List Collo]
+SELECT_CMD=select r.rpcdflg as "FLAG",r.rpcdpro as "CODICE" ,substr(a.prdstit,1,15) as "DESCRIZIONE    ", r.rpqtspe as "QT.", r.rpcdubi as "UBICAZIONE",r.rpqtspe*a.prpesgr as "PESO (gr.)" from rig_prod r,catalogo a where r.rpcdpro=a.prcdpro AND r.ordprog='%ORDPROG%' and r.rpnmcol=%NUMCOLLO% order by r.rpnmcol,r.rpcdubi;
+
+[distribuzione]
+#distribuzione=select sdtpspe as "TIPO",sdcdlin as "LINEA",sddslin as "DESCRIZIONE",sdnmort as "ORDINI",sdnmclt as "COLLI",sdnmrgh as "RIGHE",sdnmcpe as "COPIE",sdpspre::int4/1000 as "PESO ",sdnmori as "RAC",sdnmcli as "COLLI",sdnmore as "EVASI",sdnmcle as "COLLI",sdnmorx as "XAB",sdnmclx as "COLLI",sdnmord as "DIST",sdnmcld as "COLLI",sdnmors as "HOST",sdnmcls as "COLLI" from sel_dist_tmp_%ORDTIPO% order by sdtpspe,sdcdlin;
+#distribuzione=select sdnmced as "CEDOLA",sdtpspe as "TIPO",sdcdlin as "LINEA",sddslin as "DESCRIZIONE",sdnmort as "ORDINI",sdnmclt as "COLLI",sdnmrgh as "RIGHE",sdnmcpe as "COPIE",sdpspre::int4/1000 as "PESO ",sdnmori as "RAC",sdnmcli as "COLLI",sdnmore as "EVASI",sdnmcle as "COLLI",sdnmorx as "XAB",sdnmclx as "COLLI",sdnmord as "DIST",sdnmcld as "COLLI",sdnmors as "HOST",sdnmcls as "COLLI" from sel_dist_tmp_delta_%ORDTIPO% order by sdnmced,sdtpspe,sdcdlin;
+distribuzione=select sdnmced as "CEDOLA",sdcdlin as "LINEA", sddslin as "DESCRIZIONE LINEA", sdnmort as "ORDINI",sdnmclt as "COLLI",sdnmrgh as "RIGHE",sdnmcpe as "COPIE",sdpspre::int4/1000 as "PESO ",sdnmori as "RAC",sdnmcli as "COLLI",sdnmore as "EVASI",sdnmcle as "COLLI",sdnmorx as "XAB",sdnmclx as "COLLI",sdnmord as "DIST",sdnmcld as "COLLI",sdnmors as "HOST",sdnmcls as "COLLI" from sel_dist_tmp_delta_%ORDTIPO% order by sdnmced,sdcdlin;
+
+#distribuzione_stampa=select sdnmced as "CEDOLA",sdcdlin as "LINEA",sddslin as "DESCRIZIONE LINEA",sdnmort as "ORDINI",sdnmclt as "COLLI",sdnmrgh as "RIGHE",sdnmcpe as "COPIE ",sdpspre::int4/1000 as "PESO  ",sdnmori as "RAC",sdnmcli as "COLLI",sdnmore as "EVASI",sdnmcle as "COLLI" from sel_dist_tmp_delta_%ORDTIPO% order by sdnmced,sdcdlin;
+distribuzione_stampa=select sdnmced as "CEDOLA",sdcdlin as "LINEA",sddslin as "DESCRIZIONE LINEA",sdnmort as "ORDINI",sdnmclt as "COLLI",sdnmrgh as "RIGHE",sdnmcpe as "COPIE ",sdpspre::int4/1000 as "PESO  ",sdnmore as "EVASI",sdnmors as "HOST" from sel_dist_tmp_delta_%ORDTIPO% order by sdnmced,sdcdlin;
+
+lista_ordini=select r.rostato as "S",r.rotpspe as "TIPO",r.rocdlin as "LINEA",r.rocdve2 as "COD VET",r.ordprog as "SPEDIZIONE",r.rodscli as "RAGIONE SOCIALE",r.roprcli as "PRV", r.ronmcll as "COLLI",r.ronmrgh as "RIGHE",r.ronmcpe as "COPIE",r.ropspre::float4/1000 as "PESO PRE.(Kg)" from ric_ord r,sel_ord_tmp_delta_%ORDTIPO% as s where r.ordprog=s.ordprog order by r.rotpspe,r.rocdlin,r.ordprog;
+lista_ordini_storico=select r.rostato as "S",r.rotpspe as "TIPO",r.rocdlin as "LINEA",r.rocdve2 as "COD VET",r.ordprog as "SPEDIZIONE",r.rodscli as "RAGIONE SOCIALE",r.roprcli as "PRV", r.ronmcll as "COLLI",r.ronmrgh as "RIGHE",r.ronmcpe as "COPIE",r.ropspre::float4/1000 as "PESO PRE.(Kg)" from ric_ord_stor r,sel_ord_tmp_delta_%ORDTIPO% as s where r.ordprog=s.ordprog order by r.rotpspe,r.rocdlin,r.ordprog;
+lista_articoli=select sa.sacdpro as "CODICE",c.prdstit as "TITOLO",sa.sanmrgh as "RIGHE",sa.sanmcpe as "COPIE" from sel_art_tmp_delta_%ORDTIPO% sa,catalogo c where c.prcdpro=sa.sacdpro order by sa.sanmcpe desc;
+
+
+[ordini filtrati]
+#lista_ordini_filtrati=select r.rostato as "S", r.ronmced as "CED",r.ordprog as "CODICE SPEDIZIONE", r.rocdrid as "COD.CLI", r.rodscli as "RAGIONE SOCIALE", r.rotpspe as "TS", r.rocdlin as "LN", r.rocdve1 as "COD VET", t.elcdsvet as "DESCRIZIONE VETTORE", r.rolocli as "LOC.", r.rocpcli as "CAP", r.roprcli as "PRV"  from ric_ord as r,ttve as t where r.rocdve1=t.elccdvet and r.ordtipo='%ORDTIPO%'  %KEY%  order by r.ronmced,r.rotpspe, r.rocdlin,r.rocdve1;
+lista_ordini_filtrati=select r.rostato as "S", r.ronmced as "CED",r.ordprog as "CODICE SPEDIZIONE", r.rocdrid as "COD.CLI", r.rodscli as "RAGIONE SOCIALE", r.rotpspe as "TS", r.rocdlin as "LN", r.rocdve2 as "COD VET", t.elcdsvet as "DESCRIZIONE VETTORE", r.rolocli as "LOC.", r.rocpcli as "CAP", r.roprcli as "PRV",r.rodsnot as "Nota Corriere"   from ric_ord as r left join ttve as t on (r.rocdve2=t.elccdvet) where r.ordtipo='%ORDTIPO%'  %KEY%  order by r.ronmced,r.rotpspe, r.rocdlin,r.rocdve2;
+lista_ordini_filtrati_key=2
+
+#lista_ordini=select r.rostato as "S",r.ronmced as "CED",r.ordprog as "CODICE SPEDIZIONE" , r.rocdrid as "COD.CLI", r.rodscli as "RAGIONE SOCIALE", r.rotpspe as "TS", r.rocdlin as "LN", r.rocdve2 as "COD. VET", t.elcdsvet as "DESCRIZIONE VETTORE", r.rolocli as "LOC.", r.rocpcli as "CAP", r.roprcli as "PRV" from ric_ord r,sel_ord_tmp_delta_%ORDTIPO% as s,ttve as t where r.ordprog=s.ordprog and r.rocdve2=t.elccdvet order by r.rotpspe,r.rocdlin,r.ordprog;
+lista_ordini=select r.rostato as "S",r.ronmced as "CED",r.ordprog as "CODICE SPEDIZIONE" , r.rocdrid as "COD.CLI", r.rodscli as "RAGIONE SOCIALE", r.rotpspe as "TS", r.rocdlin as "LN", r.rocdve2 as "COD. VET", t.elcdsvet as "DESCRIZIONE VETTORE", r.rolocli as "LOC.", r.rocpcli as "CAP", r.roprcli as "PRV" from ric_ord r join sel_ord_tmp_delta_%ORDTIPO% as s on (r.ordprog=s.ordprog) left outer join ttve as t on (r.rocdve2=t.elccdvet) order by r.rotpspe,r.rocdlin,r.ordprog;
+lista_ordini_storico=select r.rostato as "S",r.rotpspe as "TIPO",r.rocdlin as "LINEA",r.ordprog as "SPEDIZIONE",r.rodscli as "RAGIONE SOCIALE",r.roprcli as "PRV", r.ronmcll as "COLLI",r.ronmrgh as "RIGHE",r.ronmcpe as "COPIE",r.ropspre::float4/1000 as "PESO PRE.(Kg)" from ric_ord_stor r,sel_ord_tmp_delta_%ORDTIPO% as s where r.ordprog=s.ordprog order by r.rotpspe,r.rocdlin,r.ordprog;
+
+[rimanenza]
+rimanenza=select r.racdpro as "CODICE",c.prdstit as "TITOLO",count(r.racdpro) as "RIGHE",sum(r.raqtord) as "COPIE" from ric_art r,catalogo c,ric_ord o where r.racdpro=c.prcdpro and r.ordprog=o.ordprog and rostato in(' ','S','A','P','R') group by r.racdpro,c.prdstit order by r.racdpro;
+
+
+[bancali]
+TolleranzaPercentuale=4
+TolleranzaAssoluta=15
+Tolleranza=0
+righe_collo=select r.rpprrig as "RIGA", r.rpcdpro as "CODICE" ,a.prdstit as "DESCRIZIONE PRODOTTO", a.prswffo as "FF",r.rpcdubi as "COD.UBICAZIONE", r.rpqtspe as "COPIE",r.rpqtspe*a.prpesgr as "PESO(gr)" from rig_prod r,catalogo a where r.rpcdpro=a.prcdpro AND %KEY% order by r.rpprrig;
+PrinterName=oce
+a2ps=1
+
+# ----------------------------------------------------
+# bitmask-stato proveniente da EV2002
+# Bit di stato_x_y=[desc][widget][valore]
+# [x]   : carattere 'esdecimale' [S1,..,S4]
+# [y]   : bit[0-3]
+# [desc]  : segnalazione corripondente
+# [widget]: widget associato
+# [valore]: valore
+# ----------------------------------------------------
+BitMask_0_0=pesata minima      ,lb_0_0, 0
+BitMask_0_1=tara bloccata      ,lb_0_1, 0
+BitMask_0_2=tara predeterminata,lb_0_2, 0
+BitMask_0_3=center of zero     ,lb_0_3, 0
+#---------------------------------
+BitMask_1_0=            ,lb_1_0, 0
+BitMask_1_1=peso stabile,lb_1_1, 0
+BitMask_1_2=sovraccarico,lb_1_2, 0
+BitMask_1_3=            ,lb_1_3, 0
+#---------------------------------
+BitMask_2_0=               ,lb_2_0, 0
+BitMask_2_1=               ,lb_2_1, 0
+BitMask_2_2=peso non valido,lb_2_2, 0
+BitMask_2_3=stampa in corso,lb_2_3, 0
+#---------------------------------
+BitMask_3_0=strumento legale                      ,lb_3_0, 0
+BitMask_3_1=convertitore in avaria                ,lb_3_1, 0
+BitMask_3_2=errore sui parametri di conf. bilancia,lb_3_2, 0
+BitMask_3_3=errore di calibrazione                ,lb_3_3, 0
+
+
+[bilancia]
+CommDevice=/dev/ttyS0
+CommParams=9600,n,8,1
+
+[scarti]
+DebugVersion=2
+ProgramID=1
+PrinterScarti=lp
+
+Delay=100
+A2ps=1
+Html2ps=0
+
+# edit scarti
+scarti=select sccdpro as "CODICE",scdstit as "TITOLO",scdsaut as "AUTORE", scdsedt as "EDITORE",scnmcpe as "COPIE",sccdflg as "FLAG" from scarti;
+scarti_descr=Tabella Scarti
+
+# storico scarti
+storico_scarti=select sscdpro as "CODICE",data(sstmread) as "DATA",count(sscdpro) as "TOTALE",sscdflg as "SCARTO" from storico_scarti where %KEY% group by sscdpro,data(sstmread),sscdflg;
+storico_scarti_descr=Storico Scarti
+
+# Lista Flags
+lista_flags=select sfcdflg as "CODICE FLAG",count(sccdflg) as "TOTALE",sfcolor as "COLORE" from scarti_flags left outer join scarti on (sfcdflg=sccdflg) group by sccdflg,sfcdflg,sfcolor order by sccdflg;
+lista_flags_descr=Lista Flags
+
+[barcode_scarti 12]
+# Barcode Scarti
+
+# porta utilizzata
+CommDevice=/dev/ttyS0
+
+# Parametri di comunicazione
+CommParams=9600,n,8,1
+
+# PID Processo Main
+MainID=11
+
+[operatori]
+operatori=select rpcdopr as "COD.",opnmope as "NOME",opcgope as "COGNOME",count(ordprog) as "RIGHE", sum(rpqtspe) as "COPIE" from rig_prod,operatori  where rpcdopr=opcdope group by rpcdopr,opnmope,opcgope order by rpcdopr;
+operatori_descr=Statistica di prelievo operatori
+
+[imballi]
+imballi=select cptpfor as "FORMATO", DESCRIZ as "Descrizione",  LUNGHEZZA||' X '|| ALTEZZA || ' X ' || LARGHEZZA as "Dimensioni (mm)", TARA as "Peso (gr)", VOLPERC as "Riempimento",  TPLAVOR as "Aut.Man."  , count(cptpfor) as "COLLI" from col_prod,imballi where cptpfor=codice group by cptpfor, DESCRIZ ,  LUNGHEZZA,ALTEZZA,LARGHEZZA,TARA,VOLPERC,TPLAVOR;
+imballi_descr=Statistica colli per imballo - cedola corrente
+
+imballi_storico=select cptpfor as "FORMATO",count(cptpfor) as "COLLI" from col_prod_stor c,ric_ord_stor o where c.ordprog=o.ordprog and o.ronmced='%KEY%' group by cptpfor;
+imballi_storico_descr=Statistica storico colli per imballo 
+
+lista_calcolo_imballi_periodo=select cptpfor as "FORMATO",count(cptpfor) as "N. COLLI" from ric_ord_stor o, col_prod_stor c where o.ordprog=c.ordprog and %KEY% group by cptpfor order by cptpfor;
+lista_calcolo_imballi_pcf_periodo=select prfcpcf as "FORMATO",count(prfcpcf) as "N. COLLI" from ric_ord_stor o, col_prod_stor c, rig_prod_stor r, catalogo p where o.ordprog=c.ordprog and cptpfor='C' and %KEY% and c.ordprog=r.ordprog and c.cpnmcol=r.rpnmcol and r.rpcdpro=p.prcdpro group by prfcpcf order by prfcpcf;
+
+[monitor]
+distribuzione=select sdnmced as "CEDOLA",sdtpspe as "TIPO",sdcdlin as "LINEA",sddslin as "DESCRIZIONE",sdnmort as "ORDINI",sdnmclt as "COLLI",sdnmrgh as "RIGHE",sdnmcpe as "COPIE",sdhheva as "ORE",sdmmeva as "MIN",sdpspre::float/1000 as "PESO (Kg)",sdnmori as "LANCIATI",sdnmcli as "COLLI",sdnmore as "EVASI",sdnmcle as "COLLI",sdnmorx as "XAB",sdnmclx as "COLLI",sdnmord as "DIST",sdnmcld as "COLLI",sdnmors as "HOST",sdnmcls as "COLLI" from sel_dist_tmp_%ORDTIPO% order by sdtpspe,sdcdlin;
+distribuzione_evasi_field=14
+distribuzione_lanciati_field=12
+distribuzione_totali_field=5
+OraInizio=7
+OraFine=19
+NumeroOperatori=8
+colli_non_evasi=select ordprog as "Spedizione",cpnmcol as "Collo", cptpfor as "Formato", cpstato as "Stato",cppspre::float4/1000 as "Peso (Kg)" from col_prod where ordprog in (select ordprog from ric_ord where rostato ='T') and cpstato!='E' order by ordprog,cpnmcol;
+
+MediaOraria=180
+[test]
+ubicazioni=select ISOLA, SETTORE, UBICAZIONE, DISPLAY, IOS, CPU, MODULO, RIGA, COLONNA, PRIORITA from ubicazioni where ubcdflg='A' order by PRIORITA;
+
+
+[check_bancali]
+lista_colli_bancale=select key_collo as "Progressivo Collo",ordprog as "Codice Spedizione",cpnmcol as "Numero Collo" from storico_colli_bancale where %KEY% order by tmread;
+lista_colli_bancale_update=select key_collo as "Progressivo Collo",ordprog as "Codice Spedizione",cpnmcol as "Numero Collo" from storico_colli_bancale where %KEY%;
+lista_colli_bancale_key=0
+lista_colli_bancale_descr=Lista dei colli per bancale
+
+lista_bancali_spedizione=select b.key_bancale as "Progressivo",b.bnnmbnc as "Numero",count(c.key_collo) as "Colli",sum(c.cppsrea) as "PESO NETTO" from storico_bancali b,storico_colli_bancale c where %KEY% group by b.key_bancale,b.bnnmbnc order by b.key_bancale;
+lista_bancali_spedizione_update=select b.key_bancale as "Progressivo",b.bnnmbnc as "Numero",count(c.key_collo) as "Colli",sum(c.cppsrea) as "PESO NETTO" from storico_bancali b,storico_colli_bancale c where %KEY%;
+lista_bancali_spedizione_key=0
+lista_bancali_spedizione_descr=Lista dei bancali per linea
+
+lista_linee_attive=select l.key_linea as "Progressivo Linea",l.lntpspe as "TPSPE",l.lncdlin as "LINEA",data_ora(l.tminit) as "Inizio",count(b.key_bancale) as "Bancali" from storico_linee_spedizione l,storico_bancali b where b.key_linea=l.key_linea and l.stato='I' group by l.key_linea,l.lncdlin,l.lntpspe,l.tminit order by l.key_linea;
+lista_linee_attive_key=0
+lista_linee_attive_descr=Lista delle linee attualmente aperte
+ 
+
+# rm 09-12-2004
+lista_bancali_cedola_linea=select b.key_bancale as "Progressivo Bancale",b.bnnmbnc as "Numero Bancale", count(c.key_collo) as "Colli",sum(c.cppsrea) as "PESO NETTO" from storico_bancali b,storico_colli_bancale c where %KEY% group by b.key_bancale,b.bnnmbnc order by b.key_bancale;
+lista_bancali_cedola_linea_key=0
+lista_bancali_cedola_linea_descr=Lista dei bancali per linea
+
+# rm 29-04-2005
+lista_colli_ordine=select c.key_collo as "KEY",b.bnnmbnc as "NUM.BANCALE",c.ordprog as "Codice Ordine",c.cpnmcol as "Numero Collo",c.cppsrea as "Peso Reale",c.tmread as "Ora Lettura" from storico_bancali b,storico_colli_bancale c where c.key_bancale=b.key_bancale and %KEY% order by c.cpnmcol;
+lista_colli_ordine_key=0
+lista_colli_ordine_descr=Lista dei colli per ordine
+
+ 
+[ttds]
+#ttds=select ELCCDSOC as "Societa'" ,ELCCDMAG as "Magazzino" ,ELCNMCED as "Cedola",ELCTPSPE as "Tipo Sped.",  ELCCDLIN as "Codice Linea", ELCDSTSP as "Nota per spedizioni", ELCDSNOT as "Nota per corriere" from ttds  order by elccdsoc,elccdmag,elctpspe,elccdlin,elcnmced;
+#ttds=select ELCNMCED as "Cedola",ELCTPSPE as "Tipo Sped.",  ELCCDLIN as "Codice Linea", elccdcli as "Codice Cliente", ELCDSTSP as "Nota per spedizioni", ELCDSNOT as "Nota per corriere" from ttds order by elcnmced,elctpspe,elccdlin,elccdcli;
+ttds=select ELCNMCED as "Cedola",ELCTPSPE as "Tipo Sped.",  ELCCDLIN as "Codice Linea", elccdcli as "Codice Cliente", ELCDSTSP as "Nota per spedizioni", ELCDSNOT as "Nota per corriere", ELCFLGEM as "Flag Mail" from ttds order by elcnmced,elctpspe,elccdlin,elccdcli;
+ttds_descr=Descrizione Linee per cedola
+ttds_name=ttds
+
+[ttds_gen]
+ttds_gen=select ELCTPSPE as "Tipo Sped.",  ELCCDLIN as "Codice Linea", elccdcli as "Codice Cliente", ELCDSTSP as "Nota per spedizioni", ELCDSNOT as "Nota per corriere" from ttds_gen  order by elctpspe,elccdlin,elccdcli;
+ttds_gen_descr=Descrizione Generali Linee
+ttds_gen_name=ttds_gen
+
+[vettori]
+#lista_vettori=select mvflaut as "AUTO", mvcdvet as "CODICE",elcdsvet as "DESCRIZIONE",mvemail "MAIL ASSOCIATE"  from mail_vettori,ttve where mvcdvet=elccdvet  order by elccdvet;
+#lista_vettori=select mvflaut as "AUTO", elccdvet as "CODICE",elcdsvet as "DESCRIZIONE",mvemail "MAIL ASSOCIATE"  from ttve left join mail_vettori on (mvcdvet=elccdvet)  order by elccdvet;
+#lista_vettori_descr=Descrizione Dati Vettori
+#lista_vettori_name=lista_vettori
+#lista_vettori_update=select mvflaut as "AUTO", elccdvet as "CODICE",elcdsvet as "DESCRIZIONE",mvemail "MAIL ASSOCIATE"  from ttve left join mail_vettori on (mvcdvet=elccdvet) where elccdvet='%KEY%';
+#lista_vettori_key=1
+#lista_vettori=select mvflaut as "AUTO", elccdvet as "CODICE",elcdsvet as "DESCRIZIONE",mvemail "MAIL ASSOCIATE"  from ttve, mail_vettori  where mvcdvet=elccdvet and mvcdvet in (select distinct(rocdve2) from ric_ord)  order by elccdvet;
+lista_vettori=select elccdvet as "CODICE",elcdsvet as "DESCRIZIONE",mvemail "MAIL ASSOCIATE"  from ttve, mail_vettori  where mvcdvet=elccdvet order by elccdvet;
+lista_vettori_descr=Descrizione Dati Vettori
+lista_vettori_name=lista_vettori
+#lista_vettori_update=select mvflaut as "AUTO", elccdvet as "CODICE",elcdsvet as "DESCRIZIONE",mvemail "MAIL ASSOCIATE"  from ttve ,mail_vettori where mvcdvet=elccdvet and mvcdvet in (select distinct(rocdve2) from ric_ord) and  elccdvet='%KEY%';
+lista_vettori_update=select elccdvet as "CODICE",elcdsvet as "DESCRIZIONE",mvemail "MAIL ASSOCIATE"  from ttve ,mail_vettori where mvcdvet=elccdvet and  elccdvet='%KEY%';
+lista_vettori_key=1
+
+[printman]
+
+DebugVersion=1

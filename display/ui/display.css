@@ -1,0 +1,165 @@
+/*
+lb_titolo_ordine_collo
+lb_ordine_collo
+lb_titolo_settore
+lb_settore
+lb_stato_linea
+lb_titolo_operatore
+lb_codice_operatore
+lb_dati_operatore
+lb_operazione
+lb_copie
+lb_titolo_ubicazione
+lb_ubicazione
+lb_titolo_codice
+lb_codice
+lb_titolo_titolo
+lb_titolo
+lb_stats_titolo_tabella
+lb_stats_titolo_ordini
+lb_stats_titolo_colli
+lb_stats_titolo_righe
+lb_stats_titolo_copie
+lb_stats_titolo_da_prelevare
+lb_stats_ordini_da_prelevare
+lb_stats_colli_da_prelevare
+lb_stats_righe_da_prelevare
+lb_stats_copie_da_prelevare
+lb_stats_titolo_prelevati
+lb_stats_ordini_prelevati
+lb_stats_colli_prelevati
+lb_stats_righe_prelevati
+lb_stats_copie_prelevati
+
+eb_main
+eb_titolo_ordine_collo
+eb_ordine_collo
+eb_titolo_settore
+eb_settore
+eb_stato_linea
+eb_titolo_operatore
+eb_codice_operatore
+eb_dati_operatore
+eb_operazione
+eb_copie
+*/
+
+#vb_main {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-right: 30px;
+    margin-left: 30px;
+}
+
+
+@keyframes background_animation {
+  0%   { background-position: 0% 0%;}
+  100% { background-position: 100% 0%;}
+}
+
+#lb_codice_operatore {
+    color: yellow;
+    font: bold 36px "Sans Bold";
+    margin-right: 30px; margin-left: 30px;
+}
+#lb_dati_operatore { 
+    color: yellow;
+    font: bold 36px "Sans Bold";
+    margin-right: 30px; margin-left: 30px;
+}
+#lb_settore { 
+    color: yellow;
+    font: bold 36px "Sans Bold";
+    margin-right: 30px; margin-left: 30px;
+}
+#lb_stato_linea { 
+    color: yellow;
+    /* font: bold 36px "Sans Bold"; */
+    font: bold 36px "Sans Bold";
+    /* margin-right: 30px; margin-left: 30px; */
+}
+
+#eb_main {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-right: 30px;
+    margin-left: 30px;
+    background-color: black;
+
+    animation: background_animation 42s infinite linear;
+
+    /*
+    background-image: url('resource://images/Bermuda-Circle.svg');
+    background-image: url('resource://images/Bullseye-Gradient.svg');
+    background-image: url('resource://images/Confetti-Doodles.svg');
+    background-image: url('resource://images/Cornered-Stairs.svg');
+    background-image: url('resource://images/Diagonal-Stripes.svg');
+    background-image: url('resource://images/Diamond-Sunset.svg');
+    background-image: url('resource://images/Endless-Constellation.svg');
+    background-image: url('resource://images/Large-Triangles.svg');
+    */
+    background-image: url('resource://images/Liquid-Cheese.svg');
+    /*
+    background-image: url('resource:///images/Wavey-Fingerprint.svg');
+    background-image: url('resource://images/Page-Turner.svg');
+    background-image: url('resource://images/Protruding-Squares.svg');
+    background-image: url('resource://images/Radiant-Gradient.svg');
+    background-image: url('resource://images/Rainbow-Vortex.svg');
+    background-image: url('resource://images/Rose-Petals.svg');
+    background-image: url('resource://images/Slanted-Gradient.svg');
+    background-image: url('resource://images/Square-Versatiles.svg');
+    background-image: url('resource://images/Tortoise-Shell.svg');
+    background-image: url('resource://images/Vanishing-Stripes.svg');
+    background-image: url('resource://images/Varying-Stripes.svg');
+    background-image: url('resource://images/Wavey-Fingerprint.svg');
+    background-image: url('resource://images/Wintery-Sunburst.svg');
+    */
+}
+
+label {
+    color: white;
+    font: bold 24px "Sans Bold";
+    transition: all 250ms ease-in;
+}
+
+#lb_operazione {
+    color: blue;
+    font: bold 146px "Sans Bold";
+    transition: all 250ms ease-in;
+}
+
+#eb_copie {
+    padding: 20px;
+}
+
+#lb_copie {
+    color: pink;
+    font: bold 146px "Sans Bold";
+    transition: all 250ms ease-in;
+}
+
+#lb_ordine_collo {
+    color: yellow;
+    font: bold 80px "Sans Bold";
+    transition: all 250ms ease-in;
+}
+
+#lb_titolo {
+    color: cyan;
+    font: bold 40px "Sans Bold";
+    transition: all 250ms ease-in;
+}
+
+#lb_codice {
+    color: yellow;
+    font: bold 80px "Sans Bold";
+    transition: all 250ms ease-in;
+}
+
+#lb_ubicazione {
+    color: cyan;
+    font: bold 80px "Sans Bold";
+    transition: all 250ms ease-in;
+}
+
+

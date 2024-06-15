@@ -1,0 +1,552 @@
+
+
+Wed Nov  8 19:32:12 MET 2000
+
+               NOTE SUL SERVIZIO DI DEBUG REMOTO DI QPLC
+               -----------------------------------------
+
+ Queste note si riferiscono al protocollo di debug remoto relativo a
+qplc versione 1.8.1.13 .
+
+ Il servizio di debug remoto si realizza attraverso una connessione TCP.
+Qplc si comporta da server, i debugger collegati da client. La porta utilizzata
+e` quella denominata "qplc" in "/etc/services". Se questa definizione non
+esiste, e` utilizzato il numero di servizio 8039. Qplc accetta attualmente fino
+ad otto connessioni contemporanee.
+ I client inviano comandi a qplc e si attendono risposte o segnalazioni
+asincrone. I comandi sono in forma ASCII, prevedono parametri, terminano con
+CR o LF (uno o l'altro, o anche entrambi), le lettere maiuscole sono distinte
+dalle minuscole, gli spazi superflui e le linee vuote sono ignorati. I valori
+numerici sono espressi SEMPRE in forma esadecimale. Una linea di comando troppo
+lunga e` considerata un errore. Attualmente la lunghezza massima di una linea
+di comando e` 512 caratteri, fine linea compreso.
+ Qplc emette sempre qualche tipo di risposta alla ricezione di una linea di
+comando non vuota. Inoltre puo` emettere messaggi asincroni per segnalare
+eventi importanti, come l'entrata in HALT. Questi messaggi sono sempre
+distinguibili dalle risposte ai comandi, e non le interrompono mai. 
+ I messaggi, sincroni o asincroni, prodotti da qplc sono in forma ASCII,
+terminano con LF, e possono assumere le forme
+
+	OK<LF>
+
+oppure
+
+	<tipo><continuazione><dati><LF>
+
+dove "tipo" e` un carattere che identifica il tipo di messaggio,
+"continuazione" e` un carattere che, se diverso dallo spazio, indica che
+la risposta e` su piu` linee, "dati" sono caratteri dipendenti dal comando
+Ecco, piu` in dettaglio, quali tipi di messaggio siano prodotti
+attualmente da qplc :
+
+OK : Risposta ad un comando andato a buon fine che non prevede dati in uscita.
+A <codice> [dati] : Messaggio asincrono. "codice" identifica il tipo di
+ evento segnalato. A seconda dell'evento, possono seguire altri dati.
+E <codice> : Errore. "codice" specifica il tipo di errore.
+D <dati> : Linea di dati sincrona. E` la risposta sincrona ad un comando
+ che deve produrre dati. Il formato dei dati dipende dal comando.
+D-<dati> : Come la precedente, con l'avvertenza che seguiranno altre linee
+ dati dopo questa. E` prodotta quando la risposta e` troppo lunga per stare
+ su una linea sola.
+L <lunghezza> : Questa risposta precede una risposta di tipo "D" per la quale
+ non sia prefissata la lunghezza. E` prodotta da quei comandi, come quello
+ di dowload del buffer di trace, che non emettono un numero prevedibile di
+ dati in uscita. "lunghezza" e` il numero di byte codificati nella risposta
+ di tipo "D" che seguira`.
+ 
+ Errori
+ ------
+
+ Gli errori sono messaggi nella forma "E <codice>". Sono sincroni, cioe`
+emessi in risposta ad un comando. I codici di errore attualmente prodotti
+sono i seguenti (definiti in "plcrem.h"):
+
+1 DSV_E_UNKNOWN: Comando sconosciuto.
+2 DSV_E_LONGLINE: Comando troppo lungo.
+3 DSV_E_NARGS: Numero di argomenti errato.
+4 DSV_E_BADARG: Parametro non valido.
+5 DSV_E_BADSTS: Stato PLC incompatibile con l'operazione.
+
+ Eventi asincroni
+ ----------------
+
+ Gli eventi asincroni sono messaggi nella forma "A <codice> [dati]". Possono
+essere emessi in qualunque momento, salvo durante l'emissione di una risposta
+sincrona (ma possono essere emessi tra la ricezione di un comando e l'inizio
+della trasmissione di una risposta). Essi notificano eventi di particolare
+interesse. Alcuni sono segnalati sempre a tutti i client collegati,
+altri sono di pertinenza solo di uno o piu` client. I codici di evento
+prodotti da qplc sono i seguenti (definiti in "plcrem.h"):
+
+0 DSV_EVENT_ERROR: Emissione di un errore da Plc. Quest'evento giunge
+ ogni volta che qplc emette un errore ordinario (per problemi vari o
+ su iniziativa del programma in esecuzione tramite le apposite primitive)
+ a tutti i client che ne abbiano fatto richiesta tramite il comando "errs".
+ L'evento reca con se` il codice di errore e la stringa associata.
+1 DSV_EVENT_HALT: Entrata in HALT. Quest'evento giunge sempre a tutti i client.
+2 DSV_EVENT_GO: Entrata in GO. Quest'evento giunge sempre a tutti i client.
+3 DSV_EVENT_FAULT: Entrata in FAULT. Quest'evento giunge sempre a tutti i
+ client.
+4 DSV_EVENT_TRACE: Buffer di trace pronto. Quest'evento giunge solo al client
+ che aveva impostato l'insieme di trace corrispondente. Ricevuta questa
+ segnalazione, il client puo` leggere il buffer di trace con il comando
+ "trace v".
+5 DSV_EVENT_TRIGGER: Condizione di trigger verificata. Seguono il codice del
+ trigger ed il valore corrente della variabile associata (attualmente 32 bit).
+6 DSV_EVENT_DELERR: Cancellazione di un errore da Plc (funzione "plcDelerr").
+ Quest'evento giunge a tutti i client che ne abbiano fatto richiesta tramite
+ il comando "errs".
+7 DSV_EVENT_MESSAGE: Quest'evento giunge a tutti i client che ne abbiano fatto
+ richiesta tramiote il comando "messages e". L'evento giunge quando il
+ programma PLC emette, sovrascrive o cancella un errore. Dopo il codice di
+ evento si trovano il tipo di azione sul messaggio (0 == cancellazione,
+ 1 == emissione, 2 == update), il codice di messaggio e la stringa
+ associata (tranne nel caso di cancellazione).
+
+ Comandi
+ -------
+
+ Questi sono i comandi riconosciuti attualmente da qplc. Per ognuno si
+daranno i parametri richiesti e le risposte possibili. Si sono tralasciate
+le risposte dovute a errori di sintassi.
+
+ errs {e|d|l|v} : "errs e" abilita  la trasmissione degli errori
+  di Plc come eventi asincroni, mentre "errs d" la disabilita. Gli errori
+  sono segnalati come eventi di codice 0. La risposta a questi due comandi
+  e` "OK".
+   "errs v" fornisce il contenuto del buffer degli errori di PLC pregressi
+  come risposta di tipo "D". Tale risposta e` preceduta da una di tipo
+  "L" contenente il numero di byte codificati nel blocco "D". Se non
+  sono stati memorizzati errori di PLC, si ha l'errore 5.
+  Ogni errore e` descritto da un record di lunghezza variabile, composto da
+  tre campi. Il primo campo e` lungo un byte, e contiene la lunghezza
+  del record. Il secondo e` di quattro byte, e contiene il codice
+  dell'errore. Il terzo campo e` la stringa opzionale, e termina
+  sempre con il codice 0x00. La lunghezza massima del record e` ovviamente
+  255 byte. Se un errore ha una stringa associata troppo lunga, viene
+  troncato alla massima lunghezza.
+   "errs l" fornisce il contenuto del buffer degli errori di PLC pregressi
+  in una forma leggibile. La risposta e` una sequenza di linee nella
+  forma "D-<codice di errore> <testo opzionale>", teminante con la
+  linea "D .". Questo comando e` stato introdotto per compiere interventi di
+  emergenza, e non deve essere inteso come una primitiva standard per
+  l'acquisizione degli errori pregressi da parte di altri programmi.
+  La primitiva per questo scopo e` "errs v".
+   NOTA: La libreria run-time del linguaggio IL produce due errori
+  di particolare interesse. Si tratta degli errori 103 (==0x67) e 1 (==0x01)
+  Il primo errore e` dovuto ad accessi a vettori usando indici
+  errati, il secondo indica divisione per zero. Entrambi recano una
+  stringa nella forma "<nome modulo>+0x<offset esadecimale>,<numero task>",
+  dove "nome modulo" e` la stringa che identifica il modulo di codice
+  in cui e` avvenuto l'errore (per i programmi IL e` "U_CODE"),
+  "offset" e` la distanza dalla base del modulo, e "numero task" e`
+  un numero che indica quale istanza del programma ha provocato l'errore
+  (qplc e` in grado di eseguire in sequenza una o piu` istanze di uno
+  o piu` programmi IL), e vale normalmente 1.
+
+ free : Fornisce una statistica di occupazione della zona dei segnali di
+   scambio. Il risulatato ha la forma "D <nvram> <heap> <keys> <maxkey>",
+   dove
+   "nvram"  e` il numero di byte liberi in RAM non volatile,
+   "heap"   e` il numero di byte liberi per nomi e dati dei segnali di
+            scambio,
+   "keys"   e` il numero complessivo di chiavi di segnale di scambio
+            disponibili,
+   "maxkey" e` la dimensione del piu` grande blocco di chiavi libere
+            contigue, e cioe` la massima dimensione ammessa per un segnale
+            di scambio vettoriale o matriciale.
+
+ go : Mette in GO l'esecutore. Risposta: OK.
+
+ halt : Mette in HALT l'esecutore. Risposta: OK.
+
+ in <input> : Legge l'ingresso descritto dalla stringa
+   "input". Il risultato ha la forma "D <valore>", dove "valore" e`
+   ovviamente il risulatato della lettura. L'operazione e` consentita
+   solo se l'esecutore e` in HALT, altrimenti si ha errore 5. Se il
+   dispositivo non esiste o non e` leggibile si ha errore 4.
+    Si consulti "plcdev.txt" per una trattazione dettagliata delle
+   stringhe di descrizione dei segnali di I/O.
+
+ info : Restituisce alcune informazioni utili. Attualmente sono emessi
+   i seguenti dati :
+
+   D <per> <maxte> <maxtv> <maxmv> <maxtrig>
+
+   dove
+   "per" e` il periodo del Plc in millisecondi,
+   "maxte" e` il numero massimo di cicli di trace immagazzinabili prima
+           dell'emissione dell'evento apposito,
+   "maxtv" e` il numero massimo di variabili tracciabili,
+   "maxmv" e` il numero massimo di variabili gestite dalle funzioni
+           "memcopy" e "memchk" per ogni sessione,
+   "maxtrig" e` il massimo numero di trigger ammessi.
+
+ iostat <modo> <stringa> oppure iostat <modo> <livello> <id> <coordinate> :
+   Restituisce lo stato corrente di un segnale di ingresso o uscita
+  descritto dai parametri. "modo" puo` essere "I" o "O" a seconda che
+  il segnale sia di input o di output. In alternativa, puo` essere un
+  numero da interpretare come il campo "flag" del risultato del comando "list".
+  Gli altri parametri descrivono il dispositivo in chiaro ("stringa") o
+  tramite la rappresentazione interna livello-id-coordinate come quella
+  che si ottiene col comando "list". La modalita` di acquisizione e` "non
+  invasiva", cioe` non perturba il normale funzionamento del dispositivo.
+  Per questo il comando e` utilizzabile anche quando l'esecutore e` in GO.
+  Il dato riportato e` ricavato dal dispositivo fisico solo se lo stato di
+  quest'ultimo non e` influenzato, altrimenti QPLC tenta di dedurre
+  il valore in base al contenuto di variabili ombra, che possono non essere
+  allineate con l'hardware. Questo e` vero in particolare per i dispositivi
+  di output, per i quali non esiste in genere un metodo sicuro per acquisire
+  lo stato. Un'eccezione notevole e` costituita dai moduli IOS.
+
+ ipcs : Restituisce le caratteristiche degli oggetti IPC da utilizzare
+  per il colloquio "stretto" con QPLC. La risposta ha la forma
+
+  D <shm> <km> <im> <len> <am> <sem> <ks> <is> <num> <n1> <a1> <n2> <a2>
+
+  dove
+  "shm" e` il tipo di shared memory utilizzata: "V" per "system  V" (shmget),
+        "P" per "Posix" (mkshm).
+  "km" e` la chiave della shared memory (V) o il path (P).
+  "im" e` l'ID della shared memory (V), o 0 (P).
+  "len" e` la dimensione della shared memory.
+  "am" e` l'indirizzo della shared memory nello spazio di QPLC.
+  "sem" e` il tipo di semaforo utilizzato: "V" (system V: semget) o "P"
+        (Posix: mksem).
+  "ks" e` la chiave dei semafori (V) o il loro path incompleto (P).
+  "is" e` l'ID dei semafori (V), o 0 (P).
+  "num" e` il numero di semafori.
+  "n1" e` il nome del blocco di RAM non volatile privata di QPLC,
+  "a1" e` il suo indirizzo nello spazio di QPLC.
+  "n2" e` il nome del blocco di RAM non volatile pubblica di QPLC,
+  "a2" e` il suo indirizzo nello spazio di QPLC.
+
+ list : Permette di ottenere la lista dei dispositivi di I/O disponibili.
+   L'organizzazione dei dispositivi e` gerarchica, ed e` conforme (piu`
+   o meno) alla sintassi di descrizione dei segnali utilizzata nelle
+   operazioni di associazione.
+   Il comando "list" ha tre possibili utilizzi:
+   1) Senza argomenti: si ottiene la lista completa dei segnali disponibili
+      nel sistema.
+   2) "list e": fornisce la descrizione del primo elemento a livello
+      immediatamente inferiore a quello corrente. Errore se l'elemento al
+      livello corrente non e` ulteriormente espandibile.
+   3) "list n": fornisce la descrizione del successivo elemento allo stesso
+      livello.
+   4) "list <livello> <driver_id> <coordinate>": fornisce la descrizione
+      del dispositivo controllato dal driver "driver_id" e dalle "coordinate
+      di dispositivo" (valore ad 8 byte), appartenente al livello
+      gerarchico "livello".
+   5) "list p": fornisce la lista di associazione tra variabili e segnali
+      di I/O corrente. Questa modalita` sara` trattata piu` avanti.
+   I modi 2 e 3 necessitano di una chiamata iniziale di tipo 4, che serve
+   ad impostare la radice del sottoalbero da esplorare. Per iniziare
+   l'esplorazione dell'intera gerarchia si puo` dare il comando "list 0 0 0".
+   Il risultato dell'operazione e` una risposta di tipo
+
+    D <nome> <commento> <flag> <bit> <livello> \
+      <id_corrente> <coordinate_primo_figlio> \
+      <id_prossimo> <coordinate_prossimo>
+
+   oppure "D ." per indicare la fine della lista.
+   "list" senza argomenti produce una successione di linee come quella
+   descritta sopra, salvo che e` presente il carattere di continuazione.
+   La lista termina con "D .".
+
+   "nome" e` il nome standard del segnale, buono per essere utilizzato in
+    in un'associazione di I/O.
+   "commento" e` una stringa arbitraria, ad uso del debugger. Per esempio,
+    nel caso di un modulo IOS e` il nome del modello identificato, oppure
+    "SPECIAL". In altri casi puo` contenere il modello della scheda
+    (nodo principale IOS), o la versione del firmware del controllore
+    (nodi IOS.CPU e KEYB.0). Nella maggior parte dei casi, comunque, e`
+    un semplice "?".
+   "flag" descrive le caratteristiche del nodo. E` una mappa di bit:
+     0x01 : segnale utilizzabile in INPUT,
+     0x02 : segnale utilizzabile in OUTPUT,
+     0x04 : nodo espandibile, cioe` e` il genitore di un insieme di
+            altri segnali.
+   "bit" e` la dimensione in bit del segnale. 0 Se il segnale non e`
+    utilizzabile (cioe` non e` ne` di INPUT ne` di output).
+   "id_corrente" e` un valore a 32 bit che identifica il driver che controlla
+    il dispositivo.
+   "coordinate_primo_figlio" e` un valore ad 8 byte che serve ad identificare
+    il primo dei nodi figli di quello corrente. Va utilizzato per esplorare
+    la lista dei figli del nodo corrente.
+   "id_prossimo" e` un valore a 32 bit che identifica il driver che controlla
+    il prossimo elemento allo stesso livello di quello corrente.
+   "coordinate_prossimo" e` un valore ad 8 byte che identifica il prossimo
+    elemento allo stesso livello di quello corrente.
+
+   Nel caso 5 ("list p") e` emessa le lista delle associazioni di I/O
+   correnti. La lista e` composta da un certo numero di linee
+
+	D-<nome> <flag> <bit> <indirizzo> <chiave>
+
+   dove "nome", "flag" e "bit" hanno il significato spiegato sopra,
+   "indirizzo" e` l'indirizzo della variabile associata, "chiave" e` una
+   chiave da utilizzare nel comando "setin" per riferirsi al segnale. La
+   lista termina con la linea "D ."
+
+ load <file> : Carica dinamicamente il programma "file". L'operazione deve
+   avvenire a esecutore fermo. Attualmente la risposta e` OK, oppure
+   errore 5 se il Plc e` in GO.
+
+ mem <addr> <nbytes> : Visualizza "nbytes" byte all'indirizzo "addr".
+  La risposta e` l'errore 4 se l'indirizzo non e` valido, oppure i
+  dati richiesti (come "D <byte1><byte2>..."). I byte sono rappresentati con
+  due cifre esadecimali, senza spazi.
+  Questo comando puo` anche essere utilizzato per convalidare un indirizzo.
+  In questo caso si deve dare "0" come numero di byte, e la risposta sara`
+  "OK" oppure l'errore 4.
+
+ memchk <addr> <nbytes> [<addr> <nbytes> ...] : Convalida e registra aree
+  in debug. Ogni coppia indirizzo-lunghezza e` controllata e, se valida,
+  registrata in una tabella apposita. I successivi comandi "memcopy" daranno
+  il contenuto delle aree valide registrate con questo comando.
+  La risposta a questo comando e` "D <flag> [<flag> ...]", dove ogni "flag"
+  codifica la validita` (1) o non validita` (0) dell'area di corrispondente
+  posto nella lista degli argomenti del comando.
+
+ memcopy : Riporta come risposta "D <byte1><byte2>..." il contenuto delle
+  aree registrate dall'ultimo comando "memchk". Se non sono state ancora
+  registrate aree valide, restituisce l'errore 5.
+
+ messages {e|d} : Richiede ("e") o sospende ("d") la trasmissione dei
+  messaggi di Plc. I messaggi sono segnalati come eventi di codice 7.
+  La risposta e` sempre "OK".
+
+ mod <nome> : Restituisce informazioni riguardanti il modulo di nome dato.
+  I nomi attualmente riconosciuti da qplc sono "U_CODE" per il programma IL
+  o il programma C in nuovo stile, "C_CODE" per il programma C vecchio stile,
+  "HATSH_CODE" per il modulo di colloquio col CN (rif. Lelli). Si ha l'errore
+  4 se il nome non e` riconosciuto, oppure una risposta "D" nella forma
+
+	D text data bss common size file
+
+  I primi quattro campi sono l'indirizzo delle quattro sezioni (codice, dati
+  inizializzati, dati non inizializzati, variabili non inizializzate
+  sovrapponibili), il quinto ("size") e` la dimensione totale del modulo,
+  e l'ultimo il file dal quale il modulo e` stato caricato. Se il modulo
+  non e` caricato tutti i campi numerici valgono zero, ed il nome del file
+  manca.
+
+ out <output> <val>: Scrive il valore "val" sull'uscita
+   descritta dalla stringa "output". La risposta e` "OK" se il comando
+   ha avuto successo. L'operazione e` consentita solo se l'esecutore e` in
+   HALT, altrimenti si ha errore 5. Se il dispositivo non esiste o non e`
+   scrivibile si ha errore 4.
+    Si consulti "plcdev.txt" per una trattazione dettagliata delle
+   stringhe di descrizione dei segnali di I/O.
+
+ quit : Chiude la sessione di debug. Lo stesso effetto si ottiene chiudendo
+  il canale di comunicazione.
+
+ set <nome> <ind1> <ind2> <dato1> [<dato2>...] : Scrittura dei valori
+  "dato1"..."datoN" ad indirizzi crescenti partendo dalla base della
+  variabile "nome". Gli indici "ind1" e "ind2" si applicano solo ai segnali
+  di scambio, altrimenti devono valere 0. Il numero di cifre
+  di "dato" decide di quanti byte debba essere inteso il valore. Sono
+  riconosciute le taglie di un byte (1-2 cifre) due byte (3-4 cifre)
+  e quattro byte (5-8 cifre). Altre taglie provocano errore 4.
+  Successivi valori sono assegnati ad indirizzi via via crescenti.
+  E` assicurata la scrittura atomica dei singoli valori, ma non tra
+  un valore ed il successivo. Percio`, se "QUATTRO" e` una variabile a
+  quattro byte, i due seguenti comandi sono equivalenti riguardo
+  al contenuto finale della memoria, ma non riguardo alla temporizzazione:
+
+    set QUATTRO 0 0 12345678
+    set QUATTRO 0 0 78 56 34 12
+
+  il secondo infatti puo` essere interrotto dall'esecutore, che potrebbe
+  leggere un valore errato dalla variabile.
+  Nel caso di segnali di scambio, il comando proibisce di scrivere piu`
+  byte di quanti siano previsti dal tipo del dato (errore 4). E` pero`
+  possibile scrivere meno byte del previsto, nel qual caso sono alterati
+  solo i primi byte della variabile.
+  La risposta al comando e` "OK" se tutto e` andato bene, oppure errore 4.
+
+ setin <key> <val> : Forza al valore "val" il segnale di input di
+   chiave "key". La chiave  segnali si ottiene col comando "list p".
+   La risposta e` "OK" se il comando ha avuto successo, altrimenti si ha
+   errore 4.
+   NOTA: Se qplc non e` stato lanciato con l'opzione "-simul", questo
+   comando puo` non avere l'effetto sperato: molti dispositivi di
+   input, infatti, vengono fisicamente riletti ad ogni ciclo, con
+   conseguente perdita del valore impostato dal comando.
+
+ stat {c|d|e|v} : Gestione della statistica del tempo di esecuzione.
+  "c" riazzera la statistica, "d" la disabilita, "e" la abilita, "v" ne
+  riporta il risultato. La risposta e` "OK" per i comandi "c", "d" ed "e",
+  mentre per "v" e` "D <tempo corrente> <minimo> <massimo>". I tempi sono
+  espressi in microsecondi.
+  
+ status : Stato dell'esecutore. Risposta "D <stato>", dove "stato" e`
+  0 per HALT e 1 per GO.
+
+ sym <addr> : trova il simbolo piu` vicino all'indirizzo "addr". La
+  risposta puo` essere
+
+	D S <nome> <indice1> <indice2>
+  
+  oppure
+
+	D I <nome> <offset> <file>
+
+   La prima forma si ottiene quando l'indirizzo corrisponde ad un elemento
+  di un segnale di scambio. "indice1" e "indice2" sono gli indici
+  dell'elemento.
+   La seconda forma si riferisce a simboli ordinari di moduli IL o C.
+  "offset" e` lo scostamento dell'indirizzo rispetto al valore del
+  simbolo trovato, e "file" e` il nome del file contenete il programma
+  a cui il simbolo si riferisce.
+   Se non si trova alcuna corrispondenza ragionevole, si ha errore 4.
+  NOTA: il comando non e` in grado di riconoscere i simboli contenuti
+  staticamente nell'eseguibile "qplc".
+
+ trace {a <addr>[...]|c|d|e|m <len>|t|v} : Gestione del trace. Il primo
+  parametro specifica l'azione da compiere.
+  "trace a <addr> ..." registra gli indirizzi seguenti nella tabella delle
+   variabili da tracciare (si suppone che si tratti di variabili ad un byte),
+   e produce in risposta una serie di flag di validita` come fa il comando
+   "memchk" (vedi).
+  "trace c" disabilita il trace e ne azzera lo stato; risponde OK.
+  "trace d" disabilita il trace, ma non azzera lo stato; risponde OK.
+  "trace e" abilita il trace dell'insieme di variabili indicate nell'ultimo
+   comando "trace a". Risponde "OK" se esiste una lista di trace valida, oppure
+   da` l'errore 5.
+  "trace m <len>" specifica il numero di cicli di trace memorizzati prima che
+   venga emesso l'evento 4. Se non e` specificata, si assume il valore massimo
+   consentito, cioe` quello restituito dal comando "info". Risposta : "OK",
+   oppure errore 4.
+  "trace t" fa si` che il trace sia controllato da quelle condizioni di
+   trigger per le quali sia stata specificata l'azione "DSV_TRIGGER_TRACEON"
+   (si veda il comando "trigger"). Risponde sempre "OK".
+  "trace v" restituisce i dati di trace come risposta di tipo "D". Tale
+   risposta e` preceduta da una di tipo "L" contenente il numero di byte
+   codificati nel blocco "D". Se il buffer di trace non e` ancora pronto
+   (cioe` non e` ancora giunto un evento 4 dopo l'inizio del trace o dopo
+   l'ultima lettura), si ha l'errore 5.
+
+ trigger {a <addr> <cond> <act> <val>|c|d <id>} : Gestione dei trigger.
+  I trigger sono eventi scatenati dal verificarsi di qualche condizione
+  su di una variabile. A tali eventi si possono associare azioni.
+  "trigger a" definisce un trigger. "addr" e` l'indirizzo della variabile,
+   "cond" il codice della condizione, "act" e` una mappa di bit che specifica
+   quali azioni compiere al verificarsi della condizione, "val" e` un parametro
+   aggiuntivo utilizzato solo da alcune condizioni. Le condizioni di trigger
+   sono attualmente le seguenti (si veda "plcrem.h") :
+   0: DSV_TRIGGER_NULL : Condizione sempre falsa. Poco utile.
+   1: DSV_TRIGGER_RTRIG : Rileva il fronte di salita (transizione da 0 a != 0)
+      di una variabile ad un byte.
+   2: DSV_TRIGGER_FTRIG : Rileva il fronte di discesa (transizione da != 0 a 0)
+      di una variabile ad un byte.
+   3: DSV_TRIGGER_CHG8 : Rileva il cambiamento di una variabile ad 8 bit...
+   4: DSV_TRIGGER_CHG16 : ...a 16 bit...
+   5: DSV_TRIGGER_CHG32 : ...a 32 bit.
+   6: DSV_TRIGGER_EQ8 : Rileva il raggiungimento del valore "val" ad 8 bit...
+   7: DSV_TRIGGER_EQ16 : ...a 16 bit...
+   8: DSV_TRIGGER_EQ32 : ...a 32 bit.
+   Nei casi in cui "val" e` ignorato, deve essere posto a zero nel comando.
+   "act" rappresenta l'insieme delle azioni associate al trigger, e puo`
+   essere l'OR dei seguenti valori (vedi "plcrem.h") :
+   0x01: DSV_TRIGGER_ACT_TRACEON : Attiva il trace (devono essere stati
+         specificati "trace t" e "trace e").
+   0x02: DSV_TRIGGER_ACT_TRACEOFF : Sospende il trace in corso.
+   0x04: DSV_TRIGGER_ACT_NOTIFY : Invia l'evento asincrono 5. L'evento
+         rechera` il codice del trigger ed il valore corrente della
+         variabile sorvegliata.
+   La risposta in caso di successo e` "D <id>", dove "id" e` il codice che
+   caratterizzera` il trigger nelle operazioni successive. In caso di
+   problemi si ha l'errore 4.
+  "trigger c" rimuove tutti i trigger impostati dal client. Risposta : "OK".
+  "trigger d <id>" rimuove il trigger di codice "id". Risposta "OK" o errore 4.
+
+ var <nome> [<ind1>] [<ind2>] : Risoluzione di un simbolo. Da` l'errore 4
+  se il nome non esiste, oppure una risposta di tipo "D" contenente le
+  caratteristiche del nome.
+  Il nome e` cercato prima di tutto tra i segnali di scambio, poi tra i
+  moduli caricati, infine nel nucleo dell'esecutore.
+  Se il nome e` un simbolo ordinario, cioe` non e` un segnale di scambio,
+  la risposta ha la forma
+
+	D I <indirizzo> <file>
+
+  dove "indirizzo" e` l'indirizzo corrispondente al nome, mentre "file"
+  e` il primo dei file caricati nel quale sia stata trovata una definizione
+  del nome.
+  Se il nome e` un segnale di scambio, sono presi anche in considerazione
+  gli eventuali indici "ind1" e "ind2", che selezionano un elemento di
+  un segnale di scambio multidimensionale. Se gli indici superano le
+  dimensioni caratteristiche della variabile si ha l'errore 4.
+  Se gli indici sono assenti si assume che valgano 0.
+  Per i segnali di scambio la risposta ha la forma
+
+	D S <indirizzo> <dim1> <dim2> <flags> <size> <key>
+
+  dove "indirizzo" e` l'indirizzo della variabile, "dim1" e "dim2" le
+  dimensioni del segnale di scambio (valgono 1 per i segnali scalari),
+  "flags" codifica le caratteristiche del segnale di scambio (e` una
+  mappa di bit, la decodifica si trova in "plcrem.h". Si vedano le macro
+  SHV_MODE_...). "size" e` la dimensione di un elemento del segnale di
+  scambio; "key" e` la chiave dell'elemento selezionato.
+
+ ver : Da` una risposta "D <versione>" dove "versione" e` la stringa di
+  versione completa di qplc.
+
+ wadd <id> <addr> <r1> <r2> <scale> <size> <off> <ar> : Aggiunta di un
+  punto di break alla lista di indice "id". I parametri successivi
+  codificano i dati specifici del punto di break (posizione e modalita`
+  di indirizzamento del dato di debug). Hanno lo stesso significato dei
+  campi della struttura "watch_t" definita in "plclink.h" (vedi).
+
+ wcreate <act> <condact> <cond> <apar> <opc> <opa1> <opa2> : Creazione di una
+  lista di break. Restituisce l'errore 4 in caso di problemi, oppure una
+  risposta "D <id>", dove "id" e` l'identificatore della lista di break appena
+  creata. Dovra` essere utilizzato nelle successive operazioni sulla lista.
+  I parametri contengono le caratteristiche della lista, e sono l'immagine
+  della struttura "watch_descr_t" definita in "plclink.h" (vedi).
+
+ wdel <id> : Cancella la lista di watch "id". Risposta: OK.
+
+ wdisable <id> : Disabilita la lista di watch "id". Risposta: OK se esiste,
+  oppure errore 4.
+
+ wenable <id> : Abilita la lista di watch "id". Risposta: OK se esiste,
+  oppure errore 4.
+
+ whistory {l|s|v} : Gestione avanzata del buffer delle liste di break.
+  Questo comando estende la "wshow" (vedi), permettendo di scaricare
+  l'intero contenuto utile del buffer di debug. Sono ammesse due modalita`
+  di funzionamento, attivate rispettivamente con le opzioni "l" e "s".
+  L'opzione "l" abilita il comportamento di default, cioe` la registrazione
+  di tutti gli eventi di break che si verificano ciclo per ciclo.
+  L'opzione "s" abilita una modalita` "economica", nella quale il PLC
+  evita di registrare gli eventi delle liste di break che siano gia`
+  state attraversate almeno una volta dopo l'ultima operazione di scarico
+  dei dati, piu` i dati (quali che siano) relativi al ciclo durante il
+  quale e` eseguito questo comando. Entrambe producono "OK" come risposta.
+  L'opzione "v" serve a scaricare i dati immagazzinati. Produce in risposta
+  un blocco di tipo "D" contenente i dati di trace, preceduto
+  da una linea di tipo "L" che ne specifica la lunghezza. Errore 5 se
+  non si sono verificati altri eventi di debug dopo l'ultima lettura.
+  Il brocco di dati restituito e` una collezione di eventi di break
+  relativi a piu` cicli, cioe` uno o piu` blocchi di dati (non separati
+  da alcunche`) ciascuno nel formato previsto per "wshow".
+  Nella modalita` "l", durante l'emissione della risposta e` inibita
+  la registrazione di nuovi eventi, perche` potrebbe interferire con
+  l'operazione in corso (su linee di comunicazione lente, l'operazione
+  puo` richiedere molto piu` tempo di quanto impieghi l'esecutore a
+  riempire il buffer). Nella modalita` "s" questo non avviene, dato che
+  il numero di nuovi eventi registrati e` al massimo uguale al numero di
+  liste di break attive. In entrambi i casi, le letture sono distruttive,
+  nel senso che letture successive daranno sempre riposte diverse.
+
+ wreset : Cancellazione di tutte le liste. Risposta: OK.
+  NOTA: forza anche il ritorno alla modalita` "whistory l" (vedi).
+
+ wshow : Visualizzazione dei dati di debug relativi all'ultimo ciclo.
+  Risposta: Un blocco di tipo "D" contenente i dati di trace, preceduto
+  da una linea di tipo "L" che ne specifica la lunghezza. Errore 5 se
+  non si sono verificati altri eventi di debug dopo l'ultima lettura.
+

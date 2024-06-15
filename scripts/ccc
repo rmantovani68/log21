@@ -1,0 +1,12 @@
+# Tabella linee di spedizione (storico)
+echo "\
+ALTER TABLE storico_linee_spedizione add column lnnmced     INTEGER;
+" | psql -h database mondadori >> ccc.out 2>&1 ; echo -n .
+# Tabella bancali di spedizione (storico)
+echo "\
+ALTER TABLE storico_bancali add column bnnmced     INTEGER;
+" | psql -h database mondadori >> ccc.out 2>&1 ; echo -n .
+# Tabella letture colli su bancali (storico)
+echo "\
+ALTER TABLE storico_colli_bancale add column cpnmced   INTEGER;
+" | psql -h database mondadori >> ccc.out 2>&1 ; echo -n .

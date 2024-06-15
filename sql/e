@@ -1,0 +1,11 @@
+alter table ric_ord add column rocdamz text;
+alter table ric_ord add column rocdpdl text;
+alter table ric_ord add column rodspdl text;
+
+alter table ric_ord_stor add column rocdamz text;
+alter table ric_ord_stor add column rocdpdl text;
+alter table ric_ord_stor add column rodspdl text;
+
+alter table import_ric_ord add column rocdamz text;
+alter table import_ric_ord add column rocdpdl text;
+alter table import_ric_ord add column rodspdl text;

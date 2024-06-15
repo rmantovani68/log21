@@ -1,0 +1,208 @@
+<!DOCTYPE openRPTDef>
+<report>
+ <title>Lista Articoli Ordine</title>
+ <name>Lista Articoli Ordine</name>
+ <description>Lista Articoli Ordine</description>
+ <parameter active="true" name="ordprog" type="string" listtype="static" default="">
+  <description></description>
+ </parameter>
+ <grid>
+  <snap/>
+  <show/>
+  <x>0.05</x>
+  <y>0.05</y>
+ </grid>
+ <size>A4</size>
+ <portrait/>
+ <topmargin>100</topmargin>
+ <bottommargin>100</bottommargin>
+ <rightmargin>100</rightmargin>
+ <leftmargin>100</leftmargin>
+ <querysource>
+  <name>lista_articoli_ordine</name>
+  <sql>select racdpro, raqtord from ric_art where ordprog = &lt;? value('ordprog') ?></sql>
+ </querysource>
+ <querysource>
+  <name>dati_ordine</name>
+  <sql>select ordprog, rodscli from ric_ord where ordprog = &lt;? valkue('ordprog') ?></sql>
+ </querysource>
+ <rpthead>
+  <height>65</height>
+  <image>
+   <rect>
+    <x>5</x>
+    <y>5</y>
+    <width>110</width>
+    <height>30</height>
+   </rect>
+   <mode>stretch</mode>
+   <map format="png">begin 644 internal
+MB5!.1PT*&amp;@H````-24A$4@```+X```!`"`,```"3,CW&amp;```!%%!,5$7___\!
+M1(G[N0``.X4`0H@`0(?[MP``/H;[M0``+X``-((`/(4`.80`,H$`/X&lt;`-X,`
+M+7^0H+[0V>4`*GZ`EKDY89E:>:?`R]OX^OSI[?/>Y.WS]OGBZ.^3I&lt;+*T^'4
+MW.=TC+(B4Y&amp;WP]:DL\M':IZYQ==WC[2%FKMC?ZK_^>[__OG]Y+$=4)`W7YAL
+MAJ]0&lt;:*?K\G^]N3\S&amp;?\Q4C]V9#]Y;7]W9W^\-/\RES]WZ3^Z\?\U('\T'3[
+MOB+[P3C^Z&lt;!]&lt;FW\QU%K:7,J386,DJ([4X*RCU+6HSKHKB,`&amp;GG"F$B2?&amp;"W
+MI(C_]&lt;V8F9O?N&amp;0=6)]78'K-GD"[E$S?J3(`)XN;@F!;7W3/J%K`Q&lt;KDQHW1
+MQ[@?"/D5````"7!(67,```L3```+$P$`FIP8````!W1)344'Y00!#C@;4`6Y
+M*0``".5)1$%4:-[566ES(KT1EC0'HSF8X3`PP'`;L!>PC;UK>WV]3BJ55*52
+ME2_YD.3__X^H=&lt;R%AG&lt;KJ0I&amp;56M`/2,]W?WT(2U"N7&amp;[B8*`3N>H8@PZU+&lt;P
+MM@RZZY5EO0D-:Z99\^DJ/[URRR,,ILV#E7MK:K"5L>=NFE6[CY&lt;;W\>[KEZZ
+M&lt;DVL1G"K>6`6X&amp;R846&amp;9;F3F9>-4T,"ZX18Q-O-OX["MV;P9U93&lt;HK,#&lt;6(4
+M-_#+C_1:90RM3'@@BX[#QWB!CKP=CDJ;QU%)_9(+*)\UHL5NMZ6>4*"HGGD(
+MP9(LN]7)1L?AXQNU\LC22"\*FR_X!I;;VDPCMRZ@YN4NS-#4Y:.H8$$V.ADN
+MS\OVVQ5EIE7/$"3'X>.^U#U;V?!KF??+MG4;*8GY;YK)0Z![7`@3/I7^W"FO
+M=H;P&lt;W@3RHEE)C,NN/JCJ2&lt;GYBG\Q2HW&amp;@O!4['_I7I[,1012)4"!6[5DSRZ
+MD0_Z%.3E8*`Y^S?%@EXNH).:A"!EM=SZ$T$F&lt;Z#@EV-1*,_Q"D^:RYSEW-0R
+M?)1,+4:0Q=Y%0=?"$Q/QU2B'JE3ZHDHF&lt;E10!5_@[T#&amp;2A_,#&lt;E$2942C5$&amp;
+MB8=_3R_G]K?XERW&amp;NF>BVVJ9H,"D"OY$O11JT*M%6PJGH4,7205=@?(FM,RZ
+MRS9*:,VJNRPQ]!@'IJF#77VU,"MD/`"\*OA=R0@>MS6]YS&amp;&amp;:%RS3Q93L\BH
+M&amp;901=!B&amp;GA$LQ&lt;ZN`+=&amp;8P_3=>,FP*&amp;+W8M&amp;AYJU$9J*I2?I6IK!W:R1"5;&lt;
+M5L"?2_A!&amp;N*E8:GLXW/GM+!O=C8A9J:N18NIBXT1)#QF_A6$;1^'`L)(K1:[
+M9A,4G,FL&amp;NK1SRIE,O?JX7-N387R6K=VI//&amp;W'"^F2B;B'(Q=/$EJL/"%,S@
+M^UD\*AZ''LCJTA+]:N.+%*)5K*:'+W)]%R59?="2&lt;@A1X*)(N?&lt;BBY/``M=1
+M"(VDC67%ZN-=`\MZ&amp;>/U&amp;EYN'A2Y4KWS]2*N=&lt;SAKXKMQU05)B-+,%KVK^!C
+M.U8)$)GA#,ODW&lt;/3.&lt;!BN\14.7#+C.VI4`K&lt;$3API4V\N0BE1P#,1=6U\B.K
+MRD&amp;U\ES%#5!_GL9V@@?(5^2@1@]TAW^&amp;2ON4^2;5Y&lt;+K05):\_U1M8FG>A$G
+M?Z.R::#2=X'^[:5P$"N.?5?99\,XX"H>K#`0C,/W5(&lt;4T!S\79WK=R/L4)TW
+M%WH13^G+2O@CU:SHWVZ+G,#@QZ%Z)&amp;2>VGII\I+P,4H?:+$DDBI;]X=@]AVN
+M=C&amp;JZRMVFEV22O@0CFYU/>$^KP,YFQFU&amp;?26GW8F'#K3;V344IT'B%4!69?I
+M''#/&lt;;6->/#1(];O&lt;OBFD1^RI0N$AMZ1MV^`^\G"3)-9$WEJ-QK&amp;8%QF@9MA
+MVE];@6^F^H_J@"T^QGVJKYJ*5V9/DWE0/Y*QNZA,NZ*5FL'Z/EM))0JZQDW5
+M1>[:P*XI^,]3.TQ$)\6Y%&lt;$::UG_]=E9`)A5DM&lt;_5K8"!/;1A]58-FT[6&amp;.C
+MNL\DY5K/&lt;F&amp;1D*?U/BM7+I2&amp;,9L*QES,.B;HQ0&lt;RA510=%B957U1+O3PD?0H
+M^5.%8ZG&lt;$_K)2X;`[\EL*KJ#B>7U>L)P(>_M%A;V0@][[17[$QK8FB)1UE3[
+MLCM2=I.*JL^J805\WH@,[LB?]6F!EVS^&amp;N5!&lt;F&amp;9?A`R.JYJV`_8>;'%E_!D
+M1P[[WT[#+:?!;-JR&amp;C+X+].]#CG:GR@C6P?7)GU3NJ4"/J]I_5?R%TUHJ(3F
+M*45@GW:+MK@%&amp;Q&amp;EV[XX)MW(I?C!2$._5LX65JFO')I@EP3K>HK84KF]`CZ/
+M3.20O\K&amp;5".5K0+T]4-]O1>[QLQ2M8'.?E:A_38+'.&amp;]A!_+6P[K4G,M$5:>
+MMMK"NC;YF^9B85;/'X'@U%&amp;/M>R[S`JT6>JZVV:^$_?E[4VS>!?!>2G3>)1N
+M,9;W-BZJ@C\7IZE'0J[DLW[J@+Z&lt;20_?B0;=$/RS+:2_*$?@N)5YCYM`W6#X
+M1GL^;_N^NA_(B,*,O;WM=I.-DGG91&lt;FTDQ\+>18?W1.BCI5P#.DDR=)35QAF
+MOY@%"G5S:A8)RP]4)EUQ"L7+X("1/4-[UR=,4=/)1*H[&lt;L\3,>K;"#U&amp;.F&amp;]
+M7V[?,)4>Z/++T&amp;*CV)&lt;6J:>74'1P&lt;+%0'D&amp;AN=3?$A;@UW-&amp;\-$=8?`=0OY>
+M_;9")WUBA*$OX-7*)\Q)P;Y^XW=O0&lt;-&lt;L=V5+OJ,1'?'20FQ&lt;HZS"7'X'RB6
+M?_Q#]IRW/"PC7N$&amp;4E>I9]07=XFAJ[^$3@(SN^4MJ;\+&lt;U[))?(&lt;?(,0(IQ@
+MFN!ZAIP@]H\I,?H'^4V1WFUK-[]M>6KK)?KO1R^.*V7Q>%P6DLON/[MB_(N0
+M?[./V3M0'J$W!OP=$5#"=L@;_/?!`)UJ/.JG'>?=)O8[_\Z`7HM/6_X$^.C*
+MX0XXZ7#(NV[Z!Q'C!RC(/N_8YW?V^&lt;#&lt;0AYLLO_I\)>=ZY.BM_7VN^/,EL9U
+M)'RNS\LG#]O]\XG-SL&lt;'`_2-?WMPG)>\3\#05S;`AV&lt;`_G?.=LB93+Q_>/H"
+M\%/CWW-@RJ(_4[N_":J3[^P'S_5R_G/_X_3H/QF&lt;1Z4'R0(1?GUPF-_0$[D'
+MU.@!XL!Q'.&amp;&lt;_>?5%S(^MRL1H8G0NU*$N>,G(PMSAGUG.WENO;R?'OT>K*H4
+M>;G[3%$3(7@A3XB;FT\\Y^$_?8'(=8C*FGM>?5X%?-M^D5_8'P[SM93@W\CK
+MZ>%?9YAL6U1:F'@AGP*^PZ@DT_K>>&lt;N_^4H^G:\0N'?BVS=)(IXHF&lt;V?(:19
+M>JEZ\QL+YZ\0N$7CLYE[R(^"[&amp;I27]5.#I\QA.PE%QX4_">'SP'7'X]I?D2W
+M_Y_QI0W3G&amp;B+HLK&amp;U&lt;?O!/VIX?\@=EI#Y=05(>3]%W/6J>$SDXL>X%E1!\K3
+MVZ]&amp;_8FY?\7VO^9DR1GRX9&lt;[`>?4?;[0`&lt;KI/3K;`8V";)G/&lt;G#[_SQ7]!_$
+ML&lt;G)T\C_8/P[&lt;,#KV1H_NT$X1^-?B?;]+-$_$GGV>SG3M/F=]PKGRAU;YLXS
+MA0_&lt;>3C;O`GPGVUUYCJ[P8ZUK/7].->B=&lt;W`G^B2]3\,%(RPQ&amp;$-80````!)
+'14Y$KD)@@@GP
+`
+end
+</map>
+  </image>
+  <label>
+   <rect>
+    <x>255</x>
+    <y>5</y>
+    <width>100</width>
+    <height>25</height>
+   </rect>
+   <font>
+    <face></face>
+    <size>12</size>
+    <weight>normal</weight>
+   </font>
+   <hcenter/>
+   <top/>
+   <string>Label</string>
+  </label>
+  <barcode>
+   <rect>
+    <x>405</x>
+    <y>10</y>
+    <width>212</width>
+    <height>45</height>
+   </rect>
+   <format>i2of5</format>
+   <maxlength>5</maxlength>
+   <center/>
+   <narrowBarWidth>0.01</narrowBarWidth>
+   <data>
+    <query>dati_ordine</query>
+    <column>ordprog</column>
+   </data>
+  </barcode>
+ </rpthead>
+ <section>
+  <name>articoli</name>
+  <detail>
+   <key>
+    <query>lista_articoli_ordine</query>
+   </key>
+   <height>30</height>
+   <text>
+    <rect>
+     <x>5</x>
+     <y>5</y>
+     <width>140</width>
+     <height>25</height>
+    </rect>
+    <bottompad>0</bottompad>
+    <font>
+     <face></face>
+     <size>11</size>
+     <weight>normal</weight>
+    </font>
+    <left/>
+    <vcenter/>
+    <data>
+     <query>lista_articoli_ordine</query>
+     <column>racdpro</column>
+    </data>
+   </text>
+   <text>
+    <rect>
+     <x>155</x>
+     <y>5</y>
+     <width>100</width>
+     <height>25</height>
+    </rect>
+    <bottompad>0</bottompad>
+    <font>
+     <face></face>
+     <size>11</size>
+     <weight>normal</weight>
+    </font>
+    <right/>
+    <vcenter/>
+    <data>
+     <query>lista_articoli_ordine</query>
+     <column>raqtord</column>
+    </data>
+   </text>
+  </detail>
+ </section>
+ <rptfoot>
+  <height>100</height>
+  <field>
+   <rect>
+    <x>515</x>
+    <y>65</y>
+    <width>100</width>
+    <height>25</height>
+   </rect>
+   <font>
+    <face></face>
+    <size>11</size>
+    <weight>normal</weight>
+   </font>
+   <right/>
+   <vcenter/>
+   <data>
+    <query>Context Query</query>
+    <column>page_number</column>
+   </data>
+  </field>
+ </rptfoot>
+</report>

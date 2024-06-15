@@ -1,0 +1,11 @@
+
+SHELL=/bin/bash
+
+all:
+	@echo -e '\n\
+Questo pacchetto puo` essere compilato in sicurezza solo su LynxOS\n\
+la compilazione in altri ambienti puo` produrre binari non utilizzabili\n\
+'
+
+.PHONY: all
+

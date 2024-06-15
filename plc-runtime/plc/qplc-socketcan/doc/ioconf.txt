@@ -1,0 +1,91 @@
+
+Mon Nov  9 17:45:04 MET 1998
+
+	Descrizione del file di configurazione degli I/O di qplc
+	--------------------------------------------------------
+
+ Queste note si riferiscono a qplc 1.8.0.11 .
+
+ Il file di configurazione degli I/O serve a modificare il comportamento
+di Qplc nei confronti delle richieste di uso dell'hardware da parte
+del programma PLC. Per l'esattezza, file di configurazione influenza il
+conportamento della funzione interna "ioAttach".
+ Qplc, durante il collegamento di un I/O ad una variabile, assegna ai segnali
+una delle seguenti proprieta`:
+
+    R : (Richiesto) Il segnale deve essere presente, cioe`
+	in sua assenza la funzione "ioAttach" fallisce.
+	Per un programma scritto in IL significa l'impossibilita`
+	di essere eseguito.
+    S : (Simulato) Il segnale, presente o assente che sia,
+	non viene fisicamente manipolato, e il tentativo di
+	usarlo non produce alcun effetto ma neppure errori.
+    O : (Opzionale) Il segnale e` utilizzato, se presente, oppure
+	e` simulato. In ogni caso non si hanno errori.
+    D : (Disattivato) Il tentativo di utilizzare il segnale fallisce sempre.
+
+ Qplc applica le regole seguenti nel gestire i segnali e il file di 
+configurazione:
+1) Se e` specificata l'opzione "-simul", tutti i segnali sono
+   considerati "simulati" (proprieta` "S") indipendentemente dal contenuto
+   del file di configurazione e dalle condizioni dell'hardware.
+2) Se il file di configurazione non e` presente, si assume che tutti
+   i segnali il cui nome inizi con "_" siano opzionali (proprieta` "O")
+   e tutti gli altri abbiano la proprieta` indicata con l'opzione
+   "-defaultio".  Se l'opzione non e` specificata, si assume "R".
+3) Se il file e` presente, viene interpretato come segue:
+ 3.1) Le linee che iniziano con "#" sono commenti.
+ 3.2) Non c'e` distinzione tra caratteri maiuscoli e minuscoli.
+ 3.3) Ogni segnale e` descritto da una linea avente la forma
+
+           <segnale> <proprieta`>
+
+      dove "segnale" e` il nome del segnale di I/O, preceduto da un
+      carattere "%" opzionale e due caratteri obbligatori che ne
+      identificano il tipo (input o output) e la dimensione. Questi
+      due caratteri sono conformi alla sintassi di descrizione dei
+      segnali di I/O riconosciuta dal compilatore del linguaggio IL.
+      Il primo puo` essere "I" per indicare segnali di INPUT, oppure
+      "Q" o "O" per segnali di OUTPUT. Il secondo rappresenta la
+      dimensione in bit del segnale secondo lo schema seguente:
+
+           X : 1 bit (tipo BOOL)
+           B : 8 bit (tipi BYTE, CHAR, UCHAR, SINT, USINT)
+           W : 16 bit (tipi WORD, INT, UINT)
+           D : 32 bit (tipi DWORD, DINT, UDINT, REAL)
+           L : 64 bit (tipi LWORD, LINT, ULINT, LREAL)
+
+       L'eventuale "%" iniziale non ha alcun effetto, ma serve solo per
+      avvicinare la sintassi di questo file a quella del compilatore IL.
+       Il campo "proprieta`" descrive il comportamento di Qplc quando
+      il programma plc tenta di agganciarsi al segnale. Le proprieta`
+      dei segnali sono state descritte sopra.
+       I segnali il cui nome inizia con "_" non provocano in ogni caso
+      errore.
+ 3.4) I segnali non citati nel file di configurazione sono trattati
+      secondo la regola (2).
+
+ Ecco un esempio di file di configurazione di qplc:
+
+# Segnali obbligatori
+%QXios.0.0.31.0.0	R
+%QXios.0.0.31.0.1	R
+%QXios.0.0.31.0.2	R
+%QXios.0.0.31.0.3	R
+
+# Segnali simulati
+%QXios.0.0.31.0.4	S
+%QXios.0.0.31.0.5	S
+%QXios.0.0.31.0.6	S
+%QXios.0.0.31.0.7	S
+
+# Segnali opzionali
+%QXios.0.0.31.0.8	O
+%QXios.0.0.31.0.9	O
+%QXios.0.0.31.0.10	O
+%QXios.0.0.31.0.11	O
+
+# A tutti i segnali non citati qui si intende applicata la proprieta`
+# specificata al lancio di qplc nell'opzione "-defaultio". In sua assenza,
+# la proprieta` sara` R.
+

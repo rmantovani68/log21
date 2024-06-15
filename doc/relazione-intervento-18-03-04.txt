@@ -1,0 +1,51 @@
+                        A&L -  Automazione e Logistica
+
+-------------------------------------------------------------------------------
+           Relazione sull'intervento del 18/03/2004 presso DELTA TRADING Srl
+
+
+Come da specifiche richieste si e' provveduto alle seguenti modifiche e/o
+aggiunte:
+
+1 - Evasione automatica colli non evasi alla lettura sul bancale:
+    ogni collo che arriva a fine linea e' naturalmente da evadere, dato che si
+    trova  sul bancale. Ad ogni lettura sul bancale vengono ora evase tutte le
+    linee del collo.
+
+2 - Nuovo calcolo del tempo di lavoro: e' stata implementata una nuova
+    procedura per calcolare il tempo di lavoro, che tiene conto del tempo
+    intercorrente tra gli START e gli STOP dell'impianto. Adesso la media di
+    lavorazione e' pura, cioe' pesata sul solo periodo in cui l'impianto e'
+    attivo, rendendo quindi piu' veritieri i calcoli di produttivita'.
+
+3 - Intervento sulla macchina Scarti: sostituito floppy drive difettoso e 
+    modifica dello script per la copia su dischetto del consuntivo scarti.
+
+4 - Check Bancali con distinzione dei colli fra le diverse cedole
+
+5 - Campi note distinti per le cedole in lavorazione: ad ogni cedola e tipo
+    spedizione sono ora associati due campi note, uno per la spedizione e 
+    uno per il corriere.
+
+Nell'intervento sul sito sono stati verificati e risolti anche i seguenti
+problemi:
+
+1 - Intervento sulla macchina Bancali: e' stato riattivato il computer, il
+    cui disco aveva le partizioni corrotte, forse per spegnimento non regolare 
+    della stessa. E' stata inoltre riorganizzata l'interfaccia di Controllo 
+    Bancali in fine linea, dato che parte di essa finiva sotto il panel del 
+    desktop.
+
+2 - Aggiunta una opzione per la visualizzazione della lista degli eventi di 
+    START/STOP nell'applicazione di edit tabelle.
+
+3 - Intervento sulla stampante SER2: le saldature sulle prese del cavo seriale
+    erano logore. Si e' provveduto a risaldarle ed a verificarne il corretto
+    funzionamento.
+
+
+
+        Firma del tecnico                     Firma del cliente
+                            
+                            
+        ____________________                  ____________________

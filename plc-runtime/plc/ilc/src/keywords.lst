@@ -1,0 +1,184 @@
+#
+# @(#) keywords.lst 1.1 Mon Oct  7 17:09:48 MET 1996
+#
+#  Questo file contiene la lista delle parole chiave del linguaggio
+# per PLC descritto dalla norma IEC1131-3
+#  Il file e` adatto ad essere elaborato dallo script "mkkw" per 
+# generare un sorgente C da includere nel parser del linguaggio.
+#
+# 26/06/96 GG 1.0 Prima stesura.
+# 07/10/96 GG 1.1 Aggiunta la possibilita` di indicare le parole chiave
+#             utilizzabili anche come identificatori. Bisogna scrivere "id"
+#             dopo la parola chiave (spaziato).
+
+# Parole chiave ricavate dalla tabella C.2 di IEC1131-3.
+
+# Costanti.
+
+FALSE
+TRUE
+
+# Parole dedicate alla definizione di tipi.
+
+TYPE
+END_TYPE
+STRUCT
+END_STRUCT
+
+# Tipi predefiniti.
+
+BOOL
+SINT
+INT
+DINT
+LINT
+USINT
+UINT
+UDINT
+ULINT
+REAL
+LREAL
+TIME
+DATE
+TIME_OF_DAY
+TOD
+DATE
+DATE_AND_TIME
+DT
+STRING
+BYTE
+WORD
+DWORD
+LWORD
+
+# Parole dedicate alla definizione di variabili.
+
+VAR
+END_VAR
+VAR_INPUT
+VAR_OUTPUT
+VAR_IN_OUT
+VAR_EXTERNAL
+VAR_ACCESS
+VAR_GLOBAL
+VAR_TEMP
+RETAIN
+F_EDGE
+R_EDGE
+CONSTANT
+ARRAY
+OF
+AT
+READ_ONLY
+READ_WRITE
+
+# Linguaggio ST.
+
+IF
+THEN
+ELSIF
+ELSE
+END_IF
+FOR
+TO
+BY
+END_FOR
+EXIT
+CASE
+OF
+ELSE
+END_CASE
+REPEAT
+UNTIL
+END_REPEAT
+WHILE
+DO
+END_WHILE
+RETURN
+
+# Definizione di procedure, funzioni, blocchi funzionali.
+
+FUNCTION
+END_FUNCTION
+FUNCTION_BLOCK
+END_FUNCTION_BLOCK
+EN
+ENO
+
+# Descrizione testuale di grafi SFC.
+
+#Action qualifiers
+ACTION
+END_ACTION
+INITIAL_STEP
+END_STEP
+STEP
+END_STEP
+TRANSITION
+FROM
+TO
+END_TRANSITION
+
+# Descrizione della configurazione del sistema.
+
+CONFIGURATION
+END_CONFIGURATION
+PROGRAM
+WITH
+END_PROGRAM
+RESOURCE
+ON
+END_RESOURCE
+TASK
+WITH
+
+# Operatori (ST ed IL in espressioni costanti)
+
+AND
+OR
+XOR
+NOT
+MOD
+
+# Parole del linguaggio IL
+
+LD	id
+LDN
+ST
+STN
+S	id
+R	id
+AND
+ANDN
+OR
+ORN
+XOR
+XORN
+NOT
+ADD
+SUB
+MUL
+DIV
+MOD
+GT
+GE
+EQ
+NE
+LE
+LT
+JMP
+JMPC
+JMPCN
+CAL
+CALC
+CALCN
+RET
+RETC
+RETCN
+
+# Funzioni blocchi funzionali predefiniti.
+
+#Function names
+#Function block names
+#Type conversione functions
+

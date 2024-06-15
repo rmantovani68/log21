@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Impostazioni
+Icon=/usr/share/easy-picking/images/easy-picking-setup.svg
+Exec=sh -c "cd /opt/easy-picking/bin; ./setup"
+Terminal=false

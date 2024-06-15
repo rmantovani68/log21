@@ -1,0 +1,15 @@
+
+
+CC=gcc
+CFLAGS=-g -DLinux -I/usr/local/cni/include
+
+
+astrip:	astrip.c
+	$(CC) $(CFLAGS) astrip.c -o astrip
+
+fixaout:	fixaout.c
+	$(CC) $(CFLAGS) fixaout.c -o fixaout
+
+c2a:	c2a.c
+	$(CC) $(CFLAGS) c2a.c -o c2a
+

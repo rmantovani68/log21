@@ -1,0 +1,147 @@
+/*
+    lb_titolo
+    lb_BOLLA
+    lb_COLLO
+    lb_risultato
+    lb_PESOCALC_TIT
+    lb_PESOCALC
+    lb_PESOREA_TIT
+    lb_PESOREA
+    lb_PESODIFF_TIT
+    lb_PESODIFF
+    lb_volume_imb
+    lb_volume_uti
+    lb_VOLUME
+    lb_VOL_UTI
+    lb_VOLUME_P
+    lb_VOL_P_UTI
+    lb_perc_imb
+    lb_perc_uti
+    lb_peso
+    lb_tara
+    lb_PSPRE
+    lb_TARA
+    lb_ordine
+    lb_collo
+    lb_copie
+    lb_cliente
+    lb_formato
+    lb_righe
+    lb_PRDOC
+    lb_NMCOL
+    lb_NMCPE
+    lb_CDRID
+    lb_SWCOL
+    lb_NMRGH
+    lb_evadi
+    lb_stampa
+    search_bar
+    search_entry
+    entry_BOLLA
+    entry_COLLO
+    pb_cerca
+    pb_evadi
+    pb_stampa
+    pb_bilancia
+    pb_conf
+    pb_info
+    pb_clear
+    pb_exit
+*/
+
+#vb_esempio {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-right: 30px;
+    margin-left: 30px;
+}
+
+entry {
+    color: white;
+    font: bold 24px "Comic Sans";
+    transition: all 250ms ease-in;
+}
+
+hbox.label {
+    color: cyan;
+    font: bold 12px "Comic Sans";
+    transition: all 250ms ease-in;
+}
+
+#hbox.label {
+    color: cyan;
+    font: bold 12px "Comic Sans";
+    transition: all 250ms ease-in;
+}
+
+
+@keyframes background_animation {
+  0%   { background-position: 0% 0%;}
+  100% { background-position: 100% 0%;}
+}
+
+#lb_codice_operatore {
+    color: yellow;
+    font: bold 36px "Comic Sans";
+    margin-right: 30px; margin-left: 30px;
+}
+
+/*
+#eb_main {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-right: 30px;
+    margin-left: 30px;
+
+    animation: background_animation 42s infinite linear;
+    background-image: url('resource://images/Endless-Constellation.svg');
+}
+
+label {
+    color: white;
+    font: bold 24px "Comic Sans";
+    transition: all 250ms ease-in;
+}
+
+#lb_operazione {
+    color: blue;
+    font: bold 146px "Comic Sans";
+    transition: all 250ms ease-in;
+}
+
+#eb_copie {
+    padding: 20px;
+}
+
+#lb_copie {
+    color: pink;
+    font: bold 146px "Comic Sans";
+    transition: all 250ms ease-in;
+}
+
+#lb_ordine_collo {
+    color: yellow;
+    font: bold 80px "Comic Sans";
+    transition: all 250ms ease-in;
+}
+
+#lb_titolo {
+    color: cyan;
+    font: bold 40px "Comic Sans";
+    transition: all 250ms ease-in;
+}
+
+#lb_codice {
+    color: yellow;
+    font: bold 80px "Comic Sans";
+    transition: all 250ms ease-in;
+}
+
+#lb_ubicazione {
+    color: cyan;
+    font: bold 80px "Comic Sans";
+    transition: all 250ms ease-in;
+}
+*/
+
+

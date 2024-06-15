@@ -1,0 +1,15 @@
+
+1.0, 1.1 : versioni preliminari.
+
+1.2 : prima versione distribuita.
+
+Fri Sep 15 12:29:19 WET 1995 : 1.3 : aggiunta la funzione iosOpenGeneral.
+
+1.4 : Non documentata !
+
+Fri Nov 22 12:01:57 MET 1996 : 1.5 : Modificata la mmap per permettere
+ la gestione di offset e lunghezza. Richiede (solo per completezza) una
+ modifica a kutils nel kernel.
+
+Thu Jun 29 18:29:12 CEST 2000 : 1.6 : Ricompilazione per linux.
+

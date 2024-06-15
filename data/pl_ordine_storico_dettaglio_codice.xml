@@ -1,0 +1,941 @@
+<!DOCTYPE openRPTDef>
+<report>
+ <title>Packing List Ordine Storico</title>
+ <name>Packing List Ordine Storico</name>
+ <description></description>
+ <parameter name="bolla" >Codice Spedizione</parameter>
+ <size>A4</size>
+ <portrait/>
+ <topmargin>10</topmargin>
+ <bottommargin>10</bottommargin>
+ <rightmargin>20</rightmargin>
+ <leftmargin>20</leftmargin>
+ <querysource>
+  <name>lista_articoli_in_collo</name>
+  <sql>select
+ r.RPNMCOL as &quot;collo&quot;,
+ r.RPCDPRO as &quot;codice&quot;,
+ r.RPQTSPE as &quot;quantita&quot;,
+ c.PRDSTIT as &quot;titolo&quot;,
+ collo_storico_cpnmcpe(r.ordprog,r.rpnmcol) as &quot;qt_collo&quot;,
+ collo_storico_cppspre(r.ordprog,r.rpnmcol) as &quot;peso_collo&quot;,
+ collo_storico_cptpfor(r.ordprog,r.rpnmcol) as &quot;imballo_collo&quot;
+from ric_ord_stor o,rig_prod_stor r,catalogo_stor c where
+ o.ORDPROG=&lt;? value('bolla') ?> and
+ r.ORDPROG=&lt;? value('bolla') ?> and
+ r.RPCDPRO=c.PRCDPRO and 
+ o.ronmced=c.prnmced
+order by collo, codice;</sql>
+ </querysource>
+ <querysource>
+  <name>dati_ordine</name>
+  <sql>select
+ ORDPROG as &quot;ordprog&quot;,
+ RONMCLL as &quot;colli&quot;,
+ RONMCPP as &quot;copie&quot;,
+ ropspre/1000 as &quot;peso&quot;,
+ data_ora(ROTMRCZ) as &quot;data_lavorazione&quot;,
+ RODSCLI1 as &quot;desc_cliente&quot;,
+ ROINCLI as &quot;indirizzo_cliente&quot;,
+ ROLOCLI as &quot;localita_cliente&quot;,
+ ROPRCLI as &quot;provincia_cliente&quot;,
+ ROCPCLI as &quot;cap_cliente&quot;,
+ ROCDLIN as &quot;linea_spedizione&quot;,
+ data_ora('now') as &quot;data_ora&quot;
+from ric_ord_stor
+ where 
+ ORDPROG=&lt;? value('bolla') ?>;</sql>
+ </querysource>
+ <querysource>
+  <name>lista_articoli_per_codice</name>
+  <sql>select
+ r.RPNMCOL as &quot;collo&quot;,
+ r.RPCDPRO as &quot;codice&quot;,
+ r.RPQTSPE as &quot;quantita&quot;,
+ c.PRDSTIT as &quot;titolo&quot;, copie_articolo_in_ordine_storico(r.ordprog,r.rpcdpro) as &quot;qt_codice&quot;,
+ collo_storico_cptpfor(r.ordprog,r.rpnmcol) as &quot;imballo_collo&quot;
+from ric_ord_stor o,rig_prod_stor r,catalogo_stor c where
+ o.ORDPROG=&lt;? value('bolla') ?> and
+ r.ORDPROG=&lt;? value('bolla') ?> and
+ o.RPNMCED=c.PRNMCED and
+ r.RPCDPRO=c.PRCDPRO
+order by qt_codice desc,quantita desc,codice,collo;</sql>
+ </querysource>
+ <rpthead>
+  <height>281</height>
+  <field>
+   <rect>
+    <x>395</x>
+    <y>125</y>
+    <width>370</width>
+    <height>25</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>11</size>
+    <weight>normal</weight>
+   </font>
+   <left/>
+   <vcenter/>
+   <data>
+    <query>dati_ordine</query>
+    <column>desc_cliente</column>
+   </data>
+  </field>
+  <label>
+   <rect>
+    <x>15</x>
+    <y>260</y>
+    <width>150</width>
+    <height>20</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>10</size>
+    <weight>normal</weight>
+   </font>
+   <left/>
+   <vcenter/>
+   <string>CODICE</string>
+  </label>
+  <image>
+   <rect>
+    <x>10</x>
+    <y>0</y>
+    <width>80</width>
+    <height>65</height>
+   </rect>
+   <mode>stretch</mode>
+   <map format="PNG" >begin 644 internal
+MB5!.1PT*&amp;@H````-24A$4@```'X```!A&quot;`,````G?>7T````8%!,5$4`*4+A
+MZ.QUB91`7W&amp;VQ,V&lt;K;?-U]T@1%K___]?&lt;WZ*G*>FMK_N\?00-D[8W^3&quot;SM54
+M:'-]D9MG>X8P46:OOL;U]_>2I*[?Y.?3V]_G[>]N@HV^Q\W'T]F&quot;E:!8;'?^
+M`0).&amp;HXJ`````6)+1T0?!0T0O0````EP2%ES````2````$@`1LEK/@``!@))
+M1$%4:-[MFNFRJR@0@(T*:B0:C8H&amp;\?T?&lt;UB41&lt;&amp;0Y%3-U%3ZUST!^Z.;WK1N
+ME/^K$OWP/_P/_\/_\#_\#__#__`__`__G\?W_73!U3A#.(X5QI&lt;)H;[G/R,T
+ML16V-,(9UC4A:=>5'?D3?'^I8#5>^ARQ?Y&quot;T!`&quot;479>2&amp;5;5!?5YCR9&lt;P;DF
+M#,G6ABMMXF=;+/?Q:SR&quot;'8.E]4J?:TDO!7V4]/XBZ6E7EII>W,LOG=^3:W,=
+M.!UZZ!-S/;=]W-&amp;?1;'0[^X>#^U3T1&amp;[`@P97;J>T6&lt;/_=K$&lt;=LNR[/_!C_&amp;
+MQ4KO:H@9?:H8G=V$I->&quot;CCC]PNBSI`]`TIGM&quot;Z-_C.^O]Z5X-G2E3YP^,OIJ
+M>ZKI[$I&amp;J&amp;P?KDWSY&amp;%7X/QS?+K&lt;E_89&quot;SJ!U93GC#XK.K,=5IC3^TG0ZS1=
+MZ532%T'_#,],O]\+22]7.I:V#R5/N97.@GZ:*A;T(LLE/18I]Y3TC_&quot;X7>E7
+M`#HR5Q=!GTFW);R@RX2_X-&amp;1\$V?O\##&lt;N#&amp;I3RC;*E9O;@7K:2G\\CHB--5
+MRM6ZW#`Z&quot;_HTM>FETN7!UW',7#N4W+BI=](;05?E1M*!M'W$5K&amp;SZ13GYWC&lt;
+MB+`2=*E>GP`8]$.Q`[+4KG1GL1M&amp;D^3&quot;EP6G7SF=J>?UI)HGM2;H:[EA&amp;&lt;&lt;;
+M&quot;KJP\!9]IF)WON\SE5B;>9\AU0YUQ/=TI4O72CI));]N&amp;9VE7#.D&lt;,J_EP.^
+M9]58TU4U*\M>TZ_U7Z&quot;=^)IE#B'&lt;4[6HI?E%T,%0\XSC=(`_`07B+4\@7LTD
+M_3IPQ]SOPU\9_AK/3\&quot;K65GR&lt;E71XA[_H>4A>%9_6-YP.FO1]S)`XQ_C\QD`
+MWBA8DQS-GQ'I**4)D[@9B,LKF`A!IWBAP9:8`FCL25>Z1N!AR:*=).;%(-`^
+MC*76%ZY1CFZ12VYMM^WIV830%D\5&lt;^#A?&quot;(BVP:R'!>IS_DP\D@&amp;-O&lt;S>KN=
+M'V2^_2L>)ZY%+SZ/??JB9+VW1M%1XMV\XH';FWX\]FO,9`QTQ6H9O/GW2CSP
+M+/KQ>>97F0G[IT'N[O;TS'0&amp;.:&amp;?X96.EJ427:S(6HS-ENYE6#V&quot;&quot;'UL>#..
+M$LJRKK[&amp;63!^&quot;QYJ6`E=]&amp;RPLQG'-_&amp;T=L:B4TU$PQMXIDY[H-U^,^Z='DL)
+M7MC3VGA@KJ'X37R.%2O;=*A?;M&quot;IJH,ZAY;=&amp;LG>P^=4&amp;;+^H#8]_&amp;U'[3D&lt;
+M$!'G`UZ\]J-4-2C;3YK>_L@OQ8O7JHCM>GBF;9/0OAR`%ZK:\_S=/W.Z*P2O
+M2Z$P7@4B.M46&lt;D-!^$Y%&amp;O]+W3PXU:;3-8-YB'CQB^5'599/C;>:%SW?>HXG
+MRHW(O(GE7)O5NV\!!_#@=84#EN^'%^KL=GQ[.9FZ\&lt;&quot;FZYL@+]0=1I>D.]WO
+MP&quot;-CGEDC38742V\>&amp;VY&amp;&lt;3`>=M3P7[89&amp;P7C=8$(BL(=WAP\C*;Z!E['B1D$
+M71A>!7P4FT^\@\^A:Q&quot;.40A>^RZV=KV#=P_#[CZYQ^O6\K'U7!R3OG-*.$2^
+M*K9FV58ZPM\PQ?AEIX##_\?$TV.%WI69&amp;X)E_S84'[&lt;&lt;\7K,TMO5AM!&amp;NMV!
+M?8&quot;C^8ZRHS-'M3&lt;U>3V&quot;R9L'S&quot;LXMDM7T55_JFC1^?CVYP5D!.'1^RZ\,=-N
+M[E*_M,%&lt;);H.)D%X'?W1`^U5A(T1EF1OXHVQ86WP\'&quot;@-V1X%X]TV5J]G7S!
+M)SM;7N+-OBWCQ7@)?YNOK#^FK6_8TB\Y:[H88YQWC$2Y\V3..?X&lt;GR][OE%!
+M;LZ9&quot;RTDI\LQ,]4$&lt;LO#\&lt;;U2[[U82,Y&amp;L+:'.%.6SH/W54R_6\Y)D[PN\@4
+M>XC#0R8>%W=V:X&amp;Z!*Q3]A;4&lt;I28.&amp;#;$:T4&amp;01D2+;'=75>**5-;-9\U\1C
+MX^T=X`7_(,2,V+TXWX\$WM'CW/SN[,/6.=[]=L;QNL7MWPQ-;:UXW3GYK'>&amp;
+M]\V:D6WCOJ2`@PJ2?(!O?94JV@W&amp;^XD,FK1$+,+6&lt;P6L'#D_:;;^&amp;2G&quot;#;5E
+MOP,.QJ*T`G7M?IA.XO6C-7M/,8]P6\#Y!_5/!9+M3.#PR1X2&lt;>:.O&amp;H/_Z__
+;N?+#OR/_`%E/&lt;'9]YO!.`````$E%3D2N0F&quot;&quot;
+`
+end
+</map>
+  </image>
+  <line>
+   <xstart>0</xstart>
+   <ystart>70</ystart>
+   <xend>785</xend>
+   <yend>70</yend>
+   <weight>2</weight>
+  </line>
+  <label>
+   <rect>
+    <x>175</x>
+    <y>260</y>
+    <width>400</width>
+    <height>20</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>10</size>
+    <weight>normal</weight>
+   </font>
+   <left/>
+   <vcenter/>
+   <string>TITOLO</string>
+  </label>
+  <line>
+   <xstart>10</xstart>
+   <ystart>260</ystart>
+   <xend>10</xend>
+   <yend>280</yend>
+   <weight>1</weight>
+  </line>
+  <line>
+   <xstart>10</xstart>
+   <ystart>100</ystart>
+   <xend>780</xend>
+   <yend>100</yend>
+   <weight>2</weight>
+  </line>
+  <line>
+   <xstart>170</xstart>
+   <ystart>260</ystart>
+   <xend>170</xend>
+   <yend>280</yend>
+   <weight>0</weight>
+  </line>
+  <field>
+   <rect>
+    <x>130</x>
+    <y>215</y>
+    <width>60</width>
+    <height>15</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>10</size>
+    <weight>bold</weight>
+   </font>
+   <left/>
+   <vcenter/>
+   <data>
+    <query>dati_ordine</query>
+    <column>peso</column>
+   </data>
+  </field>
+  <label>
+   <rect>
+    <x>195</x>
+    <y>215</y>
+    <width>25</width>
+    <height>15</height>
+   </rect>
+   <font>
+    <face>Bitstream Vera Sans</face>
+    <size>10</size>
+    <weight>normal</weight>
+   </font>
+   <left/>
+   <top/>
+   <string>Kg</string>
+  </label>
+  <field>
+   <rect>
+    <x>130</x>
+    <y>195</y>
+    <width>240</width>
+    <height>15</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>10</size>
+    <weight>bold</weight>
+   </font>
+   <left/>
+   <vcenter/>
+   <data>
+    <query>dati_ordine</query>
+    <column>copie</column>
+   </data>
+  </field>
+  <field>
+   <rect>
+    <x>395</x>
+    <y>205</y>
+    <width>40</width>
+    <height>23</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>11</size>
+    <weight>normal</weight>
+   </font>
+   <left/>
+   <vcenter/>
+   <data>
+    <query>dati_ordine</query>
+    <column>cap_cliente</column>
+   </data>
+  </field>
+  <line>
+   <xstart>10</xstart>
+   <ystart>260</ystart>
+   <xend>580</xend>
+   <yend>260</yend>
+   <weight>1</weight>
+  </line>
+  <line>
+   <xstart>380</xstart>
+   <ystart>100</ystart>
+   <xend>380</xend>
+   <yend>240</yend>
+   <weight>1</weight>
+  </line>
+  <label>
+   <rect>
+    <x>15</x>
+    <y>195</y>
+    <width>104</width>
+    <height>15</height>
+   </rect>
+   <font>
+    <face>Bitstream Vera Sans</face>
+    <size>10</size>
+    <weight>normal</weight>
+   </font>
+   <left/>
+   <vcenter/>
+   <string>Copie Totali:</string>
+  </label>
+  <label>
+   <rect>
+    <x>385</x>
+    <y>110</y>
+    <width>104</width>
+    <height>17</height>
+   </rect>
+   <font>
+    <face>Bitstream Vera Sans</face>
+    <size>10</size>
+    <weight>normal</weight>
+   </font>
+   <left/>
+   <top/>
+   <string>Destinatario</string>
+  </label>
+  <field>
+   <rect>
+    <x>395</x>
+    <y>180</y>
+    <width>370</width>
+    <height>25</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>11</size>
+    <weight>normal</weight>
+   </font>
+   <left/>
+   <vcenter/>
+   <data>
+    <query>dati_ordine</query>
+    <column>indirizzo_cliente</column>
+   </data>
+  </field>
+  <field>
+   <rect>
+    <x>690</x>
+    <y>30</y>
+    <width>90</width>
+    <height>40</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>20</size>
+    <weight>normal</weight>
+   </font>
+   <right/>
+   <vcenter/>
+   <data>
+    <query>dati_ordine</query>
+    <column>linea_spedizione</column>
+   </data>
+  </field>
+  <field>
+   <rect>
+    <x>450</x>
+    <y>205</y>
+    <width>270</width>
+    <height>23</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>11</size>
+    <weight>normal</weight>
+   </font>
+   <left/>
+   <vcenter/>
+   <data>
+    <query>dati_ordine</query>
+    <column>localita_cliente</column>
+   </data>
+  </field>
+  <label>
+   <rect>
+    <x>120</x>
+    <y>20</y>
+    <width>292</width>
+    <height>40</height>
+   </rect>
+   <font>
+    <face>BN Elements</face>
+    <size>20</size>
+    <weight>normal</weight>
+   </font>
+   <hcenter/>
+   <vcenter/>
+   <string>Packing List Ordine</string>
+  </label>
+  <line>
+   <xstart>10</xstart>
+   <ystart>169</ystart>
+   <xend>380</xend>
+   <yend>169</yend>
+   <weight>1</weight>
+  </line>
+  <label>
+   <rect>
+    <x>15</x>
+    <y>100</y>
+    <width>115</width>
+    <height>17</height>
+   </rect>
+   <font>
+    <face>Bitstream Vera Sans</face>
+    <size>10</size>
+    <weight>normal</weight>
+   </font>
+   <left/>
+   <top/>
+   <string>Numero Ordine</string>
+  </label>
+  <line>
+   <xstart>780</xstart>
+   <ystart>100</ystart>
+   <xend>780</xend>
+   <yend>240</yend>
+   <weight>2</weight>
+  </line>
+  <field>
+   <rect>
+    <x>25</x>
+    <y>120</y>
+    <width>340</width>
+    <height>50</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>36</size>
+    <weight>normal</weight>
+   </font>
+   <hcenter/>
+   <bottom/>
+   <data>
+    <query>dati_ordine</query>
+    <column>ordprog</column>
+   </data>
+  </field>
+  <label>
+   <rect>
+    <x>15</x>
+    <y>215</y>
+    <width>104</width>
+    <height>15</height>
+   </rect>
+   <font>
+    <face>Bitstream Vera Sans</face>
+    <size>10</size>
+    <weight>normal</weight>
+   </font>
+   <left/>
+   <vcenter/>
+   <string>Peso Totale:</string>
+  </label>
+  <label>
+   <rect>
+    <x>385</x>
+    <y>160</y>
+    <width>104</width>
+    <height>17</height>
+   </rect>
+   <font>
+    <face>Bitstream Vera Sans</face>
+    <size>10</size>
+    <weight>normal</weight>
+   </font>
+   <left/>
+   <top/>
+   <string>Destinazione</string>
+  </label>
+  <line>
+   <xstart>10</xstart>
+   <ystart>100</ystart>
+   <xend>10</xend>
+   <yend>240</yend>
+   <weight>2</weight>
+  </line>
+  <line>
+   <xstart>10</xstart>
+   <ystart>280</ystart>
+   <xend>580</xend>
+   <yend>280</yend>
+   <weight>1</weight>
+  </line>
+  <line>
+   <xstart>580</xstart>
+   <ystart>260</ystart>
+   <xend>580</xend>
+   <yend>280</yend>
+   <weight>1</weight>
+  </line>
+  <line>
+   <xstart>10</xstart>
+   <ystart>240</ystart>
+   <xend>780</xend>
+   <yend>240</yend>
+   <weight>2</weight>
+  </line>
+  <label>
+   <rect>
+    <x>15</x>
+    <y>175</y>
+    <width>104</width>
+    <height>15</height>
+   </rect>
+   <font>
+    <face>Bitstream Vera Sans</face>
+    <size>10</size>
+    <weight>normal</weight>
+   </font>
+   <left/>
+   <vcenter/>
+   <string>Numero Colli:</string>
+  </label>
+  <field>
+   <rect>
+    <x>740</x>
+    <y>205</y>
+    <width>25</width>
+    <height>23</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>11</size>
+    <weight>normal</weight>
+   </font>
+   <left/>
+   <vcenter/>
+   <data>
+    <query>dati_ordine</query>
+    <column>provincia_cliente</column>
+   </data>
+  </field>
+  <field>
+   <rect>
+    <x>130</x>
+    <y>175</y>
+    <width>240</width>
+    <height>15</height>
+   </rect>
+   <font>
+    <face>Sans</face>
+    <size>10</size>
+    <weight>bold</weight>
+   </font>
+   <left/>
+   <vcenter/>
+   <data>
+    <query>dati_ordine</query>
+    <column>colli</column>
+   </data>
+  </field>
+ </rpthead>
+ <pghead>
+  <firstpage/>
+  <height>6</height>
+ </pghead>
+ <pghead>
+  <height>86</height>
+  <label>
+   <rect>
+    <x>120</x>
+    <y>19</y>
+    <width>290</width>
+    <height>40</height>
+   </rect>
+   <font>
+    <face>BN Elements</face>
+    <size>20</size>
+    <weight>normal</weight>
+   </font>
+   <hcenter/>
+   <vcenter/>
+   <string>Packing List Ordine</string>
+  </label>
+  <image>
+   <rect>
+    <x>10</x>
+    <y>0</y>
+    <width>80</width>
+    <height>65</height>
+   </rect>
+   <mode>stretch</mode>
+   <map format="PNG" >begin 644 internal
+MB5!.1PT*&amp;@H````-24A$4@```'X```!A&quot;`,````G?>7T````8%!,5$4`*4+A
+MZ.QUB91`7W&amp;VQ,V&lt;K;?-U]T@1%K___]?&lt;WZ*G*>FMK_N\?00-D[8W^3&quot;SM54
+M:'-]D9MG>X8P46:OOL;U]_>2I*[?Y.?3V]_G[>]N@HV^Q\W'T]F&quot;E:!8;'?^
+M`0).&amp;HXJ`````6)+1T0?!0T0O0````EP2%ES````2````$@`1LEK/@``!@))
+M1$%4:-[MFNFRJR@0@(T*:B0:C8H&amp;\?T?&lt;UB41&lt;&amp;0Y%3-U%3ZUST!^Z.;WK1N
+ME/^K$OWP/_P/_\/_\#_\#__#__`__`__G\?W_73!U3A#.(X5QI&lt;)H;[G/R,T
+ML16V-,(9UC4A:=>5'?D3?'^I8#5>^ARQ?Y&quot;T!`&quot;479>2&amp;5;5!?5YCR9&lt;P;DF
+M#,G6ABMMXF=;+/?Q:SR&quot;'8.E]4J?:TDO!7V4]/XBZ6E7EII>W,LOG=^3:W,=
+M.!UZZ!-S/;=]W-&amp;?1;'0[^X>#^U3T1&amp;[`@P97;J>T6&lt;/_=K$&lt;=LNR[/_!C_&amp;
+MQ4KO:H@9?:H8G=V$I->&quot;CCC]PNBSI`]`TIGM&quot;Z-_C.^O]Z5X-G2E3YP^,OIJ
+M>ZKI[$I&amp;J&amp;P?KDWSY&amp;%7X/QS?+K&lt;E_89&quot;SJ!U93GC#XK.K,=5IC3^TG0ZS1=
+MZ532%T'_#,],O]\+22]7.I:V#R5/N97.@GZ:*A;T(LLE/18I]Y3TC_&quot;X7>E7
+M`#HR5Q=!GTFW);R@RX2_X-&amp;1\$V?O\##&lt;N#&amp;I3RC;*E9O;@7K:2G\\CHB--5
+MRM6ZW#`Z&quot;_HTM>FETN7!UW',7#N4W+BI=](;05?E1M*!M'W$5K&amp;SZ13GYWC&lt;
+MB+`2=*E>GP`8]$.Q`[+4KG1GL1M&amp;D^3&quot;EP6G7SF=J>?UI)HGM2;H:[EA&amp;&lt;&lt;;
+M&quot;KJP\!9]IF)WON\SE5B;>9\AU0YUQ/=TI4O72CI));]N&amp;9VE7#.D&lt;,J_EP.^
+M9]58TU4U*\M>TZ_U7Z&quot;=^)IE#B'&lt;4[6HI?E%T,%0\XSC=(`_`07B+4\@7LTD
+M_3IPQ]SOPU\9_AK/3\&quot;K65GR&lt;E71XA[_H>4A>%9_6-YP.FO1]S)`XQ_C\QD`
+MWBA8DQS-GQ'I**4)D[@9B,LKF`A!IWBAP9:8`FCL25>Z1N!AR:*=).;%(-`^
+MC*76%ZY1CFZ12VYMM^WIV830%D\5&lt;^#A?&quot;(BVP:R'!>IS_DP\D@&amp;-O&lt;S>KN=
+M'V2^_2L>)ZY%+SZ/??JB9+VW1M%1XMV\XH';FWX\]FO,9`QTQ6H9O/GW2CSP
+M+/KQ>>97F0G[IT'N[O;TS'0&amp;.:&amp;?X96.EJ427:S(6HS-ENYE6#V&quot;&quot;'UL>#..
+M$LJRKK[&amp;63!^&quot;QYJ6`E=]&amp;RPLQG'-_&amp;T=L:B4TU$PQMXIDY[H-U^,^Z='DL)
+M7MC3VGA@KJ'X37R.%2O;=*A?;M&quot;IJH,ZAY;=&amp;LG>P^=4&amp;;+^H#8]_&amp;U'[3D&lt;
+M$!'G`UZ\]J-4-2C;3YK>_L@OQ8O7JHCM>GBF;9/0OAR`%ZK:\_S=/W.Z*P2O
+M2Z$P7@4B.M46&lt;D-!^$Y%&amp;O]+W3PXU:;3-8-YB'CQB^5'599/C;>:%SW?>HXG
+MRHW(O(GE7)O5NV\!!_#@=84#EN^'%^KL=GQ[.9FZ\&lt;&quot;FZYL@+]0=1I>D.]WO
+MP&quot;-CGEDC38742V\>&amp;VY&amp;&lt;3`>=M3P7[89&amp;P7C=8$(BL(=WAP\C*;Z!E['B1D$
+M71A>!7P4FT^\@\^A:Q&quot;.40A>^RZV=KV#=P_#[CZYQ^O6\K'U7!R3OG-*.$2^
+M*K9FV58ZPM\PQ?AEIX##_\?$TV.%WI69&amp;X)E_S84'[&lt;&lt;\7K,TMO5AM!&amp;NMV!
+M?8&quot;C^8ZRHS-'M3&lt;U>3V&quot;R9L'S&quot;LXMDM7T55_JFC1^?CVYP5D!.'1^RZ\,=-N
+M[E*_M,%&lt;);H.)D%X'?W1`^U5A(T1EF1OXHVQ86WP\'&quot;@-V1X%X]TV5J]G7S!
+M)SM;7N+-OBWCQ7@)?YNOK#^FK6_8TB\Y:[H88YQWC$2Y\V3..?X&lt;GR][OE%!
+M;LZ9&quot;RTDI\LQ,]4$&lt;LO#\&lt;;U2[[U82,Y&amp;L+:'.%.6SH/W54R_6\Y)D[PN\@4
+M>XC#0R8>%W=V:X&amp;Z!*Q3]A;4&lt;I28.&amp;#;$:T4&amp;01D2+;'=75>**5-;-9\U\1C
+MX^T=X`7_(,2,V+TXWX\$WM'CW/SN[,/6.=[]=L;QNL7MWPQ-;:UXW3GYK'>&amp;
+M]\V:D6WCOJ2`@PJ2?(!O?94JV@W&amp;^XD,FK1$+,+6&lt;P6L'#D_:;;^&amp;2G&quot;#;5E
+MOP,.QJ*T`G7M?IA.XO6C-7M/,8]P6\#Y!_5/!9+M3.#PR1X2&lt;>:.O&amp;H/_Z__
+;N?+#OR/_`%E/&lt;'9]YO!.`````$E%3D2N0F&quot;&quot;
+`
+end
+</map>
+  </image>
+  <line>
+   <xstart>0</xstart>
+   <ystart>70</ystart>
+   <xend>785</xend>
+   <yend>70</yend>
+   <weight>2</weight>
+  </line>
+ </pghead>
+ <section>
+  <name>Lista Colli</name>
+  <group>
+   <name>dati_articolo</name>
+   <column>codice</column>
+   <head>
+    <height>26</height>
+    <line>
+     <xstart>5</xstart>
+     <ystart>5</ystart>
+     <xend>785</xend>
+     <yend>5</yend>
+     <weight>1</weight>
+    </line>
+    <line>
+     <xstart>780</xstart>
+     <ystart>10</ystart>
+     <xend>780</xend>
+     <yend>25</yend>
+     <weight>1</weight>
+    </line>
+    <label>
+     <rect>
+      <x>700</x>
+      <y>10</y>
+      <width>80</width>
+      <height>15</height>
+     </rect>
+     <font>
+      <face>Sans</face>
+      <size>8</size>
+      <weight>normal</weight>
+     </font>
+     <hcenter/>
+     <vcenter/>
+     <string>QUANTITA'</string>
+    </label>
+    <line>
+     <xstart>700</xstart>
+     <ystart>10</ystart>
+     <xend>700</xend>
+     <yend>25</yend>
+     <weight>0</weight>
+    </line>
+    <field>
+     <rect>
+      <x>15</x>
+      <y>10</y>
+      <width>150</width>
+      <height>15</height>
+     </rect>
+     <font>
+      <face>Sans</face>
+      <size>10</size>
+      <weight>normal</weight>
+     </font>
+     <left/>
+     <vcenter/>
+     <data>
+      <query>lista_articoli_per_codice</query>
+      <column>codice</column>
+     </data>
+    </field>
+    <field>
+     <rect>
+      <x>175</x>
+      <y>10</y>
+      <width>400</width>
+      <height>15</height>
+     </rect>
+     <font>
+      <face>Sans</face>
+      <size>10</size>
+      <weight>normal</weight>
+     </font>
+     <left/>
+     <vcenter/>
+     <data>
+      <query>lista_articoli_per_codice</query>
+      <column>titolo</column>
+     </data>
+    </field>
+    <label>
+     <rect>
+      <x>635</x>
+      <y>10</y>
+      <width>65</width>
+      <height>15</height>
+     </rect>
+     <font>
+      <face>Sans</face>
+      <size>8</size>
+      <weight>normal</weight>
+     </font>
+     <hcenter/>
+     <vcenter/>
+     <string>COLLO</string>
+    </label>
+    <line>
+     <xstart>635</xstart>
+     <ystart>10</ystart>
+     <xend>780</xend>
+     <yend>10</yend>
+     <weight>1</weight>
+    </line>
+    <line>
+     <xstart>635</xstart>
+     <ystart>25</ystart>
+     <xend>780</xend>
+     <yend>25</yend>
+     <weight>0</weight>
+    </line>
+    <line>
+     <xstart>635</xstart>
+     <ystart>10</ystart>
+     <xend>635</xend>
+     <yend>25</yend>
+     <weight>1</weight>
+    </line>
+   </head>
+   <foot>
+    <height>21</height>
+    <line>
+     <xstart>700</xstart>
+     <ystart>0</ystart>
+     <xend>700</xend>
+     <yend>15</yend>
+     <weight>1</weight>
+    </line>
+    <line>
+     <xstart>635</xstart>
+     <ystart>0</ystart>
+     <xend>780</xend>
+     <yend>0</yend>
+     <weight>1</weight>
+    </line>
+    <field>
+     <rect>
+      <x>705</x>
+      <y>0</y>
+      <width>70</width>
+      <height>15</height>
+     </rect>
+     <font>
+      <face>Sans</face>
+      <size>8</size>
+      <weight>normal</weight>
+     </font>
+     <right/>
+     <vcenter/>
+     <data>
+      <query>lista_articoli_per_codice</query>
+      <column>qt_codice</column>
+     </data>
+    </field>
+    <line>
+     <xstart>780</xstart>
+     <ystart>0</ystart>
+     <xend>780</xend>
+     <yend>15</yend>
+     <weight>1</weight>
+    </line>
+    <line>
+     <xstart>700</xstart>
+     <ystart>15</ystart>
+     <xend>780</xend>
+     <yend>15</yend>
+     <weight>1</weight>
+    </line>
+   </foot>
+  </group>
+  <detail>
+   <key>
+    <query>lista_articoli_per_codice</query>
+   </key>
+   <height>16</height>
+   <line>
+    <xstart>780</xstart>
+    <ystart>0</ystart>
+    <xend>780</xend>
+    <yend>15</yend>
+    <weight>1</weight>
+   </line>
+   <line>
+    <xstart>635</xstart>
+    <ystart>15</ystart>
+    <xend>780</xend>
+    <yend>15</yend>
+    <weight>0</weight>
+   </line>
+   <field>
+    <rect>
+     <x>640</x>
+     <y>0</y>
+     <width>55</width>
+     <height>15</height>
+    </rect>
+    <font>
+     <face>Sans</face>
+     <size>8</size>
+     <weight>normal</weight>
+    </font>
+    <right/>
+    <vcenter/>
+    <data>
+     <query>lista_articoli_per_codice</query>
+     <column>collo</column>
+    </data>
+   </field>
+   <line>
+    <xstart>635</xstart>
+    <ystart>0</ystart>
+    <xend>635</xend>
+    <yend>15</yend>
+    <weight>1</weight>
+   </line>
+   <line>
+    <xstart>700</xstart>
+    <ystart>0</ystart>
+    <xend>700</xend>
+    <yend>15</yend>
+    <weight>0</weight>
+   </line>
+   <field>
+    <rect>
+     <x>705</x>
+     <y>0</y>
+     <width>70</width>
+     <height>15</height>
+    </rect>
+    <font>
+     <face>Sans</face>
+     <size>8</size>
+     <weight>normal</weight>
+    </font>
+    <right/>
+    <vcenter/>
+    <data>
+     <query>lista_articoli_per_codice</query>
+     <column>quantita</column>
+    </data>
+   </field>
+  </detail>
+ </section>
+ <pgfoot>
+  <height>47</height>
+  <label>
+   <rect>
+    <x>640</x>
+    <y>20</y>
+    <width>60</width>
+    <height>20</height>
+   </rect>
+   <font>
+    <face>Bitstream Vera Sans</face>
+    <size>12</size>
+    <weight>normal</weight>
+   </font>
+   <right/>
+   <vcenter/>
+   <string>Pagina</string>
+  </label>
+  <line>
+   <xstart>648</xstart>
+   <ystart>39</ystart>
+   <xend>648</xend>
+   <yend>39</yend>
+   <weight>0</weight>
+  </line>
+  <field>
+   <rect>
+    <x>705</x>
+    <y>20</y>
+    <width>50</width>
+    <height>20</height>
+   </rect>
+   <font>
+    <face>Bitstream Vera Sans</face>
+    <size>12</size>
+    <weight>normal</weight>
+   </font>
+   <left/>
+   <vcenter/>
+   <data>
+    <query>Context Query</query>
+    <column>page_number</column>
+   </data>
+  </field>
+  <line>
+   <xstart>0</xstart>
+   <ystart>15</ystart>
+   <xend>790</xend>
+   <yend>15</yend>
+   <weight>2</weight>
+  </line>
+ </pgfoot>
+ <rptfoot>
+  <height>6</height>
+  <line>
+   <xstart>5</xstart>
+   <ystart>0</ystart>
+   <xend>785</xend>
+   <yend>0</yend>
+   <weight>1</weight>
+  </line>
+ </rptfoot>
+</report>

@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Easy Picking - Impostazioni 
+Icon=/usr/share/easy-picking/images/easy-picking-setup.svg
+Exec=sh -c "cd /opt/easy-picking/exe; ./setup"
+Terminal=false
+Categories=EasyPicking;

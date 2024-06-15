@@ -1,0 +1,77 @@
+{
+    "workbench.colorCustomizations": {
+        "activityBar.activeBackground": "#666fe0",
+        "activityBar.activeBorder": "#851b23",
+        "activityBar.background": "#666fe0",
+        "activityBar.foreground": "#e7e7e7",
+        "activityBar.inactiveForeground": "#e7e7e799",
+        "activityBarBadge.background": "#851b23",
+        "activityBarBadge.foreground": "#e7e7e7",
+        "statusBar.background": "#3c47d7",
+        "statusBar.foreground": "#e7e7e7",
+        "statusBarItem.hoverBackground": "#666fe0",
+        "titleBar.activeBackground": "#3c47d7",
+        "titleBar.activeForeground": "#e7e7e7",
+        "titleBar.inactiveBackground": "#3c47d799",
+        "titleBar.inactiveForeground": "#e7e7e799",
+        "commandCenter.border": "#e7e7e799",
+        "sash.hoverBorder": "#666fe0",
+        "statusBarItem.remoteBackground": "#3c47d7",
+        "statusBarItem.remoteForeground": "#e7e7e7"
+    },
+    "peacock.color": "#3c47d7",
+
+    "env": {
+        "myDefaultIncludePath": [
+            "${workspaceFolder}",
+            "${workspaceFolder}/common"
+        ],
+        "myCompilerPath": "/usr/bin/gcc"
+    },
+    "configurations": [
+        {
+            "name": "include paths",
+            "intelliSenseMode": "g++-8",
+            "includePath": [
+
+                "/usr/include/gtk-3.0",
+                "/usr/include/at-spi2-atk/2.0",
+                "/usr/include/at-spi-2.0",
+                "/usr/include/dbus-1.0",
+                "/usr/lib/x86_64-linux-gnu/dbus-1.0/include",
+                "/usr/include/gtk-3.0",
+                "/usr/include/gio-unix-2.0",
+                "/usr/include/cairo",
+                "/usr/include/libdrm",
+                "/usr/include/pango-1.0",
+                "/usr/include/harfbuzz",
+                "/usr/include/pango-1.0",
+                "/usr/include/fribidi",
+                "/usr/include/atk-1.0",
+                "/usr/include/cairo",
+                "/usr/include/pixman-1",
+                "/usr/include/freetype2",
+                "/usr/include/libpng16",
+                "/usr/include/gdk-pixbuf-2.0",
+                "/usr/include/libmount",
+                "/usr/include/blkid",
+                "/usr/include/uuid",
+                "/usr/include/glib-2.0",
+                "/usr/lib/x86_64-linux-gnu/glib-2.0/include"
+
+            ],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            }
+        }
+    ],
+    "version": 4
+}
+

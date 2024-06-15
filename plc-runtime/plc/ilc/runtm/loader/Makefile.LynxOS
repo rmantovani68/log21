@@ -1,0 +1,69 @@
+
+SHELL=/bin/sh
+
+DEVCNI=/usr/local/cni
+DEFS=/u2/beppe/qplc/src
+
+LOCALDEFS=-DDEBUG
+
+CC = gcc
+CFLAGS=-O \
+       -Wall -Wtraditional -Wshadow -Wpointer-arith -Wcast-qual \
+       -Wcast-align -Wwrite-strings -Wconversion -Waggregate-return \
+       -Wstrict-prototypes -Wmissing-prototypes -Wredundant-decls \
+       -Wnested-externs \
+       -g \
+       -mposix -D_POSIX_SOURCE -mthreads -DLynx \
+       $(LOCALDEFS) \
+       -I$(DEFS) -I$(DEVCNI)/include
+LD=gcc
+LD_R=ld -r
+#LDFLAGS=-mposix -D_POSIX_SOURCE -mthreads -L$(DEVCNI)/lib
+LDFLAGS=-mposix -D_POSIX_SOURCE -mthreads -L$(DEVCNI)/lib \
+        -Xlinker -Ttext -Xlinker 0x10000
+LDRFLAGS=-L$(DEVCNI)/lib
+LIBS=
+AR=ar
+ARFLAGS=q
+RANLIB=ranlib
+
+VERLIB=$(DEVCNI)/VERSIONE
+
+.c.o:
+	$(CC) -c $(CFLAGS) $<
+
+
+all::	ilc0.o ilcn.o ilc0mix.o
+
+ilc0.o:	ilc0.s ver.o
+	as ilc0.s -o ilc0_tmp.o
+	ld -r ver.o ilc0_tmp.o -o ilc0.o
+	rm -f ilc0_tmp.o
+
+ilcn.o: ilcn.s
+	as ilcn.s -o ilcn.o
+
+ilc0mix.o: ilc0mix.s
+	as ilc0mix.s -o ilc0mix.o
+
+ver.o:	ver.c
+ver.c:	$(SOURCES) $(HEADERS) Makefile 
+	@if [ -r VERSIONE ]; then \
+		versione=`awk '{ split($$0,a,"."); print a[1] "." a[2] "." a[3] "." (a[4]+1); }' VERSIONE` ;\
+	else \
+		versione=1.0.0.0; \
+	fi; \
+	echo 'Numero di versione proposto per ILC Runtime : '"$$versione"; \
+	echo 'Premi ENTER se va bene, oppure scrivine uno tu.'; \
+	read a; \
+	if [ "$$a" ]; then versione="$$a"; fi; \
+	echo "$$versione" > VERSIONE; \
+	echo -en 'const char ver_user[] = "'"$$versione" > ver.c; \
+	echo -en '\\t\\t[' >> ver.c; \
+	echo -en "`date +"%d/%m/%Y %H:%M:%S"`" >> ver.c; \
+	echo -en ']\\tlib:' >> ver.c; \
+	awk '/^vers/{print $$3 "\";"; }' $(VERLIB) >> ver.c
+
+tags:	$(SOURCES)
+	ctags $(SOURCES)
+

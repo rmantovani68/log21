@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<NCReport version="2.9.0" name="frontespizio_bancale" type="report">
+    <options>
+        <encoding>utf8</encoding>
+        <language>00</language>
+        <langrole>0</langrole>
+        <orientation>portrait</orientation>
+        <pagesize width="210.000" height="297.000">A4</pagesize>
+        <topmargin>10</topmargin>
+        <bottommargin>10</bottommargin>
+        <leftmargin>10</leftmargin>
+        <rightmargin>10</rightmargin>
+        <fontname>Liberation Sans</fontname>
+        <fontsize>10</fontsize>
+        <backcolor>#ffffff</backcolor>
+        <columns>0</columns>
+        <columnspace>0</columnspace>
+        <zoneSpacing>10</zoneSpacing>
+        <zoneBreak>false</zoneBreak>
+    </options>
+    <datasources>
+        <datasource id="bancale" type="sql" openRole="begin" source="static" connection="internal" parentID="" connID="mondadori">set lc_numeric = 'it_IT.UTF-8';
+select
+sb.key_linea as keylinea,
+sb.key_bancale as keybancale,
+sb.bntpspe as tpspe,
+sb.bncdlin as cdlin,
+sb.bnnmbnc as numero_bancale,
+sb.bnnmced as cedola,
+count(sc.key_bancale) as numero_colli,
+to_char(sum(case sc.cppsrea when 0 then sc.cppspre else sc.cppsrea end )::float/1000,'9999990D999') as peso_colli
+from storico_bancali sb
+inner join storico_colli_bancale sc on sc.key_bancale=sb.key_bancale
+where sb.key_bancale=$P{key_bancale}
+group by keylinea, keybancale, tpspe, cdlin, numero_bancale, cedola;</datasource>
+    </datasources>
+    <variables/>
+    <reportheader id="RH" height="229.920">
+        <field id="HBRPQ" zValue="1" posX="69.850" posY="52.387" width="15.875" height="7.938" resource="datasource" fontName="DejaVu Sans" fontSize="20" fontWeight="bold" alignment="129" type="txt" ftype="ds" arg="">bancale.cedola</field>
+        <field id="M578F" zValue="2" posX="139.700" posY="52.387" width="9.525" height="7.938" resource="datasource" fontName="DejaVu Sans" fontSize="20" fontWeight="bold" alignment="129" type="txt" ftype="ds" arg="">bancale.cdlin</field>
+        <field id="QQW0D" zValue="4" posX="17.462" posY="66.675" width="144.463" height="39.688" resource="datasource" fontName="DejaVu Sans" fontSize="72" fontWeight="bold" alignment="132" type="txt" ftype="ds" arg="">bancale.cdlin</field>
+        <field id="XDS3A" zValue="5" posX="111.125" posY="173.037" width="46.037" height="11.112" resource="datasource" fontName="DejaVu Sans" fontSize="28" fontWeight="bold" alignment="130" type="txt" ftype="ds" arg="">bancale.numero_bancale</field>
+        <field id="C52DA" zValue="6" posX="111.125" posY="187.325" width="46.037" height="11.112" resource="datasource" fontName="DejaVu Sans" fontSize="28" fontWeight="bold" alignment="130" type="txt" ftype="ds" arg="">bancale.numero_colli</field>
+        <field id="15233" zValue="7" posX="101.600" posY="201.612" width="55.562" height="11.112" resource="datasource" fontName="DejaVu Sans" fontSize="28" fontWeight="bold" alignment="130" type="txt" ftype="ds" arg="">bancale.peso_colli</field>
+        <label id="CE39K" zValue="9" posX="15.875" posY="52.387" width="51.858" height="7.938" fontName="DejaVu Sans" fontSize="20" fontWeight="bold" alignment="129">N° CEDOLA : </label>
+        <label id="F7T7U" zValue="10" posX="88.900" posY="52.387" width="51.329" height="7.938" fontName="DejaVu Sans" fontSize="20" fontWeight="bold" alignment="129">COD. LINEA: </label>
+        <label id="HCXBO" zValue="11" posX="17.462" posY="173.037" width="60.060" height="11.112" fontName="DejaVu Sans" fontSize="28" fontWeight="bold" alignment="129">Bancale N°</label>
+        <label id="11771" zValue="12" posX="17.462" posY="201.612" width="60.325" height="11.377" fontName="DejaVu Sans" fontSize="28" fontWeight="bold" alignment="129">Peso Kg.</label>
+        <label id="JDC7O" zValue="13" posX="17.462" posY="187.325" width="60.325" height="11.112" fontName="DejaVu Sans" fontSize="28" fontWeight="bold" alignment="129">Colli N°</label>
+        <line id="HFMKP" zValue="14" lineColor="#000000" lineStyle="solid" lineWidth="0.100" fromX="15.875" fromY="60.325" toX="161.925" toY="60.325"/>
+        <line id="74B61" zValue="15" lineColor="#000000" lineStyle="solid" lineWidth="0.100" fromX="93.662" fromY="184.150" toX="157.162" toY="184.150"/>
+        <line id="12116" zValue="16" lineColor="#000000" lineStyle="solid" lineWidth="0.100" fromX="93.662" fromY="212.725" toX="157.162" toY="212.725"/>
+        <line id="40HS9" zValue="17" lineColor="#000000" lineStyle="solid" lineWidth="0.100" fromX="93.662" fromY="198.438" toX="157.162" toY="198.438"/>
+        <line id="16183" zValue="18" lineColor="#000000" lineStyle="solid" lineWidth="0.100" fromX="93.662" fromY="227.012" toX="157.162" toY="227.012"/>
+        <field id="5211" zValue="19" posX="111.125" posY="215.900" width="46.037" height="11.112" resource="datasource" fontName="DejaVu Sans" fontSize="28" fontWeight="bold" alignment="130" type="txt" ftype="ds" arg="">bancale.keybancale</field>
+        <label id="2681" zValue="20" posX="17.462" posY="215.900" width="70.115" height="11.642" fontName="DejaVu Sans" fontSize="28" fontWeight="bold" alignment="129">Prg. Bancale</label>
+    </reportheader>
+    <details>
+        <detail id="detail" height="10.000" datasource="bancale">
+            <items/>
+        </detail>
+    </details>
+</NCReport>

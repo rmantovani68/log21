@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+    <schema path="/org/easy-picking/carichi/" id="org.easy-picking.carichi">
+        <key name="main-window-x"                            type="i"> <default>0</default> <summary>x</summary>   <description>x position</description> </key>
+        <key name="main-window-y"                            type="i"> <default>0</default> <summary>y</summary>   <description>y position</description> </key>
+        <key name="main-window-width"         type="i"> <default>1280</default> <summary>width</summary>  <description>width</description> </key>
+        <key name="main-window-height"                       type="i"> <default>800</default> <summary>height</summary>   <description>height</description> </key>
+        <key name="main-window-is-maximized"                 type="b"> <default>false</default> <summary>is-maximized</summary>  <description>is-maximized</description> </key>
+        <key name="main-window-is-fullscreen"                type="b"> <default>false</default> <summary>is-fullscreen</summary> <description>is-fullscreen</description> </key>
+
+        <key name="conteggia-prodotto-window-x"              type="i"> <default>0</default> <summary>x</summary>   <description>x position</description> </key>
+        <key name="conteggia-prodotto-window-y"              type="i"> <default>0</default> <summary>y</summary>   <description>y position</description> </key>
+        <key name="conteggia-prodotto-window-width"         type="i"> <default>1280</default> <summary>width</summary>  <description>width</description> </key>
+        <key name="conteggia-prodotto-window-height"         type="i"> <default>800</default> <summary>height</summary>   <description>height</description> </key>
+        <key name="conteggia-prodotto-window-is-maximized"   type="b"> <default>false</default> <summary>is-maximized</summary>  <description>is-maximized</description> </key>
+        <key name="conteggia-prodotto-window-is-fullscreen"  type="b"> <default>false</default> <summary>is-fullscreen</summary> <description>is-fullscreen</description> </key>
+
+
+
+        <key name="differenza-inventariale-window-x"              type="i"> <default>0</default> <summary>x</summary>   <description>x position</description> </key>
+        <key name="differenza-inventariale-window-y"              type="i"> <default>0</default> <summary>y</summary>   <description>y position</description> </key>
+        <key name="differenza-inventariale-window-width"          type="i"> <default>1280</default> <summary>width</summary>  <description>width</description> </key>
+        <key name="differenza-inventariale-window-height"         type="i"> <default>800</default> <summary>height</summary>   <description>height</description> </key>
+        <key name="differenza-inventariale-window-is-maximized"   type="b"> <default>false</default> <summary>is-maximized</summary>  <description>is-maximized</description> </key>
+        <key name="differenza-inventariale-window-is-fullscreen"  type="b"> <default>false</default> <summary>is-fullscreen</summary> <description>is-fullscreen</description> </key>
+
+        <key name="edit-bancale-window-x"              type="i"> <default>0</default> <summary>x</summary>   <description>x position</description> </key>
+        <key name="edit-bancale-window-y"              type="i"> <default>0</default> <summary>y</summary>   <description>y position</description> </key>
+        <key name="edit-bancale-window-width"          type="i"> <default>1280</default> <summary>width</summary>  <description>width</description> </key>
+        <key name="edit-bancale-window-height"         type="i"> <default>800</default> <summary>height</summary>   <description>height</description> </key>
+        <key name="edit-bancale-window-is-maximized"   type="b"> <default>false</default> <summary>is-maximized</summary>  <description>is-maximized</description> </key>
+        <key name="edit-bancale-window-is-fullscreen"  type="b"> <default>false</default> <summary>is-fullscreen</summary> <description>is-fullscreen</description> </key>
+
+        <key name="edit-distinta-window-x"              type="i"> <default>0</default> <summary>x</summary>   <description>x position</description> </key>
+        <key name="edit-distinta-window-y"              type="i"> <default>0</default> <summary>y</summary>   <description>y position</description> </key>
+        <key name="edit-distinta-window-width"          type="i"> <default>1280</default> <summary>width</summary>  <description>width</description> </key>
+        <key name="edit-distinta-window-height"         type="i"> <default>800</default> <summary>height</summary>   <description>height</description> </key>
+        <key name="edit-distinta-window-is-maximized"   type="b"> <default>false</default> <summary>is-maximized</summary>  <description>is-maximized</description> </key>
+        <key name="edit-distinta-window-is-fullscreen"  type="b"> <default>false</default> <summary>is-fullscreen</summary> <description>is-fullscreen</description> </key>
+
+        <key name="edit-prodotto-window-x"              type="i"> <default>0</default> <summary>x</summary>   <description>x position</description> </key>
+        <key name="edit-prodotto-window-y"              type="i"> <default>0</default> <summary>y</summary>   <description>y position</description> </key>
+        <key name="edit-prodotto-window-width"          type="i"> <default>1280</default> <summary>width</summary>  <description>width</description> </key>
+        <key name="edit-prodotto-window-height"         type="i"> <default>800</default> <summary>height</summary>   <description>height</description> </key>
+        <key name="edit-prodotto-window-is-maximized"   type="b"> <default>false</default> <summary>is-maximized</summary>  <description>is-maximized</description> </key>
+        <key name="edit-prodotto-window-is-fullscreen"  type="b"> <default>false</default> <summary>is-fullscreen</summary> <description>is-fullscreen</description> </key>
+
+        <key name="import-spedizioni-window-x"              type="i"> <default>0</default> <summary>x</summary>   <description>x position</description> </key>
+        <key name="import-spedizioni-window-y"              type="i"> <default>0</default> <summary>y</summary>   <description>y position</description> </key>
+        <key name="import-spedizioni-window-width"          type="i"> <default>1280</default> <summary>width</summary>  <description>width</description> </key>
+        <key name="import-spedizioni-window-height"         type="i"> <default>800</default> <summary>height</summary>   <description>height</description> </key>
+        <key name="import-spedizioni-window-is-maximized"   type="b"> <default>false</default> <summary>is-maximized</summary>  <description>is-maximized</description> </key>
+        <key name="import-spedizioni-window-is-fullscreen"  type="b"> <default>false</default> <summary>is-fullscreen</summary> <description>is-fullscreen</description> </key>
+
+        <key name="import-catalogo-window-x"              type="i"> <default>0</default> <summary>x</summary>   <description>x position</description> </key>
+        <key name="import-catalogo-window-y"              type="i"> <default>0</default> <summary>y</summary>   <description>y position</description> </key>
+        <key name="import-catalogo-window-width"          type="i"> <default>1280</default> <summary>width</summary>  <description>width</description> </key>
+        <key name="import-catalogo-window-height"         type="i"> <default>800</default> <summary>height</summary>   <description>height</description> </key>
+        <key name="import-catalogo-window-is-maximized"   type="b"> <default>false</default> <summary>is-maximized</summary>  <description>is-maximized</description> </key>
+        <key name="import-catalogo-window-is-fullscreen"  type="b"> <default>false</default> <summary>is-fullscreen</summary> <description>is-fullscreen</description> </key>
+
+        <key name="ingresso-merce-window-x"               type="i"> <default>0</default> <summary>x</summary>   <description>x position</description> </key>
+        <key name="ingresso-merce-window-y"               type="i"> <default>0</default> <summary>y</summary>   <description>y position</description> </key>
+        <key name="ingresso-merce-window-width"           type="i"> <default>1280</default> <summary>width</summary>  <description>width</description> </key>
+        <key name="ingresso-merce-window-height"          type="i"> <default>800</default> <summary>height</summary>   <description>height</description> </key>
+        <key name="ingresso-merce-window-is-maximized"    type="b"> <default>false</default> <summary>is-maximized</summary>  <description>is-maximized</description> </key>
+        <key name="ingresso-merce-window-is-fullscreen"   type="b"> <default>false</default> <summary>is-fullscreen</summary> <description>is-fullscreen</description> </key>
+
+        <key name="insert-distinta-window-x"              type="i"> <default>0</default> <summary>x</summary>   <description>x position</description> </key>
+        <key name="insert-distinta-window-y"              type="i"> <default>0</default> <summary>y</summary>   <description>y position</description> </key>
+        <key name="insert-distinta-window-width"          type="i"> <default>1280</default> <summary>width</summary>  <description>width</description> </key>
+        <key name="insert-distinta-window-height"         type="i"> <default>800</default> <summary>height</summary>   <description>height</description> </key>
+        <key name="insert-distinta-window-is-maximized"   type="b"> <default>false</default> <summary>is-maximized</summary>  <description>is-maximized</description> </key>
+        <key name="insert-distinta-window-is-fullscreen"  type="b"> <default>false</default> <summary>is-fullscreen</summary> <description>is-fullscreen</description> </key>
+
+        <key name="insert-prodotto-window-x"              type="i"> <default>0</default> <summary>x</summary>   <description>x position</description> </key>
+        <key name="insert-prodotto-window-y"              type="i"> <default>0</default> <summary>y</summary>   <description>y position</description> </key>
+        <key name="insert-prodotto-window-width"          type="i"> <default>1280</default> <summary>width</summary>  <description>width</description> </key>
+        <key name="insert-prodotto-window-height"         type="i"> <default>800</default> <summary>height</summary>   <description>height</description> </key>
+        <key name="insert-prodotto-window-is-maximized"   type="b"> <default>false</default> <summary>is-maximized</summary>  <description>is-maximized</description> </key>
+        <key name="insert-prodotto-window-is-fullscreen"  type="b"> <default>false</default> <summary>is-fullscreen</summary> <description>is-fullscreen</description> </key>
+
+        <key name="insert-quantity-window-x"              type="i"> <default>0</default> <summary>x</summary>   <description>x position</description> </key>
+        <key name="insert-quantity-window-y"              type="i"> <default>0</default> <summary>y</summary>   <description>y position</description> </key>
+        <key name="insert-quantity-window-width"          type="i"> <default>1280</default> <summary>width</summary>  <description>width</description> </key>
+        <key name="insert-quantity-window-height"         type="i"> <default>800</default> <summary>height</summary>   <description>height</description> </key>
+        <key name="insert-quantity-window-is-maximized"   type="b"> <default>false</default> <summary>is-maximized</summary>  <description>is-maximized</description> </key>
+        <key name="insert-quantity-window-is-fullscreen"  type="b"> <default>false</default> <summary>is-fullscreen</summary> <description>is-fullscreen</description> </key>
+
+        <key name="insert-udc-window-x"                   type="i"> <default>0</default> <summary>x</summary>   <description>x position</description> </key>
+        <key name="insert-udc-window-y"                   type="i"> <default>0</default> <summary>y</summary>   <description>y position</description> </key>
+        <key name="insert-udc-window-width"               type="i"> <default>1280</default> <summary>width</summary>  <description>width</description> </key>
+        <key name="insert-udc-window-height"              type="i"> <default>800</default> <summary>height</summary>   <description>height</description> </key>
+        <key name="insert-udc-window-is-maximized"        type="b"> <default>false</default> <summary>is-maximized</summary>  <description>is-maximized</description> </key>
+        <key name="insert-udc-window-is-fullscreen"       type="b"> <default>false</default> <summary>is-fullscreen</summary> <description>is-fullscreen</description> </key>
+
+        <key name="spedizione-merce-window-x"             type="i"> <default>0</default> <summary>x</summary>   <description>x position</description> </key>
+        <key name="spedizione-merce-window-y"             type="i"> <default>0</default> <summary>y</summary>   <description>y position</description> </key>
+        <key name="spedizione-merce-window-width"         type="i"> <default>1280</default> <summary>width</summary>  <description>width</description> </key>
+        <key name="spedizione-merce-window-height"        type="i"> <default>800</default> <summary>height</summary>   <description>height</description> </key>
+        <key name="spedizione-merce-window-is-maximized"  type="b"> <default>false</default> <summary>is-maximized</summary>  <description>is-maximized</description> </key>
+        <key name="spedizione-merce-window-is-fullscreen" type="b"> <default>false</default> <summary>is-fullscreen</summary> <description>is-fullscreen</description> </key>
+
+    </schema>
+</schemalist>

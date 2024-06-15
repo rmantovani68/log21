@@ -1,0 +1,229 @@
+#!/bin/bash
+#
+# massive_ftp_sender.sh
+# Versione: 1.0
+# Autore: Luca Guerrini
+#
+# Spedisce tutti i file presenti in una directory, esclusi quelli con suffisso .part. .part e' proprio il
+# suffisso da usare per la creazione di file all'interno della directory prima della operazione atomica mv
+# Lo script adotta anche un lock, fatto mediante un file nascosto .PID, che evita che l'esistenza di due istanze
+# produca doppi invii.
+# L'invio avviene con ncftpput sempre con spedizione suffissata con .part e rinominata in remoto
+# E' prevista la possibilita' di mandare notifica via mail, appoggiandosi al framwork di autotask.
+# 
+#
+#
+#
+# Esempio d'uso
+# ./massive_ftp_sender.sh --ftpuser luca --ftppassword 3zin --ftphost 192.168.1.43 --remotedir /home/luca/output  --dbhost localhost --dbname mondadori --localdir /u/prj/mondadori-ufficio/export/pdf --backupdir /u/prj/mondadori-ufficio/export/pdf/backup
+
+E_XCD=66       # Errore di mancato cambio directory
+NOARGS=0
+E_BADARGS=65   # Errore di argomenti sbagliati
+
+DB_Host=""
+DB_Name=""
+Ftp_Host=""
+Ftp_User=""
+Ftp_Password=""
+File_Name=""
+Remote_Dir=""
+Backup_Dir=""
+Local_Dir=""
+Mail_To_Notify=""
+Log_File=/dev/null
+
+Mail_From=automazioneelogistica@gmail.com
+Send_Mail=0
+Current_Date=`date`
+
+
+
+## Funzione di uscita cortese
+Exit_Safely()
+{
+	log "Uscita di sicurezza"
+	cd $Local_Dir
+	log "Cancello il lock PID"
+	rm -f .PID
+	log "------------------FINE--------------------"
+	exit 2
+}
+
+## Aggancio i principali segnali di interruzione a un'uscita cortese
+## per evitare che rimanga in piedi .PID
+trap Exit_Safely INT TERM
+
+## Funzione di visualizzazione dell'help
+function print_help()
+{
+	echo
+	echo "Usage: `basename $0` [options]"
+	echo
+	echo "List of options:"
+	echo "-ftphost <host-name>: name of the host"
+	echo "-ftpuser <user-address>: ftp user"
+	echo "-ftppassword <user-password>: ftp password"
+	echo "-filename <file>"
+	echo "-remotedir <dir>"
+	echo "-backupdir <dir>"
+	echo "-localdir <dir>"
+	echo "-dbhost <DB-host>: name of the DB host"
+	echo "-dbname <DB-name>: name of the DB"
+	echo "-mailtonotify <email>"
+	echo "-logfile <file>"
+	echo
+}
+
+## Controllo e ricevo i parametri
+if [ $# = $NOARGS ]
+then
+	print_help
+	log "------------------FINE--------------------"
+	exit $E_BADARGS
+fi
+while [ $# != 0 ]
+do
+	case "$1" in
+		--ftpuser) Ftp_User=$2 ; shift ;;
+		--ftppassword) Ftp_Password=$2 ; shift ;;
+		--ftphost) Ftp_Host=$2 ; shift ;;
+#		--filename) File_Name=$2 ; shift ;;
+		--localdir) Local_Dir=$2 ; shift ;;
+		--remotedir) Remote_Dir=$2 ; shift ;;
+		--backupdir) Backup_Dir=$2 ; shift ;;
+		--dbhost) DB_Host=$2 ; shift ;;
+		--dbname) DB_Name=$2 ; shift ;;
+		--mailtonotify) Mail_To_Notify=$2 ; shift ;;
+		--logfile) Log_File=$2 ; shift ;;
+		--*) ;;
+		*)  ;;
+	esac
+shift
+done
+
+## Funzione di log
+function log() # Scrive ora e data nel log_file.
+{
+	echo "$(date) $*" >> $Log_File     # Questo dovrebbe appendere la data al file.
+}
+## Azzero il log
+echo " " > $Log_File
+log "-----------------INIZIO-------------------"
+
+if [[ -z $Ftp_User ]] || [[ -z $Ftp_Password ]] || [[ -z $Ftp_Host ]] \
+	|| [[ -z $Remote_Dir ]] || [[ -z $Backup_Dir ]] || [[ -z $Local_Dir ]] \
+	|| [[ -z $DB_Host ]] || [[ -z $DB_Name ]]
+then
+	log "Parametri errati"
+	print_help
+	log "------------------FINE--------------------"
+	exit 1
+fi
+
+
+## Cambio la directory
+cd $Local_Dir
+Command_Exit_Status=$?
+case $Command_Exit_Status in
+0)
+	log "Cambio directory corretto $Local_Dir"
+	;;
+*)
+	log "Errore in cambio directory $Local_Dir"
+	log "------------------FINE--------------------"
+	exit 1
+	;;
+esac
+
+## Cancello i lock PID piu' vecchi di 2 ore, potrebbe esserci
+## stato uno spegnimento scorretto del PC e allora sarebbe bloccato
+find $Local_Dir -name ".PID" -type f -mmin 120 -delete 
+log "$Local_Dir -name \".PID\" -type f -mmin 120 -delete"
+
+## Controllo la presenza del Lock PID
+if [ -f ".PID" ]
+then
+	log "PID presente. Non faccio nulla"
+	log "------------------FINE--------------------"
+	exit 1
+else
+	log "PID non presente. Proseguo"
+	echo "1" > .PID
+fi
+
+## Spedisco i file (diversi da .part
+for First_File in `find -maxdepth 1 -type f ! -name '*\.part' ! -name '\.PID' -print`
+#for First_File in $(ls -d -x !(*.part))
+do
+	if [[ -d $First_File ]] 
+	then
+		log "$First_File e' una Directory; non spedisco"
+	else
+		log "Comando: ncftpput -u $Ftp_User -p $Ftp_Password -t 300 -S .part $Ftp_Host $Remote_Dir $First_File"
+		ncftpput -u $Ftp_User -p $Ftp_Password -t 1200 -S .part $Ftp_Host $Remote_Dir $First_File  >> $Log_File
+		## Controllo del ritorno della spedizione
+		Ftp_Exit_Status=$?
+		case $Ftp_Exit_Status in
+		0)
+			Send_Mail=1
+			Mail_Subject="FILE BOXLINE: $First_File"
+			Message="Spedito file $First_File"
+			;;
+		1 | 2)
+			Mail_Subject="FILE BOXLINE: Impossibile connettersi al server"
+			Message="Impossibile connettersi al server"
+			;;
+		3 | 4)
+			Mail_Subject="FILE BOXLINE: Errore in trasferimento file"
+			Message="Errore in trasferimento file"
+			;;
+		5 | 6)
+			Mail_Subject="FILE BOXLINE: Impossibile cambiare directory"
+			Message="Impossibile cambiare directory"
+			;;
+		7)
+			Mail_Subject="FILE BOXLINE: URL malformato"
+			Message="URL malformato"
+			;;
+		*)
+			Mail_Subject="FILE BOXLINE: Errore generico"
+			Message="Errore generico"
+			;;
+		esac
+		echo "insert into ftp_sender_log (message,code) values ('$Message',$Ftp_Exit_Status)"|psql -h $DB_Host $DB_Name
+		log "insert into ftp_sender_log (message,code) values ('$Message',$Ftp_Exit_Status)"
+		## Eventuale insert nella coda delle mail da inviare
+		if [[ -z "$Mail_To_Notify" ]]
+		then
+			log "Nessuna Mail a cui mandare la notifica"
+		else
+			if [ $Send_Mail -eq 1 ]
+			then
+				log "Trovata Mail per notifica $Mail_To_Notify"
+				echo "insert into mail_queue  (mqstato,mqtoadd,mqrtadd,mqsubjt,mqtbody,mqtmins)  values ('Q','$Mail_To_Notify','$Mail_From','$Mail_Subject','$Message','now');"|psql -h $DB_Host $DB_Name
+				log "insert into mail_queue  (mqstato,mqtoadd,mqrtadd,mqsubjt,mqtbody,mqtmins)  values ('Q','$Mail_To_Notify','$Mail_From','$Mail_Subject','$Message','now');"
+				#/usr/bin/smtp-cli --verbose --server=relay.poste.it:465 --from=luca.guerrini@poste.it --to=lucaguerrini74@gmail.com --user=luca.guerrini@poste.it --pass=sesamino --auth-plain --missing-modules-ok --ssl --subject="$Mail_Subject" --body-plain="$Message" --attach="$First_File@text/plain"
+				#/usr/bin/smtp-cli --verbose --server=smtp.boxlinesrl.com --from=info@boxlinesrl.com --to=rese@boxlinesrl.com  --to=ennio.giacomelli@mondadori.it  --to=magazzino@boxlinesrl.com --user=info@boxlinesrl.com --pass=box@info --missing-modules-ok --subject="$Mail_Subject" --body-plain="$Message" --attach="$First_File@text/plain"
+				#	/usr/bin/smtp-cli --verbose --server=smtp.boxlinesrl.com --from=rese@boxlinesrl.com --to=rese@boxlinesrl.com --to=ennio.giacomelli@mondadori.it --user=rese@boxlinesrl.com --pass=box@rese --missing-modules-ok --subject="$Mail_Subject" --body-plain="$Message" --attach="$First_File@text/plain"
+			fi
+		fi
+
+		if [ $Ftp_Exit_Status -eq 0 ]
+		then
+			## Sposto il file nella directory di backup
+			mv $First_File $Backup_Dir
+			log "FTP: $Message"
+		else
+			log "Errore FTP: $Message"
+		fi
+	fi
+done
+## Cancello il lock PID
+log "Cancello il lock PID"
+rm .PID
+
+log "------------------FINE--------------------"
+exit 0
+
+

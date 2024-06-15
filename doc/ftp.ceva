@@ -1,0 +1,16 @@
+ftpext.cevalogistics.com
+ip esterno : 217.140.11.16
+ip interno : 10.236.24.17
+
+user : edi_mbxln_prd
+pwd: eD1Mbxln@pr0d
+
+test:
+testfrom_ceva
+testto_ceva
+
+produzione:
+from_ceva
+to_ceva
+
+

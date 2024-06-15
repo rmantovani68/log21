@@ -1,0 +1,239 @@
+
+
+SHELL=/bin/sh
+
+DEVCNI=/usr/local/cni
+DEFS=.
+
+LOCALDEFS=-DDEBUG
+
+ILCRTMDIR=../runtm
+QPLCDIR=~/plc/qplc/src
+
+CC = gcc
+CFLAGS= -O \
+       -Wall -Wtraditional -Wshadow -Wpointer-arith -Wcast-qual \
+       -Wcast-align -Wwrite-strings -Wconversion -Waggregate-return \
+       -Wstrict-prototypes -Wmissing-prototypes -Wredundant-decls \
+       -Wnested-externs \
+       -g \
+       -D_POSIX_SOURCE -DLynx -DMAXPATHLEN=4096 \
+       $(LOCALDEFS) \
+       -I$(DEFS) -I$(DEVCNI)/include
+LD=gcc
+LD_R=ld -r
+#LDFLAGS=-mposix -D_POSIX_SOURCE -mthreads -L$(DEVCNI)/lib
+LDFLAGS=-D_POSIX_SOURCE -L$(DEVCNI)/lib \
+        -g
+#LDRFLAGS=-g -L$(DEVCNI)/lib malloc.o
+#LDRFLAGS=-g -L$(DEVCNI)/lib freew.o
+LDRFLAGS=-g -L$(DEVCNI)/lib
+LIBS= -lm
+AR=ar
+ARFLAGS=q
+RANLIB=ranlib
+
+VERLIB=$(DEVCNI)/VERSIONE
+
+.c.o:
+	$(CC) -c $(CFLAGS) $<
+
+
+ilc:	ilc.o
+	$(LD) $(LDFLAGS) ilc.o $(LIBS) -o ilc
+	size ilc
+
+ilc.o:	ver.o main.o pass1.o parser.o scanner.o symtab.o util.o debug.o \
+	errs.o rdfile.o cexpr.o pass2.o compiler.o emitter.o
+	$(LD_R) $(LDRFLAGS) ver.o main.o pass1.o parser.o scanner.o \
+		cexpr.o symtab.o util.o rdfile.o errs.o debug.o \
+		pass2.o compiler.o emitter.o -o ilc.o
+	size ilc.o
+
+all::
+	touch *.[ch]
+	touch parser_c.h scanner_c.h
+	touch *.lst
+	touch Makefile
+	make
+
+main.o:	main.c ilc.h parser.h scanner.h pass1.h sysdep.h util.h conf.h \
+	debug.h errs.h cexpr.h pass2.h
+
+pass1.o:	pass1.c pass1.h ilc.h parser.h scanner.h sysdep.h \
+		symtab.h util.h conf.h debug.h errs.h rdfile.h cexpr.h
+
+pass2.o:	pass2.c pass2.h pass1.h ilc.h parser.h scanner.h sysdep.h \
+		symtab.h util.h conf.h debug.h errs.h rdfile.h cexpr.h \
+		compiler.h
+
+compiler.o:	compiler.c compiler.h pass1.h ilc.h parser.h scanner.h \
+		sysdep.h symtab.h util.h conf.h debug.h errs.h rdfile.h \
+		cexpr.h pass2.h emitter.h msd.h asmop.h
+
+emitter.o:	emitter.c emitter.h pass1.h ilc.h parser.h scanner.h \
+		sysdep.h symtab.h util.h conf.h debug.h errs.h rdfile.h \
+		cexpr.h pass2.h asmop.c
+
+cexpr.o:	cexpr.c cexpr.h ilc.h parser.h scanner.h sysdep.h \
+		symtab.h util.h conf.h debug.h errs.h rdfile.h
+
+rdfile.o:	rdfile.c rdfile.h ilc.h parser.h scanner.h sysdep.h \
+		symtab.h util.h conf.h debug.h errs.h
+
+parser.o:	parser.c keywords.c parser.h scanner.h sysdep.h conf.h \
+		symtab.h parser_op.c debug.h errs.h
+
+scanner.o:	scanner.c scanner.h sysdep.h conf.h debug.h
+
+symtab.o:	symtab.c symtab.h ilc.h util.h conf.h debug.h
+
+util.o:	util.c util.h ilc.h conf.h symtab.h debug.h
+
+parser.h:	parser_c.h parser.c conf.h debug.h
+	./mkh.sh parser
+
+scanner.h:	scanner_c.h scanner.c conf.h debug.h
+	./mkh.sh scanner
+
+keywords.c:	keywords.lst
+	./mkkw.sh keywords.lst > keywords.c
+
+parser_op.c:	parser_c.h
+	./mkcl.sh parser_c.h > parser_op.c
+
+debug.o:	debug.c pass1.h conf.h debug.h ilc.h parser.h \
+	scanner.h symtab.h sysdep.h util.h cexpr.h
+
+errs.h:	errlist.h
+	-
+
+emitter.h:	asmop.h
+	-
+
+errs.o:	errs.c errs.h errlist.c errlist.h rdfile.h ilc.h debug.h scanner.h \
+	parser.h symtab.h pass1.h util.h conf.h sysdep.h
+
+errlist.c errlist.h:	errlist.lst
+	awk '\
+BEGIN {\
+	s = "errlist.lst";\
+	h = "errlist.h";\
+	print "/* FILE GENERATO AUTOMATICAMENTE A PARTIRE DA " s " */";\
+	print "/* FILE GENERATO AUTOMATICAMENTE A PARTIRE DA " s " */">h;\
+	print "\nconst char *err_list[] = {";\
+	print "\nextern const char *err_list[];\nenum {">>h;\
+	sep = "";\
+} \
+/^#.*/ { next; } \
+/^ *$$/ { next; } \
+{	printf("/* %s */ \"",$$1); \
+	print sep>>h; \
+	printf("%s /*",$$1)>>h; \
+	for (i = 2; i <= NF; ++i) { \
+		if (i > 2) printf(" "); \
+		printf("%s",$$(i)); \
+		if (i > 2) printf(" ")>>h; \
+		printf("%s",$$(i))>>h; \
+	}\
+	print "\","; \
+	sep = "*/,";\
+}\
+END { print "};"; print "*/\n};">>h }' errlist.lst > errlist.c
+
+asmop.c asmop.h:	asmop.lst
+	awk '\
+BEGIN {\
+	s = "asmop.lst";\
+	h = "asmop.h";\
+	print "/* FILE GENERATO AUTOMATICAMENTE A PARTIRE DA " s " */";\
+	print "/* FILE GENERATO AUTOMATICAMENTE A PARTIRE DA " s " */">h;\
+	print "\nconst char *asmop_list[] = {";\
+	print "\nextern const char *asmop_list[];\nenum {">>h;\
+	sep = "";\
+	n = 0;\
+} \
+/^#.*/ { next; } \
+/^ *$$/ { next; } \
+{	printf("/* %s */ \"",$$1); \
+	lista[$$1] = n; \
+	n = n + 1; \
+	print sep>>h; \
+	printf("%s /*",$$1)>>h; \
+	expand = 0; \
+	for (i = 2; i <= NF; ++i) { \
+		if ($$(i) in lista) { \
+			printf("%%(%d)",lista[$$(i)]); \
+			printf("%%(%d)",lista[$$(i)])>>h; \
+			expand = 1; \
+		} \
+		else { \
+			if (i > 2 && ! exand) printf(" "); \
+			printf("%s",$$(i)); \
+			if (i > 2 && ! exand) printf(" ")>>h; \
+			printf("%s",$$(i))>>h; \
+			expand = 0; \
+		} \
+	}\
+	print "\","; \
+	sep = "*/,";\
+}\
+END { print "};"; print "*/\n};">>h }' asmop.lst > asmop.c
+
+# ver.o:	ver.c
+# ver.c:	$(SOURCES) $(HEADERS) Makefile 
+# 	@if [ -r VERSIONE ]; then \
+# 		versione=`awk '{ split($$0,a,"."); print a[1] "." a[2] "." a[3] "." (a[4]+1); }' VERSIONE` ;\
+# 	else \
+# 		versione=1.0.0.0; \
+# 	fi; \
+# 	echo 'Numero di versione proposto per ILC : '"$$versione"; \
+# 	echo 'Premi ENTER se va bene, oppure scrivine uno tu.'; \
+# 	read a; \
+# 	if [ "$$a" ]; then versione="$$a"; fi; \
+# 	echo -en "$$versione" > VERSIONE; \
+# 	echo -en 'char Versione[] = "@(#) '"$$versione" > ver.c; \
+# 	echo -en '\\t\\t[' >> ver.c; \
+# 	echo -en "`date +"%d/%m/%Y %H:%M:%S"`" >> ver.c; \
+# 	echo -en ']\\tlib: ??? ";\n' >> ver.c
+
+
+
+ver.o:	ver.c
+ver.c:	VERSIONE
+	./v.sh
+
+VERSIONE:	$(SOURCES) $(HEADERS) Makefile 
+	@if [ -r VERSIONE ]; then \
+		versione=`awk '{ split($$0,a,"."); print a[1] "." a[2] "." a[3] "." (a[4]+1); }' VERSIONE` ;\
+	else \
+		versione=1.0.0.0; \
+	fi; \
+	echo 'Numero di versione proposto per ILC : '"$$versione"; \
+	echo 'Premi ENTER se va bene, oppure scrivine uno tu.'; \
+	read a; \
+	if [ "$$a" ]; then versione="$$a"; fi; \
+	echo "$$versione" > VERSIONE;
+
+
+
+test::
+	./ilc -header test/scambio.xnc -code q.ilc -os test/q.s
+	as test/q.s -o test/q.o
+	ld -r $(ILCRTMDIR)/ilcloader.o \
+	      $(ILCRTMDIR)/ilc0.o test/q.o $(ILCRTMDIR)/ilcn.o \
+	   -o test/user.o
+	/bin/ld -r test/user.o -o test/user.oo
+	cp test/user.oo $(QPLCDIR)/plc-objs
+
+prova::
+	./ilc -header test/scambio.xnc -code test/prova.ilc -os test/prova.s
+	as test/prova.s -o test/prova.o
+	ld -r $(ILCRTMDIR)/ilcloader.o \
+	      $(ILCRTMDIR)/ilc0.o test/prova.o $(ILCRTMDIR)/ilcn.o \
+	   -o test/user.o
+	/bin/ld -r test/user.o -o test/user.oo
+
+tags:	$(SOURCES)
+	ctags $(SOURCES)
+

@@ -1,0 +1,36 @@
+--------------------Configuration: astrip - Win32 Release--------------------
+Begining build with project "E:\cni\ilc\aout\astrip.dsp", at root.
+Active configuration is Win32 (x86) Console Application (based on Win32 (x86) Console Application)
+
+Project's tools are:
+			"32-bit C/C++ Compiler for 80x86" with flags "/nologo /ML /W3 /GX /O2 /I "include.w32" /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"Release/astrip.pch" /YX /Fo"Release/" /Fd"Release/" /FD /c "
+			"Win32 Resource Compiler" with flags "/l 0x409 /d "NDEBUG" "
+			"Browser Database Maker" with flags "/nologo /o"Release/astrip.bsc" "
+			"COFF Linker for 80x86" with flags "kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /incremental:no /pdb:"Release/astrip.pdb" /machine:I386 /out:"Release/astrip.exe" "
+			"Custom Build" with flags ""
+			"<Component 0xa>" with flags ""
+
+Creating temp file "C:\TEMP\RSP2.tmp" with contents </nologo /ML /W3 /GX /O2 /I "include.w32" /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"Release/astrip.pch" /YX /Fo"Release/" /Fd"Release/" /FD /c 
+"E:\cni\ilc\aout\astrip.c"
+>
+Creating command line "cl.exe @C:\TEMP\RSP2.tmp" 
+Creating temp file "C:\TEMP\RSP3.tmp" with contents <kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /incremental:no /pdb:"Release/astrip.pdb" /machine:I386 /out:"Release/astrip.exe" 
+.\Release\astrip.obj>
+Creating command line "link.exe @C:\TEMP\RSP3.tmp" 
+Compiling...
+astrip.c
+E:\cni\ilc\aout\astrip.c(105) : warning C4101: 'val' : unreferenced local variable
+E:\cni\ilc\aout\astrip.c(173) : warning C4101: 'c' : unreferenced local variable
+E:\cni\ilc\aout\astrip.c(215) : warning C4101: 't' : unreferenced local variable
+E:\cni\ilc\aout\astrip.c(280) : warning C4101: 'section' : unreferenced local variable
+Linking...
+Creating temp file "C:\TEMP\RSP4.bat" with contents <@echo off
+copy Release\astrip.exe ..\bin\win32\astrip.exe
+>
+Creating command line "C:\TEMP\RSP4.bat" 
+
+        1 file(s) copied.
+
+
+
+astrip.exe - 0 error(s), 4 warning(s)

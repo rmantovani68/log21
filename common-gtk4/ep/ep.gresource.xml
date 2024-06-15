@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/easy-picking/utilities">
+    <file preprocess="xml-stripblanks">msg-box.ui</file>
+    <file preprocess="xml-stripblanks">about-window.ui</file>
+  </gresource>
+</gresources>
+

@@ -1,0 +1,944 @@
+
+            ######################################
+            #                                    #
+            #     File di definizione del        #
+            #     file selection box             #
+            #                                    #
+            ######################################
+
+
+####################################################################
+# Procedura RisolviLink
+# Con questa procedura si risolve l'eventuale link presente 
+# nel direttorio /home/d_xnc/plc
+# Input: 
+#   Nessuno
+# Ritorna :
+#   Percorso eventualmente linkato 
+####################################################################
+proc RisolviLink { } {
+global EditPrefs
+
+  set oldpwd [pwd]
+  cd $EditPrefs(progpath1)
+  set NewPath [pwd]
+  cd $oldpwd
+  return $NewPath
+}
+
+####################################################################
+# Procedura DefinisciData
+# Definizione della data del file selezionato e sua scrittura
+# nella label riservata a questa visualizzazione
+# principale
+# Input: 
+#   w          Nome del widget label
+#   NomeFile   Nome del file di cui si vuole visalizzare la data
+# Ritorna :
+#   Niente
+####################################################################
+proc DefinisciData { w NomeFile} {
+global EditPrefs CurrentDir
+
+  if {$EditPrefs(fs_diskA) == 0 && \
+     [string first "/tmp" $CurrentDir] == -1} {
+    $w config -text "$NomeFile - [file size ./$NomeFile] - \
+              [clock format [file mtime ./$NomeFile] -format {%T %d/%m/%y}]"
+  } else {
+    $w config -text ""
+  }
+}
+
+####################################################################
+# Procedura CancellaFile
+# Cancellazione di un file di programma su Hd o su floppy
+# principale
+# Input: 
+#   PathLab    Nome del widget label che visualizza il percorso
+#   ListD      Nome del listbox che contiene i direttori
+#   ListF      Nome del listbox che contiene i file
+#   TipoFs     Tipo del file (Program 0 Library)
+# Ritorna :
+#   Niente
+####################################################################
+proc CancellaFile { PathLab ListD ListF TipoFs} {
+global CurrentDir ComandiDos EditPrefs tcl_platform
+
+  set FileCanc [PromptBox -text [GetString MsgNomeFile] \
+    -title [GetString CancellaFile]] 
+
+  if { $FileCanc == "" } {
+    return
+  }
+
+  if {[file extension $FileCanc] == ""} {
+    set FileCanc $FileCanc.plc
+  }
+
+  if {$EditPrefs(fs_diskA) == 0} {
+    if [file exist [pwd]/$FileCanc] {
+      file delete [pwd]/$FileCanc
+      ShowFileDirectoryHd [$ListD subwidget listbox] [$ListF subwidget listbox]
+    } else {
+      AlertBox -text [GetString MsgErroreFileDel] 
+    }
+    if { $TipoFs == "Program" } {
+      set FileCanc [file root $FileCanc].msd
+      if [file exist [pwd]/$FileCanc] {
+        file delete [pwd]/$FileCanc
+      } else {
+        AlertBox -text [GetString MsgErroreFileDel] 
+      }
+      set FileCanc [file root $FileCanc].mod
+      if [file exist [pwd]/$FileCanc] {
+        file delete [pwd]/$FileCanc
+      } else {
+        AlertBox -text [GetString MsgErroreFileDel] 
+      }
+    }
+  } else {
+    if {$tcl_platform(platform) != "unix"} {
+      if ![EsistenzaFloppy] {
+         AlertBox -text MsgNoDosDiskInsert
+         return
+       }
+    }
+    catch { exec $ComandiDos(delFile) A:$CurrentDir/$FileCanc} out
+    if { $out == ""} {
+      ShowFileDirectoryDisk $PathLab [$ListD subwidget listbox] \
+         [$ListF subwidget listbox]
+    } else {
+      AlertBox -text [GetString MsgErroreFileDel] 
+    }
+    if { $TipoFs == "Program" } {
+      set FileCanc [file root $FileCanc].msd
+      catch { exec $ComandiDos(delFile) A:$CurrentDir/$FileCanc} out
+      if { $out != ""} {
+        AlertBox -text [GetString MsgErroreFileDel] 
+      }
+      set FileCanc [file root $FileCanc].mod
+      catch { exec $ComandiDos(delFile) A:$CurrentDir/$FileCanc} out
+      if { $out != ""} {
+        AlertBox -text [GetString MsgErroreFileDel] 
+      }
+    }
+  }
+}
+
+####################################################################
+# Procedura CreaDirettorio
+# Creazione di un direttorio su Hd o su floppy
+# principale
+# Input: 
+#   PathLab    Nome del widget label che visualizza il percorso
+#   ListD      Nome del listbox che contiene i direttori
+#   ListF      Nome del listbox che contiene i file
+# Ritorna :
+#   Niente
+####################################################################
+proc CreaDirettorio { PathLab ListD ListF} {
+global CurrentDir ComandiDos EditPrefs tcl_platform
+
+  set DirCreate [PromptBox -text [GetString MsgNomeDirettorioCreate] \
+    -title [GetString CreaDirettorio]] 
+
+  if { $DirCreate == "" } {
+    return
+  }
+
+  if {$EditPrefs(fs_diskA) == 0} {
+    if {[catch {file mkdir [pwd]/$DirCreate} out] == 0} {
+      ShowFileDirectoryHd [$ListD subwidget listbox] [$ListF subwidget listbox]
+    } else {
+      AlertBox -text [GetString MsgErroreMakeDir] 
+    }
+  } else {
+    if {$tcl_platform(platform) != "unix"} {
+       if ![EsistenzaFloppy] {
+         AlertBox -text MsgNoDosDiskInsert
+         return
+       }
+    }
+    set comando "catch { exec $ComandiDos(makeDir) A:$CurrentDir/$DirCreate} out"
+    eval $comando
+    if { $out == ""} {
+      ShowFileDirectoryDisk $PathLab [$ListD subwidget listbox] \
+         [$ListF subwidget listbox]
+    } else {
+      AlertBox -text [GetString MsgErroreMakeDir] 
+    }
+  }
+}
+
+####################################################################
+# Procedura CancellaDirettorio
+# Cancellazione di un direttorio su Hd o su floppy
+# principale
+# Input: 
+#   PathLab    Nome del widget label che visualizza il percorso
+#   ListD      Nome del listbox che contiene i direttori
+#   ListF      Nome del listbox che contiene i file
+# Ritorna :
+#   Niente
+####################################################################
+proc CancellaDirettorio { PathLab ListD ListF} {
+global CurrentDir ComandiDos EditPrefs tcl_platform
+
+  set DirDel [PromptBox -text [GetString MsgNomeDirettorioDelete] \
+    -title [GetString CancellaDirettorio]] 
+
+  if { $DirDel == "" } {
+    return
+  }
+
+  if {$EditPrefs(fs_diskA) == 0} {
+    if {[catch {file delete -force [pwd]/$DirDel} out] == 0} {
+      ShowFileDirectoryHd [$ListD subwidget listbox] [$ListF subwidget listbox]
+    } else {
+      AlertBox -text [GetString MsgErroreDirDel] 
+    }
+  } else {
+    if {$tcl_platform(platform) != "unix"} {
+      if ![EsistenzaFloppy] {
+        AlertBox -text MsgNoDosDiskInsert
+        return
+      }
+    }
+    set comando "catch { exec $ComandiDos(delDir) A:$CurrentDir/$DirDel} out"
+    eval $comando
+    if { $out == ""} {
+      ShowFileDirectoryDisk $PathLab [$ListD subwidget listbox] \
+         [$ListF subwidget listbox]
+    } else {
+      AlertBox -text [GetString MsgErroreDirDel] 
+    }
+  }
+}
+
+####################################################################
+# Procedura ShowFileDirectoryHd
+# Procedura che visualizza i file ed i direttori di un 
+# determinato percorso all'interno dei list box appropriati
+# Input: 
+#   ListD      Nome del listbox che contiene i direttori
+#   ListF      Nome del listbox che contiene i file
+# Ritorna :
+#   Niente
+####################################################################
+proc ShowFileDirectoryHd { ListD ListF } {
+global EditPrefs CurrentDir 
+
+  $ListD delete 0 end
+  $ListF delete 0 end
+
+  # add ".." to go up a level:
+  if { [pwd] != $CurrentDir } {
+    $ListD insert end ".."
+  }
+
+  set current_directory [pwd]
+  # add any directory
+  foreach i [lsort [glob -nocomplain *]] {
+    if {$i != "." && $i != ".."} {
+      if {[file isdirectory ./$i] && $current_directory != \
+              $EditPrefs(libpath) } {
+        $ListD insert end "$i"
+      }
+    }
+  }
+
+  # add any dot-files:
+  foreach i [lsort "[glob -nocomplain *.plc]"] {
+    if {$i != "." && $i != ".."} {
+      if {[file isdirectory ./$i]} {
+        $ListD insert end "$i"
+      } else {
+        $ListF insert end "$i"
+      }
+    }
+  }
+}
+
+####################################################################
+# Procedura ShowFileDirectoryRemote
+# Procedura che visualizza i file ed i direttori di un 
+# determinato percorso in macchina remota all'interno dei list box 
+# appropriati
+# Input: 
+#   ListD      Nome del listbox che contiene i direttori
+#   ListF      Nome del listbox che contiene i file
+# Ritorna :
+#   Niente
+####################################################################
+proc ShowFileDirectoryRemote { ListD ListF } {
+global EditPrefs CurrentDir 
+
+  $ListD delete 0 end
+  $ListF delete 0 end
+
+  # add ".." to go up a level:
+  if { [string length $CurrentDir] > [string length "/tmp"] } {
+    $ListD insert end ".."
+  }
+
+  set Etichetta $EditPrefs(progpath1)
+  append Etichetta [string range $CurrentDir [string length "/tmp"] end]
+
+  # Facciamo finta di aprire un socket per avere i servizi a disposizione
+  catch {socket}  res
+  set NomeFile [ListDir2 $EditPrefs(progpath) $Etichetta $EditPrefs(plcremoto) \
+      $EditPrefs(plclogin) $EditPrefs(plcpassword)]
+  
+  if { [string index $NomeFile 0] == "-" } {
+    AlertBox -text "[GetString MsgTransmitErr] $NomeFile"
+    return
+  }
+
+  set fId [open $NomeFile r] 
+  set TuttoIlFile [read $fId]
+  close $fId
+  file delete $NomeFile
+  foreach Linea [split $TuttoIlFile "\n"] {
+    if {[string index $Linea 0] == "d" } {
+      if { [string index [lindex $Linea end] 0] != "." } {
+        $ListD insert end [lindex $Linea end]
+      }
+    } elseif { [string index $Linea 0] == "-" } {
+      if { [string index [lindex $Linea end] 0] != "." } {
+        set estensione [string toupper [file extension [lindex $Linea end]]]
+        if { $estensione == ".PLC" } {
+          $ListF insert end [lindex $Linea end]
+        }
+      }
+    } 
+  }
+}
+
+####################################################################
+# Procedura ShowFileDirectoryDisk
+# Procedura che visualizza da floppy i file ed i direttori di un 
+# determinato percorso all'interno dei list box appropriati
+# Input: 
+#   ListD      Nome del listbox che contiene i direttori
+#   ListF      Nome del listbox che contiene i file
+# Ritorna :
+#   0 Tutto OK; -1 Errore
+####################################################################
+proc ShowFileDirectoryDisk { labelpath listDir listFile} {
+global CurrentDir tcl_platform EditPrefs ComandiDos 
+
+  $listDir delete 0 end
+  $listFile delete 0 end
+
+  $labelpath configure -text $CurrentDir
+
+  if {$tcl_platform(platform) != "unix"} {
+    if ![EsistenzaFloppy] {
+      AlertBox -text MsgNoDosDiskInsert
+      set EditPrefs(fs_diskA) 0
+      set CurrentDir $EditPrefs(progpath1)
+      cd $CurrentDir
+      $labelpath configure -text [pwd]
+      ShowFileDirectoryHd $listDir $listFile
+      return -1
+    }
+  }
+  set comando "catch { exec $ComandiDos(dir) \
+       [string trimright "A:$CurrentDir" "/"]} ListaDirectory"
+  eval $comando
+
+  if { $tcl_platform(platform) == "unix" } {
+    if { [string first "Cannot initialize" $ListaDirectory] != -1 } {
+      AlertBox -text [GetString MsgNoDosDisk]
+      set EditPrefs(fs_diskA) 0
+      set CurrentDir $EditPrefs(progpath1)
+      cd $CurrentDir
+      $labelpath configure -text [pwd]
+      ShowFileDirectoryHd $listDir $listFile
+      return -1
+    }
+  } 
+
+  # add files:
+  if { $CurrentDir != "/" } {
+    $listDir insert end ".."
+  }
+  foreach i [lsort [split $ListaDirectory "\n"]] {
+    if { $tcl_platform(platform) == "unix" } {
+      if { $i != "" && [string range $i 0 0] != " " && [lindex $i 0] != "."} {
+        # Se il nome nel dischetto DOS e' < di 8 caratteri ed
+        # e' tutto maiuscolo il comando mdir non aggiunge
+        # il nome in fondo quindi andremmo a prendere la data
+        if { [string first ":" [lindex $i end]] == -1 } {
+          set indice end
+          set extension ""
+        } else {
+          set indice 0
+          if { [llength $i] == 5 } {
+            set extension ".[lindex $i 1]"
+          } else {
+            set extension ""
+          }
+        }
+        if { [string first "<DIR>" $i] != -1 && [lindex $i 0] != ".."} {
+          # Si tratta di direttorio
+          $listDir insert end "[lindex $i $indice]$extension"
+        } else {
+          if { [string first ".plc" $i] != -1} {
+            $listFile insert end [lindex $i $indice]
+          }
+        }
+      }
+    } else {
+      if { [string first "No such file or directory" $i] != -1 } {
+        return 0
+      }
+      if { [string first "/" $i] != -1 } {
+        # Si tratta di direttorio
+        $listDir insert end [string trimright [lindex $i 0] "/"]
+      } else {
+        if { [string first ".plc" $i] != -1} {
+          $listFile insert end [lindex $i 0]
+        }
+      }
+    }
+  }
+  return 0
+}
+
+####################################################################
+# Procedura FileIsDirectory
+# Procedura che mi dice se il file selezionato e' un direttorio
+# Input: 
+#   file      Nome del file da esaminare
+# Ritorna :
+#   1 il file e' un direttorio ; 0 il file e' un file
+####################################################################
+proc FileIsDirectory { file } {
+global EditPrefs
+
+  if {$EditPrefs(fs_diskA) == 0} {
+    if [file isdirectory ./$file] {
+      return 1
+    } else {
+      return 0
+    }
+  } else {
+    set LunghezzaSelezione [expr [string length $file] -1]
+    if { [string range $file $LunghezzaSelezione $LunghezzaSelezione] == "/" \
+          || $file == ".."} {
+      return 1
+    } else { 
+      return 0
+    }
+  }
+}
+
+####################################################################
+# Procedura OkProc
+# Procedura invocata su ogni conferma di file per aggiornare la
+# Variabile FsResult
+# Input: 
+#   Nessuno
+# Ritorna :
+#   Niente
+####################################################################
+proc OkProc { } {
+  global FsResult EditPrefs CurrentDir 
+
+  if { $FsResult == {} } {
+     return
+  }
+
+  if {$EditPrefs(fs_diskA) == 0} {
+    if {[string first "/tmp" $CurrentDir] == -1 } {
+      # Caso locale
+      set cwd [pwd]
+      set FsResult $cwd/$FsResult
+    } else {
+      # Caso remoto
+      if {[string index $CurrentDir [expr [string length $CurrentDir] -1]] == "/" } {
+        set FsResult $CurrentDir$FsResult
+      } else {
+        set FsResult $CurrentDir/$FsResult
+      }
+    }
+  } else {
+    if {[string index $CurrentDir [expr [string length $CurrentDir] -1]] \
+         == "/" } {
+      set FsResult $CurrentDir$FsResult
+    } else {
+      set FsResult $CurrentDir/$FsResult
+    }
+  }
+}
+
+####################################################################
+# Procedura ChangeDirProc
+# Procedura invocata su ogni conferma direttorio
+# Input: 
+#   Direttorio     Direttorio in cui si vuole andare
+#   PathWdg        Widget della etichetta che visualizza il percorso
+#   ListDirWdg     ListBox che visualizza i direttori
+#   ListFileWdg    ListBox che visualizza i file
+# Ritorna :
+#   Niente
+####################################################################
+proc ChangeDirProc { Direttorio PathWdg ListDirWdg ListFileWdg} {
+global CurrentDir EditPrefs
+
+  if {$EditPrefs(fs_diskA) == 0} { 
+    if {[string first "/tmp" $CurrentDir] == -1 } {
+      # Caso locale
+      set old1 [pwd]
+      cd $Direttorio
+
+      if { [string first $CurrentDir [pwd]] == -1 } {
+        cd $old1
+      } else {
+        $PathWdg configure -text [pwd]
+        ShowFileDirectoryHd $ListDirWdg $ListFileWdg
+        set FsResult ""
+      }
+    } else {
+      # Caso remoto
+      WaitWindow [winfo toplevel $PathWdg] 1
+      update idletask
+      if { $Direttorio != ".." } {
+        set CurrentDir "$CurrentDir/$Direttorio"
+      } else {
+        set CurrentDir [string trimright $CurrentDir "/"]
+        set CurrentDir [string range $CurrentDir 0 \
+          [string last "/" $CurrentDir]] 
+      }
+      set Etichetta $EditPrefs(progpath1)
+      append Etichetta [string range $CurrentDir [string length "/tmp"] end]
+      $PathWdg configure -text "$EditPrefs(plcremoto) : $Etichetta"
+      ShowFileDirectoryRemote $ListDirWdg $ListFileWdg 
+      set FsResult ""
+      WaitWindow [winfo toplevel $PathWdg] 0
+      update idletask
+    }
+  } else {
+    WaitWindow [winfo toplevel $PathWdg] 1
+    update idletask
+    if { $Direttorio != ".." } {
+      if { $CurrentDir != "/" } {
+        set CurrentDir "$CurrentDir/$Direttorio"
+      } else {
+        set CurrentDir "$CurrentDir$Direttorio"
+      }
+      ShowFileDirectoryDisk $PathWdg $ListDirWdg $ListFileWdg
+    } else {
+      set CurrentDir [string trimright $CurrentDir "/"]
+      set CurrentDir [string range $CurrentDir 0 [string last "/" $CurrentDir]] 
+      ShowFileDirectoryDisk $PathWdg $ListDirWdg $ListFileWdg
+    }
+    WaitWindow [winfo toplevel $PathWdg] 0
+    update idletask
+  }
+}
+
+####################################################################
+# Procedura SwitchDirettorio
+# Procedura che cambia il direttorio da d_xnc/plc a edit_plc/prog
+# nel caso unix.
+# Nel caso window cambia da pds/prog locale  a d_unc/plc remoto
+# Input: 
+#   PathWdg        Widget della etichetta che visualizza il percorso
+#   ListDirWdg     ListBox che visualizza i direttori
+#   ListFileWdg    ListBox che visualizza i file
+#   MenuFile        Widget del menu che contiene le voci da disabilitare
+# Ritorna :
+#   Niente
+####################################################################
+proc SwitchDirettorio {PathWdg ListDirWdg ListFileWdg MenuFile} {
+global CurrentDir FsResult EditPrefs tcl_platform
+global predir nc1000
+
+  set EditPrefs(fs_diskA) 0
+  if { ($tcl_platform(platform) == "unix") || $nc1000} { 
+    if {$CurrentDir == "$EditPrefs(progpath)" } {
+      if { $nc1000 } {
+        set SecondoDir "/$predir$EditPrefs(progpath1)"
+        if { [file exists $SecondoDir] } {
+          set CurrentDir $SecondoDir
+        }
+      } else {
+        set CurrentDir [RisolviLink]
+      }
+      cd $CurrentDir
+      $PathWdg configure -text [pwd]
+      ShowFileDirectoryHd [$ListDirWdg subwidget listbox] \
+         [$ListFileWdg subwidget listbox] 
+      set FsResult ""
+    } else {
+      set CurrentDir $EditPrefs(progpath) 
+      cd $CurrentDir
+      $PathWdg configure -text [pwd]
+      ShowFileDirectoryHd [$ListDirWdg subwidget listbox] \
+         [$ListFileWdg subwidget listbox]
+      set FsResult ""
+    }
+  } else {
+    if {$CurrentDir == "$EditPrefs(progpath)" } {
+      $MenuFile entryconfigure [GetString CancellaFile] -state disabled
+      $MenuFile entryconfigure [GetString CreaDirettorio] -state disabled
+      $MenuFile entryconfigure [GetString CancellaDirettorio] -state disabled
+      WaitWindow [winfo toplevel $PathWdg] 1
+      update idletask
+      set CurrentDir /tmp
+      $PathWdg configure -text "$EditPrefs(plcremoto) : $EditPrefs(progpath1)"
+      ShowFileDirectoryRemote [$ListDirWdg subwidget listbox] \
+         [$ListFileWdg subwidget listbox] 
+      set FsResult ""
+      WaitWindow [winfo toplevel $PathWdg] 0
+      update idletask
+    } else {
+      $MenuFile entryconfigure [GetString CancellaFile] -state normal
+      $MenuFile entryconfigure [GetString CreaDirettorio] -state normal
+      $MenuFile entryconfigure [GetString CancellaDirettorio] -state normal
+      set CurrentDir $EditPrefs(progpath) 
+      cd $CurrentDir
+      $PathWdg configure -text [pwd]
+      ShowFileDirectoryHd [$ListDirWdg subwidget listbox] \
+         [$ListFileWdg subwidget listbox]
+      set FsResult ""
+    }
+  }
+}
+
+####################################################################
+# Procedura LeggiDischetto
+# Procedura che legge il dischetto
+# Input: 
+#   PathWdg        Widget della etichetta che visualizza il percorso
+#   ListDirWdg     ListBox che visualizza i direttori
+#   ListFileWdg    ListBox che visualizza i file
+#   TipoFS         Tipo di programma (Program/Library)
+# Ritorna :
+#   Niente
+####################################################################
+proc LeggiDischetto {PathWdg ListDirWdg ListFileWdg TipoFS} {
+global CurrentDir FsResult EditPrefs tcl_platform
+
+  if {$EditPrefs(fs_diskA) == 0 } {
+    if {$TipoFS != "Library"} {
+      if { $tcl_platform(platform) == "unix" && \
+          [file exists $EditPrefs(progpath1)] } {
+        set CurrentDir [RisolviLink]
+      } else {
+        set CurrentDir $EditPrefs(progpath)
+      }
+    } else {
+      set CurrentDir $EditPrefs(libpath)
+    }
+    cd $CurrentDir
+    $PathWdg configure -text [pwd]
+    ShowFileDirectoryHd [$ListDirWdg subwidget listbox] \
+        [$ListFileWdg subwidget listbox]
+    set FsResult ""
+  } else {
+    WaitWindow [winfo toplevel $PathWdg] 1
+    update idletask
+    if {$TipoFS != "Library"} {
+      set CurrentDir /plc
+    } else {
+      set CurrentDir /library
+    }
+    ShowFileDirectoryDisk $PathWdg [$ListDirWdg subwidget listbox] \
+       [$ListFileWdg subwidget listbox]
+    set FsResult ""
+    WaitWindow [winfo toplevel $PathWdg] 0
+    update idletask
+  }
+}
+
+####################################################################
+# Procedura FileSelection
+# Procedura che crea il file selction box
+# Input: 
+#   Opzioni
+#   -title (default "File Selector")
+#   -directory (default ".")
+#   -type (default "Program")
+# Ritorna :
+#   Nome del file selzionato
+####################################################################
+proc FileSelection { t args } {
+global tcl_platform OldFilename FsResult EditPrefs CurrentDir
+global nc1000 predir
+
+  if { $tcl_platform(platform) == "unix" && \
+      [file exists $EditPrefs(progpath1)]} {
+    ParseArgs {
+      {title TitleFs}
+      {directory "."}
+      {type Program}
+    }
+  } else {
+    ParseArgs {
+      {title TitleFs}
+      {directory "."}
+      {type Program}
+    }
+  }
+  
+  set title [GetString $title]
+  set typefs $type
+
+  set OldFilename [GetFilename $t]
+    
+  set NomeProgramma  [GetFilename $t]
+
+  if {$typefs != "Library"} {
+    if { $NomeProgramma == "" } {
+      if { $tcl_platform(platform) == "unix" && \
+           [file exists $EditPrefs(progpath1)] } {
+        set CurrentDir [RisolviLink]
+      } else {
+        set CurrentDir $EditPrefs(progpath)
+        if { $nc1000 } {
+          set SecondoDir "/$predir$EditPrefs(progpath1)"
+          if { [file exists $SecondoDir] } {
+            set CurrentDir $SecondoDir
+          }
+        }
+      }
+    } else {
+      if { $nc1000 } {
+        set SecondoDir "/$predir$EditPrefs(progpath1)"
+      } else {
+        set SecondoDir $EditPrefs(progpath1)
+      }
+      if { [string first $EditPrefs(progpath1) \
+           [file dirname $NomeProgramma]] != -1 \
+           && [file exists $SecondoDir] } {
+        if { $tcl_platform(platform) == "unix"} {
+          set CurrentDir [RisolviLink]
+        } else {
+          set CurrentDir $SecondoDir
+        }
+      } elseif { [string first $EditPrefs(progpath) \
+           [file dirname $NomeProgramma]] != -1 \
+           && [file exists $EditPrefs(progpath)] } { 
+        set CurrentDir $EditPrefs(progpath)
+      } else {
+        if { $tcl_platform(platform) == "unix"} {
+          set CurrentDir [RisolviLink]
+        } else {
+          set CurrentDir $SecondoDir
+        }
+      }
+    }
+  } else {
+    set CurrentDir $EditPrefs(libpath)
+  }
+  set file ""
+
+  if {![file isdirectory $CurrentDir]} {
+    set CurrentDir .
+  }
+
+  set FsResult $file
+
+  set old_cwd [pwd]
+  set old_focus [focus]
+  set MainW [winfo toplevel [focus]]
+
+  if [winfo exists .fs] {
+    return
+  }
+
+  cd $CurrentDir
+
+  grab release [grab current]
+
+  set w .fs
+  toplevel $w
+  wm title $w $title
+  wm minsize $w 10 10
+  wm protocol $w WM_DELETE_WINDOW procx
+
+  #
+  #  Creazione della MENUBAR principale
+  #
+  frame $w.top 
+  frame $w.top.menubar -relief flat -bd 2 
+
+  menubutton $w.top.menubar.mb1 -text [GetString Servizi] -anchor w \
+          -menu $w.top.menubar.mb1.file \
+	  -font $EditPrefs(windowfont) -underline 0 -relief raised 
+  set file [menu $w.top.menubar.mb1.file -tearoff 0 ]
+  $file add command -label [GetString CancellaFile] -command "CancellaFile \
+	   $w.top.path $w.top.scrolled.dir $w.top.scrolled.file $typefs" \
+           -font $EditPrefs(windowfont) 
+  $file add separator
+  $file add command -label [GetString CreaDirettorio] -command "CreaDirettorio \
+                       $w.top.path $w.top.scrolled.dir $w.top.scrolled.file" \
+                       -font $EditPrefs(windowfont) 
+  $file add command -label [GetString CancellaDirettorio] \
+                       -command "CancellaDirettorio $w.top.path \
+                       $w.top.scrolled.dir $w.top.scrolled.file" \
+                       -font $EditPrefs(windowfont) 
+
+  if { $type == "Program" && !($EditPrefs(plclocale) == 0 && \
+       $title == "[GetString PromptSaveas]" && $nc1000 == 0)} {
+    $file add separator
+    $file add command -label [GetString Switch] \
+            -command [format {SwitchDirettorio %s %s %s %s} $w.top.path \
+            $w.top.scrolled.dir $w.top.scrolled.file $file] \
+            -font $EditPrefs(windowfont) 
+  }
+
+  if { $title == [GetString PromptLoad] } {
+    $file add checkbutton -label [GetString FsDiskA] \
+           -command [format {LeggiDischetto %s %s %s %s} \
+           $w.top.path $w.top.scrolled.dir $w.top.scrolled.file $typefs] \
+           -font $EditPrefs(windowfont) -variable EditPrefs(fs_diskA) \
+           -selectcolor $EditPrefs(checkcolor)
+  }
+
+  label $w.top.menubar.label1 -image xncPROG -relief flat 
+  label $w.top.menubar.label2 -image xncLOCAL -relief flat 
+
+  pack $w.top.menubar.label1 -in $w.top.menubar -side left -anchor nw -padx 3
+  pack $w.top.menubar.mb1 -in $w.top.menubar -side left -expand yes -fill x 
+  pack $w.top.menubar.label2 -in $w.top.menubar -side right -anchor ne -padx 3
+
+  #
+  #  Creazione delle due scrolled list
+  #
+
+  label $w.top.path -text [pwd] -font $EditPrefs(windowfont) 
+
+  frame $w.top.scrolled 
+  tixScrolledListBox $w.top.scrolled.dir -scrollbar y -options [format {
+        listbox.font %s
+    } $EditPrefs(windowfont)]
+
+  tixScrolledListBox $w.top.scrolled.file -scrollbar y -options [format {
+        listbox.font %s
+    } $EditPrefs(windowfont)]
+  pack $w.top.scrolled.dir -in $w.top.scrolled -side left -expand true \
+      -fill both 
+  pack $w.top.scrolled.file -in $w.top.scrolled -side right -expand true \
+      -fill both
+
+  entry $w.top.filename -font $EditPrefs(windowfont) -textvariable FsResult 
+  label $w.top.filedata -font $EditPrefs(windowfont) 
+
+  tixButtonBox $w.box -orientation horizontal
+  $w.box add ok -image ok -font $EditPrefs(windowfont)  -command "
+                                             OkProc 
+					     destroy $w" 
+  $w.box add cancel -image cancel -font $EditPrefs(windowfont) -command "
+                                              set EditPrefs(fs_diskA) 0
+					      set FsResult {}
+                                              destroy $w" 
+
+  pack $w.top.menubar -in $w.top -side top -fill x -expand true -anchor n
+  pack $w.top.path -in $w.top -side top -anchor nw -pady 2 
+  pack $w.top.scrolled -in $w.top -side top -fill both -expand true 
+  pack $w.top.filename -in $w.top -side top -anchor w -pady 5 
+  pack $w.top.filedata -in $w.top -side top -pady 5 
+
+  pack $w.top -side top -padx 10 -pady 10 -expand true -fill both -anchor n 
+  pack $w.box -side bottom -fill x -anchor n
+
+  CniBalloon [$w.box subwidget ok] [GetString OK] $EditPrefs(windowfont) 500
+  CniBalloon [$w.box subwidget cancel] [GetString EXIT] \
+         $EditPrefs(windowfont) 500
+
+  wm transient $w $MainW
+  PosizionaFinestre $MainW $w c
+
+  $w.top.filename insert end $FsResult
+
+  focus $w.top.filename
+  bind $w.top.filename <Any-KeyRelease> {
+    set file [%W get]
+    # faccio in modo che il nome file nel campo di editing non superi
+    # gli 8 caratteri
+    if {[string length $file] > 8 } {
+       %W delete 8 end
+    }
+  }
+
+  bind $w.top.filename <Return> {
+    if {[file extension $FsResult] == ""} {
+      set FsResult $FsResult.plc
+    }
+    OkProc
+    destroy [winfo toplevel %W]
+  }
+
+  bind $w.top.filename <FocusIn> {
+    %W select range 0 end
+  }
+
+  bind [$w.top.scrolled.file subwidget listbox] <KeyRelease> [format {
+    set SelezioneCorrente [%s curselection]
+    if { $SelezioneCorrente != "" } {
+      set FsResult [%s get $SelezioneCorrente]
+      DefinisciData %s $FsResult
+    }
+  } [$w.top.scrolled.file subwidget listbox] \
+    [$w.top.scrolled.file subwidget listbox]  $w.top.filedata]
+
+  bind [$w.top.scrolled.file subwidget listbox] <Return> {
+    OkProc
+    destroy [winfo toplevel %W]
+  }
+
+  bind [$w.top.scrolled.file subwidget listbox] <ButtonRelease-1> [format {	
+    if {[catch {set FsResult [selection get]} result] == "0"} {
+      DefinisciData %s $FsResult
+    }
+  } $w.top.filedata]
+
+  bind [$w.top.scrolled.file subwidget listbox] <Double-1> [format {	
+    if {[catch {set FsResult [selection get]} result] == "0"} {
+      OkProc
+      destroy %s
+    }
+  } $w] 
+
+  bind [$w.top.scrolled.file subwidget listbox] <Return> "+\nbreak\n"
+  bind [$w.top.scrolled.file subwidget listbox] <Double-Button-1> "+\nbreak\n"
+  
+  bind [$w.top.scrolled.dir subwidget listbox] <Return> [format {
+    if {[catch {set Direttorio [selection get]} result] == "0"} {
+      ChangeDirProc $Direttorio %s %s %s
+    }
+  } $w.top.path [$w.top.scrolled.dir subwidget listbox] \
+    [$w.top.scrolled.file subwidget listbox]]
+
+  bind [$w.top.scrolled.dir subwidget listbox] <Double-1> [format {	
+    if {[catch {set Direttorio [selection get]} result] == "0"} {
+      ChangeDirProc $Direttorio %s %s %s 
+    }
+  } $w.top.path [$w.top.scrolled.dir subwidget listbox] \
+    [$w.top.scrolled.file subwidget listbox]] 
+
+  bind [$w.top.scrolled.dir subwidget listbox] <Return> "+\nbreak\n"
+  bind [$w.top.scrolled.dir subwidget listbox] <Double-Button-1> "+\nbreak\n"
+
+  bind $w <Key-Escape> " set FsResult {}
+    			  destroy $w "
+
+
+  ShowFileDirectoryHd [$w.top.scrolled.dir subwidget listbox] \
+      [$w.top.scrolled.file subwidget listbox]
+
+  grab $w
+  tkwait window $w
+
+  cd $old_cwd
+ 
+  if [winfo exists $old_focus] {
+    focus -force $old_focus
+  }
+  
+  return $FsResult
+}

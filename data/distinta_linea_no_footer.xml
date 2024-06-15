@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<NCReport version="2.9.0" name="distinta linea" type="report">
+    <options>
+        <encoding>utf8</encoding>
+        <language>00</language>
+        <langrole>0</langrole>
+        <orientation>portrait</orientation>
+        <pagesize width="210.000" height="297.000">A4</pagesize>
+        <topmargin>10</topmargin>
+        <bottommargin>10</bottommargin>
+        <leftmargin>10</leftmargin>
+        <rightmargin>10</rightmargin>
+        <fontname>Liberation Sans</fontname>
+        <fontsize>10</fontsize>
+        <backcolor>#ffffff</backcolor>
+        <columns>0</columns>
+        <columnspace>0</columnspace>
+        <zoneSpacing>10</zoneSpacing>
+        <zoneBreak>false</zoneBreak>
+    </options>
+    <datasources>
+        <datasource id="linea" type="sql" openRole="begin" source="static" connection="internal" parentID="" connID="mondadori">select 
+key_linea,            
+tminit,
+tmclose,
+lntpspe,
+lncdlin,
+stato,
+lnnmced,
+ro.ronmdis,
+ro.rocdve2,
+count(ro.ordprog)
+from 
+storico_linee_spedizione sl,
+ric_ord_stor ro
+where 
+ro.rotpspe=lntpspe and 
+ro.rocdlin=lncdlin and 
+ro.ronmced::integer=lnnmced and 
+to_char(ro.rotmrcz,'YYYY') = to_char(sl.tminit,'YYYY') and 
+sl.key_linea= $P{key_linea}
+group by sl.key_linea,sl.tminit,sl.tmclose,sl.lntpspe,sl.lncdlin,sl.stato,sl.lnnmced,ro.ronmdis,ro.rocdve2;</datasource>
+        <datasource id="bancali" type="sql" openRole="begin" source="static" connection="internal" parentID="" connID="mondadori">select 
+sb.bnnmbnc as numero_bancale,
+sc.ordprog as ordprog,
+sc.cpnmcol as cpnmcol,
+case sc.cppsrea when 0 then sc.cppspre::float/1000::float else sc.cppsrea::float/1000::float end  as peso_collo,
+coalesce(to_char(cp.cptmeva,'DD-MM-YYYY HH24:MI:SS'),'ND') as cptmeva
+from
+storico_colli_bancale sc,
+storico_bancali sb,
+col_prod_stor cp
+where 
+sc.key_linea = sb.key_linea and 
+sc.key_bancale = sb.key_bancale and 
+sc.ordprog = cp.ordprog and 
+sc.cpnmcol = cp.cpnmcol and 
+sb.key_linea = $P{key_linea}
+order by sb.bnnmbnc,sc.ordprog,sc.cpnmcol;</datasource>
+    </datasources>
+    <variables/>
+    <reportheader id="RH" height="86.060">
+        <label id="UNGJH" zValue="0" posX="92.075" posY="80.962" width="17.462" height="4.762" fontName="Liberation Sans" fontSize="10" alignment="1">N° COLLO</label>
+        <label id="U89YK" zValue="1" posX="53.975" posY="80.962" width="36.512" height="4.762" fontName="Liberation Sans" fontSize="10" alignment="1">N° SPEDIZIONE</label>
+        <label id="WGDPZ" zValue="2" posX="138.112" posY="80.962" width="26.723" height="4.762" fontName="Liberation Sans" fontSize="10" alignment="1">DATA EVASIONE</label>
+        <label id="CS1YD" zValue="3" posX="111.125" posY="80.962" width="22.225" height="4.762" fontName="Liberation Sans" fontSize="10" alignment="1">PESO COLLO</label>
+        <label id="03P3I" zValue="4" posX="9.525" posY="80.962" width="42.862" height="4.762" fontName="Liberation Sans" fontSize="10" alignment="1">PROGRESSIVO BANCALE</label>
+        <label id="SU3L2" zValue="5" posX="9.525" posY="50.800" width="30.162" height="4.762" fontName="Liberation Sans" fontSize="10" alignment="1">CEDOLA N° :</label>
+        <label id="OI5MH" zValue="6" posX="9.525" posY="58.737" width="30.162" height="4.762" fontName="Liberation Sans" fontSize="10" alignment="1">CODICE LINEA :</label>
+        <label id="GO49F" zValue="7" posX="9.525" posY="66.675" width="31.750" height="4.762" fontName="Liberation Sans" fontSize="10" alignment="1">D.D.T. BOXLINE N° :</label>
+        <field id="WLV0F" zValue="9" posX="44.450" posY="49.212" width="22.225" height="6.350" resource="datasource" fontName="DejaVu Sans" fontSize="20" fontWeight="bold" alignment="129" type="txt" ftype="ds" arg="">linea.lnnmced</field>
+        <field id="YEG5J" zValue="10" posX="44.450" posY="57.150" width="9.525" height="6.350" resource="datasource" fontName="DejaVu Sans" fontSize="20" fontWeight="bold" alignment="129" type="txt" ftype="ds" arg="">linea.lntpspe</field>
+        <field id="BCE39" zValue="11" posX="44.450" posY="65.087" width="36.512" height="6.350" resource="datasource" fontName="DejaVu Sans" fontSize="20" fontWeight="bold" alignment="129" type="txt" ftype="ds" arg="">linea.ronmdis</field>
+        <line id="HFMKP" zValue="12" lineColor="#000000" lineStyle="solid" lineWidth="0.100" fromX="39.688" fromY="44.450" toX="139.700" toY="44.450"/>
+        <field id="NL60E" zValue="13" posX="55.562" posY="57.150" width="9.525" height="6.350" resource="datasource" fontName="DejaVu Sans" fontSize="20" fontWeight="bold" alignment="129" type="txt" ftype="ds" arg="">linea.lncdlin</field>
+        <label id="GIJVI" zValue="14" posX="39.688" posY="36.512" width="100.012" height="8.202" fontName="DejaVu Sans" fontSize="20" fontWeight="bold" alignment="129">DISTINTA RIEPILOGATIVA</label>
+        <line id="68VH4" zValue="15" lineColor="#000000" lineStyle="solid" lineWidth="0.200" fromX="9.525" fromY="85.725" toX="173.037" toY="85.725"/>
+        <line id="GNLS7" zValue="16" lineColor="#000000" lineStyle="solid" lineWidth="0.100" fromX="9.525" fromY="79.375" toX="173.037" toY="79.375"/>
+        <line id="9CH0Y" zValue="17" lineColor="#000000" lineStyle="solid" lineWidth="0.100" fromX="44.450" fromY="71.438" toX="111.125" toY="71.438"/>
+        <line id="6D6QC" zValue="18" lineColor="#000000" lineStyle="solid" lineWidth="0.100" fromX="44.450" fromY="63.500" toX="111.125" toY="63.500"/>
+        <line id="ORB4F" zValue="19" lineColor="#000000" lineStyle="solid" lineWidth="0.100" fromX="44.450" fromY="55.562" toX="111.125" toY="55.562"/>
+    </reportheader>
+    <reportfooter id="RF" height="78.317">
+        <label id="9X0R2" zValue="0" posX="11.112" posY="63.500" width="30.162" height="4.762" printWhen="$V{pageno} == 1" fontName="Liberation Sans" fontSize="10" alignment="1">DATA ORA AFFIDO</label>
+        <line id="7T7UH" zValue="1" printWhen="$V{pageno} == 1" lineColor="#000000" lineStyle="solid" lineWidth="0.100" fromX="133.350" fromY="68.263" toX="174.625" toY="68.263"/>
+        <line id="578FD" zValue="2" printWhen="$V{pageno} == 1" lineColor="#000000" lineStyle="solid" lineWidth="0.100" fromX="42.862" fromY="68.263" toX="85.725" toY="68.263"/>
+        <label id="BRPQM" zValue="3" posX="101.600" posY="63.500" width="30.162" height="4.762" printWhen="$V{pageno} == 1" fontName="Liberation Sans" fontSize="10" alignment="1">FIRMA VETTORE</label>
+        <line id="HFMKP" zValue="4" printWhen="$V{pageno} == 1" lineColor="#000000" lineStyle="solid" lineWidth="0.200" fromX="11.112" fromY="50.800" toX="174.625" toY="50.800"/>
+    </reportfooter>
+    <details>
+        <detail id="detail" height="4.874" datasource="bancali">
+            <items>
+                <field id="SPYEG" zValue="0" posX="71.438" posY="38.100" width="15.875" height="7.938" resource="datasource" fontName="DejaVu Sans" fontSize="20" fontWeight="bold" alignment="129" type="txt" ftype="ds" arg="">bancale.cedola</field>
+                <field id="VU1PS" zValue="1" posX="9.525" posY="0.000" width="31.750" height="4.762" resource="datasource" fontName="Liberation Sans" fontSize="10" alignment="34" type="txt" ftype="ds" arg="">bancali.numero_bancale</field>
+                <field id="MHCD0" zValue="2" posX="53.975" posY="0.000" width="36.512" height="4.762" resource="datasource" fontName="Liberation Sans" fontSize="10" alignment="1" type="txt" ftype="ds" arg="">bancali.ordprog</field>
+                <field id="UHW5X" zValue="3" posX="92.075" posY="0.000" width="17.462" height="4.762" resource="datasource" fontName="Liberation Sans" fontSize="10" alignment="34" type="txt" ftype="ds" arg="">bancali.cpnmcol</field>
+                <field id="RW8QG" zValue="4" posX="111.125" posY="0.000" width="22.225" height="4.762" resource="datasource" fontName="Liberation Sans" fontSize="10" alignment="34" type="num" ftype="ds" formatting="true" numwidth="0" format="f" precision="3" localized="false" arg="">bancali.peso_collo</field>
+                <field id="VRWZ4" zValue="5" posX="138.112" posY="0.000" width="33.337" height="4.762" resource="datasource" fontName="Liberation Sans" fontSize="10" alignment="1" type="txt" ftype="ds" arg="">bancali.cptmeva</field>
+            </items>
+        </detail>
+    </details>
+</NCReport>

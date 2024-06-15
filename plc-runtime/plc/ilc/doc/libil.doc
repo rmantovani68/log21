@@ -1,0 +1,609 @@
+
+
+          DESCRIZIONE DELLE FUNZIONI E DEI BLOCCHI FUNZIONALI CNI
+          -------------------------------------------------------
+
+ Nota: le informazioni qui riporate si riferiscono alla versione 1.1.1.9
+       della libreria IL.
+
+ La libreria di funzioni per il linguaggio IL contiene le seguenti funzioni
+standard. Si veda la norma IEC-1131/3 per una descrizione dettagliata.
+
+ Versione della libreria IL
+ --------------------------
+
+ Dalla versione 1.1.1.6 della libreria IL e` definita la variabile "VERLIB",
+di tipo DINT, contenente il numero di versione codificato come decimale.
+ Gruppi di due cifre decimali codificano i quattro campi: per esempio,
+la versione 1.2.3.4 corrisponde al valore decimale 01020304.
+
+ Funzioni standard
+ -----------------
+
+Manipolazione di bit:
+
+	SHL : spostamento di bit a sinistra.
+	SHR : spostamento di bit a destra.
+	ROL : rotazione di bit a sinistra.
+	ROR : rotazione di bit a destra.
+
+ Funzioni matematiche:
+
+	ADD_REAL, MUL_REAL, DIV_REAL, SUB_REAL, GT_REAL,
+	LE_REAL, LT_REAL, LE_REAL : Funzioni
+	 Somma, moltiplicazione, divisione, sottrazione, confronti
+	 di grandezze in virgola mobile. Si usano come le istruzioni
+	 standard.
+	 NOTA : in versioni precedenti queste funzioni si chiamavano
+	        FADD, FMUL, FDIV, FSUB, FGT, FLE, FLT, FLE. Sono
+	        state rinominate per aderire allo standard. I vecchi
+	        nomi non saranno piu` disponibili.
+
+	REAL_TO_DINT, DINT_TO_REAL : Funzioni
+	 Conversione da reale a intero e vice versa. Nella conversione
+	 da reale a intero e` realizzato un arrotondemento all'intero
+	 piu` vicino.
+
+	STRING_TO_DINT, STRING_TO_REAL : Funzioni (NOTA 1)
+	 Conversione da stringa a intero e da stringa a reale.
+
+	TRUNC : Funzione
+	 Conversione da reale ad intero con arrotondamento verso lo zero.
+
+	ABS, ABS_REAL : Funzioni
+	 Valore assoluto di INTERI (ABS) e REALI (ABS_REAL).
+
+	SIN, COS, TAN, ASIN, ACOS, ATAN, LOG, LN, EXP, SQRT : Funzioni
+	 seno, coseno, tangente, arcoseno, arcocoseno, arcotangente,
+	 logaritmo decimale, logaritmo naturale, esponenziale, radice
+	 quadrata.
+
+	EXPT : Funzione
+	 Elevamento a potenza (accumulatore ^ parametro).
+
+	MID : Funzione (NOTA 1) (NOTA 2)
+	 Estrazione di sottostringa.
+
+	LEN : Funzione (NOTA 1)
+	 Calcolo della lunghezza di una stringa.
+
+NOTA 1: Attualmente la gestione delle stringhe nel linguaggio IL
+ e` incompleta, ed espone il programma a malfunzionamenti in caso di
+ utilizzo erroneo. Si abbia sempre cura di passare variabili di tipo
+ STRING alle funzioni che si aspettano stringhe. E` facile commettere
+ errori quando il valore deve essere passato attraverso l'accumulatore,
+ come accade, purtroppo, con le funzioni standard STRING_TO_REAL,
+ STRING_TO_DINT, MID e LEN.
+NOTA 2: In generale, le funzioni che producono stringhe nell'accumulatore
+ devono essere usate con cautela. Il loro risultato e` immagazzinato in
+ un'area statica, che e` sovrascritta ogni volta che la funzione viene
+ richiamata. L'assegnamento del risultato ad una variabile
+ di tipo stringa puo` portare a risultati inaspettati, in quanto non
+ e` eseguita una copia della variabile, ma solo una copia di puntatori.
+  Le stringhe ottenuta da funzioni dovrebbero essere usate solo per
+ calcoli temporanei, orientati comunque all'ottenimento di valori
+ numerici come effetto definitivo.
+
+ Blocchi funzionali standard
+ ---------------------------
+
+	SR : flip-flop con SET dominante.
+	RS : flip-flop con RESET dominante.
+	R_TRIG : Rivelatore di fronte di salita.
+	F_TRIG : Rivelatore di fronte di discesa.
+	CTU : Contatore ad incremento.
+	CTD : Contatore a decremento.
+	CTUD : Contatore bidirezionale.
+	TPULSE : Generatore d'impulso temporizzato.
+	         Nota: per lo standard IEC dovrebbe chiamarsi "TP",
+	         ma questo e` anche il nome di un segnale di scambio...
+	TON : Generatore di fronte di salita ritardato. 
+	TOF : Generatore di fronte di discesa ritardato. 
+
+ Funzioni e blocchi funzionali CNi
+ ---------------------------------
+
+ Manipolazione di bit:
+
+	BITSET, BITRES : Funzioni
+	 Accensione-spegnimento di bit nell'accumulatore.
+	 Esempio :
+
+		LD              2#10110111000010
+		(* Accenderemo questo bit  ^ *)
+		BITSET	4
+		(* Ora l'accumulatore vale 2#10110111010010 *)
+		BITRES	11
+		(* Ora l'accumulatore vale 2#10010111010010 *)
+
+	BITTEST : Funzione
+	 Vale TRUE o FALSE secondo lo stato del bit dato.
+	 Esempio :
+
+		LD	VALORE
+		BITTEST	7
+		(* Ora l'accumulatore vale TRUE se il bit 7 di VALORE e` 1, *)
+		(* altrimenti vale FALSE. *)
+
+	BITFIELD : Funzione
+	 Estrazione di un campo di bit contigui dall'accumulatore.
+	 Si devono specificare posizione (indice del primo bit) e lunghezza
+	 (numero di bit) del campo.
+	 Esempio :
+
+		LD		2#11100100000111010101010
+		(* Vogliamo estrarre questi bit  ^^^^^^ *)
+		BITFIELD	2, 6
+		(* Ora l'accumulatore vale 2#101010 *)
+
+ Manipolazioni di stringhe:
+
+	ASCII : Funzione
+	 Questa funzione restituisce il codice ASCII del carattere
+	 di posizione data dell'accumulatore nella stringa indicata
+	 come parametro. Vale 0 se il valore dell'accumulatore supera
+	 la lunghezza della stringa.
+	 Esempio :
+
+	VAR mia_stringa : STRING := 'ABCDEFGHIJ'; END_VAR
+
+		LD	8
+		ASCII	mia_stringa
+		(* Ora l'accumulatore contiene 72 (carattere 'H') *)
+
+ Accesso ai dati macchina:
+
+	MD_STATUS : Funzione
+	 Questa funzione restituisce lo stato corrente del
+	 database dei dati macchina. Puo` dare uno dei seguenti risultati:
+
+	 <0 : Errore : server dati macchina assente o malmesso.
+	 0 : Dati macchina stabili.
+	 1 : Dati macchina in corso di modifica.
+	 2 : Dati macchina modificati.
+	 3 : Dati macchina ricaricati, per esempio con "diskman".
+	 4 : Dati macchina in corso di caricamento.
+
+	 Esempio :
+
+		MD_STATUS
+		ST	STATO_DM
+		LT	0
+		JMPC	errore_grave
+		LD	STATO_DM
+		EQ	0
+		JMPCN	dati_in_evoluzione
+		(* ...lettura dei dati... *)
+
+	MD_GENERAL : Funzione
+	 Questa funzione legge dalla tabella dei dati generali il
+	 dato macchina a quattro byte (float) il cui
+	 nome e` dato come parametro. Un altro parametro definisce
+	 il formato d'uscita del dato secondo questo schema :
+
+		'F' o 'f' : Il risultato va interpretato come reale.
+		'I' o 'i' : Il risultato va interpretato come intero.
+		'S' o 's' : Il risultato e` un intero, ottenuto moltiplicando
+			    il dato macchina originale per il valore
+			    dell'accumulatore (float).
+
+	 Esempio :
+
+		MD_GENERAL	'MMPOL', 'I'
+		(* Ora l'accumulatore contiene il dato generale "MMPOL", *)
+		(* convertito in intero. *)
+
+	MD_USER : Funzione
+	 Questa funzione legge un dato macchina a quattro byte (float)
+	 dalla posizione specificata dalla tabella utente specificata.
+	 Si devono dare come parametri, nell'ordine, il nome della tabella,
+	 il nome del dato macchina, l'indice nella tabella e la stringa
+	 di formato, che viene interpretata come nella funzione "MD_GENERAL".
+	 Esempio :
+
+		MD_USER	'GmmConf','stato',1,'I'
+		(* Ora l'accumulatore contiene il dato utente "stato" *)
+		(* di indice 1 della tabella "GmmConf". *)
+
+	MD_SET_USER : Funzione
+	 Questa funzione scrive il valore dell'accumulatore (inteso come
+	 valre REAL) nella tabella di sistema indicata dal primo parametro
+	 il cui nome e` dato nel secondo parametro. Il terzo parametro e`
+	 l'indice di colonna del dato, con base = 1.
+
+		LD	1.2345
+		MD_SET_USER	'REGISTRI','R15',1
+
+	MD_AXIS : Funzione
+	 Questa funzione legge un dato asse. I parametri sono, nell'ordine,
+	 l'indice dell'asse, il nome del dato e la stringa di formato (vedi
+	 "MD_GENERAL").
+	 Esempio :
+
+		MD_AXIS 1,'ORIG','F'
+		(* Ora l'accumulatore contiene il dato origine asse 1 *)
+		(* come numero in virgola mobile. *)
+
+	MD_SET_AXIS : Funzione
+	 Questa funzione scrive il vaolre contenuto nell'accumulatore
+         in un dato asse. I parametri sono, nell'ordine,
+	 l'indice dell'asse e il nome del dato.
+	 Esempio :
+
+		LD	1.2345
+		MD_SET_AXIS 1,'ORIG'
+
+	MD_SAVE_AXIS : Funzione
+	 Questa funzione forza il salvataggio fisico della tabella assi
+	 del centro a cui appartiene l'asse indicato nell'accumulatore.
+	 Il salvataggio non e` sincrono con l'esecuzione del programma.
+	 ATTENZIONE! Questa funzione dovrebbe essere chiamata raramente.
+	 E` cura del programmatore evitare "raffiche" di chiamate in cicli
+	 successivi. Esse hanno l'effetto di intasare il server dei dati
+	 macchina. Un modo per evitare che cio` accada consiste nel definire
+	 un blocco funzionale con un ingresso "asse" ed un ingresso "enable";
+	 il fronte di salita di enable dovrebbe scatenare il salvataggio.
+	 Utilizzare solo il blocco funzionale e non direttamente la funzione
+	 dovrebbe ridurre il rischio di salvataggi "a raffica".
+	 Esempio (utilizzo "secco"):
+
+		LD	CONDIZIONE_DI_SALVATAGGIO
+		JMPCN	NON_FARLO
+		LD	ASSE
+		MD_SAVE_AXIS
+	NON_FARLO:
+
+	MD_SAVE_USER : Funzione
+	 Questa funzione forza il salvataggio fisico della tabella utente
+	 indicata dalla stringa nell'accumulatore.
+	 Il salvataggio non e` sincrono con l'esecuzione del programma.
+	 ATTENZIONE! Questa funzione dovrebbe essere chiamata raramente.
+	 E` cura del programmatore evitare "raffiche" di chiamate in cicli
+	 successivi. Esse hanno l'effetto di intasare il server dei dati
+	 macchina. Un modo per evitare che cio` accada consiste nel definire
+	 un blocco funzionale con un ingresso "asse" ed un ingresso "enable";
+	 il fronte di salita di enable dovrebbe scatenare il salvataggio.
+	 Utilizzare solo il blocco funzionale e non direttamente la funzione
+	 dovrebbe ridurre il rischio di salvataggi "a raffica".
+	 Esempio (utilizzo "secco"):
+
+		LD	CONDIZIONE_DI_SALVATAGGIO
+		JMPCN	NON_FARLO
+		LD	'NOME_TABELLA'
+		MD_SAVE_USER
+	NON_FARLO:
+
+	MD_TOOLCHG : Funzione
+	 Questa funzione legge un dato dalle tabelle del cambio utensile.
+	 Richiede l'indice del centro, la posizione del portautensile,
+	 il tipo di magazzino (0: random, 1: fisso, 2: revolver, -1: tutti),
+	 il nome del dato macchina di interesse, e la solita stringa di
+	 formato.
+	 Esempio :
+
+		MD_TOOLCHG 1,2,-1,'FL_PRES','I'
+
+	MD_CONF : Funzione
+	 Questa funzione legge un dato dalle tabelle di configurazione
+	 dei mandrini. Richiede l'indice del centro, il nome del mandrino,
+	 il numero di configurazione, il nome del dato macchina di interesse,
+	 e la solita stringa di formato.
+	 Esempio :
+
+		MD_CONF 1,2,'MIOMAND',1,'FL_PRES','I'
+
+	MD_ORIG : Funzione
+	 Questa funzione legge un dato dalle tabelle origini.
+	 Richiede il nome dell'origine, il nome del dato e la solita stringa
+	 di formato.
+	 Esempio :
+
+		MD_ORIG 'ORIG1','OFFX','F'
+
+	RDAX : Funzione
+	 Questa funzione legge la quota corrente dell'asse indicato
+	 dall'accumulatore. Il valore e` di tipo REAL.
+	 Esempio :
+
+		LD	1
+		RDAX
+
+	RDAXQ : Funzione
+	 Lettura di varie grandezze attinenti lo stato corrente di un asse
+	 o del processo di esecuzione del programma ISO. I suoi parametri
+	 seguono le stesse convenzioni utilizzate per le funzioni di lettura
+	 dei dati mechcina, nel senso che il primo (accumulatore) e` un
+	 fattore di scala, e l'ultimo una stringa di formato. Gli altri
+	 parametri sono, nell'ordine, un codice che specifica la grandezza
+	 che si vuol conoscere e tre indici il significato dei quali dipende
+	 dalla grandezza scelta. In genere il primo e` interpretato come
+	 indice di un asse, gli altri sono normalmente ignorati. Questi
+	 sono alcuni codici operativi di particolare interesse :
+
+		1 : Stato asse
+		2 : Quota reale
+		3 : Quota teorica
+		4 : Velocita` reale
+		5 : Velocita` teorica
+		6 : Errore d'inseguimento
+		7 : Quota tastatore
+		8 : Quota asse esterno
+
+	 Esistono molti altri codici operativi. Si consultino i file
+	 "hserax.h" e "libserax.doc" per ulteriori informazioni (la funzione
+	 qui descritta non e` altro che un'interfaccia verso la funzione
+	 interna "read_parm").
+	 Esempio :
+
+	(* Lettura della quota reale dell'asse 5. Equivale a RDAX *)
+
+		RDAXQ	2,5,0,0,'F'
+
+	(* Lettura della velocita` reale. *)
+
+		RDAXQ	4,5,0,0,'F'
+
+	WRAXQ : Funzione
+	 Scrittura di varie grandezze attinenti lo stato corrente di un asse
+	 o del processo di esecuzione del programma ISO. Rispetto alla
+	 precedente, manca il parametro relativo al formato, e
+	 l'accumulatore contiene il dato che si intende scrivere nel
+	 parametro. Il valore restituito dalla funzione e` TRUE se
+	 l'operazione ha avuto successo, oppure FALSE in caso di errori.
+	 Il dato in ingresso si intende espresso come valore reale.
+	 Si consultino i file "hserax.h" e "libserax.doc" per informazioni
+	 sui codici operativi ammessi (la funzione qui descritta non e` altro
+	 che un'interfaccia verso la funzione interna "write_parm").
+	 NOTA: la funzione proibisce l'uso dei codici 16#13 (INIT_ANALOGICA)
+	 e 16#14 (RELEASE_ANALOGICA), perche` in conflitto con la gestione
+	 del dispositivo AX dell'esecutore PLC.
+	 Esempio :
+
+	(* Impostazione della quota reale dell'asse 5 al *)
+	(* valore 123.45, ammesso che la cosa abbia senso! *)
+
+		LD	123.45
+		WRAXQ	2,5,0,0
+
+ Errori e messaggi:
+
+	ERROR : Blocco funzionale
+	 Paramatri/variabili di stato :
+		var_input
+			CODE : dint;
+		end_var
+	 Questo blocco funzionale emette l'errore di codice "CODE"
+	 ogni volta che tale variabile di stato cambia, salvo quando il nuovo
+	 valore e` 0.
+	 Esempio :
+
+		VAR err1 : ERROR; END_VAR
+
+			LD	condizione_di_errore
+			JMPCN	nessun_errore
+			LD	1234
+			ST	err1.CODE
+			JMP	qualche_errore
+		nessun_errore:
+			LD	0
+			ST	err1.CODE
+		qualche_errore:
+			CAL	err1
+
+	MESSAGE : Blocco funzionale
+	 Paramatri/variabili di stato :
+		var_input
+			CODE : dint;
+		end_var
+	 Questo blocco funzionale emette il messaggio di codice "CODE"
+	 ogni volta che tale variabile di stato cambia, salvo quando il nuovo 
+	 valore e` 0, nel qual caso il messaggio precedentemente emesso
+	 viene cancellato. A parte questo, la logica utilizzata e` la stessa
+	 di "ERROR".
+	 Esempio :
+
+		VAR msg1 : MESSAGE; END_VAR
+
+			LD	bisogna_emettere_un_messaggio
+			JMPCN	no
+			LD	1234
+			ST	msg1.CODE
+			JMP	si
+		no:
+			LD	0
+			ST	msg1.CODE
+		si:
+			CAL	msg1
+
+	MSGUPD : Blocco funzionale
+	 Paramatri/variabili di stato :
+		var_input
+			CODE : dint;
+			VALUE : dint;
+		end_var
+	 Questo blocco funzionale emette il messaggio esteso di codice "CODE"
+	 aggiungendo "VALUE" come informazione aggiuntiva. Il messaggio emesso
+	 si sostituisce a quello eventualmente gia` presente nella finestra,
+	 purche` la versione del visualizzatore ("quote") sia almenno 2.6.0.15.
+	 Il messaggio e` inviato ogni volta che cambia CODE o VALUE. La logica
+	 E` quindi sostanzialmente la stessa di "MESSAGE"
+
+	VERR, VMSG : Blocchi funzionali
+	 Paramatri/variabili di stato :
+		var_input
+			CODE : dint;
+			ENABLE : bool;
+			RESET : bool;
+		end_var
+	 Questi due blocchi funzionali sono l'evoluzione di ERROR e MESSAGE.
+	 Permettono di gestire messaggi ed errori in modo piu` pulito (minore
+	 necessita` di salti). L'ingresso ENABLE abilita l'emissione del
+	 messaggio o dell'errore. Il suo fronte di salita provoca l'emissione,
+	 il fronte di discesa la cancellazione.
+	 L'ingresso RESET provoca la riemissione immediata dell'errore o del
+	 messaggio, se ENABLE vale TRUE.
+	 Anche un cambiamento di CODE provoca un'emissione, purche` ENABLE
+	 sia TRUE e CODE sia diverso da 0.
+	 Nota : non tutte le versioni di CN realizzano la cancellazione
+	 degli errori.
+	 Esempio :
+
+		VAR err : VERR; END_VAR
+
+			LD	1234
+			ST	err.CODE (* Si potrebbe fare una volta *)
+				         (* per tutte *)
+
+			LD	condizione_di_errore
+			ST	err.ENABLE
+			LD	CLEAR  (* E` il segnale di scambio da CN *)
+				       (* per la cancellazione degli errori *)
+			ST	err.RESET
+			CAL	err
+
+	VMSGUPD : Blocco funzionale
+	 Paramatri/variabili di stato :
+		var_input
+			CODE : dint;
+			VALUE : dint;
+			ENABLE : bool;
+			RESET : bool;
+		end_var
+	 Questo blocco funzionale emette il messaggio esteso di codice "CODE"
+	 aggiungendo "VALUE" come informazione aggiuntiva. Il messaggio emesso
+	 si sostituisce a quello eventualmente gia` presente nella finestra,
+	 purche` la versione del visualizzatore ("quote") sia almenno 2.6.0.15.
+	 I cambiamenti di "VALUE" hanno lo stesso effetto di quelli di "CODE".
+	 A parte questo, la logica e` la stessa di "VMSG".
+
+	VMSGV : Blocco funzionale
+	 Paramatri/variabili di stato :
+		var_input
+			CODE : dint;
+			VALUE : dint;
+			ENABLE : bool;
+			RESET : bool;
+			UPDATE : bool;
+			VALOK : bool;
+		end_var
+	 Questo blocco funzionale emette il messaggio esteso di codice "CODE"
+	 aggiungendo "VALUE" come informazione aggiuntiva. Se "UPDATE" e`
+	 FALSE, il messaggio si accoda a  quelli gia` emessi (come VMSG),
+	 altrimenti si sostituisce a quello eventualmente gia` presente
+	 nella finestra (come VMSGV). "VALOK" deve essere posto a TRUE,
+	 per indicare che "VALUE" contiene un dato significativo. Se vale
+	 "FALSE", i cambiamenti di "VALUE" non hanno effetto.
+
+	VMSGR : Blocco funzionale
+	 Paramatri/variabili di stato :
+		var_input
+			CODE : dint;
+			VALUE : real;
+			ENABLE : bool;
+			RESET : bool;
+			UPDATE : bool;
+			VALOK : bool;
+		end_var
+	 Come VMSGR, ma il valore e` di tipo REAL.
+
+Trasmissione su canali asincroni:
+
+	SEND_BYTES : Blocco funzionale
+	 Paramatri/variabili di stato :
+		var_input
+			CH : dint;
+			NB : uint;
+			ENABLE : bool;
+			RESET : bool;
+			BUFFER : array[0..63] of byte;
+		end_var
+		var_output
+			NB_SENT : uint;
+			DONE : bool;
+			ERR : bool;
+		end_var
+	 Questo blocco trasmette NB byte contenuti in BUFFER sul canale CH,
+	 (variabile di INPUT associata ad un dispositivo di tipo asincrono,
+	 come per esempio "ser.com1.9600n81"). La trasmissione ha inizio
+	 sul fronte di salita di ENABLE. L'uscita DONE vale TRUE se la
+	 trasmissione e` stata completata. NB_SENT contiene il numero di byte
+	 gia` trasmessi, qualora l'operazione non sia stata completata in
+	 una sola chiamata. ERR vale TRUE se ci sono stati errori. RESET
+	 a TRUE riporta il blocco in uno stato noto, e blocca qualsiasi
+	 azione finche` non torna a FALSE.
+
+	SEND_STRING : Blocco funzionale
+	 Paramatri/variabili di stato :
+		var_input
+			CH : dint;
+			STR : string;
+			ENABLE : bool;
+			RESET : bool;
+		end_var
+		var_output
+			NB_SENT : uint;
+			DONE : bool;
+			ERR : bool;
+		end_var
+	 Questo blocco funzionale e` analogo a SEND_BYTES, salvo che i
+	 dati sono raccolti nella stringa STR.
+	 ATTENZIONE : Il contenuto della stringa non deve cambiare finche`
+	 la trasmissione non e` stata completata.
+
+	RECV_BYTES : Blocco funzionale
+	 Paramatri/variabili di stato :
+		var_input
+			CH : dint;
+			NB : uint;
+			ENABLE : bool;
+			RESET : bool;
+		end_var
+		var_output
+			BUFFER : array[0..63] of byte;
+			NB_RECV : uint;
+			DONE : bool;
+			ERR : bool;
+		end_var
+	 Blocco per la ricezione di NB bytes dal canale CH (vedi SEND_BYTES).
+	 DONE vale TRUE quando tutti i byte (64 al massimo) sono stati
+	 ricevuti. NB_RECV contiene il numero di byte ricevuti man mano.
+	 ERR vale TRUE in caso di errori. RESET serve a riportare il blocco
+	 in uno stato noto. ENABLE deve essere posto a TRUE per attivare la
+	 ricezione. Se vale FALSE, il blocco rimane "congelato".
+	 Al completamento della ricezione, i byte sono disponibili in BUFFER.
+	 Alla chiamata successiva ad una ricezione completa, il blocco si
+	 riporta nello stato di "inizio ricezione", e DONE torna a FALSE e
+	 NB_RECV si azzera.
+
+	RECV_STRING : Blocco funzionale
+	 Paramatri/variabili di stato :
+		var_input
+			CH : dint;
+			LASTCHR : byte;
+			ENABLE : bool;
+			RESET : bool;
+		end_var
+		var_output
+			DONE : bool;
+			STR : string;
+			NB_RECV : uint;
+			ERR : bool;
+		end_var
+	 Questo blocco permette di ricevere una stringa terminante con il
+	 carattere di codice ASCII uguale all'ingresso LASTCHR dal canale CH.
+	 Per il resto, il suo funzionamento e` analogo a quello di RECV_BYTES.
+	 L'ingresso ENABLE serve ad iniziare il processo di ricezione, RESET
+	 riporta il blocco in uno stato noto. DONE vale TRUE quando e` ricevuto
+	 il carattere LASTCHR, nel qual caso STR contiene la stringa completa.
+	 DONE torna automaticamente a FALSE alla chiamata successiva, e la
+	 ricezione ricomincia da capo. Per evitare questo, si puo` sospendere
+	 la ricezione portando ENABLE a FALSE.
+	 NB_RECV contiene il numero di byte man mano ricevuti, ed ERR indica
+	 eventuali errori. Si tenga ben presente che STR contiene la stringa
+	 ricevuta solo in questi due casi:
+	 - quando l'uscita DONE diventa TRUE, cioe` immediatamente dopo
+	   il completamento di una ricezione,
+	 - quando ENABLE e` posto a FALSE appena DONE diventa TRUE.
+	 In tutti gli altri casi, STR sara` uguale alla stringa vuota ('').
+
+

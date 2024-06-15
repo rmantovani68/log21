@@ -1,0 +1,128 @@
+
+
+	NOTE SULL'USO DEI BLOCCHI FUNZIONALI IN LIGUAGGIO IL
+	----------------------------------------------------
+
+ Lo standard di definizione dei linguaggi per PLC IEC1131/3, che comprende
+il linguaggio IL, mette a disposizione un meccanismo di astrazione delle
+componenti di un programma basato sulla definizione di subroutine associate
+a insiemi di variabili. Gli oggetti risultanti da queste definizioni sono
+chiamati "blocchi funzionali". Le variabili di un blocco possono essere
+di INPUT, di OUTPUT, oppure INTERNE. Le variabili di INPUT sono assimilabili
+ai parametri della subroutine, le interne contengono informazioni
+sullo stato interno del blocco, e quelle di OUTPUT sono il risultato
+dell'applicazione della procedura alle variabili di input ed interne.
+ Un errore comune nell'uso dei blocchi funzionali consiste nel confondere
+la definizione del PROTOTIPO di un blocco funzionale con la definizione
+di un OGGETTO conforme al prototipo. La prima e` la definizione di un tipo
+astratto, la seconda e` l'applicazione della definizione astratta ad un
+caso concreto (per chi ha familiarita` con la programmazione ad oggetti, si
+puo` dire che la prima e` la definizione di una CLASSE avente come membri
+le variabili ed un metodo che codifica la parte procedurale, mentre la
+seconda e` l'ISTANZIAZIONE di un oggetto della classe). Per esempio, si
+puo` immaginare che un programma utilizzi un certo numero di rivelatori
+di fronte applicati a vari segnali. Ogni rivelatore di fronte e` costituito
+da un blocco funzionale di TIPO "R_TRIG". Una possibile definizione per
+il tipo astratto R_TRIG potrebbe essere la seguente (la parte di
+definizione delle variabili, qui riportata per esteso, viene generata
+automaticamente dall'editor PLC, l'utente la crea in maniera guidata
+attraverso una serie di menu`):
+
+(* Prototipo del blocco funzionale R_TRIG: questo blocco produce *)
+(* nella sua uscita Q una valore 1 se il suo ingresso CLK vale 1 e *)
+(* valeva 0 alla precedente chiamata. *)
+
+(* NOTA: Si tratta sdolo di un esempio: il tipo R_TRIG e` gia` compreso *)
+(* nella libreria di blocchi funzionali predefiniti. *)
+
+function_block R_TRIG
+
+(******************************************************************)
+(* Questa parte viene generata in modo automatico dall'editor PLC *)
+
+var_input
+	CLK : bool; (* E` l'ingresso di cui si vuole rivelare il fronte *)
+end_var
+var_output
+	Q : bool; (* E` l'uscita: TRUE se c'e` stato il fronte. *)
+end_var
+var
+	sts : bool; (* Contiene il valore precedente dell'ingresso. *)
+end_var
+
+(* Fine della parte generata in modo automatico dall'editor PLC *)
+(****************************************************************)
+
+(* Nucleo procedurale *)
+
+(* L'uscita e` alta se il valore corrente e` 1 e quello precedente *)
+(* e` 0. *)
+	ldn	sts
+	and	CLK
+	st	Q
+
+(* Memorizza il valore corrente per la prossima chiamata. *)
+	ld	CLK
+	st	sts
+
+end_function_block
+
+ La definizione del blocco puo` essere ora utilizzata per creare vari
+oggetti di tipo "rivelatore di fronte di salita". Essi appaiono come
+variabili di tipo R_TRIG. Esempio:
+
+VAR_GLOBAL
+	FRON1 : R_TRIG;
+	FRON2 : R_TRIG;
+	FRON3 : R_TRIG;
+END_VAR
+
+ Si noti che anche questa parte e` generata in modo automatico dall'editor.
+L'utente definisce le istanze dei blocchi funzionali attraverso appositi
+menu`.
+ Il programma puo` ora applicare gli oggetti R_TRIG appena definiti
+ad alcuni segnali di ingresso, e scaricare i risultati in altre variabili
+(nell'esempio si suppone che esistano tre ingressi di tipo BOOL IN1, IN2
+e IN3, e tre variabili di tipo BOOL IN1_F, IN2_F, IN3_F)
+
+	ld	IN1
+	st	FRON1.CLK
+	cal	FRON1
+	ld	FRON1.Q
+	st	IN1_F
+
+	ld	IN2
+	st	FRON2.CLK
+	cal	FRON2
+	ld	FRON2.Q
+	st	IN2_F
+
+	ld	IN3
+	st	FRON3.CLK
+	cal	FRON3
+	ld	FRON3.Q
+	st	IN3_F
+
+
+ Come si e` visto nell'esempio, l'accesso alle variabili di INPUT
+e di OUTPUT di un blocco si realizza con espressioni del tipo
+
+	<nome_del_blocco>.<nome_della_variabile>
+
+ All'esterno del blocco, le variabili di INPUT sono accessibili
+solo in scrittura, quelle di OUTPUT solo in lettura, mentre quelle
+interne sono inaccessibili. L'applicazione della procedura alle
+variabili e` realizzata dall'istruzione "CAL <nome_del_blocco>".
+ E` consigliabile assegnare i valori alle variabili di ingresso solo
+in prossimita` della chiamata, non in parti di programma lontane.
+Si tratta di una precauzione dettata dall'esperienza, aiuta ad evitare
+errori di programmazione difficili da trovare. L'editor facilita questo
+compito generando, a richiesta, le linee necessarie.
+
+ L'ambiente di sviluppo del PLC comprende una libreria di blocchi
+funzionali predefiniti. Si veda il capitolo 2.8 per una trattazione
+dettagliata.
+
+
+
+

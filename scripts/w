@@ -1,0 +1,5 @@
+#!/bin/bash
+DB_HOST=database
+DB_NAME=mondadori
+
+echo "create table ric_art_cedola_"$1" as select * from ric_art_stor where ordprog in (select ordprog from ric_ord_cedola_"$1" where ronmced='"$1"');"|psql -h $DB_HOST $DB_NAME

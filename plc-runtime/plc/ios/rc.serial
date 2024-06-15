@@ -1,0 +1,39 @@
+#!/bin/bash
+
+script='
+BEGIN { ok=0; n_io=1; n_irq=1; ser_irq=""; ser_io=""; }
+/^    Communication controller: Lucent / { ok=1; next; }
+/^  B/ { ok=0; next; }
+(ok == 1) && ($1 == "I/O") {
+		if (n_io == 1) { 
+			ser_io=$3;
+				--n_io;
+		}
+		next;
+}
+(ok == 1) && ($6 == "IRQ") {
+		if (n_irq == 1) { 
+			ser_irq=$7;
+			sub("[.]","",ser_irq);
+				--n_irq;
+		}
+		next;
+}
+END {
+	if (ser_irq == "" || ser_io == "") {
+		exit(1);
+	}
+	else {
+			print "ser_io=\"" ser_io "\"";
+			print "ser_irq=\"" ser_irq "\"";
+	}
+}
+'
+
+instr=`awk "$script" /proc/pci` && {
+	echo "$instr"
+	eval $instr
+	setserial /dev/ttyS8 port $ser_io irq $ser_irq autoconfig
+	setserial -g /dev/ttyS8
+}
+

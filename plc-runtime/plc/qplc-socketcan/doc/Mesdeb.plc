@@ -1,0 +1,21 @@
+;
+;
+;		--------------------------------------
+;			MESSAGGI DEBUG PLC
+;		--------------------------------------
+;
+PLC-100.ita=Troppi segnali di scambio
+PLC-101.ita=File dei simboli non trovato
+PLC-102.ita=Errore di sintassi nel file dei simboli
+PLC-103.ita=Indice fuori dai limiti consentiti
+PLC-104.ita=Doppia definizione di un segnale di scambio
+PLC-105.ita=Segnale di scambio non trovato
+PLC-106.ita=Errore di formato nel file ISA13
+PLC-107.ita=File ISA13 non trovato
+PLC-108.ita=Memoria insufficiente
+PLC-109.ita=Troppi segnali a rilevamento di fronte
+PLC-150.ita=Tastiera speciale non collegata
+PLC-180.ita=Simbolo C indefinito
+PLC-183.ita=Errore di formato nel programma PLC
+PLC-195.ita=Problemi di colloquio con altre componenti del CN
+PLC-199.ita=Manca una componente del PLC

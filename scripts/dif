@@ -1,0 +1,2 @@
+echo 'inizio' > c
+for i in *.[ch] *.cfg; do echo $i>>c;diff $i ../../mondadori-3.5.12/$1/$i>>c;done

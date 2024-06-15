@@ -1,0 +1,33 @@
+From andrea_sarti@mail_bo.cni.it Fri Nov  6 10:58:46 1998
+Date: Thu, 5 Nov 1998 17:18:23 +0000
+From: Andrea Sarti <andrea_sarti@mail_bo.cni.it>
+To: Giuseppe Guerrini <giuseppe_guerrini@trantor.cni.it>
+Cc: Andrea Sarti <andrea_sarti@volta.cni.it>
+Subject: Note sul funzionamento dei semafori IOS
+
+
+Sulla memoria shared della IOS sono presenti due bytes che fungono da 
+semafori per regolarizzare la condivisione di bits tra gli assi remoti e 
+un eventuale utilizzatore esterno alla linea (es. PLC).
+
+All'offset 0x24E si trova il semaforo dedicato al processo esterno, 
+mentre all'offset 0x24F si trova quello gestito dalla IOS.
+
+Per entrambi i semafori un valore 0 indica che sono liberi.
+
+Schema dell'uso del semaforo da parte della IOS:
+
+-	ricezione di un comando di OUT AL VOLO da un asse remoto
+-	test se il semaforo master (0x24E) e' diverso da 0
+	!= 0 significa che e' occupato quindi attendo;
+	== 0 significa che e' libero, quindi procedo
+-	settaggio a 0xEE del semaforo slave (0x24F)
+-	secondo test del semaforo master (0x24E)
+	!= 0 il master (PLC) si e' infilato proprio dopo il mio primo test
+	     resetto il mio semaforo (0x24F) e ritorno all'inizio
+	== 0 OK ORA POSSO SCRIVERE ....
+
+Perche' la "baracca" funzioni occorre che il PLC utilizzi una procedura 
+simile a quella sopra riportata.
+
+				Ciao Andrea (Sax)

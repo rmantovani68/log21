@@ -1,0 +1,10 @@
+#!/bin/bash
+# rm 16-09-2009 : aggancio qplc al processore 1
+taskset -p 0x01 $$
+
+exec /usr/local/bin/qplc -reset -period 20 -remote-debug \
+	-stand-alone -debug  \
+	-devconf ios.chkwd=0:ios.trig=0:ios.candebug=0:ios.canspeed=500:ios.bitoffset=128 \
+	-no-fault \
+	-path-user $1  
+

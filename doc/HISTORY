@@ -1,0 +1,33 @@
+Storia delle versioni
+
+Nome e Versione     Data        Descrizione
+------------------- ----------  ---------------------
+mondadori-rcs-picking-0.5.3.tgz 12-12-2017 rm : Nuovo impianto Mondadori-RCS
+mondadori-rcs-picking-0.5.4.tgz 27-12-2017 rm : Nuovo impianto Mondadori-RCS
+mondadori-rcs-picking-0.5.5.tgz 08-01-2018 rm : Nuovo impianto Mondadori-RCS
+mondadori-rcs-picking-0.5.6.tgz 31-01-2018 rm : Nuovo impianto Mondadori-RCS
+mondadori-rcs-picking-0.5.7.tgz 12-02-2018 rm : corretta scrittura files di spedizione
+mondadori-rcs-picking-0.5.9.tgz 23-03-2018 rm : gestione multicollo
+mondadori-rcs-picking-0.5.10.tgz 22-10-2018 rm : backup
+mondadori-rcs-picking-0.5.11.tgz 22-10-2018 rm : trim su rocdlin (nuovi codici a 2 cifre.. )
+mondadori-rcs-picking-0.5.12.tgz 18-02-2019 rm : modifiche varie (prfllav, nota_linee ...)
+mondadori-rcs-picking-0.5.13.tgz 20-02-2021 rm : etichette ESSELUNGA
+
+mondadori-rcs-picking-0.6.00.tgz 05-04-2021 rm : gtk3
+mondadori-rcs-picking-0.6.01.tgz 05-04-2021 rm : gtk3 WIP
+mondadori-rcs-picking-0.6.02.tgz 09-04-2021 rm : gtk3 WIP
+mondadori-rcs-picking-0.6.09.tgz 09-04-2021 rm : gtk3 WIP NEW NEW NEW version
+mondadori-rcs-picking-0.6.10.tgz 28-04-2021 rm : gtk3 WIP NEW NEW NEW version
+mondadori-rcs-picking-0.6.10.tgz 28-04-2021 rm : gtk3 WIP NEW NEW NEW version
+mondadori-rcs-ufficio-4.0.3-gtk3-picking.tgz 29-04-2021 rm : gtk3 WIP NEW NEW NEW version
+mondadori-rcs-ufficio-4.0.4-gtk3-picking.tgz 29-04-2021 rm : gtk3 WIP NEW NEW NEW version - liste !
+mondadori-rcs-ufficio-4.0.5-gtk3-picking.tgz 30-04-2021 rm : gtk3 WIP NEW NEW NEW version - Distribuzione
+mondadori-rcs-ufficio-4.0.5-gtk3-picking.tgz 30-04-2021 rm : gtk3 WIP NEW NEW NEW version - CalcoloImballi 
+mondadori-rcs-ufficio-4.0.6-gtk3-picking.tgz 02-05-2021 rm : gtk3 WIP 
+mondadori-rcs-ufficio-4.0.07-gtk3-picking.tgz 03-05-2021 rm : gtk3 WIP 
+mondadori-rcs-ufficio-4.0.08-gtk3-picking.tgz 03-05-2021 rm : gtk3 WIP  (trace ..)
+4.0.73-gtk3-p   : rm  lavoro sui window sizes
+4.0.74-gtk3-p   : rm  ritoccati tutti i sorgenti
+4.0.106 : rm alcune modifiche
+4.0.109 : rm check_bancali - chiusura_bancale / lettura barcode
+4.0.1.37 : rm+gm - versione CEVA - Informix - on site

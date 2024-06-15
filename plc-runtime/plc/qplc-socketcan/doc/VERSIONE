@@ -1,0 +1,22 @@
+versione = 6.1.3
+data = Thu Jun 18 14:07:39 MET DST 1998
+sistema = LynxOS 2.3.0
+
+NOTE:
+
+Riferimento: Giuseppe Guerrini
+
+File modificati:
+	libqplc.a:
+	 contiene qplc 1.7.0.6
+	plcdev.txt:
+	 versione 2.7, descrive l'uso dei dispositivi con qplc 1.7.0.6.
+
+ Note su libqplc.a 1.7.0.6 (modifiche rispetto alla versione 1.7.0.5):
+
+ - Aggiunto il supporto per moduli speciali con quattro ingressi ADC.
+   Si chiamano "<...indicazione modulo...>.ADC.<0-3>", e devono essere
+   associati a variabili a 16 bit con segno.
+ - Corretto un bug nella gestione del DAC CX. Dando HALT e GO, falliva
+   l'associazione di variabile con l'uscita.
+

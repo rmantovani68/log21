@@ -1,0 +1,39 @@
+;
+;
+;		--------------------------------------
+;			CODIFICA ERRORI PLC
+;		--------------------------------------
+;
+PLC-1.err=1.err
+PLC-5.err=5.err
+PLC-8.err=8.err
+PLC-9.err=9.err
+PLC-62.err=62.err
+PLC-63.err=63.err
+PLC-100.err=100.deb
+PLC-101.err=101.deb
+PLC-102.err=102.deb
+PLC-103.err=103.deb
+PLC-104.err=104.deb
+PLC-105.err=105.deb
+PLC-106.err=106.deb
+PLC-107.err=107.deb
+PLC-108.err=108.deb
+PLC-109.err=109.deb
+PLC-120.err=120.err
+PLC-130.err=130.err
+PLC-131.err=131.err
+PLC-141.err=141.err
+PLC-142.err=142.err
+PLC-150.err=150.deb
+PLC-180.err=180.deb
+PLC-181.err=181.err
+PLC-183.err=183.deb
+PLC-185.err=185.err
+PLC-190.err=190.err
+PLC-191.err=191.err
+PLC-192.err=192.err
+PLC-193.err=193.err
+PLC-194.err=194.err
+PLC-195.err=195.deb
+PLC-199.err=199.deb

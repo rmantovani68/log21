@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<NCReport version="2.9.0" name="spedizione" type="report">
+    <options>
+        <encoding>utf8</encoding>
+        <language>00</language>
+        <langrole>0</langrole>
+        <orientation>portrait</orientation>
+        <pagesize width="210.000" height="297.000">A4</pagesize>
+        <topmargin>10</topmargin>
+        <bottommargin>10</bottommargin>
+        <leftmargin>10</leftmargin>
+        <rightmargin>10</rightmargin>
+        <fontname>Liberation Sans</fontname>
+        <fontsize>10</fontsize>
+        <backcolor>#ffffff</backcolor>
+        <columns>0</columns>
+        <columnspace>0</columnspace>
+        <zoneSpacing>10</zoneSpacing>
+        <zoneBreak>false</zoneBreak>
+    </options>
+    <datasources>
+        <datasource id="colli" type="sql" openRole="begin" source="static" connection="internal" parentID="" connID="mondadori">set lc_numeric = 'it_IT.UTF-8';
+with colli_produzione as (select ordprog, cpnmcol, cppsrea, cppspre, cptmeva from col_prod where ordprog='$P{ordprog}' 
+union select ordprog, cpnmcol, cppsrea, cppspre, cptmeva from col_prod_stor where ordprog='$P{ordprog}')
+select
+	coalesce(sc.key_bancale,0) as key_bancale, 
+	coalesce(sb.bnnmbnc,0) as numero_bancale,
+	cp.cpnmcol as nmcol,
+	to_char(case cp.cppsrea when 0 then cp.cppspre::float/1000::float else cp.cppsrea::float/1000::float end,'9999990D999')  as peso_collo,
+	coalesce(to_char(cp.cptmeva,'DD-MM-YYYY HH24:MI:SS'),'ND') as tmeva
+from colli_produzione cp left outer join storico_colli_bancale sc on (sc.ordprog = cp.ordprog and sc.cpnmcol=cp.cpnmcol)
+left outer join storico_bancali sb on ( sc.key_linea = sb.key_linea and sc.key_bancale = sb.key_bancale)
+order by sb.bnnmbnc,sc.ordprog,sc.cpnmcol;</datasource>
+        <datasource id="spedizione" type="sql" openRole="begin" source="static" connection="internal" parentID="" connID="mondadori">set lc_numeric = 'it_IT.UTF-8';
+with ordini as (select ordprog, rotpspe, rocdlin, ronmcll, ronmcpe, ropspre, ropsrea, rocdve2, ronmced, rotmrcz from ric_ord where ordprog='$P{ordprog}' 
+union select ordprog, rotpspe, rocdlin, ronmcll, ronmcpe, ropspre, ropsrea, rocdve2, ronmced, rotmrcz from ric_ord_stor where ordprog='$P{ordprog}')
+select sl.key_linea, sl.tminit, sl.tmclose, sl.lntpspe, sl.lncdlin, sl.stato, sl.lnnmced, ordprog, rotpspe, rocdlin, ronmcll, ronmcpe,
+to_char(ropspre::float/1000::float,'9999990D999') as pspre, to_char(ropsrea::float/1000::float,'9999990D999') as psrea,
+rocdve2
+from 
+ordini ro left outer join storico_linee_spedizione sl on (
+ro.rotpspe=sl.lntpspe and 
+ro.rocdlin=sl.lncdlin and 
+ro.ronmced::integer=sl.lnnmced and 
+to_char(ro.rotmrcz,'YYYY') = to_char(sl.tminit,'YYYY'));</datasource>
+    </datasources>
+    <variables/>
+    <reportheader id="RH" height="92.240">
+        <label id="UNGJH" zValue="0" posX="71.438" posY="87.312" width="17.462" height="4.762" fontName="Liberation Sans" fontSize="10" alignment="1">N° COLLO</label>
+        <label id="WGDPZ" zValue="1" posX="114.300" posY="87.312" width="26.723" height="4.762" fontName="Liberation Sans" fontSize="10" alignment="1">DATA EVASIONE</label>
+        <label id="CS1YD" zValue="2" posX="90.487" posY="87.312" width="23.812" height="4.762" fontName="Liberation Sans" fontSize="10" alignment="1">PESO COLLO</label>
+        <label id="03P3I" zValue="3" posX="26.987" posY="87.312" width="42.862" height="4.762" fontName="Liberation Sans" fontSize="10" alignment="1">PROGRESSIVO BANCALE</label>
+        <label id="SU3L2" zValue="4" posX="9.525" posY="50.800" width="30.162" height="4.762" fontName="Liberation Sans" fontSize="10" alignment="1">CEDOLA N° :</label>
+        <label id="OI5MH" zValue="5" posX="9.525" posY="58.737" width="30.162" height="4.762" fontName="Liberation Sans" fontSize="10" alignment="1">CODICE LINEA :</label>
+        <label id="GO49F" zValue="6" posX="9.525" posY="66.675" width="31.750" height="4.762" fontName="Liberation Sans" fontSize="10" alignment="1">N° COLLI:</label>
+        <label id="BCE39" zValue="7" posX="104.775" posY="66.675" width="19.050" height="4.762" fontName="Liberation Sans" fontSize="10" alignment="1">N° COPIE:</label>
+        <label id="UHBRP" zValue="8" posX="9.525" posY="74.612" width="43.127" height="4.762" fontName="Liberation Sans" fontSize="10" alignment="1">PESO PREDETERMINATO:</label>
+        <label id="M578F" zValue="9" posX="104.775" posY="74.612" width="23.283" height="4.762" fontName="Liberation Sans" fontSize="10" alignment="1">PESO REALE:</label>
+        <field id="WLV0F" zValue="11" posX="57.150" posY="49.212" width="23.812" height="6.350" resource="datasource" fontName="DejaVu Sans" fontSize="20" fontWeight="bold" alignment="129" type="txt" ftype="ds" arg="">spedizione.lnnmced</field>
+        <field id="39KF7" zValue="12" posX="73.025" posY="34.925" width="103.188" height="7.938" resource="datasource" fontName="DejaVu Sans" fontSize="24" fontWeight="bold" alignment="129" type="txt" ftype="ds" arg="">spedizione.ordprog</field>
+        <field id="YEG5J" zValue="13" posX="57.150" posY="57.150" width="9.525" height="6.350" resource="datasource" fontName="DejaVu Sans" fontSize="20" fontWeight="bold" alignment="129" type="txt" ftype="ds" arg="">spedizione.rotpspe</field>
+        <field id="YYQQW" zValue="14" posX="57.150" posY="65.087" width="42.862" height="6.350" resource="datasource" fontName="DejaVu Sans" fontSize="20" fontWeight="bold" alignment="130" type="txt" ftype="ds" arg="">spedizione.ronmcll</field>
+        <field id="0DHCX" zValue="15" posX="130.175" posY="65.087" width="42.862" height="6.350" resource="datasource" fontName="DejaVu Sans" fontSize="20" fontWeight="bold" alignment="130" type="num" ftype="ds" arg="">spedizione.ronmcpe</field>
+        <field id="BOLF6" zValue="16" posX="57.150" posY="73.025" width="42.862" height="6.350" resource="datasource" fontName="DejaVu Sans" fontSize="20" fontWeight="bold" alignment="130" type="num" ftype="ds" arg="">spedizione.pspre</field>
+        <field id="EERC7" zValue="17" posX="130.175" posY="73.025" width="42.862" height="6.350" resource="datasource" fontName="DejaVu Sans" fontSize="20" fontWeight="bold" alignment="130" type="num" ftype="ds" arg="">spedizione.psrea</field>
+        <line id="HFMKP" zValue="18" lineColor="#000000" lineStyle="solid" lineWidth="0.100" fromX="9.525" fromY="42.862" toX="71.438" toY="42.862"/>
+        <field id="14678" zValue="19" posX="68.263" posY="57.150" width="9.525" height="6.350" resource="datasource" fontName="DejaVu Sans" fontSize="20" fontWeight="bold" alignment="129" type="txt" ftype="ds" arg="">spedizione.rocdlin</field>
+        <label id="GIJVI" zValue="20" posX="9.525" posY="34.925" width="61.912" height="8.202" fontName="DejaVu Sans" fontSize="20" fontWeight="bold" alignment="129">SPEDIZIONE N°</label>
+        <line id="68VH4" zValue="21" lineColor="#000000" lineStyle="solid" lineWidth="0.200" fromX="9.525" fromY="92.075" toX="173.037" toY="92.075"/>
+        <line id="GNLS7" zValue="22" lineColor="#000000" lineStyle="solid" lineWidth="0.100" fromX="9.525" fromY="85.725" toX="173.037" toY="85.725"/>
+        <line id="9CH0Y" zValue="23" lineColor="#000000" lineStyle="solid" lineWidth="0.100" fromX="57.150" fromY="71.438" toX="100.012" toY="71.438"/>
+        <line id="KF7T7" zValue="24" lineColor="#000000" lineStyle="solid" lineWidth="0.100" fromX="130.175" fromY="71.438" toX="173.037" toY="71.438"/>
+        <line id="D9X0R" zValue="25" lineColor="#000000" lineStyle="solid" lineWidth="0.100" fromX="130.175" fromY="79.375" toX="173.037" toY="79.375"/>
+        <line id="2HFMK" zValue="26" lineColor="#000000" lineStyle="solid" lineWidth="0.100" fromX="57.150" fromY="79.375" toX="100.012" toY="79.375"/>
+        <line id="6D6QC" zValue="27" lineColor="#000000" lineStyle="solid" lineWidth="0.100" fromX="57.150" fromY="63.500" toX="146.050" toY="63.500"/>
+        <line id="ORB4F" zValue="28" lineColor="#000000" lineStyle="solid" lineWidth="0.100" fromX="57.150" fromY="55.562" toX="146.050" toY="55.562"/>
+        <field id="13791" zValue="29" posX="88.900" posY="57.150" width="36.512" height="6.350" resource="datasource" fontName="DejaVu Sans" fontSize="20" fontWeight="bold" alignment="129" type="txt" ftype="ds" arg="">spedizione.key_linea</field>
+    </reportheader>
+    <details>
+        <detail id="detail" height="5.027" datasource="colli">
+            <items>
+                <field id="VU1PS" zValue="0" posX="26.987" posY="0.000" width="31.750" height="4.762" resource="datasource" fontName="Liberation Sans" fontSize="10" alignment="1" type="txt" ftype="ds" arg="">colli.key_bancale</field>
+                <field id="UHW5X" zValue="1" posX="71.438" posY="0.000" width="17.462" height="4.762" resource="datasource" fontName="Liberation Sans" fontSize="10" alignment="1" type="txt" ftype="ds" arg="">colli.nmcol</field>
+                <field id="RW8QG" zValue="2" posX="90.487" posY="0.000" width="22.225" height="4.762" resource="datasource" fontName="Liberation Sans" fontSize="10" alignment="34" type="num" ftype="ds" arg="">colli.peso_collo</field>
+                <field id="VRWZ4" zValue="3" posX="115.887" posY="0.000" width="33.337" height="4.762" resource="datasource" fontName="Liberation Sans" fontSize="10" alignment="1" type="txt" ftype="ds" arg="">colli.tmeva</field>
+            </items>
+        </detail>
+    </details>
+</NCReport>

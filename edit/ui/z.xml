@@ -1,0 +1,576 @@
+        <!-- name : ubicazione type : text -->
+        <child>
+          <object class="GtkLabel" id="lb_ubicazione">
+            <property name="name">lb_ubicazione</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="xpad">5</property>
+            <property name="ypad">0</property>
+            <property name="label" translatable="yes">campo ubicazione</property>
+            <property name="justify">center</property>
+            <property name="width-chars">13</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0.5</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="entry_ubicazione">
+            <property name="name">entry_ubicazione</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="invisible-char">●</property>
+            <property name="width-chars">10</property>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">0</property>
+          </packing>
+        </child>
+        <!-- name : codprod type : text -->
+        <child>
+          <object class="GtkLabel" id="lb_codprod">
+            <property name="name">lb_codprod</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="xpad">5</property>
+            <property name="ypad">0</property>
+            <property name="label" translatable="yes">campo codprod</property>
+            <property name="justify">center</property>
+            <property name="width-chars">13</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0.5</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="entry_codprod">
+            <property name="name">entry_codprod</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="invisible-char">●</property>
+            <property name="width-chars">10</property>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">1</property>
+          </packing>
+        </child>
+        <!-- name : isola type : integer -->
+        <child>
+          <object class="GtkLabel" id="lb_isola">
+            <property name="name">lb_isola</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="xpad">5</property>
+            <property name="ypad">0</property>
+            <property name="label" translatable="yes">campo isola</property>
+            <property name="justify">center</property>
+            <property name="width-chars">13</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0.5</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSpinButton" id="sb_isola">
+            <property name="name">sb_isola</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="text" translatable="yes">0</property>
+            <property name="climb-rate">1</property>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">2</property>
+          </packing>
+        </child>
+        <!-- name : settore type : integer -->
+        <child>
+          <object class="GtkLabel" id="lb_settore">
+            <property name="name">lb_settore</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="xpad">5</property>
+            <property name="ypad">0</property>
+            <property name="label" translatable="yes">campo settore</property>
+            <property name="justify">center</property>
+            <property name="width-chars">13</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0.5</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSpinButton" id="sb_settore">
+            <property name="name">sb_settore</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="text" translatable="yes">0</property>
+            <property name="climb-rate">1</property>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">3</property>
+          </packing>
+        </child>
+        <!-- name : display type : integer -->
+        <child>
+          <object class="GtkLabel" id="lb_display">
+            <property name="name">lb_display</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="xpad">5</property>
+            <property name="ypad">0</property>
+            <property name="label" translatable="yes">campo display</property>
+            <property name="justify">center</property>
+            <property name="width-chars">13</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0.5</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSpinButton" id="sb_display">
+            <property name="name">sb_display</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="text" translatable="yes">0</property>
+            <property name="climb-rate">1</property>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">4</property>
+          </packing>
+        </child>
+        <!-- name : ios type : integer -->
+        <child>
+          <object class="GtkLabel" id="lb_ios">
+            <property name="name">lb_ios</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="xpad">5</property>
+            <property name="ypad">0</property>
+            <property name="label" translatable="yes">campo ios</property>
+            <property name="justify">center</property>
+            <property name="width-chars">13</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0.5</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">5</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSpinButton" id="sb_ios">
+            <property name="name">sb_ios</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="text" translatable="yes">0</property>
+            <property name="climb-rate">1</property>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">5</property>
+          </packing>
+        </child>
+        <!-- name : cpu type : integer -->
+        <child>
+          <object class="GtkLabel" id="lb_cpu">
+            <property name="name">lb_cpu</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="xpad">5</property>
+            <property name="ypad">0</property>
+            <property name="label" translatable="yes">campo cpu</property>
+            <property name="justify">center</property>
+            <property name="width-chars">13</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0.5</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">6</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSpinButton" id="sb_cpu">
+            <property name="name">sb_cpu</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="text" translatable="yes">0</property>
+            <property name="climb-rate">1</property>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">6</property>
+          </packing>
+        </child>
+        <!-- name : modulo type : integer -->
+        <child>
+          <object class="GtkLabel" id="lb_modulo">
+            <property name="name">lb_modulo</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="xpad">5</property>
+            <property name="ypad">0</property>
+            <property name="label" translatable="yes">campo modulo</property>
+            <property name="justify">center</property>
+            <property name="width-chars">13</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0.5</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">7</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSpinButton" id="sb_modulo">
+            <property name="name">sb_modulo</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="text" translatable="yes">0</property>
+            <property name="climb-rate">1</property>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">7</property>
+          </packing>
+        </child>
+        <!-- name : riga type : integer -->
+        <child>
+          <object class="GtkLabel" id="lb_riga">
+            <property name="name">lb_riga</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="xpad">5</property>
+            <property name="ypad">0</property>
+            <property name="label" translatable="yes">campo riga</property>
+            <property name="justify">center</property>
+            <property name="width-chars">13</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0.5</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">8</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSpinButton" id="sb_riga">
+            <property name="name">sb_riga</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="text" translatable="yes">0</property>
+            <property name="climb-rate">1</property>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">8</property>
+          </packing>
+        </child>
+        <!-- name : colonna type : integer -->
+        <child>
+          <object class="GtkLabel" id="lb_colonna">
+            <property name="name">lb_colonna</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="xpad">5</property>
+            <property name="ypad">0</property>
+            <property name="label" translatable="yes">campo colonna</property>
+            <property name="justify">center</property>
+            <property name="width-chars">13</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0.5</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">9</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSpinButton" id="sb_colonna">
+            <property name="name">sb_colonna</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="text" translatable="yes">0</property>
+            <property name="climb-rate">1</property>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">9</property>
+          </packing>
+        </child>
+        <!-- name : priorita type : integer -->
+        <child>
+          <object class="GtkLabel" id="lb_priorita">
+            <property name="name">lb_priorita</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="xpad">5</property>
+            <property name="ypad">0</property>
+            <property name="label" translatable="yes">campo priorita</property>
+            <property name="justify">center</property>
+            <property name="width-chars">13</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0.5</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">10</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSpinButton" id="sb_priorita">
+            <property name="name">sb_priorita</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="text" translatable="yes">0</property>
+            <property name="climb-rate">1</property>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">10</property>
+          </packing>
+        </child>
+        <!-- name : ubqtcas type : integer -->
+        <child>
+          <object class="GtkLabel" id="lb_ubqtcas">
+            <property name="name">lb_ubqtcas</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="xpad">5</property>
+            <property name="ypad">0</property>
+            <property name="label" translatable="yes">campo ubqtcas</property>
+            <property name="justify">center</property>
+            <property name="width-chars">13</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0.5</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">11</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSpinButton" id="sb_ubqtcas">
+            <property name="name">sb_ubqtcas</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="text" translatable="yes">0</property>
+            <property name="climb-rate">1</property>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">11</property>
+          </packing>
+        </child>
+        <!-- name : ubqtmax type : integer -->
+        <child>
+          <object class="GtkLabel" id="lb_ubqtmax">
+            <property name="name">lb_ubqtmax</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="xpad">5</property>
+            <property name="ypad">0</property>
+            <property name="label" translatable="yes">campo ubqtmax</property>
+            <property name="justify">center</property>
+            <property name="width-chars">13</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0.5</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">12</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSpinButton" id="sb_ubqtmax">
+            <property name="name">sb_ubqtmax</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="text" translatable="yes">0</property>
+            <property name="climb-rate">1</property>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">12</property>
+          </packing>
+        </child>
+        <!-- name : ubqtimp type : integer -->
+        <child>
+          <object class="GtkLabel" id="lb_ubqtimp">
+            <property name="name">lb_ubqtimp</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="xpad">5</property>
+            <property name="ypad">0</property>
+            <property name="label" translatable="yes">campo ubqtimp</property>
+            <property name="justify">center</property>
+            <property name="width-chars">13</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0.5</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">13</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSpinButton" id="sb_ubqtimp">
+            <property name="name">sb_ubqtimp</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="text" translatable="yes">0</property>
+            <property name="climb-rate">1</property>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">13</property>
+          </packing>
+        </child>
+        <!-- name : ubqtpre type : integer -->
+        <child>
+          <object class="GtkLabel" id="lb_ubqtpre">
+            <property name="name">lb_ubqtpre</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="xpad">5</property>
+            <property name="ypad">0</property>
+            <property name="label" translatable="yes">campo ubqtpre</property>
+            <property name="justify">center</property>
+            <property name="width-chars">13</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0.5</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">14</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSpinButton" id="sb_ubqtpre">
+            <property name="name">sb_ubqtpre</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="text" translatable="yes">0</property>
+            <property name="climb-rate">1</property>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">14</property>
+          </packing>
+        </child>
+        <!-- name : ubcdflg type : text -->
+        <child>
+          <object class="GtkLabel" id="lb_ubcdflg">
+            <property name="name">lb_ubcdflg</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="xpad">5</property>
+            <property name="ypad">0</property>
+            <property name="label" translatable="yes">campo ubcdflg</property>
+            <property name="justify">center</property>
+            <property name="width-chars">13</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0.5</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">15</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="entry_ubcdflg">
+            <property name="name">entry_ubcdflg</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="invisible-char">●</property>
+            <property name="width-chars">10</property>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">15</property>
+          </packing>
+        </child>
+        <!-- name : ubitipo type : text -->
+        <child>
+          <object class="GtkLabel" id="lb_ubitipo">
+            <property name="name">lb_ubitipo</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="xpad">5</property>
+            <property name="ypad">0</property>
+            <property name="label" translatable="yes">campo ubitipo</property>
+            <property name="justify">center</property>
+            <property name="width-chars">13</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0.5</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">16</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="entry_ubitipo">
+            <property name="name">entry_ubitipo</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="invisible-char">●</property>
+            <property name="width-chars">10</property>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">16</property>
+          </packing>
+        </child>
+        <!-- name : cnistato type : text -->
+        <child>
+          <object class="GtkLabel" id="lb_cnistato">
+            <property name="name">lb_cnistato</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="xpad">5</property>
+            <property name="ypad">0</property>
+            <property name="label" translatable="yes">campo cnistato</property>
+            <property name="justify">center</property>
+            <property name="width-chars">13</property>
+            <property name="xalign">0</property>
+            <property name="yalign">0.5</property>
+          </object>
+          <packing>
+            <property name="left-attach">0</property>
+            <property name="top-attach">17</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="entry_cnistato">
+            <property name="name">entry_cnistato</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="invisible-char">●</property>
+            <property name="width-chars">10</property>
+          </object>
+          <packing>
+            <property name="left-attach">1</property>
+            <property name="top-attach">17</property>
+          </packing>
+        </child>

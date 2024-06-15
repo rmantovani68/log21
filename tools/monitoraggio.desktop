@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Monitoraggio
+Icon=/usr/share/easy-picking/images/easy-picking-monitor.svg
+Exec=sh -c "cd /opt/easy-picking/bin; ./monitor"
+Terminal=false

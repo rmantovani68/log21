@@ -1,0 +1,149 @@
+/*
+* this is only an example, not used in real application 
+*/
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+    <enum id="org.easy-picking.enums.selection_type_enum">
+        <value nick="GTK_SELECTION_NONE"     value="0"/>
+        <value nick="GTK_SELECTION_SINGLE"   value="1"/>
+        <value nick="GTK_SELECTION_BROWSE"   value="2"/>
+        <value nick="GTK_SELECTION_MULTIPLE" value="3"/>
+    </enum>
+
+    <schema path="/org/easy-picking/balance/" id="org.easy-picking.mainapp">
+        <key name="mainapp-shm-key"           type="i"> <default>1280</default> <summary>mainapp-shm-key</summary>         <description>mainapp-shm-key</description> </key>
+        <key name="settori-shm-key"           type="i"> <default>1280</default> <summary>settori-shm-key</summary>         <description>settori-shm-key</description> </key>
+
+        <key name="ios-connected"             type="b"> <default>true</default> <summary>ios-connected</summary>           <description>ios-connected</description> </key>
+        <key name="master"                    type="b"> <default>true</default> <summary>master</summary>                  <description>master</description> </key>
+
+        <key name="debug-level"               type="i"> <default>5</default>     <summary>sb_debug_level            </summary> <description>sb_debug_level             </description> </key>
+        <key name="incremento-copie-pallet"   type="i"> <default>10</default>    <summary>sb_incremento_copie_pallet</summary> <description>sb_incremento_copie_pallet </description> </key>
+        <key name="soglia-pallet"             type="i"> <default>10</default>    <summary>sb_soglia_pallet          </summary> <description>sb_soglia_pallet           </description> </key>
+        <key name="soglia-prelievo"           type="i"> <default>10</default>    <summary>sb_soglia_prelievo        </summary> <description>sb_soglia_prelievo         </description> </key>
+        <key name="stampa-rac"                type="i"> <default>0</default>     <summary>stampa-rac                </summary> <description>stampa-rac                 </description> </key>
+
+        <key name="imballi-ubicati"           type="b"><default>false</default> <summary>rb_imballi_ubicati</summary>      <description>rb_imballi_ubicati</description></key>
+        <key name="imballi-non-ubicati"       type="b"><default>true</default>  <summary>rb_imballi_non_ubicati</summary>  <description>rb_imballi_non_ubicati</description></key>
+        <key name="gestione-collo"            type="b"><default>true</default>  <summary>rb_gestione_collo</summary>       <description>rb_gestione_collo</description></key>
+        <key name="gestione-ordine"           type="b"><default>false</default> <summary>rb_gestione_ordine</summary>      <description>rb_gestione_ordine</description></key>
+        <key name="all-rac"                   type="b"><default>true</default>  <summary>rb_all_rac</summary>              <description>rb_all_rac</description></key>
+        <key name="settori"                   type="b"><default>false</default> <summary>rb_settori</summary>              <description>rb_settori</description></key>
+        <key name="ordine-evaso"              type="b"><default>true</default>  <summary>rb_ordine_evaso</summary>         <description>rb_ordine_evaso</description></key>
+        <key name="ordine-stampato-xab"       type="b"><default>false</default> <summary>rb_ordine_stampato_xab</summary>  <description>rb_ordine_stampato_xab</description></key>
+        <key name="selezione-singola"         type="b"><default>true</default>  <summary>rb_selezione_singola</summary>    <description>rb_selezione_singola</description></key>
+        <key name="selezione-multipla"        type="b"><default>false</default> <summary>rb_selezione_multipla</summary>   <description>rb_selezione_multipla</description></key>
+
+        <key name="cfg-file-name"             type="s"> <default>'../exe/ael.cfg'</default>                  <summary>cfg-file-name                     </summary> <description>cfg-file-name                </description> </key>
+        <key name="path-data"                 type="s"> <default>'../data'</default>                         <summary>entry_path_data                   </summary> <description>path-data                    </description> </key>
+        <key name="path-exe"                  type="s"> <default>'../exe'</default>                          <summary>entry_path_exe                    </summary> <description>path-exe                     </description> </key>
+        <key name="path-export"               type="s"> <default>'../export'</default>                       <summary>entry_path_export                 </summary> <description>path-export                  </description> </key>
+        <key name="path-stampe"               type="s"> <default>'../stampe'</default>                       <summary>entry_path_stampe                 </summary> <description>path-stampe                  </description> </key>
+        <key name="path-storico"              type="s"> <default>'../storico'</default>                      <summary>entry_path_storico                </summary> <description>path-storico                 </description> </key>
+        <key name="path-trace"                type="s"> <default>'../trace'</default>                        <summary>entry_path_trace                  </summary> <description>path-trace                   </description> </key>
+        <key name="import-spedizioni"         type="s"> <default>'import-ordini.txt'</default>               <summary>entry_import_spedizioni           </summary> <description>import-spedizioni            </description> </key>
+        <key name="import-catalogo"           type="s"> <default>'import-catalogo.txt'</default>             <summary>entry_import_catalogo             </summary> <description>import-catalogo              </description> </key>
+        <key name="import-tabelle"            type="s"> <default>'import-catalogo.txt'</default>             <summary>entry_import_tabelle              </summary> <description>import-tabelle               </description> </key>
+        <key name="import-monitor"            type="s"> <default>'import-monitor.txt'</default>              <summary>entry_import_monitor              </summary> <description>import-monitor               </description> </key>
+        <key name="export-spedizioni"         type="s"> <default>'export-spedizioni.txt'</default>           <summary>entry_export_spedizioni           </summary> <description>export-spedizioni            </description> </key>
+        <key name="export-corriere"           type="s"> <default>'export-corriere.txt'</default>             <summary>entry_export_corr-agg             </summary> <description>export-corr-agg              </description> </key>
+        <key name="export-corr-agg"           type="s"> <default>'export-corr-agg.txt'</default>             <summary>entry_export_corr-agg             </summary> <description>export-corr-agg              </description> </key>
+        <key name="export-monitor"            type="s"> <default>'export-monitor.txt'</default>              <summary>entry_export_monitor              </summary> <description>export-monitor               </description> </key>
+        <key name="export-monitor-storico"    type="s"> <default>'export-monitor-storico.txt'</default>      <summary>entry_export_monitor-storico      </summary> <description>export-monitor-storico       </description> </key>
+        <key name="export-spedizioni-storico" type="s"> <default>'export-spedizioni-storico.txt'</default>   <summary>entry_export_spedizioni-storico   </summary> <description>export-spedizioni-storico    </description> </key>
+        <key name="export-corr-sda"           type="s"> <default>'export-corr-sda.txt'</default>             <summary>entry_export_corr-sda             </summary> <description>export-corr-sda              </description> </key>
+        <key name="db-hostname"               type="s"> <default>'localhost'</default>                       <summary>entry_pghost                      </summary> <description>pghost                       </description> </key>
+        <key name="db-port"                   type="s"> <default>'5432'</default>                            <summary>entry_pgport                      </summary> <description>pgport                       </description> </key>
+        <key name="db-database"               type="s"> <default>'mr'</default>                              <summary>entry_pgdatabase                  </summary> <description>pgdatabase                   </description> </key>
+        <key name="printer-console"           type="s"> <default>'printer-console'</default>                 <summary>entry_printer_console             </summary> <description>printer-console              </description> </key>
+        <key name="label-printer-console"     type="s"> <default>'label-printer-console'</default>           <summary>entry_label_printer-console       </summary> <description>label-printer-console        </description> </key>
+        <key name="xab-printer"               type="s"> <default>'xab-printer'</default>                     <summary>entry_xab_printer                 </summary> <description>xab-printer                  </description> </key>
+        <key name="dist-printer"              type="s"> <default>'dist-printer'</default>                    <summary>entry_dist_printer                </summary> <description>dist-printer                 </description> </key>
+        <key name="printer-bilancia"          type="s"> <default>'printer-bilancia'</default>                <summary>entry_printer_bilancia            </summary> <description>printer-bilancia             </description> </key>
+        <key name="label-printer-bilancia"    type="s"> <default>'label-printer-bilancia'</default>          <summary>entry_label_printer_bilancia      </summary> <description>label-printer-bilancia       </description> </key>
+
+        <key name="reindex-periodico"      type="b"> <default>false</default> <summary>reindex-periodico    </summary> <description>reindex-periodico    </description></key>
+        <key name="invio-periodico"        type="b"> <default>false</default> <summary>invio-periodico      </summary> <description>invio-periodico      </description></key>
+        <key name="reindex-on-startup"     type="b"> <default>false</default> <summary>reindex-on-startup   </summary> <description>reindex-on-startup   </description></key>
+        <key name="a2ps"                   type="b"> <default>false</default> <summary>a2ps                 </summary> <description>a2ps                 </description></key>
+        <key name="flag-invio-automatico"  type="b"> <default>false</default> <summary>flag-invio-automatico</summary> <description>flag-invio-automatico</description></key>
+        <key name="flag-xab-pdf"           type="b"> <default>false</default> <summary>flag-xab-pdf         </summary> <description>flag-xab-pdf         </description></key>
+        <key name="flag-dist-pdf"          type="b"> <default>false</default> <summary>flag-dist-pdf        </summary> <description>flag-dist-pdf        </description></key>
+        <key name="stampa-packing-list"    type="b"> <default>false</default> <summary>stampa-packing-list  </summary> <description>stampa-packing-list  </description></key>
+        <key name="rifornimenti"           type="b"> <default>false</default> <summary>rifornimenti         </summary> <description>rifornimenti         </description></key>
+
+        <key name="tipo-ordini"               type="s"> <default>'N'</default>   <summary>tipo-ordini          </summary> <description>tipo-ordini          </description> </key>
+        <key name="suffix"                    type="s"> <default>'delta'</default>   <summary>suffix          </summary> <description>suffix          </description> </key>
+        <key name="nota-corriere"             type="s"> <default>'nota-corriere'</default>   <summary>nota-corriere          </summary> <description>nota-corriere          </description> </key>
+
+        <key name="application-timer"         type="i"> <default>100</default>   <summary></summary>         <description></description> </key>
+        <key name="statistica-timer"          type="i"> <default>10000</default> <summary></summary>         <description></description> </key>
+        <key name="save-state-timer"          type="i"> <default>10000</default> <summary></summary>         <description></description> </key>
+
+
+
+        <key name="tabella-ordini-lista-ordini"     type="s"> <default>'select r.rostato as "S", r.roswcol as "BANC", r.roprgln as "PRG", r.ronmced as "CED", data(rotmrcz) as "DATA",r.ordprog as "ORDINE", r.rocdrid as "COD.CLI", r.rodscli as "RAGIONE SOCIALE", r.rocdlin as "LN", r.ronmcll as "COLLI", r.ronmrgh as "RIGHE", r.ronmcpe as "COPIE", r.ropspre::float4/1000 as "PESO PRE(Kg)", r.ropsrea::float4/1000 as "PESO REA(Kg)", r.rolocli as "LOC.", r.rocpcli as "CAP", r.roprcli as "PRV",r.rodsnot as "Nota Corriere"  from ric_ord as r where r.ordtipo=\'%ORDTIPO%\' order by r.ordprog;'</default>          <summary>tabella-ordini-lista-ordini</summary> <description>tabella-ordini-lista-ordini</description> </key>
+        <key name="tabella-ordini-lista-ordini-key" type="i"> <default>5</default>          <summary>tabella-ordini-lista-ordini-key</summary> <description>tabella-ordini-lista-ordini-key</description> </key>
+
+        <key name="statistica-impianto"             type="s"> <default>'select roswcol as "P/C",rostato as "STATO",count(rostato) as "ORDINI",sum(ronmcll) as "COLLI",sum(ronmrgh) as "RIGHE",sum(ronmcpe) as "COPIE" from ric_ord where ordtipo=\'%ORDTIPO%\' group by roswcol,rostato;'</default>          <summary>statistica-impianto</summary> <description>statistica-impianto</description> </key>
+        <key name="lista-distribuzione"             type="s"> <default>'select sdnmced as "CEDOLA",sdcdlin as "LINEA", sddslin as "DESCRIZIONE LINEA", sdnmort as "ORDINI",sdnmclt as "COLLI",sdnmrgh as "RIGHE",sdnmcpe as "COPIE",sdpspre::int4/1000 as "PESO ",sdnmori as "RAC",sdnmcli as "COLLI",sdnmore as "EVASI",sdnmcle as "COLLI",sdnmorx as "XAB",sdnmclx as "COLLI",sdnmord as "DIST",sdnmcld as "COLLI",sdnmors as "HOST",sdnmcls as "COLLI" from sel_dist_tmp_delta_%ORDTIPO% order by sdnmced,sdcdlin;'</default>          <summary>lista-distribuzione</summary> <description>lista-distribuzione</description> </key>
+
+        <key name="lista-calcolo-imballi-periodo"         type="s">  
+        <default>'
+select 
+    c.cptpfor as "FORMATO",
+    count(cptpfor) as "N. COLLI" from ric_ord o, col_prod c 
+    where o.ordprog=c.ordprog and  %KEY% group by cptpfor 
+union select 
+    c.cptpfor as "FORMATO",
+    count(cptpfor) as "N. COLLI" from ric_ord_stor o, col_prod_stor c 
+    where o.ordprog=c.ordprog and  %KEY% group by cptpfor 
+order by 1 ;
+        '</default> <summary>lista-imballi</summary> <description>lista-imballi</description> </key>
+
+
+        <key name="lista-calcolo-preconfezionati-periodo" type="s"> 
+        <default>'
+select 
+    p.prfcpcf as "FORMATO",
+    count(prfcpcf) as "N. COLLI" from ric_ord o,
+    col_prod c, rig_prod r, catalogo p 
+    where o.ordprog=c.ordprog and cptpfor=\'C\' and  %KEY% and c.ordprog=r.ordprog and c.cpnmcol=r.rpnmcol and r.rpcdpro=p.prcdpro group by prfcpcf  
+union select 
+    p.prfcpcf as "FORMATO",
+    count(prfcpcf) as "N. COLLI" from ric_ord_stor o,
+    col_prod_stor c, rig_prod_stor r, catalogo p 
+    where o.ordprog=c.ordprog and cptpfor=\'C\' and  %KEY% and c.ordprog=r.ordprog and c.cpnmcol=r.rpnmcol and r.rpcdpro=p.prcdpro group by prfcpcf 
+order by 1 ;
+        '</default> <summary>lista-preconfezionati</summary> <description>lista-preconfezionati</description> </key>
+
+
+        <key name='tipo-selezione' enum='org.easy-picking.mainapp.selection_type_enum'> <default>'GTK_SELECTION_MULTIPLE'</default> <summary>tipo-selezione          </summary> <description>tipo-selezione          </description> </key>
+
+
+
+        <key name="font" type="s">
+            <default>'Monospace 12'</default>
+            <summary>Font</summary>
+            <description>The font to be used for content.</description>
+        </key>
+
+        <key name="transition" type="s">
+            <choices>
+                <choice value='none'/>
+                <choice value='crossfade'/>
+                <choice value='slide-left-right'/>
+            </choices>
+            <default>'none'</default>
+            <summary>Transition</summary>
+            <description>The transition to use when switching tabs.</description>
+        </key>
+
+        <key name="show-words" type="b">
+            <default>false</default>
+            <summary>Show words</summary>
+            <description>Whether to show a word list in the sidebar</description>
+        </key>
+
+    </schema>
+</schemalist>

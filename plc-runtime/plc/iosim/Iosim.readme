@@ -1,0 +1,21 @@
+
+	STORIA PACCHETTO IOSIM (simulatore I/O per QPLC)
+
+
+PREMESSE per utilizzare il pacchetto IOSIM:
+
+- espandere il pacchetto Iosim_xxxx.tgz con gnutar zxPvf;
+- avere una versione di QPLC superiore alla 1.8.0.6;
+- aggiungere alle opzioni della linea di lancio qplc -remote-debug -defaultio O.
+
+
+
+ver. 1.0.0.2	- prima versione utilizzabile (che respira);
+
+ver. 1.2.0.0	- Mon Nov 30 10:34:05 WET 1998
+ 	modificato il makefile per rendere il pacchetto realmente stand-alone.
+
+ver. 1.2.0.1	- Fri Dec  4 10:33:08 WET 1998
+	risolto un problema sul Reload variabili:
+	-non veniva pulito l'array e quindi l'effetto e' un merge tra old e new.
+

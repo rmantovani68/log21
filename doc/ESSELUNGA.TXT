@@ -1,0 +1,47 @@
+
+Ciao Roberto,
+
+ho appena finito una call con le persone che vedi in copia per un’attività che partirà il 1° febbraio 2021 per 
+il Lancio Mondadori.
+
+A questo proposito servirebbero due interventi sul tuo sistema:
+
+1.     Ricezione da parte di Reticolo nel file “LA_TESTATE*” di 3 campi aggiuntivi
+Questi campi saranno valorizzati solo in caso di ordini per Esselunga e potrei passarteli in queste posizioni:
+Sigla NEGOZIO (lungo 3): posizioni 376-378
+Centro di costo NEGOZIO (lungo 3): posizioni 379-381
+Numero d’ordine Esselunga (lungo 30): posizioni 382-411
+
+2.     Stampa di un segnacollo aggiuntivo (per ordini Esselunga)
+In caso di ordini con valorizzati i campi “Sigla NEGOZIO” e “Centro di costo NEGOZIO” serve la stampa di 
+un’etichetta aggiuntiva riportante i due nuovi campi (vedi pdf allegato).
+Lo scopo dell’etichetta aggiuntiva è supportare l’operatore del centro di distribuzione Esselunga nello 
+smistamento manuale “a vista” al momento della ricezione della merce, nell’esempio del pdf allegato la 
+Sigla e il Centro di costo sono “RUB” e “096”
+
+
+Ciao Roberto,
+
+ti allego qui un test con 10 ordini di cui 3 li ho modificati in modo che siano valorizzati come ordini Esselunga.
+
+Lo schema dei 10 ordini è quello qui sotto
+
+ 
+
+ORDINE    SIGLA NEGOZIO CENTRO DI COSTO NEGOZIO ORDINE ESSELUNGA
+--------- ------------- ----------------------- --------------------
+802627005                                       
+802627007 PFR           069                     12XXX67890ABC650691
+802627062                                       
+802627006 001           XZX                     12XXX67890ABC654321
+802627061                                       
+902627005                                       
+902627007                                       
+902627062                                       
+902627006                                       
+902627061 RUB           096                     1234567890ABC654321
+--------- ------------- ----------------------- --------------------
+
+Alla fine del test ci servirebbe vedere anche la nuova etichetta segnacollo aggiuntiva, riesci a farcela vedere?
+
+ 

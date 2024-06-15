@@ -1,0 +1,3 @@
+$ ssh-keygen -t rsa # press enter on all prompts
+$ ssh-copy-id -i ~/.ssh/id_rsa [ClusterControl IP address]
+$ ssh-copy-id -i ~/.ssh/id_rsa [Database nodes IP address] # repeat this to all target database nodes

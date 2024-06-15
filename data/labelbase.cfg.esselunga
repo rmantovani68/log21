@@ -1,0 +1,20 @@
+**********************************************************
+* 20-02-2021 rm
+* etichetta esselunga
+**********************************************************
+﻿CT~~CD,~CC^~CT~
+^XA~TA000~JSN^LT0^MNW^MTD^PON^PMN^LH0,0^JMA^PR4,4~SD15^JUS^LRN^CI0^XZ
+^XA
+^MMT
+^PW679
+^LL1359
+^LS0
+^FT251,50^A0N,34,33^FH\^FD<IDLOCD>^FS
+^FT147,50^A0N,34,33^FH\^FD<IDCAPD>^FS
+^FT303,1046^A0B,203,201^FH\^FD<ROSGESS>^FS
+^FT564,1013^A0B,203,201^FH\^FD<ROCCESS>^FS
+^FT48,455^A0B,20,19^FH\^FDOrdine CEVA : ^FS
+^FT48,309^A0B,20,19^FH\^FD<IDCS>^FS
+^FT48,857^A0B,20,19^FH\^FD<RONOESS>^FS
+^FT48,1046^A0B,20,19^FH\^FDOrdine ESSELUNGA : ^FS
+^PQ1,0,1,Y^XZ

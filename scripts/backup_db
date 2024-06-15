@@ -1,0 +1,30 @@
+#!/bin/bash
+
+##
+# backup_db 
+##
+
+#
+# default values
+#
+DATABASE_NAME=`cat ../doc/BASE_NAME`
+DATABASE_HOST=$HOSTNAME
+DATE=`date +%d-%m-%y`
+
+echo 'Backup Database' 
+echo -n 'Nome Database ['$DATABASE_NAME'] ? : '
+read DB_NAME
+echo -n 'Nome Host ['$DATABASE_HOST'] ? : '
+read DB_HOST
+
+if [ a"$DB_NAME" != a''  ]
+then
+DATABASE_NAME=$DB_NAME
+fi
+
+if [ a"$DB_HOST" != a''  ]
+then
+DATABASE_HOST=$DB_HOST
+fi
+#pg_dump -h $DATABASE_HOST $DATABASE_NAME | gzip > ../backup/$DATABASE_NAME-$DATE.dump.gz
+pg_dump -h $DATABASE_HOST $DATABASE_NAME | gzip > ../backup/$DATABASE_NAME.dump.gz

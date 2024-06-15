@@ -1,0 +1,138 @@
+
+
+GG Thu Jun 12 10:03:25 MET DST 1997
+ilc 1.1.3.2
+
+    Note delle informazioni di debug prodotte dal compilatore IL
+    ------------------------------------------------------------
+
+ Il compilatore IL puo` generare informazioni di debug comprensibili
+da GDB (opzione "-ggdb"), oppure in un formato speciale, adatto al debugger
+run-time del Plc (opzione "-g").
+ Le informazioni per GDB sono basate sull'uso delle direttive assembler
+della categoria ".stab", che definiscono nell'oggetto in formato COFF,
+prodotto dall'assembler di sistema, apposite sezioni nelle quali le
+informazioni di debug sono raccolte. La conversione dell'oggetto al
+formato Lynx A.OUT, necessaria per il caricamento dinamico, non si puo`
+applicare a tali sezioni, che non hanno corrispondenti in A.OUT. Di
+conseguenza, il debug "stile GDB" non e`, in generale, possibile, a meno
+di non conservare l'oggetto in formato COFF oltre a quello A.OUT, o di
+produrre un Plc monolitico (link statico), per la qual cosa non e` necessaria
+alcuna conversione. Per tutti questi motivi, ed anche per talune mancanze
+nel formato di GDB che avrebbero comunque richiesto estensioni "ad hoc",
+si e` pensato di codificare le informazioni utili al debugger in tempo
+reale del Plc con simboli ordinari, prodotti dal compilatore IL e regolarmente
+gestiti dal convertitore di formato. I nomi di tali simboli hanno la forma
+
+                            $xx[y...]
+
+dove "xx" e` una parola di due caratteri che individua il tipo di
+informazione che il simbolo comunica, mentre "y" e` un insieme opzionale di
+caratteri il cui numero e significato dipendono da "xx". Anche il
+valore di ogni simbolo ha un significato che dipende dal nome.
+ Attualmente il compilatore produce simboli di debug nelle seguenti forme :
+
+$BFfile        Il valore di questo simbolo e` l'indirizzo
+               d'inizio del codice corrispondente al sorgente "file".
+               Il nome del file e` codificato come sequenza di valori
+               esadecimali (2 cifre per ogni carattere).
+               L'indirizzo e` da intendersi relativo all'inizio del
+               blocco di codice ("text") dell'oggetto caricabile.
+               L'attributo di questo simbolo e` "t" (locale, sezione "text").
+
+$EFfile        Il valore di questo simbolo e` l'indirizzo
+               della fine del codice corrispondente al sorgente "file".
+               Il nome del file e` codificato come sequenza di valori
+               esadecimali (2 cifre per ogni carattere).
+               L'indirizzo e` da intendersi relativo all'inizio del
+               blocco di codice ("text") dell'oggetto caricabile.
+               L'attributo di questo simbolo e` "t" (locale, sezione "text").
+
+$LNline$a      Il valore di questo simbolo e` l'indirizzo
+               d'inizio del codice corrispondente alla linea sorgente "line".
+               "line" e` una stringa di cifre decimali.
+               L'indirizzo e` da intendersi relativo all'inizio del
+               blocco di codice ("text") dell'oggetto caricabile.
+               L'attributo di questo simbolo e` "t" (locale, sezione "text").
+               Un oggetto puo` contenere piu` simboli di questo tipo con
+               lo stesso nome, ma valore diverso. Questo accade se l'oggetto
+               e` il risultato del link di piu` oggetti IL. In questi
+               casi, per conoscere l'indirizzo della linea "n" del file "f",
+               si deve scegliere il simbolo $LNn che abbia valore compreso
+               tra $BFf e $EFf.
+               Il campo "a" e` una cifra decimale che contiene l'indice del
+               registro di macchina utilizzato come accumulatore all'inizio
+               della linea. Si interpreta come segue :
+
+                     0 : Accumulatore non definito in questo punto
+                     1 : EAX
+                     2 : EBX
+                     3 : ECX
+                     4 : EDX
+                     5 : ESI
+                     6 : EDI
+                     7 : EBP (non dovrebbe mai presentarsi)
+                     8 : ESP (non dovrebbe mai presentarsi)
+
+               L'attributo di questo simbolo e` "t" (locale, sezione "text").
+
+$LEline$a      Questo simbolo ha lo stesso significato di "$LA...", salvo che
+               l'indice "line" e` quello della linea precedente. In pratica,
+               indice la fine del codice relativo ad una certa linea.
+
+$LJline$a      Il valore di questo simbolo e` l'indirizzo della posizione
+               dove introdurre breakpoint nel caso che la linea "line"
+               contenga istruzioni di salto o RET. "a", al solito, codifica
+               l'accumulatore.
+
+$LLline$a      Il valore di questo simbolo e` l'indirizzo della posizione
+               dove introdurre breakpoint nel caso che la linea "line"
+               contenga un'etichetta. "a", al solito, codifica
+               l'accumulatore.
+
+$FNfunc        Il valore di questo simbolo e` il numero di linea
+               sorgente che contiene la definizione della funzione "func".
+               L'attributo di questo simbolo e` "a" (locale, assoluto).
+
+$VAline$ijsn$off$sym
+               Il valore di questo simbolo e` l'indirizzo dell'istruzione
+               di macchina che realizza il nucleo dell'istruzione IL
+               alla linea "line". "ijsn" sono quattro caratteri che indicano
+               come ottenere l'indirizzo dell'operando a partire dal valore
+               dei registri di macchina in quel punto del programma. Piu` in
+               dettaglio, "i" e "j" sono due cifre decimali che rappresentano
+               la coppia di registri che partecipano alla costruzione dell'in-
+               dirizzo. Si interpretano come il campo "a" di "$LN" (vedi).
+               "s" e` il fattore di scala che moltiplica il secondo registro :
+               puo` valere 1,2,4 o 8. "n" e` la dimensione dell'operando in
+               byte : 1,2,4 o 8. "off" e` una stringa decimale che va
+               sommata al valore ottenuto dai registri. "sym" e` il nome
+               di un simbolo il cui valore deve sommarsi ulteriormente al
+               risultato. Queste informazioni riflettono il tipo di indirizza-
+               mento utilizzato dal compilatore per accedere all'operando in
+               memoria : le CPU della famiglia Intel x86 ammettono come
+               operandi parole di 1,2,4 o 8 byte indicizzate tramite la somma
+               di due registri ed una costante a 32 bit. Il valore di uno dei
+               due registri puo` essere moltiplicato per 1,2,4 o 8 durante
+               il calcolo dell'indirizzo. Il compilatore IL puo` decidere
+               di scomporre la costante a 32 bit in due componenti, una
+               numerica ("off") ed una simbolica ("sym"), perche` solo
+               il linker puo` risolvere il riferimento simbolico. Il debugger
+               dovra` pertanto eseguire il calcolo seguente per ottenere
+               l'indirizzo dell'operando a partire dalle informazioni di
+               debug :
+
+                    indirizzo = off + valore(sym) + reg(i) + s*reg(j)
+
+               L'attributo di questo simbolo e` "t" (locale, sezione "text").
+
+$VIline$r$i    Il valore di questo simbolo e` l'indirizzo dell'istruzione
+               di macchina che segue immediatamente la lettura di una
+               variabile utilizzata come indice di un vettore alla linea
+               "line". "r" e` il registro che contiene il valore dell'indice,
+               "i" vale 0 se l'informazione riguarda l'indice inferiore
+               (indice di colonna), 1 se riguarda quello superiore (indice
+               di riga).
+               L'attributo di questo simbolo e` "t" (locale, sezione "text").
+
+

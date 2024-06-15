@@ -1,0 +1,136 @@
+#
+# @(#) ioconf.qplc.sample Mon Nov  9 17:18:03 MET 1998
+#
+# Esempio di file di configurazione per qplc 1.8.0.11 o superiore.
+#
+#  Questo file contiene le proprieta` associate ai segnali di I/O
+# controllati dall'esecutore.
+#  Qplc applica le regole seguenti nel gestire i segnali e il file di 
+# configurazione:
+# 1) Se e` specificata l'opzione "-simul", tutti i segnali sono
+#    considerati "simulati" (proprieta` "S") qualunque sia il contenuto
+#    del file di configurazione e indipendentemente dalle condizioni
+#    dell'hardware.
+# 2) Se il file di configurazione non e` presente, si assume che tutti
+#    i segnali il cui nome inizi con "_" siano opzionali (proprieta` "O")
+#    e tutti gli altri abbiano la proprieta` indicata con l'opzione
+#    "-defaultio".  Se l'opzione non e` specificata, si assuma "R".
+# 3) Se il file e` presente, viene interpretato come segue:
+#  3.1) Le linee che iniziano con "#" sono commenti.
+#  3.2) Non c'e` distinzione tra caratteri maiuscoli e minuscoli.
+#  3.3) Ogni segnale e` descritto da una linea avente la forma
+#
+#            <segnale> <proprieta`>
+#
+#       dove "segnale" e` il nome del segnale di I/O, preceduto da un
+#       carattere "%" opzionale e due caratteri obbligatori che ne
+#       identificano il tipo (input o output) e la dimensione. Questi
+#       due caratteri sono conformi alla sintassi di descrizione dei
+#       segnali di I/O riconosciuta dal compilatore del linguaggio IL.
+#       Il primo puo` essere "I" per indicare segnali di INPUT, oppure
+#       "Q" o "O" per segnali di OUTPUT. Il secondo rappresenta la
+#       dimensione in bit del segnale secondo lo schema seguente:
+#
+#            X : 1 bit (tipo BOOL)
+#            B : 8 bit (tipi BYTE, CHAR, UCHAR, SINT, USINT)
+#            W : 16 bit (tipi WORD, INT, UINT)
+#            D : 32 bit (tipi DWORD, DINT, UDINT, REAL)
+#            L : 64 bit (tipi LWORD, LINT, ULINT, LREAL)
+#
+#        L'eventuale "%" iniziale non ha alcun effetto, ma serve solo per
+#       avvicinare la sintassi di questo file a quella del compilatore IL.
+#        Il campo "proprieta`" descrive il comportamento di Qplc quando
+#       il programma plc tenta di agganciarsi al segnale. Si interpreta
+#       come segue:
+#
+#             R : (Richiesto) Il segnale deve essere presente, cioe`
+#                 in sua assenza la funzione "ioAttach" fallisce.
+#                 Per un programma scritto in IL significa l'impossibilita`
+#                 di essere eseguito.
+#             S : (Simulato) Il segnale, presente o assente che sia,
+#                 non viene fisicamente manipolato, e il tentativo di
+#                 usarlo non produce alcun effetto ma neppure errori.
+#             O : (Opzionale) Il segnale e` utilizzato, se presente, oppure
+#                 e` simulato. In ogni caso non si hanno errori.
+#             D : (Disattivato) I segnali con questa proprieta` sono proibiti.
+#
+#        I segnali il cui nome inizia con "_" non provocano in ogni caso
+#       errore.
+#  3.4) I segnali non citati nel file di configurazione sono trattati
+#       secondo la regola (2).
+#
+
+########################################################################
+# Questi sono i segnali della tastiera. Possiamo marcarli
+# "obbligatori", perche` qplc parte comunque anche in loro assenza.
+# Questo frammento dovrebbe comparire sempre.
+%IXkeyb.0.1.35	R
+%IXkeyb.0.1.34	R
+%IXkeyb.0.1.33	R
+%IXkeyb.0.1.32	R
+%IDkeyb.0.32.3	R
+%IDkeyb.0.32.2	R
+%IDkeyb.0.32.1	R
+%IDkeyb.0.32.0	R
+%IXkeyb.0.1.31	R
+%IXkeyb.0.1.30	R
+%IXkeyb.0.1.29	R
+%IXkeyb.0.1.28	R
+%IXkeyb.0.1.27	R
+%IXkeyb.0.1.26	R
+%IXkeyb.0.1.25	R
+%IXkeyb.0.1.24	R
+%IXkeyb.0.1.23	R
+%IXkeyb.0.1.22	R
+%IXkeyb.0.1.21	R
+%IXkeyb.0.1.20	R
+%IXkeyb.0.1.19	R
+%IXkeyb.0.1.18	R
+%IXkeyb.0.1.17	R
+%IXkeyb.0.1.16	R
+%IXkeyb.0.1.15	R
+%IXkeyb.0.1.14	R
+%IXkeyb.0.1.13	R
+%IXkeyb.0.1.12	R
+%IXkeyb.0.1.11	R
+%IXkeyb.0.1.10	R
+%IXkeyb.0.1.9	R
+%IXkeyb.0.1.8	R
+%IXkeyb.0.1.7	R
+%IXkeyb.0.1.6	R
+%IXkeyb.0.1.5	R
+%IXkeyb.0.1.4	R
+%IXkeyb.0.1.3	R
+%IXkeyb.0.1.2	R
+%IXkeyb.0.1.1	R
+%IXkeyb.0.1.0	R
+# Fine delle definizioni dei segnali di tastiera.
+########################################################################
+
+# Segnali obbligatori
+%QXios.0.0.31.0.0	R
+%QXios.0.0.31.0.1	R
+%QXios.0.0.31.0.2	R
+%QXios.0.0.31.0.3	R
+%QXios.0.0.31.0.8	R
+%QXios.0.0.31.0.9	R
+%QXios.0.0.31.0.10	R
+%QXios.0.0.31.0.11	R
+
+# Segnali simulati
+%QXios.0.0.31.0.4	S
+%QXios.0.0.31.0.5	S
+%QXios.0.0.31.0.6	S
+%QXios.0.0.31.0.7	S
+
+# Segnali opzionali
+%QXios.0.0.31.0.20	O
+%QXios.0.0.31.0.21	O
+%QXios.0.0.31.0.22	O
+%QXios.0.0.31.0.23	O
+
+# A tutti i segnali non citati qui si intende applicata la proprieta`
+# specificata al lancio di qplc nell'opzione "-defaultio". In sua assenza,
+# la proprieta` sara` R.
+
+

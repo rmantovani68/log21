@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+    <schema path="/org/easy-picking/mainapp/" id="org.easy-picking.mainapp">
+        <key name="width"      type="i"> <default>1280</default> <summary>width</summary>   <description>width</description> </key>
+        <key name="height"     type="i"> <default>800</default> <summary>height</summary>   <description>height</description> </key>
+        <key name="x"          type="i"> <default>10</default> <summary>x</summary>         <description>x</description> </key>
+        <key name="y"          type="i"> <default>10</default> <summary>y</summary>         <description>y</description> </key>
+        <key name="is-maximized"  type="b"> <default>false</default> <summary>is-maximized</summary>  <description>is-maximized</description> </key>
+        <key name="is-fullscreen" type="b"> <default>false</default> <summary>is-fullscreen</summary> <description>is-fullscreen</description> </key>
+
+    </schema>
+</schemalist>

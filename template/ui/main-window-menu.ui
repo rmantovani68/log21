@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<interface>
+  <!-- interface-requires gtk+ 3.0 -->
+  <menu id="menu">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">Menu Item _1</attribute>
+        <attribute name="action">main-window.menu-item-1</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Menu Item _2</attribute>
+        <attribute name="action">main-window.menu-item-2</attribute>
+      </item>
+    </section>
+  </menu>
+</interface>
+

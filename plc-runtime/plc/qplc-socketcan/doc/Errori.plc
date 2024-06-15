@@ -1,0 +1,25 @@
+
+;
+;
+;		--------------------------------------
+;			ERRORI PLC
+;		--------------------------------------
+;
+PLC-1.ita=Divisione per zero
+PLC-5.ita=Dispositivo di I/O mancante o mal descritto
+PLC-8.ita=HALT irreversibile
+PLC-9.ita=HALT
+PLC-62.ita=Ciclo di Plc troppo lungo
+PLC-63.ita=Ciclo di Plc superiore al periodo nominale
+PLC-120.ita=Dispositivo non trovato
+PLC-130.ita=Timeout nel colloquio con un dispositivo
+PLC-131.ita=Dispositivo periferico non funzionante
+PLC-141.ita=Operazione fallita
+PLC-142.ita=Operazione ammessa solo con Plc in HALT
+PLC-181.ita=Fallito il caricamento programma
+PLC-185.ita=Memoria insufficiente per il programma PLC
+PLC-190.ita=Memoria non volatile assente
+PLC-191.ita=Configurazione I/O non impostata
+PLC-192.ita=Scheda IOS assente o incompleta
+PLC-193.ita=Modulo di I/O assente
+PLC-194.ita=Dati nella memoria non volatile non conformi al programma PLC

@@ -1,0 +1,126 @@
+#
+# Copyright (c) 1997 by CNI Srl
+#
+# SCCS: @(#) makefile 1.00 Del 14.10.1997 by Andrea Sarti
+#
+# Compilazione Editor LAE versioni :
+#
+# Visual C++ versione 4.2 , 5.0
+#
+					 
+# Project directories
+#
+# TMPDIR  = posizione dove gli .obj files vengono messi durante la compilazione
+# TOOLS32 = posizione del sistema di sviluppo VC++ 32-bit
+# APPL    = nome dell'applicazione (SENZA .exe)
+#
+
+VTCL = 80
+VTK  = 80
+VTIX = 41
+VTBL = 200
+
+APPL	= editor
+DRIVE	= C
+
+TMPDIR	= .
+
+# visual C 4.2
+
+#TOOLS32	= $(DRIVE):\msvc42
+
+# visual C 5.0
+
+TOOLS32	= $(DRIVE):\programmi\DevStudio\vc
+
+#***********  NON MODIFICARE DOPO QUESTA LINEA  **************
+
+TARGETOS = BOTH
+LIB = $(TOOLS32)\lib
+
+GUILFLAGS = -subsystem:windows,$(APPVER)
+
+TCL2CCNI = \ctcltk$(VTCL)\bin\tcl2ccni
+INSRC = \ctcltk$(VTCL)\varie
+LIBCOT = c:\ctcltk$(VTCL)\lib
+INCCOT = c:\ctcltk$(VTCL)\include
+INCRC =  c:\ctcltk$(VTCL)\rc
+
+# Comment the following line to compile with symbols
+NODEBUG=1
+
+# uncomment the following two lines to compile with TCL_MEM_DEBUG
+#DEBUGDEFINES	=-DTCL_MEM_DEBUG
+
+TK_DEFINESSA = -Od -nologo $(DEBUGDEFINES) -DCNIDLL -DCNI -DWIN32 -DUSE_TCLALLOC=0 -DTCL_STALONE
+
+# Make sure the VC++ tools are at the head of the path
+#PATH=$(TOOLS32)\bin;$(PATH)
+
+LIBTCLTK = $(LIBCOT)\tcl$(VTCL).lib $(LIBCOT)\tk$(VTK).lib $(LIBCOT)\tix$(VTIX)$(VTCL).lib $(LIBCOT)\Tktable$(VTBL).lib
+
+cc32 = $(TOOLS32)\bin\cl -I$(TOOLS32)\include -I$(INCCOT) -I$(INCCOT)\X11
+link32 = $(TOOLS32)\bin\link
+rc32 = rc
+
+COMPDIR=	.
+EDIT_DIR=	.\lib
+
+OBJS   = 	editor.obj \
+		ctclcni.obj
+OBJSSA = 	editor.obj
+SRCS   =  	editor.c \
+		ctclcni.c
+RCFIL  = 	editor.rc
+RESFIL = 	editor.res
+
+
+FILES=  \
+	$(EDIT_DIR)\datawdg.tcl \
+	$(EDIT_DIR)\filesel.tcl \
+	$(EDIT_DIR)\initedt.tcl \
+	$(EDIT_DIR)\laecmd.tcl \
+	$(EDIT_DIR)\selschem.tcl \
+	$(EDIT_DIR)\util.tcl \
+	$(EDIT_DIR)\windows.tcl
+
+
+
+!include    "$(TOOLS32)\include\win32.mak"
+cflags = $(cflags) /Zm2000
+
+
+all: $(APPL).exe
+
+editor.c: $(FILES)
+	$(TCL2CCNI) -a -o $(COMPDIR)\editor.c $(FILES) $(EDIT_DIR)\..\editor -tix
+
+#
+#------------  COMPILAZIONE CON STAND ALONE (SENZA DLL) --------------------
+#
+ 
+$(APPL).exe: $(OBJS) $(RESFIL)
+	set LIB=$(TOOLS32)\lib
+	$(link32) $(linkdebug) $(guilflags) $(OBJS) $(LIBTCLTK) \
+	$(RESFIL) $(guilibsdll) -out:$(APPL).exe
+	@echo Fine Link.
+
+$(RESFIL):
+	$(rc32) /i$(INCRC) $(RCFIL)
+
+editor.obj: editor.c
+	$(cc32) $(cdebug) $(cflags) $(cvarsdll) $(TK_DEFINESSA) \
+	-Fo.\editor.obj -c editor.c
+	@echo $*.c compiled.
+
+ctclcni.obj: $(INSRC)/ctclcni.c
+	$(cc32) $(cdebug) $(cflags) $(cvarsdll) $(TK_DEFINESSA) \
+	-Fo.\ctclcni.obj -c $(INSRC)/ctclcni.c
+	@echo $*.c compiled.
+
+clean:
+	del $(APPL).exe
+	del *.obj
+	del $(RESFIL)
+	del $(APPL).c
+

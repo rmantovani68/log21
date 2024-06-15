@@ -1,0 +1,5 @@
+cp displays.dump.sql    displays.dump.sql.ok
+cp imballi.dump.sql     imballi.dump.sql.ok
+cp operatori.dump.sql   operatori.dump.sql.ok
+cp settori.dump.sql     settori.dump.sql.ok
+cp ubicazioni.dump.sql  ubicazioni.dump.sql.ok

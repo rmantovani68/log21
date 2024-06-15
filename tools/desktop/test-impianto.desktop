@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Easy Picking - Test Impianto 
+Icon=/usr/share/easy-picking/images/easy-picking-test.svg
+Exec=sh -c "cd /opt/easy-picking/exe; ./test"
+Terminal=false
+Categories=EasyPicking;

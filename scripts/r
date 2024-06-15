@@ -1,0 +1,2 @@
+dbf2sql -i -h $PGHOST -d $PGDB -c ../data/cedole.cfg      -t cedole 
+

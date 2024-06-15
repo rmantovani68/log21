@@ -1,0 +1,50 @@
+# ---------------------------------------------
+# File di definizione stili per monitor
+# Progetto Easy Picking 3.0 
+# Data creazione 19-09-2002
+# Autori : Stefano Tarroni - Roberto Mantovani
+# Copyright A&L srl 2003-2021
+# ---------------------------------------------
+
+# ------------------------------------
+# dichiarazione della pixmap directory
+# ------------------------------------
+pixmap_path "../pixmaps"
+
+
+# -----------------
+# definizione stili
+# -----------------
+style "clist_font" {
+	font = "9x15bold"
+}
+style "dlgbox_font" {
+	font = "9x15bold"
+}
+style "large_font" {
+	font = "9x15bold"
+}
+
+style "stato_linea" {
+	font = "-adobe-Courier-Bold-R-Normal--18-180-75-75-M-110-ISO8859-1"
+}
+
+style "sfondo_logo" {
+   bg[NORMAL] = { 0.6, 0.6, 0.6 }
+}
+
+
+# ----------------------------
+# associazione stili -> widget
+# ----------------------------
+
+class "GtkCText" style "clist_font"
+class "GtkCList" style "clist_font"
+class "GtkWindow" style "clist_font"
+widget "dlg_settori*GtkLabel" style "clist_font"
+widget "dlg_stampa*txt_stampa" style "clist_font"
+widget "dlg_about*lb_version" style "large_font"
+
+#widget "*sw_list*GtkLabel" style "clist_font"
+widget "*sw_*GtkLabel" style "clist_font"
+widget "*eb_logo" style "sfondo_logo"

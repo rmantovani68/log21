@@ -1,0 +1,36 @@
+Note relative alla versione 1.5.1.2 - Wed Jun 18 11:08:37 MET DST 1997
+
+1) Permettere l'associazione di uno stesso I/O a piu` variabili.
+ 1.1) Implicherebbe il mantenimento di una tabella di associazione estesa,
+      e la sua esplorazione ad ogni ciclo.
+ 1.2) Dovrebbero essere distinte le associazioni di ingressi da quelle di
+      uscite. Le prime possono essere multiple, per le seconde le cose
+      non sono cosi` chiare. A mio guidizio le associazioni multiple sulle
+      uscite dovrebbero essere considerate conflitti e proibite dal sistema,
+      ma non tutti sono di questo parere.
+ 1.3) Non e` neppure chiaro se sia sempre giusto permettere l'associazione
+      multipla. Benche` possa far comodo nel caso di programmazione mista
+      (programma stile 480 + programma IL con funzionalita` di "patch"),
+      in generale un'associazione multipla e` sintomo di un errore
+      di configurazione, ed andrebbe segnalato.
+4) Fra le opzioni da linea di comando puo` convenire aggiungerne una che
+   permetta di specificare il numero di istanze per dispositivo. Servira`
+   se a qualche pazzo dovesse venire l'idea di installare piu` di quattro
+   linee IOS.
+5) Probabilmente sara` necessario ridurre il periodo del PLC a 2 ms o meno.
+   Bisognera` usare la scheda INAX come sorgente clock, e prevedere un ciclo
+   "veloce" eseguito sempre, ed uno "lento" eseguito solo ogni tanto. Puo`
+   darsi che il test di ciclo troppo lungo debba diventare piu` tollerante,
+   e che convenga introdurre il concetto di "task", sia nell'esecutore che
+   nel compilatore (esistono gia` apposite parole chiave in IEC1131/3).
+6) "hatsh.oo" ha bisogno di un punto d'entrata da chiamare all'HALT, ed uno
+   per il GO,  per poter aggiustare i segnali di scambio.
+7) Le "variabili sensibili al fronte" non son cose che riguardino l'esecutore.
+   Tutta la loro gestione dovrebbe essere spostata in "hatsh.oo".
+8) Bisognerebbe dare una spallata definitiva ai vari "user.oo", "prog.oo",
+   "hatsh.oo", e sostituirli con un meccanismo generico di caricamento
+   dinamico. Poi, "prog.oo" deve morire, ed "hatsh.oo" deve diventare un
+   normale programma PLC (e ci vorra` qualcosa di speciale per la fase
+   di lancio, ora dentro "cn_init"). Ma chi avra` il coraggio ? 
+
+   

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<interface>
+  <!-- interface-requires gtk+ 3.0 -->
+  <menu id="context_menu">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">_Edit Ordine</attribute>
+        <attribute name="action">win.edit-ordine</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">_Lancia Ordine</attribute>
+        <attribute name="action">win.lancia-ordine</attribute>
+      </item>
+    </section>
+  </menu>
+</interface>

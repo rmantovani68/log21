@@ -1,0 +1,34 @@
+00 Basser Lout Version 3.17 (September 1999) database index file
+00symbol 10 @BasicSetup @DocumentSetup @FigureCounterMarker
+00symbol 11 @BasicSetup @DocumentSetup @TablePrefixMarker
+00symbol 12 @BasicSetup @DocumentSetup @TableCounterMarker
+00symbol 13 @BasicSetup @PageMarker
+00symbol 14 @BasicSetup @DocumentSetup @FootNoteCounterMarker
+00symbol 15 @BasicSetup @DocumentSetup @Runner
+00symbol 1 @BasicSetup @DocumentSetup @TheoremCounterMarker
+00symbol 2 @BasicSetup @DocumentSetup @DefinitionCounterMarker
+00symbol 3 @BasicSetup @DocumentSetup @ClaimCounterMarker
+00symbol 4 @BasicSetup @DocumentSetup @PropositionCounterMarker
+00symbol 5 @BasicSetup @DocumentSetup @LemmaCounterMarker
+00symbol 6 @BasicSetup @DocumentSetup @CorollaryCounterMarker
+00symbol 7 @BasicSetup @DocumentSetup @ExampleCounterMarker
+00symbol 8 @BasicSetup @NumDispCounterMarker
+00symbol 9 @BasicSetup @DocumentSetup @FigurePrefixMarker
+10&3478.-.1	0	00010	1348	105	-
+11&3714.-.1	0	00011	1422	112	-
+12&3722.-.1	0	00012	1493	119	-
+1&2537.-.1	0	00001	0	1	-
+13&1036.-.1	0	00013	1566	126	-
+13&last.page	0	00018	1566	126	-
+14&1377.-.1	0	00014	1842	151	-
+15&792.-.1	0	00017	2029	170	-
+15&792.-.2	0	00015	1918	158	-
+15&792.-.3	0	00016	1972	164	-
+2&2596.-.1	0	00002	247	20	-
+3&2651.-.1	0	00003	387	30	-
+4&2706.-.1	0	00004	517	40	-
+5&2761.-.1	0	00005	659	50	-
+6&2816.-.1	0	00006	789	60	-
+7&2871.-.1	0	00007	927	70	-
+8&1202.-.1	0	00008	1061	80	-
+9&3470.-.1	0	00009	1276	98	-

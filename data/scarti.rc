@@ -1,0 +1,39 @@
+# ---------------------------------------------
+# File di definizione stili per scarti
+# Copyright A&L srl 2003-2021
+# ---------------------------------------------
+
+# ------------------------------------
+# dichiarazione della pixmap directory
+# ------------------------------------
+pixmap_path "../pixmaps"
+
+# -----------------
+# definizione stili
+# -----------------
+style "big_label" {
+	#font="9x15bold"
+	font = "-bitstream-courier-bold-r-normal--55-401-100-100-m-332-iso8859-9"
+  fg[NORMAL] = { 0.9, 0.2, 0.2 }
+}
+
+style "stato_prodotto" {
+	#font = "-bitstream-courier-bold-r-normal--55-401-100-100-m-332-iso8859-9"
+	#font = "-grinet-greekarial-medium-r-normal--44-321-100-100-p-245-iso8859-1"
+	#font = "-misc-kochi gothic-medium-r-normal--67-481-100-100-c-660-iso8859-1"
+	#font = "-adobe-courier-medium-r-normal--67-481-100-100-m-400-iso8859-9"
+	#font = "-b&h-luxi mono-medium-r-normal--36-260-100-100-m-220-iso8859-15"
+	font = "-bitstream-courier-bold-r-normal--55-401-100-100-m-332-iso8859-9"
+	font="9x15bold"
+  fg[NORMAL] = { 0.9, 0.2, 0.2 }
+}
+
+# ----------------------------
+# associazione stili -> widget
+# ----------------------------
+
+widget "main_window*lb_barcode_title" style "big_label"
+widget "main_window*lb_barcode" style "big_label"
+widget "main_window*lb_status_barcode" style "stato_prodotto"
+widget "main_window*lb_status_descrizione" style "stato_prodotto"
+widget "main_window*lb_status_flag" style "stato_prodotto"

@@ -1,0 +1,2047 @@
+Thu Sep  5 10:05:50 MET DST 1996
+
+Distribuzione 1.1.0.6
+
+ Versione :
+ qplc [1] version 1.1.0.6		[04/09/1996 19:52:31]	lib:3.0.23
+ qplc [3] version 2.0.0.0		[20/05/1996 15:06:35]
+
+ Note :
+ - Affrontato il problema della definizione delle variabili sensibili
+   al fronte al rilancio del Plc.
+ - Aggiunto il driver "AX", per l'accesso diretto ai dispositivi RCX e ADX.
+   Il driver accetta connessione a variabili di 16 bit.
+
+Debug 1.1.0.7
+ - Risolta la mancata visualizzazione della versione dei moduli caricati
+   dinamicamente.
+
+Debug 1.1.0.8
+ - Risolto il problema del crash al "GO" da debugger.
+
+Debug 1.1.0.9
+ - Ricompilazione. Resta da risolvere il problema delle variabili
+   a rilevamento di fronte, che sembrano non funzionare...
+
+Debug 1.1.1.0
+ - Iniziata la razionalizzazione degli errori.
+
+Debug 1.1.2.0
+ - Aggiunta l'opzione "-shvinit", per azzerare i segnali di scambio senza
+   cancellarli.
+ - Modificate le primitive di creazione dei segnali di scambio a rilevamento
+   di fronte, in modo che siano registrate le immagini corrente al momento
+   della definizione.
+
+Tue Sep 10 17:46:40 MET DST 1996
+
+Distribuzione 1.1.2.1
+
+ Versione :
+ qplc [1] version 1.1.2.1		[10/09/1996 17:39:13]	lib:3.0.23
+ qplc [3] version 2.0.0.0		[20/05/1996 15:06:35]
+
+ - Corretto un errore nel controllo del successo di "hatsh.CnInit".
+
+Mon Sep 16 20:35:16 MET DST 1996
+
+ Debug 1.1.2.2
+  - Corretta la gestione dei dispositivi "AX", che faceva acqua da tutte
+    le parti.
+  - Aggiunto un test sull'esistenza della tastiera speciale, ed un errore
+    se fallisce la definizione dei segnali di scambio associati alla testiera.
+  - Spostato il trace dalla fine del ciclo a prima di "shoes", per poter
+    vedere i segnali di scambio autoresettanti.
+
+Distribuzione 1.1.2.3
+
+ Versione :
+ qplc [1] version 1.1.2.3		[17/09/1996 11:32:34]	lib:3.0.26
+ qplc [3] version 2.0.0.0		[20/05/1996 15:06:35]
+
+ - Aggiunta l'opzione "-no-fault", che inibisce l'entrata in fault anche
+   in caso di problemi hardware (per Tabanelli).
+
+ Debug 1.1.2.4
+ - Aggiunto l'azzeramento del flag di GO alla ricezione di un segnale
+   di terminazione.
+ - Corretta la logica di START "vecchio stile".
+
+ Debug 1.1.2.5
+ - Ricompilato con la libreria ufficiale degli assi. Risolve il problema
+   della mancata liberazione dei canali analogici al restart.
+ - Aggiunta l'intercettazione del segnale di errore aritmetico.
+
+ Debug 1.1.2.6
+ - Evitato il crash in caso di richiesta di scaricamento di un modulo
+   quando non c'e` alcun modulo caricato.
+ - Migliorata la segnalazione degli errori di ciclo troppo lungo.
+ - Iniziato l'allineamento dei codici di errore con "isaker".
+ - Ridotto ad un semplice HALT lo stato del Plc dopo errori matematici.
+ - Migliorate le primitive di emissione di errori. Ora accettano
+   parametri in stile "printf" (con alcune limitazioni).
+
+ Debug 1.2.0.0
+ - Aggiunti meccanismi di segnalazione di errore in caso di problemi hardware.
+
+ Debug 1.2.0.1
+ - Unificato il meccanismo di segnalazione degli errori. Non e` piu` necessario
+   utilizzare primitive diverse a seconda del thread che deve eseguire il
+   codice.
+ - Aggiunte le opzioni "-path-hatsh", "-path-prog480", "-path-user", per
+   caricare dinamicamnete file diversi dal default.
+
+Thu Sep 26 16:22:35 MET DST 1996
+
+Distribuzione 1.2.0.2
+
+ Versione :
+
+ qplc [1] version 1.2.0.3		[26/09/1996 16:21:31]	lib:3.0.33
+ qplc [3] version 2.0.0.0		[20/05/1996 15:06:35]
+
+ - Migliorato il meccanismo di accodamento dei messaggi da esecutore a
+   supervisore. E` evitato il blocco del colloquio col debugger per
+   eccessiva emissione di messaggi di errore; inoltre le posizioni nella
+   coda sono distribuite anche in base alla priorita` di un messaggio, non
+   solo in base all'ordine di arrivo.
+   Iniziata la gestione degli errori matematici.
+
+ Debug 1.2.0.3
+ - Completata la gestione degli errori matematici.
+ - Aumentata la lunghezza massima di messaggi ed errori.
+ 
+Fri Sep 27 17:56:01 MET DST 1996
+
+ Debug 1.2.0.4
+ - Aggiunta la funzione "plcRuntimeError", in vista dell'introduzione di
+   un meccanismo di segnalazione della posizione degli errori fatali
+   nel programma.
+
+ Debug 1.2.0.5
+ - Ricompilazione transitoria.
+
+Distribuzione 1.2.0.6
+
+ Versione :
+
+ qplc [1] version 1.2.0.6		[27/09/1996 19:49:00]	lib:3.0.33
+ qplc [3] version 2.0.0.0		[20/05/1996 15:06:35]
+
+ - Versione definitiva della funzione "plcRuntimeError".
+ - Contiene la funzione "util_get_pc", indispensabile per il caricamento
+   dei moduli compilati con ilc 1.0.0.7 o successivo, e runtime 3.0.0.5
+   o successivo.
+
+Tue Oct  8 11:31:49 MET 1996
+
+ Debug 1.2.0.7
+ - Aggiornata la lista dei segnali di scambio predefiniti.
+
+Distribuzione 1.3.0.0
+
+ Versione :
+
+ qplc [1] version 1.3.0.0		[08/10/1996 19:49:00]	lib:3.0.33
+ qplc [3] version 2.0.0.0		[20/05/1996 15:06:35]
+
+ - Aggiunto l'oggetto "ilcrtm.o", che contiene parte della libreria run-time
+   per il compilatore IL. Si spera cosi` di ridurre l'occupazione di memoria
+   dei moduli caricati dinamicamente (sara` utile se si realizzeranno
+   caricamenti multipli), e di avere una base su cui costruire il caricatore
+   di segnali di scambio "al volo".
+
+Thu Oct 10 17:59:16 MET 1996
+
+ Debug 1.3.0.1
+ - Aggiunto un automatismo per evitare (o ignorare) l'azzeramento di
+   alcuni segnali di scambio critici, come RIPCIC (tasto START), in modo
+   che il programma PLC non possa impedire START e STOP manuali.
+
+Tue Oct 15 18:17:12 MET 1996
+
+ Debug 1.3.0.2
+ - Aggiunta l'opzione "-mdata", per potere utilizzare il server dei dati
+   macchina anche in modalita` stand-alone.
+
+Wed Oct 16 18:38:03 MET 1996
+
+ Debug 1.3.0.3
+ - Ignorato il segnale SIGPRIO, nella speranza che questo renda l'esecutore
+   meno sensibile all'attivita` di rete (spera, spera...).
+
+Thu Oct 17 10:54:42 MET 1996
+
+ Debug 1.3.0.4
+ - Aggiunta l'impostazione della politica di schedule "FIFO" per l'esecutore
+   (ma non serve a niente).
+
+Tue Oct 22 13:58:02 MET 1996
+
+ Debug 1.3.0.5
+ - Aggiunto un meccanismo per il salvataggio dei valori iniziali delle
+   variabili dei moduli caricati dinamicamente.
+ - Aggiunto il test sulla configurazione di I/O salvata in RAM tamponata.
+   Tale test e` eseguito all'interno della procedura "UserStart" facente
+   parte del modulo di compatibilita` col Plc 480, percio` e` eseguita solo
+   se il programma corrente e` del tipo "prog.oo". I programmi generati
+   dal compilatore IL ridefiniscono le funzioni di questo modulo, percio`
+   il test non viene eseguito se il programma corrente e` IL.
+ - Aggiunta l'opzione "-save-io", per forzare il salvataggio della
+   configurazione dei dispositivi collegati in NVRAM, per compatibilita`
+   con isaker.
+
+Tue Oct 29 17:27:07 MET 1996
+
+ Debug 1.3.0.6
+ - Modificata la logica di gestione dei segnali di scambio non azzerabili.
+   Ora dovrebbe essere piu` facile usarli.
+
+ NOTA ! Per qualche strano motivo, la versione data in debug risulta essere
+ la 1.3.0.7 !
+
+Wed Oct 30 16:59:45 MET 1996
+
+ Debug 1.3.0.8
+ - Aggiunto un controllo sul successo di "memlk". Se dovesse fallire, si
+   ritenterebbe alcune volte.
+ - Utilizzato un trucco per rendere "ambidestro" qplc riguardo ad alcune
+   systen call che possono "sparire" (come "poll", che fa parte di STREAMS).
+   La nuova opzione "-posix-poll" permette di scegliere tra "poll" e "select",
+   che sono utilizzate attualmente nell'inizializzazione del driver di
+   tastiera.
+
+Wed Nov  6 11:01:14 MET 1996
+
+ 
+Distribuzione 1.3.1.0
+
+ Versione :
+ qplc [1] version 1.3.1.0		[06/11/1996 12:02:50]	lib:3.0.37
+ qplc [3] version 2.0.0.2		[30/10/1996 10:45:00]
+
+ - Corretto un bug residuo nella gestione dei segnali di scambio non
+   azzerabili. Al terzo HALT - GO, smettevano di funzionare.
+
+Mon Nov 25 16:52:03 MET 1996
+
+ Debug 1.3.1.1
+
+ - Utilizzata la nuova funzione di libreria "AttachNvram" per calcolare
+   gli indirizzi della RAM non volatile, anziche` utilizzare indirizzi
+   "hard coded".
+
+Tue Nov 26 17:55:54 MET 1996
+
+ Debug 1.3.2.0
+
+ Versione :
+ qplc [1] version 1.3.2.0		[26/11/1996 16:50:35]	lib:3.0.42
+ qplc [3] version 2.0.0.2		[30/10/1996 10:45:00]
+ 
+ - Aggiunto il supporto per le variabili IL in RAM non volatile.
+   Tali variabili sono segnali di scambio particolari, descritti nello
+   spazio dei segnali di scambio ordinari, ma associati a blocchi
+   nell'area PLC480 della RAM non volatile. Resta da dare un supporto
+   alla nuova prestazione a livello di libreria di accesso al Plc.
+
+Wed Nov 27 09:29:50 MET 1996
+
+ Debug 1.3.2.1
+
+ Versione:
+ qplc [1] version 1.3.2.1		[27/11/1996 09:28:51]	lib:3.0.42
+ qplc [3] version 2.0.0.2		[30/10/1996 10:45:00]
+
+ - Modificata la procedura di compilazione, per ottenere una libreria
+   ("libqplc.a") come prodotto intermedio. Questa libreria puo` essere
+   utilizzata per generare programmi monolitici (per esempio, ad uso di Lelli).
+
+Thu Nov 28 09:49:55 MET 1996
+
+ Debug 1.3.2.2
+
+ Versione:
+ qplc [1] version 1.3.2.2		[28/11/1996 09:49:25]	lib:3.0.42
+ qplc [3] version 2.0.0.2		[30/10/1996 10:45:00]
+
+ - Aggiunte due funzioni vuote sulle quali redirigere "hat" e "shoes" in
+   modalita` stand-alone.
+
+Fri Nov 29 18:49:16 MET 1996
+
+ Debug 1.3.3.0
+
+ Versione:
+ qplc [1] version 1.3.3.0		[29/11/1996 18:46:22]	lib:3.0.42
+ qplc [3] version 2.0.0.2		[30/10/1996 10:45:00]
+
+ - Il modulo "user" e` ora sensibile ai due simboli opzionali "_VERSION"
+   e "_CREATED", che sono rispettivamente un puntatore ad una stringa di
+   versione aggiuntiva (char *) e un valore a 32 bit che contiene la data
+   di creazione dell'oggetto (unsigned long). Se "_VERSION" e` presente,
+   e` visualizzata al posto della stringa "ver_user".
+   "_CREATED" servira` nelle prossime versioni a decidere quando
+   reinizializzare la RAM non volatile. C'e` gia` una gestione del simbolo,
+   ma non sono ancora realizzate le estansioni del caricatore per impostare
+   i valori iniziali dei segnali di scambio. Attualmente, quando cambia il
+   valore di "_CREATED", la RAM non volatile e` azzerata.
+
+Mon Dec  2 11:58:58 MET 1996
+
+ Debug 1.3.3.1
+
+ Versione:
+ qplc [1] version 1.3.3.1		[02/12/1996 11:56:06]	lib:3.0.42
+ qplc [3] version 2.0.0.2		[30/10/1996 10:45:00]
+
+ - Completata e corretta la gestione delle variabili RETAIN. E` ora gestita
+   una nuova proprieta` in MSD che permette di specificare il valore iniziale
+   da dare ad una variabile RETAIN quando cambia il "timestamp". Inoltre e`
+   stato corretto un errore di allineamento nell'allocazione di variabili
+   in RAM non volatile.
+
+Wed Dec  4 15:24:21 MET 1996
+ 
+ Debug 1.3.3.2
+
+ Versione:
+ qplc [1] version 1.3.3.2		[04/12/1996 20:06:17]	lib:4.0.0
+ qplc [3] version 2.0.0.2		[30/10/1996 10:45:00]
+
+ - Il tempo massimo di colloquio con la CP-AX e` stato reso indipendente
+   dal periodo del Plc.
+ - Corretto un problema residuo nel caricamento dinamico di oggetti che
+   abbiano tra i simboli di aree non inizializzate (sezione "common")
+   qualcuno di quelli previsti nei punti di aggancio del modulo. Il
+   caricatore li considerava erroneamente relativi all'inizio della
+   sezione "text" del modulo, mentre erano gia` stati trasformati in
+   assoluti.
+ - Ricompilato con la versione 4.0.0 della libreria CNi.
+
+Thu Dec  5 18:20:33 MET 1996
+
+ Debug 1.3.3.3
+
+ Versione :
+ qplc [1] version 1.3.3.3		[05/12/1996 18:19:10]	lib:4.0.0
+ qplc [3] version 2.0.0.2		[30/10/1996 10:45:00]
+
+ - Corretto un errore nel caricamento dinamico. La copia del contenuto
+   iniziale della sezione "data" veniva creata prima che fossero elaborate
+   le rilocazioni. Leggerezza...
+
+Wed Dec 11 18:10:11 MET 1996
+
+ Debug 1.3.3.4
+
+ Versione :
+ qplc [1] version 1.3.3.4		[11/12/1996 17:01:39]	lib:4.0.0
+ qplc [3] version 2.0.0.2		[30/10/1996 10:45:00]
+
+ - Iniziati i lavori per il debug in tempo reale.
+
+Wed Dec 11 19:43:12 MET 1996
+
+ Debug 1.3.3.5
+ qplc [1] version 1.3.3.5		[11/12/1996 19:42:30]	lib:4.0.0
+ qplc [3] version 2.0.0.2		[30/10/1996 10:45:00]
+
+ - Innestate le funzioni di debug nell'esecutore. Non sembrano fare danni
+   (anche perche` non fanno quasi niente). Mancano i comandi del supervisore
+   per poterle utilizzare, e la definizione delle specifiche di comunicazione
+   dei dati relativi agli eventi (tramite segnali di scambio ? Puo` darsi !).
+
+Thu Dec 12 19:38:49 MET 1996
+
+ Debug 1.3.3.6
+ qplc [1] version 1.3.3.6		[12/12/1996 19:36:22]	lib:4.0.0
+ qplc [3] version 2.0.0.2		[30/10/1996 10:45:00]
+
+ - Teoricamente terminato il debugger. Il fatto e` che non e` ancora
+   stato collaudato nemmeno un byte del codice aggiunto ! Manca
+   ancora l'API per il debugger, e, se ci fosse, sarebbe comunque
+   molto disagevole provarla. L'unica cosa che posso dire, per ora
+   e` che il codice in piu` non sembra fare danni.
+
+Mon Dec 16 10:58:26 MET 1996
+
+ Debug 1.3.3.7
+
+ qplc [1] version 1.3.3.7		[16/12/1996 10:56:40]	lib:4.0.0
+ qplc [3] version 2.0.0.2		[30/10/1996 10:45:00]
+
+ - Iniziato il difficoltoso debug.
+
+Tue Dec 17 15:38:12 MET 1996
+
+ Debug 1.3.3.8
+
+ qplc [1] version 1.3.3.8		[17/12/1996 15:37:38]	lib:4.0.2
+ qplc [3] version 2.0.0.2		[30/10/1996 10:45:00]
+
+ - Primi problemi : loop infinito in "brkClear" (e che incastro !), ma
+   l'errore era in "brkDestroy".
+   NOTA : L'errore portava al blocco totale del sistema, dovuto ad un
+   ciclo infinito dell'esecutore. Il segnale di timeout, la cui gestione
+   provoca anche una chiamata a "brkClear" non faceva che peggiorare la
+   situazione.
+ - Schianto se si tentava di abilitare una lista di watch vuota.
+
+Wed Dec 18 15:18:44 MET 1996
+
+ Debug 1.3.3.9
+
+ qplc [1] version 1.3.3.0		[18/12/1996 14:29:47]	lib:4.0.2
+ qplc [3] version 2.0.0.2		[30/10/1996 10:45:00]
+
+ - Iniziato il debug dei break attivi. Inevitabili gli schianti.
+
+Thu Dec 19 18:09:47 MET 1996
+
+ Debug 1.4.0.0
+
+ qplc [qplc] version 1.4.0.0		[19/12/1996 18:06:22]	lib:4.0.2
+ qplc [ld480] version 2.0.0.2		[30/10/1996 10:45:00]
+
+ - Corretti i problemi piu` evidenti del modulo di debug (schianti,
+   flag che funzionavano a rovescio...). La funzionalita` base sembra ora
+   a posto.
+ - Modificato il metodo di visualizzazione delle versioni (ancora !).
+   Ora le componenti si distinguono dalla sigla anziche` dal numero.
+   La sigla "qplc" e` riservata al kernel. Il modulo di collegamento
+   al CN si chiama "hatsh". Il caricatore del programma 480 si chiama
+   "ld480", il programma utente in stile 480 si chiama "CPLC", ed il
+   programma IL si chiama "PLC". Si noti che, dato che il programma IL
+   ed il caricatore 480 sono lo stesso modulo, la scelta della sigla
+   da assegnare loro e` compiuta in base al fatto che il modulo sia
+   caricato dinamicamente (caso IL) o staticamente (caso 480).
+
+Fri Jan 10 09:34:59 MET 1997
+
+ Debug 1.4.0.1
+
+ qplc [qplc] version 1.4.0.1		[09/01/1997 13:01:14]	lib:4.0.2
+ qplc [ld480] version 2.1.0.0		[09/01/1997 12:11:31]
+
+ - Eliminato un riferimento residuo ad "NVRAM_SIZ_PLC", simbolo obsoleto.
+   Questo poteva creare incongruenze nella gestione della RAM non volatile
+   in caso di configurazioni non standard. Sospetto che questo problema
+   esista anche nella versione corrente del debugger.
+ - Corrette le azioni di debug "RESET" e "TOOGGLE", bacate per un banale
+   errore di battitura.
+ - Aggiunto il simbolo "pCpaxShm" per compatibilita` coi programmi BiEsse.
+ - Aggiunto il simbolo opzionale "PlcInit" nel modulo 480.
+   E` una funzione lanciata ad ogni start, utilizzta tipicamente
+   per la costruzione dinamica della tabella MSD in stile 480.
+   Il caricatore 480 ha cosi` cambiato versione.
+ - E` stato aggiunto il flag "DY_PROP_USE_DEFAULT" a parecchi simboli
+   opzionali.
+
+Wed Jan 15 18:03:23 MET 1997
+
+ Debug 1.4.0.2
+
+ qplc [qplc] version 1.4.0.2		[15/01/1997 18:02:12]	lib:4.0.3
+ qplc [ld480] version 2.2.0.0		[15/01/1997 17:34:01]
+
+ - Aggiunta la gestione di moduli IL contenenti piu` di un programma.
+ - Aggiunta l'opzione "-max-prog" per determinare il numero massimo di
+   programmi IL in un modulo (default = 20).
+ - Modificato il comportamento della funzione "plcRuntimeError", in modo
+   che visualizzi anche l'indice del programma IL corrente (a partire da
+   1. 0 significa che la funzione e` stata chiamata fuori da un programma IL,
+   -1 significa "codice 480". Questa numerazione e` provvisoria.).
+ - Raccolti alcuni pezzi di assembler sparsi.
+ - Dichiarata obsoleta la coppia di file "isagraf.h"-"cniplc.h". Il file
+   ufficiale per lo sviluppatore Plc in C e` uno solo, e si chiama "plcapi.h".
+   Sara` presto distribuito.
+
+Thu Jan 16 17:25:09 MET 1997
+
+ Debug 1.4.0.3
+
+ qplc [qplc] version 1.4.0.3		[16/01/1997 17:28:35]	lib:4.0.3
+ qplc [ld480] version 2.2.0.0		[15/01/1997 17:34:01]
+
+ - Modificata la funzione "brkAdd", in modo che i punti di break siano
+   sempre inseriti in ordine di indirizzi crescenti.
+ - Il comando di debug corrispondente a "brkAdd" ora restituisce la posizione
+   dell'elemento aggiunto. La libreria di colloquio col Plc non e` pero` stata
+   ancora modificata per sfruttare questa prestazione.
+ - Aggiunta la possibilita` di definire piu` punti di break associati allo
+   stesso indirizzo.
+ - Ridotta la probabilita` di schianto evitando l'autoricarica delle liste
+   di break piu` corte di cinque byte.
+ - Lavori in corso...
+
+Fri Jan 17 19:25:37 MET 1997
+
+ Debug 1.4.0.4
+
+ - Iniziati (male) i lavori per risolvere il problema delle sovrapposizioni
+   di liste di break.
+ - NOTA : Questa e` una versione transitoria. I lavori sono stati sospesi
+   a meta`. Il file "debugger.c" e` stato volutamente omesso dal backup.
+   Al suo posto ci sono i file "debugger-1.16.c" e "debugger-1.17.c", che
+   sono le versioni di "debugger.c" che permettono di ricostruire
+   rispettivamente la versione 1.4.0.3 e 1.4.0.4 .
+
+Mon Jan 20 14:17:58 MET 1997
+
+ Debug 1.4.0.5
+
+ qplc [qplc] version 1.4.0.5		[20/01/1997 13:04:39]	lib:4.0.3
+ qplc [ld480] version 2.2.0.0		[15/01/1997 17:34:01]
+
+ - Risolto in qualche modo il caso piu` semplice di sovrapposizione di liste.
+   Probabilmente basta e avanza.
+ - NOTA : Le modifiche che hanno portato alla versione 1.4.0.4 sono state
+   rimosse. Questa versione deriva dalla 1.4.0.3. La 1.4.0.4 e` un ramo secco.
+
+Fri Jan 24 15:22:27 MET 1997
+
+ Debug 1.4.0.6
+
+
+ qplc [qplc] version 1.4.0.6		[24/01/1997 15:22:10]	lib:4.0.4
+ qplc [ld480] version 2.2.0.0		[15/01/1997 17:34:01]
+
+ - Corretto un errore in "brkCore", che provocava il crash se si avevano
+   contemporaneamente break attivi e liste di break vuote.
+
+Wed Jan 29 18:17:22 MET 1997
+
+ Debug 1.4.0.7
+
+
+qplc-4 [qplc-4] version 1.4.0.7		[29/01/1997 18:30:08]	lib:4.0.4
+qplc-4 [ld480] version 2.2.0.0		[15/01/1997 17:34:01]
+
+qplc-3 [qplc-3] version 1.4.0.7		[29/01/1997 18:30:10]	lib:3.0.43
+qplc-3 [ld480] version 2.2.0.0		[15/01/1997 17:34:01]
+
+ - Sdoppiati gli eseguibili, per assicurare supporto alle applicazioni
+   che usano parti del CN compilate con la versione 3  della libreria
+   (mi dicono, pero` che anche alcune versioni 4.x.x funzionano...).
+   Ora ci sono due eseguibili, qplc-3 e qplc-4.
+ - Aggiunta una segnalazione di errore quando fallisce la CnInit di hatsh.oo
+   (tipico errore da librerie incompatibili...).
+ - Cambiato il codice di errore (ed il messaggio) emesso quando e` rilevato
+   un cambio di versione del programma eseguibile.
+
+Tue Feb  4 18:40:44 MET 1997
+
+ Debug 1.4.0.8
+
+qplc-3 [qplc-3] version 1.4.0.8		[06/02/1997 14:36:52]	lib:3.0.43
+qplc-3 [ld480] version 2.2.0.0		[15/01/1997 17:34:01]
+
+qplc-4 [qplc-4] version 1.4.0.8		[06/02/1997 14:36:49]	lib:4.0.5
+qplc-4 [ld480] version 2.2.0.0		[15/01/1997 17:34:01]
+
+ - Aggiunta l'opzione "chkaddr", senza la quale NON e` eseguito il controllo
+   sugli indirizzi di debug (con pericolo di schianti, ma niente lungaggini).
+   Non dovrebbe servire mai, ma mi da` sicurezza sapere che c'e`.
+ - Eliminata la possibilita`, solo teorica, di malfunzionamenti in caso
+   di fallimento del primo tentativo d'uso di "memlk".
+ - Aggiunta la primitiva "plcTimeH", che fornisce i 32 bit alti del contatore
+   di tempo interno (con 32 bit, si ha una periodicita` di circa 49 giorni).
+ - Aggiunto un segnale di scambio (CORR : array[0..39] of real).
+
+Fri Feb  7 12:33:37 MET 1997
+
+ Debug 1.4.0.9
+
+qplc-3 [qplc-3] version 1.4.0.9		[07/02/1997 12:32:18]	lib:3.0.43
+qplc-3 [ld480] version 2.2.0.0		[15/01/1997 17:34:01]
+
+qplc-4 [qplc-4] version 1.4.0.9		[07/02/1997 12:32:15]	lib:4.0.5
+qplc-4 [ld480] version 2.2.0.0		[15/01/1997 17:34:01]
+
+ - Anticipata l'inizializzazione delle funzioni di controllo di accessibilita`
+   delle aree, per ridurre la probabilita` di rallentamenti durante il debug.
+
+Fri Feb  7 15:42:01 MET 1997
+
+ Debug 1.4.0.10
+
+qplc-3 [qplc-3] version 1.4.0.10	[07/02/1997 15:40:56]	lib:3.0.43
+qplc-3 [ld480] version 2.2.0.0		[15/01/1997 17:34:01]
+
+qplc-4 [qplc-4] version 1.4.0.10	[07/02/1997 15:40:53]	lib:4.0.5
+qplc-4 [ld480] version 2.2.0.0		[15/01/1997 17:34:01]
+
+ - Due modifichine cosmetiche: un'inizializzazione pleonastica e l'esecuzione
+   di "invXerror" solo se necessario, cosi` non viene creato inutilmente
+   "/tmp/pipe_xerror" (e chi se ne frega ?).
+
+Thu Feb 13 14:32:56 MET 1997
+
+ Debug 1.4.0.11
+
+qplc-3 [qplc-3] version 1.4.0.11	[13/02/1997 14:31:08]	lib:3.0.43
+qplc-3 [ld480] version 2.2.0.0		[15/01/1997 17:34:01]
+
+qplc-4 [qplc-4] version 1.4.0.11	[13/02/1997 14:31:05]	lib:4.0.5
+qplc-4 [ld480] version 2.2.0.0		[15/01/1997 17:34:01]
+
+ - Evitato l'errore 104 (segnale di scambio ridefinito con caratteristiche
+   diverse) nei casi innocui (signed da una parte, unsigned dall'altra).
+
+Mon Feb 17 14:41:02 MET 1997
+
+ Debug 1.4.0.12
+
+qplc-3 [qplc-3] version 1.4.0.12	[17/02/1997 14:39:47]	lib:3.0.43
+qplc-3 [ld480] version 2.2.0.0		[15/01/1997 17:34:01]
+
+qplc-4 [qplc-4] version 1.4.0.12	[17/02/1997 14:39:35]	lib:4.0.5
+qplc-4 [ld480] version 2.2.0.0		[15/01/1997 17:34:01]
+
+ - Modificata lievemente la procedura di compilazione per rendere piu`
+   compatta la libreria "libqplc.a". Ora, per generare un eseguibile,
+   basta aggiungere un modulo in stile 480.
+
+Tue Feb 18 09:51:31 MET 1997
+
+ Debug 1.4.1.0
+
+ - Corretto un buco clamoroso iella funzione "util_strneq". Funzionava per
+   puro caso.
+ - Aggiunto il supporto per la porta LED della scheda compatta. I led
+   si indicano con "ios.<scheda>.LED.<indice led>".
+ - Corretta una voragine nella gestione della RAM non volatile. Con piu`
+   di una scheda IOS montata, smetteva di funzionare...
+ - Aggiunta la variabile globale "NVRAM_pub", equivalente ad "NVRAM", ma
+   piu` adatta ad essere utilizzata dal compilatore IL, perche` evita
+   conflitti di nomi.
+   "plcapi.h" (1.3) e` stato aggiornato di conseguenza.
+
+Thu Feb 20 10:19:41 MET 1997
+
+ Debug 1.4.1.1
+
+ - I LED erano stati indebitamente negati per un errore di interpretazione
+   dello schema elettrico.
+
+ 
+Wed Feb 26 12:44:56 MET 1997
+
+ Debug 1.4.1.2
+
+ - Il driver AX (che per ragioni storiche si chiama ancora "dr_cpax.c") non
+   si installava se non c'era alcun dispositivo "triggerabile" (cioe` nessuna
+   CPAX "vera"). Il problema e` stato risolto.
+
+Fri Feb 28 09:35:31 MET 1997
+
+ Debug 1.4.1.3
+
+ - Aggiunta un'opzione per impostare (falsificare) la priorita` che il
+   protocollo TCP/IP deve assumere per il colloquio con qplc. L'opzione
+   si chiama "-tcp-priority" e si aspetta un intero rappresentante l'incremento
+   di priorita` rispetto a quella di lancio (default = 7). Prestazione
+   molto sperimentale !.
+
+Fri Feb 28 10:30:37 MET 1997
+
+ Debug 1.4.1.4
+
+ - Corretto un difettuccio che impediva la chiamata di "PlcInit" dei programmi
+   caricati staticamente.
+
+Thu Mar  6 16:50:38 MET 1997
+
+ Debug 1.4.1.5
+
+ - La gestione dell'opzione "-tcp-priority", aggiunta con la versione 1.4.1.3,
+   e` stata, di fatto, ritirata. Non era infatti possibile mantenere la
+   compatibilita` con i moduli "hatsh" gia` scritti. Si ottenevano pericolosi
+   thread a priorita` maggiore di quella dell'esecutore ! Ora l'opzione
+   e` stata mantenuta, ma la sua effettiva gestione e` a carico di chi
+   effettivamente usa canali TCP (cioe` hatsh). Il valore impostato dall'op-
+   zione si trova nella variabile "main_status.tcp_prio". L'unica azione
+   che e` compiuta all'interno del kernel del plc e` la riabilitazione
+   del segnale SIGPRIO, per permettere il tracciamento della priorita`
+   da parte del driver di TCP/IP.
+
+Mon Mar 10 10:21:59 MET 1997
+
+ Debug 1.4.1.6
+
+ - Corretto un incredibile buco nell'interpretazione dei descrittori di
+   watch. Risultavano scambiati i registri %esi e %edi, con ovvie conseguenze
+   per il debug.
+
+Mon Apr  7 17:03:57 MET DST 1997
+
+ Debug 1.4.1.7
+ Debug 1.4.1.8
+
+ - Ricompilazioni dovute ad incongruenze nella libreria degli assi.
+ - Aggiunta di alcune funzioni di accesso ai dati macchina in "lista.c".
+
+Fri Apr 11 08:58:11 MET DST 1997
+
+ Debug 1.4.1.9
+
+ - Ricompilazione per aggiunta di una funzione della libreria dei dati
+   macchina.
+
+Tue Apr 15 09:45:06 MET DST 1997
+
+ Debug 1.4.2.0
+
+ - Aggiunto il supporto per i LED controllati dalla tastiera speciale
+   del compatto. Necessita dell'apposito driver di tastiera modificato.
+ - L'eseguibile e` stato prodotto utilizzando una versione sperimentale
+   della libreria degli assi, per sorvegliare il processo intx.
+
+Tue Apr 15 18:11:11 MET DST 1997
+
+ Debug 1.4.2.1
+
+ - Aggiunta l'opzione "-devconf", che permette di impostare una stringa
+   di configurazione ad uso dei dispositivi. E` attualmente ammessa una
+   sola occorrenza dell'opzione (altrimenti vale solo l'ultima), e la stringa
+   di configurazione non puo` superare i 100 caratteri. La stringa e` composta
+   da campi separati dal carattere ":". Ogni campo ha la forma seguente
+
+	<dispositivo>[.<istanza>].<stringa>
+
+   dove "dispositivo" e` il nome di uno dei driver previsti ("ios", "ax",
+   "keyb"...), "istanza" e` l'indice opzionale dell'istanza del dispositivo
+   a cui si riferisce la configurazione (se assente, la configurazione riguarda
+   tutte le istanze), e "stringa" una sequenza qualsiasi di caratteri non
+   iniziante per un numero decimale, ed ha tipicamente la forma "nome=valore".
+ - Il driver "ax" prevede ora la variabile di configurazione "wd", che
+   rappresenta il massimo ritardo ammesso nel rinfresco del flag di presenza
+   del dispositivo, dopodiche` il Plc lo dichiara guasto e si pone in FAULT.
+   Il valore di default e` 120 (millisecondi). Da  linea di comando, si usi
+   l'opzione "-devconf ax.wd=200" per portare il valore a 200.
+
+Thu Apr 17 08:59:37 MET DST 1997
+
+ Debug 1.4.2.2
+
+ - Corrette le immancabili sfighe sui LED della tastiera compatta (restano
+   montagne di buchi sul dispositivo, ma non e` un problema del PLC).
+ - Aggiunta la variabile di configurazione "keyb.ver=...", per simulare
+   una versione di tastiera speciale diversa da quella realmente collegata.
+
+Thu Apr 17 16:21:33 MET DST 1997
+
+ Debug 1.4.2.3
+
+ - Aggiunte le variabili di configurazione "ios.trig" e "ios.chk", che
+   servono a (dis)abilitare il retrigger ed il controllo periodico delle ios.
+
+Thu May 22 18:28:26 MET DST 1997
+
+ Debug 1.5.0.0
+
+ - Gestione del modulo speciale "tastiera Selco". E` visto come un doppio
+   modulo IOS, cioe` un modulo a 24 ingressi ed uno a 24 uscite allo stesso
+   indirizzo. Il sorgente "dr_ios.c" e` stato riorganizzato, la qual cosa
+   mi togliera` il sonno.
+ - Aggiunte alcune funzioni dei dati macchina a quelle che "ci devono essere".
+ - Modificata la procedura di HALT, in modo che sia possibile scomporla
+   in piu` passi, eseguiti in cicli successivi dell'esecutore. In ognuno di
+   questi cicli, l'esecutore richiama le procedure "stop" dei programmi utente
+   (come la "UserStop" di "user.oo") ed i metodi "down" dei driver. Tutte
+   queste funzioni devono percio` essere scritte in modo da riconoscere di
+   essere state chiamate piu` di una volta nell'ambito di una singola entrata
+   in HALT dell'esecutore. La funzione "plcHaltCycle" restituisce il numero
+   di ripetizioni del ciclo di entrata in HALT. Il valore "0" indica il
+   primo ciclo, cioe` quello che e` sempre eseguito per entrare nello stato
+   di HALT. La funzione "plcRepeatHalt" provoca la ripetizione del ciclo di
+   HALT, e puo` essere utilizzata da tutte quelle procedure che necessitino
+   di piu` di un ciclo di esecuzione per essere completate. Si tenga ben
+   presente che e` sufficiente che UNA procedura richieda la ripetizione
+   del ciclo perche` TUTTE siano richiamate. Attualmente, il drivere IOS
+   del PLC puo` richiedere la ripetizione del ciclo se sono collegati
+   moduli speciali.
+   Se necessario, il numero di ripetizioni del ciclo puo` essere limitato
+   da linea di comando con la nuova opzione "-max-halt". Se si indica un
+   valore diverso da 0 come argomento dell'opzione, l'esecutore cessera` di
+   esaudire le richieste di ripetizione una volta raggiunto il limite,
+   emettera` l'errore 63 (ciclo di Plc olte il limite nominale), e si porra`
+   in HALT.
+ - La segnalazione di HALT in shared memory e` posticipata al completamento
+   dell'entrata in HALT, cioe` si attende che siano state concluse tutte
+   operazioni di "stop" e "down" dei programmi e dei dispositivi.
+
+Mon May 26 16:08:56 MET DST 1997
+
+
+ Debug 1.5.0.1
+
+ - Le uscite dei moduli speciali Selco non corrispondomo ora agli indici di
+   bit da 24 a 47 nella rappresentazione simbolica del segnale. Si evita
+   cosi` l'ambiguita` tra tasti e LED della tastiera Selco.
+
+Fri May 30 11:50:54 MET DST 1997
+
+ Debug 1.5.0.2
+
+ - E` stato migliorata la diagnostica nella fase di creazione di segnali di
+   scambio da programma IL. Per fare questo, si e` agginta la funzione
+   "shvDefine", che si comporta come "shvCreate", salvo che cambia il
+   significato della variabile puntata dal parametro "change" di "shvCreate".
+   Anziche` un semplice flag, ora e` una maschera di bit. Ogni bit indica una
+   diversita` tra proprieta` richesta ed ottenuta per il segnale di scambio.
+   "plcapi.h" e` stato di conseguenza modificato per rendere pubblico il
+   significato dei flag (macro SHV_CHG_...).
+ - E` stata eliminata una possibile fonte di problemi nella generazione
+   dinamica di segnali di scambio sensibili al fronte. Ora, se un segnale
+   privo di quell'attributo viene ridefinito con l'attributo, il kernel
+   tenta di aggiungerlo alla lista dei segnali sensibili al fronte. Solo
+   se la cosa non e` possibile si ha la segnalazione di proprieta`
+   differente (ed una segnalazione di errore).
+ - Il codice relativo alla dichiarazione di segnali di scambio e` stato
+   rimaneggiato un po'...
+
+Tue Jun  3 11:35:19 MET DST 1997
+
+ Debug 1.5.0.3
+
+ - Corretta la funzione "shvKeyToAddr" per superare le limitazioni che
+   la caratterizzavano (incapacita` di gestire le variabili RETAIN,
+   controllo incompleto sugli indici). Questa modifica ha richiesto
+   l'allocazione dinamica di un vettore di puntatori a descrittore di
+   segnale di scambio della stessa dimensione della tabella delle chiavi
+   (attualmente 32k).
+ - Aggiunta la proprieta` RESET tra quelle disponibili per i segnali di
+   scambio. Questa proprieta` fa si` che il segnale sia azzerato ad ogni GO.
+ - E` stato aggiunto l'azzeramento dei rilevatori di fronte al GO, per evitare
+   in modo semplice alcune incongruenze imbarazzanti...
+
+ Debug 1.5.0.4
+
+ - Aggiustato il caricamento di un programma IL. Ora e` possibile anche
+   definire segnali di scambio inizializzati.
+ - Aggiunte le due funzioni interne "shvGet" ed "shvSet", per leggere
+   e scrivere in blocco segnali di scambio multidimensionali.
+
+Wed Jun 11 12:22:30 MET DST 1997
+
+ Debug 1.5.1.0
+
+ - Aggiunta la possibilita` di indicare un puntatore nullo
+   come secondo argomento di "shvCreate" ed "shvDefine".
+ - Gettate le basi per l'eliminazione delle "variabili non
+   azzerabili": i quattro segnali di scambio non azzerabili (RIPCIC, SOSPCIC,
+   CLEAR_PLC, RESET_PLC) ora "possono" essere sostituiti da altri quattro
+   segnali "invisibili" (perche` non pubblicati, e perche` il loro nome inizia
+   per "$", cosi` non sono accessibili da IL). La creazione di questi
+   nuovi segnali (che si chiamano $START, $STOP, $CLEAR e $RESET) e` pero`
+   affidata ad "hatsh", il Plc si limita a controllarne l'esistenza, per poter
+   funzionare alla vecchia maniera con versioni precedenti di "hatsh" stesso.
+ 
+Wed Jun 11 16:16:02 MET DST 1997
+
+ Debug 1.5.1.1
+
+ - Corretto l'immancabile bug nella modifica apportata nella precedente
+   versione.
+ - NOTA : versione d'emergenza, non realizzata sulla macchina originale.
+
+ Debug 1.5.1.2
+
+ - Aggiunta la funzione "plcUpdateMessage", che funziona come "plcMessage",
+   salvo che il messaggio e` sovrascritto anziche` accodato. Questa prestazione
+   e` disponibile solo con versioni di quote >= 2.6.0.15.
+ - Modificati i messaggi e gli errori emessi in modalita` "stand-alone", in
+   modo che siano piu` facilmente filtrabili da processi che li volessero
+   intercettare.
+
+Fri Jun 20 12:23:29 MET DST 1997
+
+ Debug 1.5.1.3
+
+ - Aggiunti tre nuovi segnali di scambio di debug :
+   $DEB_FIRSTEVP : posizione del primo evento completp, cioe` non ricoperto.
+   $DEB_LASTEVP  : posizione dell'ultimo evento (== $DEB_EVENTS[$DEB_LASTEV]).
+   $DEB_EVCOUNT  : contatore di eventi ricoperti. E` azzerabile da programma
+                   esterno.
+   $DEB_NREGEV   : numero di eventi ancora integri (cioe` non ricoperti)
+                   nel buffer.
+   Mano a mano che gli eventi sono registrati, quelli piu` vecchi vengono
+   sovrascritti. Questi segnali di scambio dovrebbero permettere di individuare
+   quali eventi siano ancora disponibili in un certo istante, in modo che
+   il debugger sappia quanto si possa "guardare indietro" nella storia
+   del programma.
+ - Impedita l'entrata in GO se dall'MSD in stile IL sono richiesti segnali
+   di I/O inesistenti. Pe ripristinare il comportamento delle versioni
+   precedenti, si usi la nuova opzione "-go-anyway".
+ - Il numero massimo di liste di watch passa da 10 a 20.
+ - E` stato ritardato l'invio del comando di riazzeramento del bit di
+   richiesta di stato degli override, per rendere meno probabili gli incastri
+   dovuti alla sovrapposizione di trasmissioni da tastiera e da PC.
+
+Mon Jul  7 12:34:17 MET DST 1997
+
+ Debug 1.5.1.4
+
+ - Ricompilato con la versione 4.1.0 delle libreria.
+ - Aggiunta la funzione "sdmIsConfLoaded" a quelle che "ci devono essere".
+
+Tue Jul  8 18:02:51 MET DST 1997
+
+ Debug 1.5.1.5
+
+ - Aggiunti due nuovi segnali di scambio, che dovrebbero facilitare
+   l'individuazione di passaggi saltuari per liste di break. Il primo
+   si chiama "$DEB_MAXBRK", e contiene il numero massimo di liste di
+   break definibili, il secondo e` "$DEB_BRKCYC", che e` una tabella
+   contenente il ciclo durante il quale si e` verificato l'ultimo passaggio
+   per ciascuna lista.
+
+Mon Jul 14 17:26:11 MET DST 1997
+
+ Debug 1.5.1.6
+
+ - Eliminate tutte le chiamate a "sprintf", sostituita da "util_safe_sprintf",
+   (nuova funzione aggiunta).
+ - Gettate le basi per la gestione delle seriali da plc: aggiunta la funzione
+   test_nfd (e` una macro, in realta`), interfaccia verso "select" e "poll".
+
+Wed Jul 16 10:05:01 MET DST 1997
+
+ Debug 1.5.1.7
+
+ - Altri lavori per le seriali da PLC: modificata "test_nfd", aggiunti i
+   metodi "up" e "close" per i device driver. "up" e` chiamato immediatamente
+   prima dell'entrata in GO, quando sono gia` state elaborate tutte le
+   associazioni di I/O, il secondo nella fase finale dell'entrata in HALT,
+   dopo che sono stati chiamati i metodi "down". I due nuovi metodi sono
+   eseguiti dal thread supervisore, percio` non risentono dei limiti di
+   tempo imposti dall'esecutore.
+   E` stato aggiunto anche il metodo "extension", che e` invocato tramite
+   la funzione "ioExtendedOp" ogni volta che serve una prestazione
+   speciale del dispositivo (es. trasmissioni, ricezioni...). L'opzione
+   "-max-dev-ext" configura il numero massimo di segnali di I/O associati
+   a dispositivi che prevedono l'uso di questo metodo (tipicamente linee
+   seriali o rete).
+
+Thu Jul 17 12:55:19 MET DST 1997
+
+ Distribuzione 1.5.1.8
+
+qplc [qplc] version 1.5.1.8		[17/07/1997 19:04:09]	lib:4.1.0
+qplc [ld480] version 2.2.0.1		[14/07/1997 17:22:21]
+
+ - Prima versione capace di gestire le seriali.
+   Il dispositivo seriale e` utilizzabile solo tramite la primitiva
+   "ioExtendedOp", che vuole il codice ottenuto con "ioAttach" (lo si
+   legge nella variabile collegata, che deve essere di input), un codice
+   di comando ed un parametro aggiuntivo.
+   La sintassi per descrivere il dispositivo seriale e` la seguente:
+
+	ser.<dispositivo>.<parametri>
+
+   dove "dispositivo" e` una stringa che il sistema converte in minuscolo
+   ed interpreta come un nome in "/dev" (es. COM1 = /dev/com1), e "parametri"
+   e` una stringa nella forma
+
+	<velocita`><parita`><bit di dato><bit di stop>
+
+   Esempio:
+
+	ser.com2.9600n81
+
+   Sono previsti i parametri di configurazione da linea di comando "rxq" e
+   "txq", che configurano le dimensioni dei buffer di trasmissione e ricezione
+   (default: 512 byte).
+ - Aggiunto un parametro al metodo "extension"
+   (che assomiglia sempre piu` al metodo "ioctl" dei driver UNIX), definite
+   le strutture e le macro per il colloquio seriale.
+ - Aggiornato "plcapi.h", che ora contiene nuove utili definizioni.
+
+Thu Jul 24 11:59:27 MET DST 1997
+
+ Distribuzione 1.5.1.9
+
+qplc [qplc] version 1.5.1.9		[24/07/1997 11:53:53]	lib:4.1.1
+qplc [ld480] version 2.2.0.1		[14/07/1997 17:22:21]
+
+ - Aggiunto il simbolo "GetStatoDm" alla lista delle funzioni che
+   il linker deve garantire.
+ - Evitato lo spreco di file descriptor in caso di problemi con le seriali.
+
+Thu Jul 31 14:00:27 MET DST 1997
+
+ Distribuzione 1.5.1.10
+
+qplc [qplc] version 1.5.1.10		[31/07/1997 13:53:33]	lib:4.1.3
+qplc [ld480] version 2.2.0.1		[14/07/1997 17:22:21]
+
+ - Corretto un errore nella scelta del numero di bit per carattere per le
+   linee seriali. Funzionava per caso, cioe` non sempre.
+
+Thu Jul 31 17:38:02 MET DST 1997
+
+ Debug 1.5.2.0
+
+ - Riorganizzato il driver IOS, per facilitarmi la vita in futuro.
+   Puo` essermi scappato qualcosa nell'operazione...
+ - RIMOSSA la gestione diretta dei moduli con parole a 32 bit. Era
+   inutile e dannosa.
+ - Aggiunti nuovi segnali IOS :
+   * Accesso diretto ad un generico byte di un generico modulo (l'unico
+     vincolo e` che il modulo deve essere presente e funzionante).
+     La sintassi da utilizzare e` la stessa che vale per i segnali a bit,
+     salvo che manca l'indice di bit, e la variabile associata deve
+     essere di un byte. E` ammessa l'associazione contemporanea in ingresso
+     ed in uscita alla stessa variabile con una sola chiamata di "ioAttach".
+   * Accesso diretto ad un generico byte nello spazio del controllore.
+     Il byte si indica con "IOS.<istanza>.<cpu>.BYTE.<indice byte>" .
+     La variabile associata deve essere di otto bit. E` ammessa l'associazione
+     contemporanea in ingresso ed in uscita alla stessa variabile con una
+     sola chiamata di "ioAttach".
+   * Accesso a moduli speciali con uscita analogica (DAC). Il DAC ha una
+     risoluzione di 12 bit, interpretati in complemento a 2. L'associazione
+     avviene pertanto con una variabile con segno a 16 bit.
+     La sintassi da utilizzare e` "IOS.<istanza>.<cpu>.<modulo>.DAC" .
+
+Fri Aug  1 09:51:15 MET DST 1997
+
+ Debug 1.5.2.1
+
+ - Aggiunta la risorsa di configurazione del driver IOS "direct=<0|1>", che
+   serve ad attivare l'accesso diretto a byte qualsiasi della IOS. La
+   prestazione e` normalmente disattivata, perche` puo` pregiudicare la
+   sicurezza del sistema.
+
+Fri Aug  1 14:02:35 MET DST 1997
+
+ Debug 1.5.2.2
+
+ - Corrette le prime immancabili sfighe mella gestione dei DAC.
+
+Fri Aug  1 15:14:54 MET DST 1997
+
+ Debug 1.5.2.3
+
+ - Altra pericolosa inesattezza nella scrittura di comandi verso i moduli
+   speciali. Poteva provocare rarissimi malfunzionamenti.
+
+Fri Sep  5 15:59:17 MET DST 1997
+
+ Debug 1.5.2.4
+
+ - E` stata aggiunta l'opzione "-blocking-pipe {0|1}" per rendere (1)
+   bloccanti le pipe dei messaggi e degli errori. Attualmente XNC
+   sembra incagliarsi maldestramente in seguito a cio`, percio` non
+   e` ancora il caso di usarla. Ma se un domani le cose dovessero
+   migliorare...
+   NOTA: per questa prestazione e` stata utilizzata una versione sperimentale
+   della libreria "libxerr.a" e dell'header "libxerr.h" (versione 2.8).
+ - Aggiunta la risorsa "ignerr={0|1}" del driver "keyb". Serve
+   ad ignorare (1) l'assenza della tastiera speciale. Utile in fase
+   di debug.
+ - Portato a 100 il numero di errori di I/O immagazzinati.
+
+Tue Sep 23 15:03:09 MET DST 1997
+
+ Debug 1.5.2.5
+
+ - Aggiunto l'azzeramento incondizionato del flag di shared memory
+   inizializzata. Piu` che altro, per superstizione.
+
+Mon Nov 10 11:14:54 MET 1997
+
+ Debug 1.6.0.0
+
+ - Corretto un errore nella visualizzazione delle versioni dopo il
+   caricamento dinamico di un modulo U_CODE contenente "ver_user"
+   ma non "_VERSION".
+ - Corretto uno schianto che si verificava se si tentava di creare
+   un segnale di scambio con nome irregolare. Inoltre e` stata evitata
+   l'emissione dell'errore associato se la funzione di creazione (shvCreate
+   o shvDefine) e` chiamata con il flag SHV_MODE_TEST attivo.
+ - Versione in corso d'opera: e` in costruzione in debugger remoto
+   per microXNC.
+
+Wed Nov 19 12:01:01 MET 1997
+
+ Debug 1.6.0.1
+
+ - Prima versione contenente un server di debug remoto completo (ma
+   per nulla collaudato). Il servizio e` abilitato dalla nuova opzione
+   della linea di comando "-remote-debug".
+ - Eliminate tutte le possibili scritture a 32 bit sul bus ISA (problema
+   floppy...).
+ - Aggiunte le funzioni "util_memset" e "util_memcpy", che assicurano
+   la scrittura ad 8 bit.
+
+Fri Nov 21 17:48:44 MET 1997
+
+ Debug 1.6.0.2
+
+ - Aggiunto il comando "ipcs" al debugger remoto. Fornisce le caratteristiche
+   delle risorse IPC da utilizzare per comunicare con QPLC in ambito
+   locale (semafori, shared memory...).
+
+Mon Nov 24 17:35:12 MET 1997
+
+ Debug 1.6.0.3
+
+ - Modificata la procedura di creazione delle variabili RETAIN. Ad ogni
+   identificazione di cambio di programma IL vengono tutte marcate "DELETED".
+   Le variabili RETAIN | DELETED possono essere ridefinite.
+   Questo dovrebbe arginare (non risolvere) il problema delle variabili
+   RETAIN definite in momenti diversi di una sessione di debug. Resta il
+   pericolo di esaurimento della memoria per l'accumularsi dei descrittori
+   di variabili cancellate e ridefinite.
+ - Corretto un bug nel comando "var", che non mostrava l'indirizzo corretto
+   delle variabili RETAIN.
+
+Wed Nov 26 10:04:28 MET 1997
+
+ Debug 1.6.0.4
+
+ - Riportata (e migliorata) la correzione eseguita in BiEsse
+   sulla versione 1.4.2.3 (divenuta 1.4.2.4). Consiste nello
+   spostamento della procedura di sorveglianza dei dispositivi
+   prima della chiamata del programma utente, in modo che sia
+   eseguita ad intervalli regolari anziche` dipendenti dalla
+   lunghezza del programma. Nelle precedenti versioni poteva
+   accadere che cicli occasionalmente prossimi al periodo nominale
+   seguiti da cicli molto brevi provocassero una segnalazione
+   erronea di dispositivo (tipicamente IOS) in timeout.
+
+Mon Dec  1 15:26:21 MET 1997
+
+ Debug 1.6.0.5
+
+ - Aggiunti altri comandi al debugger remoto:
+   "info", che restituisce "D <ciclo di Plc in millisecondi> <massimo numero
+   di cicli di trace> <massimo numero di variabili tracciate> <massimo numero
+   di variabili gestite da memcopy> <numero massimo di trigger>";
+   "trace m <dimensione del buffer di trace>" per decidere la dimensione
+   del buffer (e quindi la frequenza con cui sono emessi gli eventi di 
+   fine trace);
+   "trace t" per agganciare il trace ad una condizione di trigger;
+   "trigger a <indirizzo> <condizione> <azioni>", per definire un trigger
+   sulla variabile di indirizzo dato. "condizione" e` un numero che
+   specifica il tipo di test da eseguire, "azioni" e` una maschera di bit
+   che specificano diverse azioni da compiere quando la condizione e` vera.
+   Il risultato di "trigger a ..." e` "D <codice>", dove "codice" e` il
+   numero d'ordine che identifichera` il trigger.
+   "trigger d <codice>" serve a rimuovere un trigger precedentemente definito.
+
+Tue Dec  9 15:53:05 MET 1997
+ 
+ Debug 1.6.0.6
+
+ - Corretto un errore nella lettura di parametri del comando remoto "wcreate".
+
+Mon Feb  2 08:30:18 MET 1998
+
+ Debug 1.6.0.7
+
+ - Aggiunta la gestione delle schede UDC3. Hanno 16 ingressi ed 11 uscite a
+   bit. Si indicano con IOS.0.UDC.<bit>
+
+Mon Feb  2 13:25:07 MET 1998
+
+ Debug 1.6.0.8
+
+ - Corretto un clamoroso bug nella gestione dei LED: le maschere di accesso
+   venivano calcolate in base all'ordine di definizione anziche` all'indice
+   di bit. Funzionava per caso!
+
+Fri Feb  6 13:13:09 MET 1998
+
+ Debug 1.6.0.9
+
+ - Corretti gli immancabili buchi nella gestione della UDC3 (finalmente
+   disponibile).
+
+Fri Feb 13 20:13:06 MET 1998
+
+ Debug 1.6.0.10
+
+ - Aggiunta la variabile di configurazione del driver ios "udcchk", che
+   contiene la durata del periodo di insensibilita` allo stato
+   di watchdog spento nel byte di stato dell'UDC3. Pare infatti
+   che quel dispositivo si comporti in un modo un po' strano:
+   sembra che non reagisca immediatamente al retrigger, ma solo
+   dopo un po'. Questa variabile permette di tarare qplc sul
+   ritardo di risposta del watchdog, espresso in millisecondi.
+   Il valore di default e` 1000, vale a dire che qplc all'inizio del lavoro
+   ignorera` la segnalazione (evidentemente fasulla) di fault del
+   watchdog per un secondo.
+
+Mon Feb 16 11:50:03 MET 1998
+
+ Debug 1.6.0.11
+
+ - Portato a 1.2 secondi il periodo di insensibilita` allo
+   stato di "CN non ok".
+   Corretta un'imperfezione (che non faceva danni) nella scrittura
+   delle uscite UDC3.
+ - VERSIONE PUBBLICATA CON XNC 1.2.0.2
+
+Mon Mar  9 16:57:54 MET 1998
+
+ Debug 1.6.1.1
+
+ - Aggiunto il dispositivo "BGAGE". Ha solo un ingresso ed un'uscita a 16 bit.
+   Si chiamano semplicemente "%IWbgage.0" e "%QWbgage.0". Permettono
+   l'accesso all'ADC ed al DAC della scheda "Bus Gage", utilizzata da Bobbio.
+   L'indirizzo della scheda e` 0x340, ma puo` essere riconfigurato agendo
+   sulla variabile di configurazione del dispositivo "ioaddr".
+ - Ridotto il numero di errori prodotti dal modulo di compatibilita`
+   al momento di definire le associazioni di I/O con i segnali di scambio dei
+   tasti si una macchina senza tastiera speciale. Ora e` prodotto solo il
+   primo degli errori (e forse e` gia` troppo).
+ - Corretto un errore nella funzione "util_safe_gcvt", a causa del quale
+   non funzionava il formato "%f" di "util_safe_vsprintf" e derivate.
+
+Thu Mar 12 21:41:07 MET 1998
+
+ Debug 1.6.1.2
+
+ - Gettate le basi per la forzatura degli I/O da debugger (solo se
+   in HALT). Cio` ha richiesto l'aggiunta del metodo "detach" ai driver.
+
+Fri Mar 13 20:05:03 MET 1998
+
+ Debug 1.6.1.3
+
+ - Realizzati i comandi di forzatura degli I/O. La macchina deve essere in
+   HALT. I comandi sono "in <stringa di descrizione del segnale> <numero di
+   bit del segnale>" e "out <stringa di definizione> <numero bit> <valore>".
+   Per rendere affidabili questi comandi si sono dovuti modificare i driver
+   in modo che i segnali non coinvolti nella forzatura non siano alterati.
+ - Riordinato il comando "var" in vista dell'aggiunta di nuovi comandi
+   di manipolazione delle variabili.
+
+Wed Mar 18 10:15:02 MET 1998
+
+ Debug 1.6.1.4
+
+ - L'opzione "-stdout" provoca ora anche l'invio dei messaggi su stdout e
+   degli errori su stderr (oltre che sulle pipe opportune).
+ - Eliminati totalmente gli errori di tastiera assente prodotti dalle
+   associazioni tra i tasti ed i segnali di scambio appositi.
+ - Ricompilato con la versione 6.0.8 della libreria, che contiene alcune
+   aggiunte alla libreria del server dati macchina a causa delle quali
+   il codice e` cresciuto di circa 25 Kb. Per arginare questo fenomeno
+   sono state definite alcune funzioni fittizie (file "dummy_serverdm.s")
+   nella speranza di ingannare il linker.
+
+Fri Mar 20 12:37:18 MET 1998
+
+ Debug 1.6.1.5
+
+ - Piccole modifiche per supporto alla scheda MPP3. Gli I/O della scheda
+   MPP3 sono utilizzabili esattamente come quelli UDC3, salvo che gli
+   output sono solo 7 (UDC3 ne ha 11), e che i primi quattro input potrebbero
+   essere utilizzati anche da INTX per i micro di azzeramento. Quest'ultima
+   condizione non e` controllata. Occhio. (Si puo` anche dire che qplc puo`
+   leggere lo stato dei micro di azzeramento nei primi quattro input della
+   scheda MPP3. E` una prestazione!).
+   NOTA: Per gestire la scheda MPP3 e` necessario un kernel contenete il
+   driver IOS 2.15 o successivo.
+ - Aggiunto il comando remoto "free", che fornisce lo stato di occupazione
+   della memoria condivisa e della RAM non volatile. Sono quattro valori
+   esadecimali. Nell'ordine: byte liberi in NVRAM, byte liberi per nomi+dati
+   dei segnali di scambio, numero di chiavi libere per i segnali di scambio,
+   dimensione del piu` grande blocco di chiavi libere contigue.
+
+Mon Mar 23 17:43:02 MET 1998
+
+ Debug 1.6.1.6
+
+ - E` ora accettata anche la stringa "MPP" come sinonimo
+   di "UDC" nella descrizione di segnali associati alle schede UDC3 ed MPP3.
+   Questo dovrebbe facilitare la vita all'editor PLC.
+
+Thu Mar 26 16:50:46 MET 1998
+
+ Debug 1.6.1.7
+
+ - Portato ad 8 il numero di canali gestibili dal driver "ax".
+   Ci vuole libserax 2.0.2.0 .
+ - Venduto a BOBBIO !!!
+
+Fri Mar 27 10:44:46 MET 1998
+
+ Debug 1.6.2.0
+
+ - Aggiunto il comando "list". Permette di ottenere la lista dei disopsitivi
+   di I/O disponibili. L'organizzazione dei dispositivi e` gerarchica, ed e`
+   conforme (piu` o meno) alla sintassi di descrizione dei segnali utilizzata
+   nelle operazioni di associazione.
+   Il comando "list" ha tre possibili utilizzi:
+   1) Senza argomenti: si ottiene la lista completa dei segnali disponibili
+      nel sistema.
+   2) "list e": fornisce la descrizione del primo elemento a livello
+      immediatamente inferiore a quello corrente. Errore se l'elemento al
+      livello corrente non e` ulteriormente espandibile.
+   3) "list n": fornisce la descrizione del successivo elemento allo stesso
+      livello.
+   4) "list <livello> <driver_id> <coordinate>": fornisce la descrizione
+      del dispositivo controllato dal driver "driver_id" e dalle "coordinate
+      di dispositivo" (valore ad 8 byte), appartenente al livello
+      gerarchico "livello".
+   Il risultato dell'operazione e` una risposta di tipo
+
+    D <nome> <commento> <flag> <bit> <livello> \
+      <id_corrente> <coordinate_primo_figlio> \
+      <id_prossimo> <coordinate_prossimo>
+
+   oppure "D ." per indicare la fine della lista.
+   "list" senza argomenti produce una successione di linee come quella
+   descritta sopra, salvo che e` presente il carattere di continuazione.
+
+   "nome" e` il nome standard del segnale, buono per essere utilizzato in
+    in un'associazione di I/O.
+   "commento" e` una stringa arbitraria, ad uso del debugger.
+   "flag" descrive le caratteristiche del nodo. E` una mappa di bit:
+     0x01 : segnale utilizzabile in INPUT,
+     0x02 : segnale utilizzabile in OUTPUT,
+     0x04 : nodo espandibile, cioe` e` il genitore di un insieme di
+            altri segnali.
+   "bit" e` la dimensione in bit del segnale.
+   "id_corrente" e` un valore a 32 bit che identifica il driver che controlla
+    il dispositivo.
+   "coordinate_primo_figlio" e` un valore ad 8 byte che serve ad identificare
+    il primo dei nodi figli di quello corrente. Va utilizzato per esplorare
+    la lista dei figli del nodo corrente.
+   "id_prossimo" e` un valore a 32 bit che identifica il driver che controlla
+    il prossimo elemento allo stesso livello di quello corrente.
+   "coordinate_prossimo" e` un valore ad 8 byte che identifica il prossimo
+    elemento allo stesso livello di quello corrente.
+ - Ridotto a 16 il numero di errori di I/O immagazzinati. Bastano e avanzano.
+ - Risolto in qualche modo un problema nell'installatore del driver IOS
+   a causa del quale non veniva "vista" la IOS secondaria se mancava quella
+   primaria. Questo ha richiesto l'aggiunta di un parametro di configurazione
+   iniziale per il metodo "install" dei device driver. DA FARE: ora la
+   scheda secondaria e` gestita, ma risulta avere indice "0" (cioe`, le
+   sue componenti si indicheranno con "ios.0..."). Questo potrebbe creare
+   qualche confusione. Ma, d'altra parte, perche` installare solo la IOS
+   secondaria ?
+
+Thu Apr  2 20:23:42 MET DST 1998
+
+ Debug 1.7.0.0
+
+ - Rivoluzionata (non esageriamo) l'organizzazione dei driver: ora
+   i metodi "parse" ed "attach" usano la stessa descrizione dei segnali
+   fornita dal metodo "list". Questo dovrebbe aprire la strada all'aggiunta
+   di una primitiva di acquisizione non invasiva di un segnale di I/O,
+   anche con esecutore in GO.
+ - Corretto un bug residuo nel driver "keyb": non funzionavano bene
+   i segnali del tipo "keyb.0.8.n" (override con valori su 8 bit).
+ - Aggiunto il supporto per uscita analogica su scheda MPP3:
+   sostituire ad "adx" o "rcx" la stringa "mpp".
+ - Aggiunto l'azzeramento delle liste globali di I/O ad ogni entrata in GO.
+   Dovrebbe rendere in qualche caso piu` veloce il ciclo d'esecuzione.
+ - NOTA: COLLAUDO INCOMPLETO: NON sono stati ancora provati i dispositivi
+   LED su scheda CX, LED della tastiera del compatto, I/O MPP3 e UDC3,
+   canali analogici, seriali. Il supporto per BusGage e` stato collaudato
+   a livello di codice, ma senza scheda montata.
+
+Fri Apr  3 20:42:06 MET DST 1998
+
+ Debug 1.7.0.1
+
+ - Aggiunto il metodo "show" ai driver. Serve a conoscere in modo non
+   invasivo lo stato corrente di un segnale di I/O.
+   Sono anche state aggiunta le funzioni "ioParse" e "ioShow".
+ - Aggiunto il comando del debugger remoto "iostat", interfaccia per
+   il metodo "show" dei driver.
+
+Mon Apr  6 11:30:35 MET DST 1998
+
+ Debug 1.7.0.2
+
+ - Aggiunte la funzioni (uso interno) "ioParse" e "ioCoreAttach", che
+   realizzano rispettivamente la traduzione di una stringa nel segnale
+   corrispondente ed il collegamento di questo con una variabile.
+   Sono le due componenti della funzione "ioAttach".
+ - Il comando "iostat" ora puo` accettare come primo parametro anche un
+   numero nella stessa forma prodotta da "list" per le proprieta` di un nodo.
+ - I comandi "in" e "out" ora non hanno piu` bisogno del parametro "numero di
+   bit".
+
+Fri Apr 17 14:39:52 MET DST 1998
+
+ Debug 1.7.0.3
+
+ - Aggiunta la possibilita` di associare qualsiasi cosa al dispositivo
+   "NULL" (solo con "ioAttach"). L'associazione non ha alcun effetto (le
+   variabili associate non vengono alterate), ma e` sempre permessa e non
+   da` errori.
+
+Wed Jun 10 11:50:54 MET DST 1998
+
+ Debug 1.7.0.4
+
+ - Aggiunto il supporto per il DAC ad 8 bit della scheda CX. Il dispositivo
+   si chiama "ios.0.dac", e deve essere associato ad una variabile ad 8 bit.
+
+Wed Jun 10 16:42:55 CEST 1998
+
+ Debug 1.7.0.5
+
+ - Aggiunta la funzione pubblica "plcSaveAx", che permette il salvataggio
+   fisico delle tabelle assi del centro associato all'asse dato.
+
+Thu Jun 18 11:32:23 MET DST 1998
+
+ Debug 1.7.0.6
+
+ - Aggiunto il supporto per moduli speciali a 4 ADC (IAN451). Gli ingressi
+   sono a 16 bit con segno. Si chiamano <...indicazione modulo...>.ADC.<0-3>.
+ - Corretto un bug residuo nella gestione dell'uscita DAC della scheda CX:
+   mancava la de-associazione della variabile all'entrata in halt. Sintomo:
+   dando halt e poi go si aveve errore di associazione.
+
+Tue Jun 30 13:27:23 MET DST 1998
+
+ Debug 1.7.0.7
+
+ - Aggiunta la variabile di configurazione "wdtime", che
+   contiene il tempo d'intervento del watchdog della IOS espresso
+   in cicli di PLC.
+
+Tue Aug 25 15:17:44 MET DST 1998
+
+ Debug 1.8.0.0
+
+ - Aggiunta la possibilita` di usare la scheda INAX come temporizzatore.
+   L'esecutore puo` cosi` funzionare con periodo inferiore a 10 ms.
+   L'opzione "-use-inax" abilita questa modalita`. Nel funzionamento
+   ordinario e` necessaria la presenza del processo "intx", che controlla
+   normalmente la scheda INAX; nel funzionamento stand-alone, e` qplc
+   stesso a programmare la scheda. L'opzione "-period n" controlla ancora
+   la durata del periodo dell'esecutore. Se il periodo non coincide con
+   quello impostato da "intx", e` approssimato al primo multiplo intero
+   del valore corrente.
+   Per evitare blocchi dell'esecutore dovuti a problemi di "intx", e`
+   anche utilizzato un timer Lynx ordinario con funzione di watchdog. Il
+   suo periodo e` normalmente 30 ms, ma puo` essere variato con la nuova
+   opzione "-inax-wd-period n".
+   Questa prestazione richiede il driver INAX 3.0 .
+ - Lavori in corso, comunque. Il driver IOS ora rischia di dare erronee
+   segnalazioni di timeout della scheda quando il periodo scende sotto
+   i 4 ms. Inoltre c'e` ancora qualcosa da capire a proposito del consumo
+   complessivo di CPU: prove preliminari hanno dato saltuari errori di
+   overrun anche se la somma dei tempi di intx e qplc non superava il
+   periodo di ciclo...
+
+Tue Aug 25 17:31:08 MET DST 1998
+
+ Debug 1.8.0.1
+
+ - Aggiunto il contatore di timeout per la scheda IOS, per evitare il
+   fault con periodi di PLC molto brevi (INAX).
+ - Corretto un errore nel calcolo dell'indice della scheda in timeout.
+   La segnalazione di fault (giusta, di per se`) poteva indicare il
+   numero di scheda sbagliato.
+
+Tue Sep  1 17:42:05 MET DST 1998
+
+ Debug 1.8.0.2
+
+ - Aggiunta l'opzione "-min-overrun", che serve a
+   specificare il numero di cicli in overrun concessi al
+   programma senza che venga emesso l'errore di ciclo troppo lungo.
+ 
+Thu Sep  3 11:15:06 MET DST 1998
+
+ Debug 1.8.0.3
+
+ - Corretta una piccola incongruenza formale in exec.c (innocua).
+ - Disattivato per default il meccanismo di sorveglianza dell'attivita`
+   del gestore della INAX (intx o chi per lui) per problemi legati
+   ad una possibile gestione bacata dei segnali da parte di Lynx.
+ 
+Fri Sep  4 11:46:45 MET DST 1998
+
+ Distribuzione 1.8.0.4
+
+ - Affidato ad un thread separato il meccanismo di
+   sorveglianza nella modalita` sincronizzata ad intx. Questo
+   dovrebbe risolvere il (presunto) difetto di "sigwait".
+   Aggiunta l'inizializzazione di alcuni campi (paranoia).
+   Raccolta in una variabile la priorita` iniziale del processo
+   (risolve alcuni problemi logici).
+   Riportato a 30 ms per default (e quindi riabilitato) il periodo
+   di sorveglianza dell'attivita` di intx.
+   Migliorato il contatore di clock.
+ - Distribuito in BiEsse. E` la nuova versione ufficiale.
+ 
+Tue Sep 22 15:29:52 MET DST 1998
+
+  Debug 1.8.0.5
+
+  - Corretto un bug nel calcolo dell'indirizzo delle variabili della
+    sezione COMMON da debugger remoto.
+  - Aggiunto il comando remoto "set", che permette di scrivere un valore
+    su di una variabile data per nome. Sintassi:
+
+       set variabile indice1 indice2 dato [dato...]
+
+    dove "variabile" e` il nome di una variabile, "indice1" e "indice2"
+    sono indici, significativi solo per i segnali di scambio, e "dato"
+    e` il valore esadecimale da scrivere nella variabile. Il numero di cifre
+    di "dato" decide di quanti byte debba essere inteso il valore. Sono
+    riconosciute le taglie di un byte (1-2 cifre) due byte (3-4 cifre)
+    e quattro byte (5-8 cifre). Altre taglie provocano errore 4.
+    Successivi valori sono assegnati ad indirizzi via via crescenti.
+    E` assicurata la scrittura atomica dei singoli valori, ma non tra
+    un valore ed il successivo. Percio`, se "QUATTRO" e` una variabile a
+    quattro byte, i due seguenti comandi sono equivalenti riguardo
+    al contenuto finale della memoria, ma non riguardo alla temporizzazione:
+
+      set QUATTRO 0 0 12345678
+      set QUATTRO 0 0 78 56 34 12
+
+    il secondo infatti puo` essere interrotto dall'esecutore, che potrebbe
+    leggere un valore errato dalla variabile.
+
+Thu Sep 24 16:26:58 MET DST 1998
+
+ Debug 1.8.0.6
+
+ - Aggiunta l'opzione "p" al comando remoto "list".
+   "list p" emette le lista delle associazioni di I/O correnti. La
+   lista e` composta da un certo numero di linee
+
+	D-<name> <mode> <nbit> <addr> <key>
+
+   dove "name" e` il nome del segnale, "mode" e` la modalita` di
+   associazione (1=input, 2=output), "nbit" e` la dimensione in bit,
+   "addr" e` l'indirizzo della variabile associata, "key" e` una chiave
+   da utilizzare nel comando "setin" per riferirsi al segnale. La lista
+   termina con la linea "D ."
+ - Aggiunto il comando remoto "setin", che serve a forzare il valore
+   di un segnale di input.
+   "setin <key> <val>" forza al valore "val" il segnale di input di
+   chiave "key". La chiave si ottiene col comando "list p".
+ - Aggiunta l'opzione "-simul", che simula la presenza di ogni tipo di
+   hardware richiesto (cosicche` nessun programma potra` dare errore
+   per mancanza di qualche segnale di I/O), ma disabilita ogni accesso
+   fisico ai segnali. E` utile in fase di debug, dove gli input vengono
+   forzati dal debugger col comando "setin", e gli output sono visualizzati
+   nella finestra delle variabili.
+   
+Mon Sep 28 14:08:01 MET 1998
+
+ Debug 1.8.0.7
+
+ - Aggiunta la funzione "shvAddrToVar", che converte un indirizzo nel
+   segnale di scambio corrispondente. Solo per uso interno.
+ - Riorganizzate le funzioni di traduzione dei simboli da debugger, in
+   vista dell'aggiunta di un comando di traduzione indirizzo->nome
+   (lavori in corso: esiste gia` il comando "sym", ma non fa quasi niente).
+
+Tue Sep 29 11:51:26 MET 1998
+
+ Debug 1.8.0.8
+
+ - Completato il comando "sym", che trova il simbolo piu` vicino
+   all'indirizzo dato. La risposta puo` essere
+
+	D S <nome> <indice1> <indice2>
+  
+    oppure
+
+	D I <nome> <offset> <file>
+
+     La prima forma si ottiene quando l'indirizzo corrisponde ad un elemento
+    di un segnale di scambio. "indice1" e "indice2" sono gli indici
+    dell'elemento.
+     La seconda forma si riferisce a simboli ordinari di moduli IL o C.
+     "offset" e` lo scostamento dell'indirizzo rispetto al valore del
+    simbolo trovato, e "file" e` il nome del file contenete il programma
+    a cui il simbolo si riferisce.
+     Se non si trova alcuna corrispondenza ragionevole, si ha errore 4.
+    NOTA: il comando non e` in grado di riconoscere i simboli contenuti
+    staticamente nell'eseguibile "qplc".
+
+
+Wed Sep 30 12:02:17 MET 1998
+
+ Debug 1.8.0.9
+
+ - Aggiunta la possibilita` di rendere opzionale un segnale di I/O
+   premettendo un "_" al suo nome.
+ - Aggiunta una routine di "canonizzazione" dei nomi dei segnali di I/O
+   all'inizio di "ioAttach" (conversione in minuscolo, eliminazione
+   degli 0 superflui e dell'eventuale "_" iniziale).
+
+Thu Oct  1 16:17:02 MET 1998
+
+ Debug 1.8.0.10
+
+ - Aggiunta la gestione del file di configurazione degli I/O.
+   Si chiama "ioconf.qplc", salvo diversa indicazione con la nuova
+   opzione "-path-ioconf <file>". Se il file e` assente, qplc si
+   comporta nella maniera consueta. Se e` presente, qplc lo legge
+   e in base al suo contenuto realizza, rifiuta o simula le associazioni
+   di I/O richiesta dal programma PLC. La funzione interna che risente
+   della configurazione e` "ioAttach". Sintassi e significato del
+   file di configurazioni sono descritti dettagliatamente nel
+   documento "ioconf.txt". Vale pero` la pena di ricordare che, se e`
+   presente il file di configurazione, sono rifiutati tutti i collegamenti
+   ai dispositivi non citati in esso.
+
+Mon Nov  9 16:35:47 MET 1998
+
+ Debug 1.8.0.11
+
+ - Cambiata la logica di gestione del file di configurazione:
+   1) I segnali non citati sono considerati ora "RICHIESTI" (proprieta` "R"),
+      metre prima erano considerati proibiti (proprieta` "D").
+   2) Il file di configurazione e` riletto ad ogni GO.
+   3) Il comportamento descritto in (1) puo` essere modificato con
+      la nuova opzione "-defaultio X", dove X e` un carattere di proprieta`,
+      cioe` "R", "D", "S", o "O". Ai segnali non compresi nel file di
+      configurazione sara` applicata la proprieta` indicata. Questo vale
+      anche nel caso di file di configurazione assente (tranquilli, funziona
+      tutto: la proprieta` di default e` R, il che assicura la compatibilita`
+      con le versioni precedenti, eccetto la 1.8.0.10, ovviamente).
+      Il comportamento della versione 1.8.0.10 puo` essere ottenuto
+      specificando l'opzione "-defaultio D".
+ - Il file di configurazione viene ora riletto ad ogni GO.
+ - NOTA: Data la cronica lentezza con cui i nuovi messaggi di errore
+   vengono adottati, distribuiti e tradotti, errori di sintassi del file
+   di configurazione provocano solo un messaggio in inglese su STDERR.
+
+Wed Nov 11 11:41:15 MET 1998
+
+ Debug 1.8.0.12
+
+ - Modificato il comando remoto "sym" in modo da privilegiare, a parita`
+   di condizioni, i nomi che non cominciano con ".".
+
+Thu Nov 19 19:52:58 MET 1998
+
+ Debug 1.8.0.13
+
+ - Modificata la visualizzazione degli errori hardware. E` stata aggiunta
+   la ricerca dei moduli in fault. Ora il messaggio emesso comprende anche
+   l'indice del modulo in errore. (Da un punto di vista della qualita` del
+   codice, la modifica fa schifo. Il meccanismo di segnalazione degli
+   errori hardware andrebbe rivisto).
+
+
+Fri Nov 20 17:48:46 PST 1998
+
+ Debug 1.8.0.14
+
+ - Aggiunto il supporto per i moduli speciali LAE.
+    Si tratta di quattro nuovi tipi di segnale, che compaiono come "figli"
+   dei primi otto bit di output dei moduli finora utilizzati come "tastiera
+   Selco". I nomi di questi segnali sono "DELAY", "PULSE", "TRIGL" e "OUTL".
+    I primi due sono output a 16 bit, e configurano i due timer relativi
+   al bit che li controlla, gli altri due sono output a 1 bit, e configurano
+   rispettivamente la polarita` del trigger (salita/discesa) e dell'uscita
+   attiva (alta/bassa). I secondi otto bit del modulo sono le abilitazioni
+   delle uscite. I primi otto bit di ingresso mappani gli otto ingressi,
+   i secondi otto le uscite speciali, i terzi le uscite ordinarie.
+   NOTA: Si tratta di codice SPERIMENTALE.
+
+Mon Nov 23 11:22:21 MET 1998
+
+ Debug 1.8.0.15
+
+ - Iniziata la difficile correzione delle sfighe sui moduli LAE...
+
+Mon Nov 30 16:57:09 MET 1998
+
+ Debug 1.8.0.16
+
+ - Corretta la funzione interna "util_stop_thread" in modo che eviti di
+   chiamare la system cal ldi cancellazione di un thread con parametro
+   uguale a -1. Nelle versioni precedenti, all'entrata in HALT si poteva
+   avere l'inaspettata cancellazione del thread principale. La condizione
+   si e` finora verificata solo in occasione di HALT provocato da divisione
+   per zero. Si tratta probabilmente di un'incongruenza a livello di kernel.
+
+Fri Dec 11 16:31:52 MET 1998
+
+ Debug 1.8.0.17
+
+ - Aggiunto il supporto alla scheda MPP3 SLAVE. Non si tratta di una gran
+   modifica: l'unica parte che ne risente e` il debugger remoto, che ora
+   identifica correttamente il dispositivo ed emette la lista degli I/O
+   utilizzabili (IOS.x.MPP.y). Per il resto, non e` necessario passare
+   a questa versione dell'esecutore per lanciare programmi PLC che usino
+   i segnali della MPP3 slave. Il supporto per il modello MPP3 master,
+   presente fin dalla versione 1.6.1.5, e` gia` sufficiente per l'esecuzione
+   dei programmi. Piuttosto, per far funzionare la MPP3 SLAVE ci vuole un
+   kernel installante il driver IOS di versione 2.19 ed il driver INAX 3.1
+   (ma quest'ultimo solo ad intx, in realta`).
+
+Wed Jan 13 12:16:51 MET 1999
+
+ Debug 1.8.0.18
+
+ - Ricompilato con la versione ufficiale di libreria 6.1.11 . Nessuna
+   funzionalita` aggiunta, nessuna modifica. Solo nuove prestazioni
+   della libreria "libserax.a", ad uso di "hatsh.oo".
+
+Thu Feb 18 18:07:16 MET 1999
+
+ Debug 1.8.0.19
+
+ - Aggiunta la funzione "plcSaveGenericTable", che salva una tabella
+   utente dato il nome.
+ - Cambiata la priorita` interna del salvataggio dei dati assi (aveva qualla
+   degli errori, gli e` stata data quella dei comandi).
+
+Wed Mar 24 21:20:15 MET 1999
+
+ Debug 1.8.0.20
+
+ - Ricompilata con la libreria 6.2.0.
+
+Wed Mar 24 21:21:23 MET 1999
+
+ Debug 1.8.1.0
+
+ - DISTRIBUITO NELLA VERSIONE XNC 2.0.0.0-BETA.
+ - Compilata con la versione 6.2.0 della libreria.
+ - Eliminato il blocco sul segnale SIGPRIO, introdotto per
+   evitare che la priorita` dell'esecutore fosse superata da
+   quella del sistema TCP/IP. La soluzione era stata sconsigliata
+   dalla Lynx, ed ora e` inutile perche` anche INTX ora realizza
+   un colloquio TCP/IP. Inoltre si sospetta che sia una delle cause
+   dei blocchi che si verificano con il kernel 3.0.0.
+   Se comunque si desidera reintrodurre il vecchio comportamento,
+   si aggiunga l'opzione "-tcp-priority 0" al lancio di qplc.
+
+Fri Apr  2 13:36:55 MET DST 1999
+
+ Debug 1.8.1.1
+
+ - Corretto un bug residuo nel caricamento dinamico dei moduli: mancava
+   la chiusura del file alla fine del caricamento (e nessuno si era mai
+   lamentato).
+
+Tue Jun  1 09:58:20 WET DST 1999
+
+ Debug 1.8.1.2
+
+ - Nessuna modifica sostanziale.
+   Aggiunto il simbolo "GetTestData" alla lista dei simboli obbligatori.
+ - NOTA: Ricompilato con la libreria 6.1.11 e distribuito a Lelli.
+
+Mon Jun 14 16:41:49 WET DST 1999
+
+ Debug 1.8.1.3
+ - Niente: e` la stessa roba, ricompilata con la versione 6.2.6 della
+   libreria.
+ - NOTA: Questa versione e` stata pubblicata in XNC 2.0.0.0.
+
+Wed Dec 15 12:28:05 WET 1999
+ Debug 1.8.1.4
+ - Portate a 1000 e 200 rispettivamente le dimensioni delle tabelle
+   dei segnali a rilevamento di fronte BOOL e LONG. Inoltre
+   sono state aggiunte le opzioni -max-edge-bool e -max-edge-long
+   per intervenire sulle dimensioni delle tabelle.
+ - Portata a 500 per default la lunghezza della coda di comunicazione
+   tra thread veloce e thread lento.
+ - NOTA: Versione compilata con la libreria 6.2.6, ma venduta (solo
+   la libqplc.a) a Max per debug, dove verr` probabilmente usata con
+   una versione 6.1.x di libreria CNi.
+
+Fri Jul 28 17:07:12 MET DST 2000
+ Debug 1.8.1.5
+ - Esperimento di ricompilazione su Linux - Non pubblicato
+
+Fri Jul 28 17:07:57 MET DST 2000
+ Debug 1.8.1.6
+ - Integrate le modifiche per la compilazione su Linux.
+   Nella compilazione per Linux sono esclusi gli accessi al server dei
+   dati macchina, al gestore degli errori (libxerror) e al gestore degli
+   assi. Inoltre e` stato tolto l'accesso al dispositivo "bgage", ed e`
+   stata data la possibilita` di non caricare affatto hatsh.oo.
+ - Corretto un bug nel gestore del colloquio in rete: crash se si dava una
+   stringa di comando alfabeticamente maggiore di "wshow".
+
+Fri Jul 28 17:07:57 MET DST 2000
+ Debug 1.8.1.7
+ - Introdotti due nuovi eventi asincroni per la manipolazione di errori
+   e messaggi da remoto, e il comando "messages", che funziona come "errs"
+   ma e` riferito ai messaggi. L'evento asincrono 6 segnala la cancellazione
+   di una condizione di errore (il codice dell'errore e` riportato
+   nell'evento). L'evento asincrono 7 riporta invece l'emissione, la
+   cancellazione o l'aggiornamento di un messaggio. Dopo il codice di
+   evento si trovano il tipo di azione sul messaggio (0 == cancellazione,
+   1 == emissione, 2 == update), il codice di messaggio e la stringa
+   associata (tranne nel caso di cancellazione).
+
+Thu Nov  2 18:00:20 MET 2000
+ Debug 1.8.1.8
+ - Corretto un bug nel comando "errs", introdotto nella precedente versione.
+   Il bug e` stato trovato analizzando il codice, senza che avesse mai
+   manifestato i suoi effetti. Le conseguenze del bug non sono facilmente
+   prevedibili.
+ - Modificata leggermente la logica di interpretazione
+   delle opzioni "-stand-alone" e "-no-hatsh", in modo che
+   l'inizializzatore del modulo "hat" venga invocato solo
+   se strettamente richiesto.
+ - Modificata la logica di allocazione delle liste di
+   break in modo che siano preferibilmente prodotti indici
+   diversi dopo creazioni/distruzioni successive. Questo dovrebbe
+   rendere meno evidenti certi difetti del pacchetto "edit_plc".
+
+Fri Nov  3 21:05:44 MET 2000
+ Debug 1.8.1.9
+ - Apportate alcune migliorie formali al colloqui TCP/IP (intercettato
+   l'errore ECONNRESET, aggiunto il keepalive, inizializzata meglio
+   la struttura per "bind").
+ - Aggiunto il comando "whistory", che accetta i parametri "l", "s" e "v".
+   Serve a scaricare l'intero buffer di debug ("v") e abilita due diversi
+   modi di registrare gli eventi: uno "normale", in cui si registrano
+   tutti gli eventi che si verificano ("l"), e quello "compresso", in cui
+   si registra un solo evento per ogni lista di break, finche` non si
+   legge la storia con "v".
+
+Sat Nov  4 15:58:54 CET 2000
+ Debug 1.8.1.10
+ - Reso piu` solido il meccanismo introdotto nella versione precedente,
+   che era esposto ad incongruenze in caso di accessi contemporanei dei
+   debugger locale e remoto.
+
+Mon Nov  6 20:33:28 MET 2000
+ Debug 1.8.1.11
+ - Aggiunto un flag di "dati presenti" per le primitive del debug remoto,
+   perche` si confondevano i casi di "buffer completamente
+   pieno" e "buffer completamente vuoto" (in entrambi i casi
+   si ha "lcl_firstevp == wr_pos" - vedi "debugger.c").
+   Spostata alla fine dell'analisi dell'ultimo punto della lista
+   di break l'accensione del bit di "evento gia` registrato".
+   Condizionato l'aggiornamento del puntatore di lettura interno
+   alla modalita` di funzionamento 0.
+   Corretto un incredibile errore nella gestione del puntatore
+   alla coda delle liste di break durante la creazione di una
+   nuova lista. Probabilmente gli effetti del bug erano mascherati
+   dal comportamento del debugger, e da una certa ridondanza del codice...
+   Condizionato alla non-definizione di RECYCLE_WLID il codice
+   che si preoccupa di non riciclare immediatamente gli ID delle
+   liste di break. Sembra che risolva alcuni problemi, ma ne crei
+   altri alle versioni vecchie di "edit_plc".
+
+Tue Nov  7 18:28:26 MET 2000
+ Debug 1.8.1.12
+ - Introdotta la capacita` di ricordare gli errori passati. Gli errori
+   sono immagazzinati in un apposito buffer che fa parte dell'area dei
+   segnali di scambio. La sua dimensione e` attualmente 2 Kb. Sono
+   stati introdotti tre nuovi segnali di scambio: $DEB_ERRORS e` il
+   buffer degli errori, $DEB_FIRSTERRP e` la posizione nel buffer
+   dell'inizio dei dati significativi, e $DEB_ERRLENGTH e` la lunghezza
+   del blocco dati utile nel buffer. Inoltre sono state aggiunte due
+   nuove opzioni al comando "errs" del debugger remoto. Entrambe
+   permettono di scaricare l'intero contenuto del buffer degli errori.
+   "errs v" provoca la trasmissione del buffer nella consueta forma
+   numerica, (quella gia` utilizzata, per esempio, dal comando "trace v"),
+   mentre "errs l" visualizza gli errori in una forma umanamente leggibile
+   (sequenze "D-<codice errore> <stringa associata>", e al temine una
+   linea "D ."). Gli errori sono memorizzati come strutture di lunghezza
+   variabile. Il primo byte e` la lunghezza della struttura, i quattro
+   successivi contengono il codice dell'errore, seguiti dal testo opzionale,
+   teminante sempre col carattere '\0'. La lunghezza massima di una struttura
+   e` quiandi 255 byte. Gli errori con testi troppo lunghi vengono troncati.
+ 
+Wed Nov  8 19:25:24 MET 2000
+ Debug 1.8.1.13
+ - Automatizzata l'entrata in modo 0 ("whistory l") quando si resettano le
+   liste (la prestazione ci doveva gia` essere, ma non funzionava sempre).
+ - Modificato il comportamento della modalita` 1 ("whistory s"), in modo
+   che riporti sempre e incondizionatamente gli eventi del ciclo durante
+   il quale e` eseguito il comando "whistory v". In questo modo e` piu`
+   facile ottenere lo stesso comportamento con un debugger locale ed un
+   debugger remoto.
+
+Thu Nov  9 18:38:31 MET 2000
+ Debug 1.8.1.14
+ - Limitato a 200 caratteri il nome del file riportato dai comandi
+   locale (cioe` "stile isagraf") e remoto di acquisizione dello stato
+   di un modulo dinamico. Su Linux, dove la lunghezza massima di un path
+   e` maggiore, si avevano crash di plc2. Ma anche su Lynx le cose potevano
+   avere esiti drammatici (alterazione dei segnali di scambio di chiave
+   bassa dopo la richiesta di visualizzaione di una variabile C da plc2).
+   Stranamente, nessuno se n'e` mai accorto. 
+
+Mon Nov 13 19:56:36 MET 2000
+ Debug 1.8.1.15
+ - Corretto un errore nell'assegnazione di priorita` su Linux. Sintomi:
+   non sempre funzionava il debug remoto (strano che fosse l'unico effetto!).
+   Su Lynx non ci sono cambiamenti: il codice e` identico alla precedente
+   versione (a parte il numero di versione!).
+
+Tue Nov 21 19:56:52 MET 2000
+ Debug 1.8.1.16
+ - Corretta un'imperfezione nella gestione della tabella delle
+   liste gia` percorse. Il flag veniva acceso anche se la
+   lista non aveva provocato traffico (per esempio perche`
+   non era verificata la condizione associata, come puo` accadere
+   durante il debug di blocchi funzionali IL).
+ - Migliorata la gestione dei breakpoint. Ora e` ammesso definire liste
+   con inizio e fine coincidenti (liste di un solo elemento, in genere),
+   a patto che nel punto di definizione ci sia spazio per due chiamate
+   (cioe` devono esserci dieci NOP consecutivi). Questa condizione e`
+   garantita dalla versione 1.2.0.6 del compilatore IL in tutti i casi
+   di interesse per il debugger. Se la condizione non e` verificata,
+   si ha il vechio comportamento, che tutto sommato funzionava abbastanza
+   bene: si avevano problemi solo con il codice percorso piu` di una volta
+   all'interno di un ciclo (es. blocchi funzionali), col risultato che
+   le liste anomale venivano cancellate (e ripristinate solo al ciclo
+   successivo) dopo il primo passaggio per esse. Sintomi: anomalie nel
+   debug di funzioni, blocchi funzionali o cicli.
+
+Wed Nov 22 10:58:00 MET 2000
+ Debug 1.8.1.17
+ - Aggiunto il ripristino dei NOP coperti dal breakpoint speciale
+   nei rarissmi casi di halt forzato (puo` accadere solo per ciclo di PLC
+   troppo lungo) durante l'esecuzione del breakpoint stesso.
+ - Migliorato il Makefile, per facilitare le compilazioni su piattaforme
+   diverse.
+
+Tue Dec  5 11:11:20 MET 2000
+ Debug 1.8.1.18
+ - ATTENZIONE! Versione compilata con la libreria 6.1.11!
+   Non distribuire se non per applicazioni particolari!
+ - E` stato rappezzato un doppio bug di kernel, a causa del quale
+   non funzionavano gli ingressi UDC3 sul microXNC. La causa prima era
+   il risultato errato della primitiva "getgroups", che su micro, per
+   motivi da chiarire, fornisce una lista vuota.
+   In conseguenza di cio`, qplc decideva di utilizzare i servizi IOSRDUDC3
+   e IOSWRUDC3 anziche` l'accesso diretto alle porte di I/O. Ma il servizio
+   IOSRDUDC3 e` bacato (restituisce sempre solo i valori 0 o 1).
+
+Tue Dec  5 11:32:55 MET 2000
+ Debug 1.8.1.19
+ - Nessuna modifica rispetto alla precedente, salvo che la libreria
+   utilizzata e` la solita 6.2.6.
+
+Thu Dec  7 16:36:11 CET 2000
+ Debug 1.8.1.20
+ - Modificata la procedura di validazione degli indirizzi di memoria su
+   Linux, dove non funziona il trucco di scrivere su o leggere da /dev/null.
+   Si e` dovuto usare /proc, che e` chiaramente piu` lento. Peccato.
+   Basterebbe una singola riga di codice in /usr/src/linux/drivers/char/mem.c
+   per avere la stessa prestazione anche su Linux...
+   Per accelerare le cose, i dati vengono letti da /proc ad ogni entata
+   in "go", e immagazzinati in una cache. Non e` un metodo completamente
+   sicuro, principalmente perche` lo stack e l'heap possono crescere anche
+   dopo il go, pero` dovrebbe essere sufficiente per far funzionare il
+   debugger IL.
+   NOTA: ovviamente, su Lynx tutto continua a funzionare come prima.
+ - Evitato l'aggancio dei segnali di scambio dei tasti al dispositivo
+   quando la loro creazione e` esplicitamente inibita da linea di comando
+   (opzione -shvmask <n>).
+
+Tue Dec 12 17:32:42 MET 2000
+ Debug 1.8.1.21
+ - Aggiunta la funzione "plcSaveOrig" per il salvataggio delle origini.
+   Necessaria per programmi IL che usino la funzione MD_SAVE_ORIG
+   (disponibile dalla versione 1.1.1.10 di libil.a).
+
+Mon Jan 22 11:34:11 MET 2001
+ Debug 1.8.1.22
+ - Compilata con la versione 6.3.9 della libreria CNi, che contiene
+   migliorie al colloquio con il CN che rendono piu` rapida la comunicazione
+   di eventi da hatsh.oo a all_int/all_smis (minore latenza nella getsione
+   di override, start, stop, passo eseguito...).
+   Il passaggio alla versione 6.3 ha richiesto piccoli adattamenti al sorgente
+   e alla procedura di compilazione.
+ - Portata a 1024 la lunghezza massima di un comando remoto.
+ - Portato a 64 il numero di variabili gestibili dal comando remoto "memchk".
+
+Thu Feb  1 19:36:47 MET 2001
+ Debug 1.8.1.23
+ - Aggiunto il supporto per i moduli SDA2 (due uscite DAC a 12 bit con
+   segnale DIR). Le uscite sono accessibili con la sintassi
+   "IOS.<scheda>.<cpu>.<modulo>.SDA.<canale>.<tipo uscita>", dove
+   "tipo uscita" puo` essere "BP" (bipolare, 12 bit con segno), "UN"
+   (unipolare, 12 bit senza segno), "US" (unipolare, 11 bit senza segno
+   con possibilita` di pilotaggio dell'uscita binaria) e "OUT" (uscita
+   binaria, non utilizzabile se si e` scelto anche BP o UN). "canale"
+   e` l'indice dell'uscita analogica a cui ci si riferisce, e vale 0 o 1.
+   I segnali BP, UN e US devono essere agganciati a variabili di 16 bit
+   (INT, UINT o WORD), mentre il segnale OUT e` booleano.
+  
+Fri Feb  2 20:01:51 MET 2001
+ Debug 1.8.1.24
+ - Aggiunti gli ingressi IOS "ADCN", che funzionano come gli ADC, ma
+   producono valori normalizzati a 16 bit (ADC*32, in pratica).
+   Resa piu` solida (o paranoica) la lettura dei valori ADC dai moduli.
+ - Aggiunta la funzione "write_mdata" a quelle obbligatorie. Serve per
+   le funzioni MD_SET e MD_GET della libreria IL 1.1.2.0
+
+Thu Feb  8 17:03:37 MET 2001
+ Debug 1.8.1.25
+ - Aggiunta la funzione "plcSaveTable", che savla qualsiasi tabella
+   di dati macchina dati il nome ed il centro. E` utilizzata dalle
+   funzioni MD_SAVE e MD_COND_SAVE della libraria IL 1.1.2.2.
+   Questa prestazione sfrutta la funzione "fwrite_mdata" della libreria
+   CNi, disponibile solo dalla versione 6.3.11. Percio`, per la compilazione
+   di questa versione di qplc e` necessaria una libreria CNi recente.
+
+Tue Feb 13 15:52:25 MET 2001
+ Debug 1.8.1.26
+ - Aumentati realmente i limiti che credevo di avere superato nella
+   versione 1.8.1.22, e cioe`:
+   * a 1024 la lunghezza massima di un comando remoto.
+   * a 64 il numero di variabili gestibili dal comando remoto "memchk".
+
+Thu Mar 15 20:29:43 MET 2001
+ Debug 1.8.1.27
+ - Reso anche leggibile il byte 0 dei moduli speciali, nella speranza
+   che questo "aiuti" nella gestione "d'emergenza" di aggeggi non
+   supportati.
+ - Aggiunta la gestione del CNOK delle schede IOSLK2. Disponibile su
+   kernel >= 1.38.
+   Il dispositivo si chiama "IOS.<numero scheda>.CNOK", ed e` di 1 bit.
+
+Mon Mar 19 18:53:04 MET 2001
+ Debug 1.8.1.28
+ - Aggiunta la gestione dei moduli SDIS, che controllano fino a 16
+   display ciascuno. Ad ogni display sono associati due output: uno
+   a 32 bit, che rappresenta il valore da visualizzare, ed uno ad un bit,
+   che serve a decidere la posizione del punto decimale. Queste uscite
+   sono accessibili con stringhe nella forma seguente:
+   IOS.<scheda>.<cpu>.<modulo>.SDIS.<display> per il valore visualizzato,
+   IOS.<scheda>.<cpu>.<modulo>.SDIS.<display>.DEC per la visualizzazione
+   dei decimali (decine, in realta`: per qualche motivo, i display
+   trattano il valore come se fosse espresso in centesimi).
+    
+Fri Mar 23 16:40:54 MET 2001
+ Debug 1.8.1.29
+ - Corretto un orrendo bug nella gestione dei moduli XDAC
+   e SDIS. Era sbagliata la definizione dei puntatori delle
+   liste dei moduli di questo tipo. Era privo di conseguenze
+   solo perche` il tipo utilizzato si riveriva ad una struttura
+   piu` grande.
+ - Corretto uno schianto nella scrittura dei moduli SDIS nel caso
+   di associazioni incompleta (mancanza dell'uscita DEC o VALORE).
+   Era dovuto alla mancanza di un controllo su un puntatore NULL.
+
+Mon May  7 17:21:47 CEST 2001
+ Debug 1.8.1.30
+ - Modificato per Linux il calcolo del tempo (plcTime), che su Linux
+   non era affidabile a causa della latenza del sistema.
+
+Fri May 11 16:03:38 MET DST 2001
+ Debug 1.8.1.31
+ - Aggiunte due nuove variabili di configurazione,
+   ("chkwd={0|1}" e "chkdis={0|1}") che controllano il test
+   passivo dello stato della CPU e il test sulla disconnessione
+   dei moduli. E` anche stata riabilitata la variabile "wd=<n>".
+ - Evitata una possibile incongruenza nella logica di HALT
+   se impostata l'opzione "-no-fault" in caso di errori hardware.
+ - Agginta la cancellazione della lista degli errori di I/O
+   pendenti all'entrata in GO.
+

@@ -1,0 +1,38 @@
+--SPUNTI DI GENERAL QUERY DA GTK-SQL
+
+
+--selezione di tutte le tabelle contenute all'interno di un DB
+--SELECT "c"."relname" AS "tablename", "pg_get_userbyid"("c"."relowner") AS "tableowner", "c"."relhasindex" AS "hasindexes", "c"."relhasrules" AS "hasrules", ("c"."reltriggers" > '0'::"int4") AS "hastriggers" FROM "pg_class" "c" WHERE ((("c"."relkind" = 'r'::"char") OR ("c"."relkind" = 's'::"char")) AND (NOT (EXISTS (SELECT "pg_rewrite"."rulename" FROM "pg_rewrite" WHERE (("pg_rewrite"."ev_class" = "c"."oid") AND ("pg_rewrite"."ev_type" = '1'::"char"))))));
+
+
+--SELECT d.adsrc FROM pg_attrdef d, pg_class c WHERE c.relname = 'ric_prod' AND c.oid = d.adrelid AND d.adnum = 0;
+
+--selezione delle colonne di una tabella (in questo caso ric_prod);
+--SELECT a.attnum, a.attname, t.typname, a.attlen, a.atttypmod, a.attnotnull, a.atthasdef FROM pg_class c, pg_attribute a, pg_type t WHERE c.relname = 'ric_prod' AND a.attnum > 0 AND a.attrelid = c.oid AND a.atttypid = t.oid ORDER BY attnum; 
+
+--selezione delle tabelle all'interno di un database  diverse dalle tabelle di template;
+--SELECT usename, relname, relkind, relhasrules FROM pg_class, pg_user WHERE relkind = 'r' AND relname !~ '^pg_' AND relname !~ '^pga_' AND relname !~ '^xin[vx][0-9]+' AND usesysid = relowner ORDER BY relname;
+
+-- SELEZIONE DELLE COLONNE (attributi) DI UNA TABELLA
+SELECT a.attnum, a.attname FROM pg_class c, pg_attribute a, pg_type t WHERE c.relname = 'ric_prod' AND a.attnum > 0 AND a.attrelid = c.oid AND a.atttypid = t.oid ORDER BY attnum; 
+
+
+ -- DATA / ORA --
+
+-- inserimento della data e ora (DATETIME)
+INSERT INTO prova values (datetime('now'::abstime), ... );
+
+-- Selezione di colonne all'interno di una tabella usando come discriminante l'intervallo di tempo (il formato della data e' DATETIME):
+SELECT prova.numero from prova where date_part('mins',age('now'::datetime,prova.data))= .. ;
+SELECT prova.numero, age('now'::datetime,data) from prova where date_part('mins',age('now'::datetime,prova.data))> .. order by age;
+
+-- Selezione di colonne all'interno di una tabella usando come discriminante la data:
+SELECT prova.numero, age('now'::datetime,data) from prova where datetime('2000-09-21'::date)=datetime(data::date);
+SELECT prova.numero, age('now'::datetime,data) from prova where datetime('2000-09-21'::date,'12:38:26'::time)=datetime(data::datetime);
+
+-- Selezione di colonne all'interno di una tabella usando come discriminante l'ora:
+SELECT prova.numero, prova.data from prova where date_part('hour',data::datetime)=14;
+te table nuova as select m.ubicazione,m.codprod,m.cancella,m.locazione,u.settore,u.display,u.ios,u.modulo,u.riga,u.colonna,u.priorita,u.cnistato from mappa m,ubicazioni u where substr(m.ubicazione,1,1)||m.locazione=u.isola||u.locazione;
+
+CREATE table nuova as select m.ubicazione,m.codprod,m.cancella,m.locazione,u.isola,u.settore,u.display,u.ios,u.modulo,u.riga,u.colonna,u.priorita,u.cnistato from mappa m,ubicazioni u where substr(m.ubicazione,1,1)||m.locazione=u.isola||u.locazione;
+
