@@ -1,0 +1,1183 @@
+VAR_GLOBAL
+	ACCEN : BOOL:= 0;
+	ALSEV6 : BOOL:= 0;
+	ANNUL : BOOL:= 0;
+	B : BOOL:= 0;
+	BISTA1 : BOOL:= 0;
+	C : BOOL:= 0;
+	CONGELA : BOOL:= 0;
+	CONT : UDINT:= 0;
+	CONTA : UDINT:= 0;
+	CONTD : UDINT:= 0;
+	CORR : UDINT:= 0;
+	ASETTORE : UDINT:= 0;
+	ALUCE : UDINT:= 0;
+	D : BOOL:= 0;
+	E : BOOL:= 0;
+	ENM05 : BOOL:= 0;
+	ENM12 : BOOL:= 0;
+	ENM13 : BOOL:= 0;
+	ENM5 : BOOL:= 0;
+	FILT : ARRAY[0..21] OF BOOL:= [21(0)];
+	I : BOOL:= 0;
+	IDFC07 : BOOL:= 0;
+	IDFC5 : BOOL:= 0;
+	IDFC7 : BOOL:= 0;
+	IDFC8 : BOOL:= 0;
+	IUENM05 : BOOL:= 0;
+	IUENM12 : BOOL:= 0;
+	L20102 : BOOL:= 0;
+	L20202 : BOOL:= 0;
+	L20203 : BOOL:= 0;
+	L20302 : BOOL:= 0;
+	L40102 : BOOL:= 0;
+	L40107 : BOOL:= 0;
+	LUCE : UINT:= 0;
+	LUCI : ARRAY[0..30,0..30] OF BOOL:= [900(0)];
+	M8 : BOOL:= 0;
+	MARCIA1 : BOOL:= 0;
+	MARCIA2 : BOOL:= 0;
+	MARCIA3 : BOOL:= 0;
+	MAX : BOOL:= 0;
+	MIN : BOOL:= 0;
+	MLUCE : BOOL:= 0;
+	MPP : ARRAY[0..21] OF BOOL:= [21(0)];
+	MSECTOR : BOOL:= 0;
+	OCM : BOOL:= 0;
+	OCM12 : BOOL:= 0;
+	OCM13 : BOOL:= 0;
+	PP : ARRAY[0..21] OF BOOL:= [21(0)];
+	RACCEN : BOOL:= 0;
+	RANNUL : BOOL:= 0;
+	RESETL : BOOL:= 0;
+	RRESETL : BOOL:= 0;
+	RSPEGNI : BOOL:= 0;
+	S2A : BOOL:= 0;
+	S2B : BOOL:= 0;
+	SETTORE : UINT:= 0;
+	SLUCE : BOOL:= 0;
+	SPEGNI : BOOL:= 0;
+	SSECTOR : BOOL:= 0;
+	TFILT : ARRAY[0..21] OF BOOL:= [21(0)];
+	TSIRENA : BOOL:= 0;
+	XCICCIA : BOOL:= 0;
+	_CREATED : UDINT:= 1718823601;
+	_VERSION : STRING:= '1.0.0.0';
+END_VAR
+
+PROGRAM  LOG21_EP
+
+  VAR
+	TTFL24 : TOF;
+	TTFL25 : TOF;
+	TTFL26 : TOF;
+	TTFL27 : TOF;
+	TTFL28 : TOF;
+	TTFL11 : TOF;
+	TTFL30 : TOF;
+	TTFL29 : TOF;
+	TTFL12 : TOF;
+	TTFL13 : TOF;
+	TTFL14 : TOF;
+	TTFL15 : TOF;
+	TTSIREN : TON;
+	TB : TON;
+	TTFL16 : TOF;
+	TTFL17 : TOF;
+	TTFL18 : TOF;
+	CCNTLP : CTU;
+	TTFL20 : TOF;
+	TTFL19 : TOF;
+	TTFL21 : TOF;
+	CCNTLP2 : CTU;
+	TTFL22 : TOF;
+	IIDFC07 : F_TRIG;
+	TTFL23 : TOF;
+  END_VAR
+
+
+
+(* SERVE A RISPONDERE AL PRGRM PC “TEST_LUCI” , UN SETTORE ALLA VOLTA, USANDO L’UNICO  INGRESSO DI RITORNO DEL SETTORE, CHE HA UN PULSANTE.   *)
+(* BASTA TESTARE SOLO UN SETTORE PER VERIFICARE LA CORRETTEZZA DEL SOFTWARE PLC, PERCHè POI LE VARIAILI SONO PARAMETRIZZATE      *)
+
+(* BISTABILE *)
+
+	
+	
+
+   
+
+(* M A R C I A  E SEGNALAZIONI VARIE *)
+		
+	LD	SIRENA			(* linea 17 del compilatore *)
+	ST	TTSIREN.IN
+	LD	T#2000MS
+	ST	TTSIREN.PT
+	CAL	TTSIREN	(* FUNCTION BLOCK TON *)
+	LD	TTSIREN.Q
+	ST	TSIRENA
+
+
+LD PMI1
+AND PSTOP1
+ANDN MARCIA1
+OR(
+LD PMI2
+AND PSTOP2
+ANDN MARCIA2
+)
+OR(
+LD PMI3
+AND PSTOP3
+ANDN MARCIA3
+
+)
+	ST SIRENA
+
+
+	
+LD TSIRENA
+AND PMI1
+OR MARCIA1
+AND PSTOP1
+AND TERM1
+AND INAL
+	ST MARCIA1
+	
+LD TSIRENA
+AND PMI2
+OR MARCIA2
+AND PSTOP2
+AND TERM2
+AND INAL
+	ST MARCIA2
+	
+LD TSIRENA
+AND PMI3
+OR MARCIA3
+AND PSTOP3
+AND TERM3
+AND INAL
+	ST MARCIA3
+
+LD ALSEV2
+OR ALSEV6
+AND BISTA1
+OR(
+LDN ALSEV2
+ANDN ALSEV6
+AND MARCIA3
+)
+	ST LMI3			(* lampada impianto in marcia; lampeggia con ALSEV-- *)
+	
+LD MARCIA2
+	ST LMI2
+LD MARCIA1
+	ST LMI1
+	
+	
+LDN TERM1
+ORN TERM2
+	ST LPM1			(* lampada termico scattato *)
+LDN TERM3
+	ST LPM2
+LDN TERM4
+	ST LPM3
+	
+LD INAL
+ST LAI
+
+
+						(* ================================== gestione rulliere =========================*)
+
+LD MARCIA1
+	ANDN FA1
+	ST M1
+	ST M2
+	
+LD MARCIA1
+	ANDN FA2
+	ST M9
+	ST M10
+	
+LD MARCIA1
+	ANDN FA3
+	ST M17
+	ST M18
+	
+LD MARCIA1
+	ANDN FA4
+	ST M25
+	ST M26
+	
+LD MARCIA1
+	ANDN FA5
+	ST M33
+	ST M34
+	
+	
+LDN 	FC5			(* troppo pieno sulle entrate alle isole *)
+	ST	M8
+	
+LDN 	FC10
+	ST	M16
+
+LDN 	FC15
+	ST	M24	
+	
+LDN 	FC20
+	ST	M32	
+	
+
+				(* introduzioni al trasporto principale dei colli pieni *)
+
+	
+	LD	FC07
+	ST	IIDFC07.CLK
+	CAL	IIDFC07	(* FUNCTION BLOCK F_TRIG *)
+	LD	IIDFC07.Q
+	ST	IDFC07		(* fronte di discesa della fotocellule di uscita dall' incrocio *)		
+			
+LD ENM05			(* set e reset dei due stati A e B, progressivi	 *)
+OR ENM13
+AND S2A
+AND MARCIA2
+	R S2B
+	S S2A
+	
+LD IDFC07
+AND S2B
+AND MARCIA2
+	S S2A
+	R S2B
+	
+LD S2B				(* motore centrale e consenso da motore a valle *)
+AND MARCIA2
+	ST OCM13
+		AND M21
+		ST M13
+		
+LD S2A				(* ENABLE all' entrata, per i due motori di introduzione *)
+ANDN OCM13
+AND FC06
+AND MARCIA2
+	ST ENM5
+	S OCM13
+	
+	
+LD S2A
+ANDN OCM13
+AND FC07
+AND MARCIA2
+	ST ENM12
+	S OCM13
+	
+
+LD FC07				(* due motori afferenti a quello centrale *)
+AND M12
+ORN FC07
+OR ENM12
+AND MARCIA2
+	ST M12
+	
+LD FC06	
+AND M5
+ORN FC06
+OR ENM5
+AND MARCIA2
+	ST M5
+
+
+
+
+	
+	
+
+
+
+
+	
+
+
+	
+	
+	
+	
+	
+	
+
+(*=================== incroci sulla raccolta dei colli ==========================*)
+
+
+
+
+	
+			     
+
+(* ==============E A S Y  -  P I C K I N G  gestione luci =======================*)   
+
+
+
+(* QUESTO PROGRAMMA RIGUARDA 5 SISTEMI DI ISOLA B&R DI I/O PLC, OGNUNO ALLOGGIATO IN UN ARMADIO ELETTRICO, OGNUNO CON 3 (X 12 PUNTI) SCHEDE DI USCITE PNP E 1 (X 12 PUNTI) SCHEDA DI INGRESSI DRAIN.*)
+(* OGNI PUNTO-LUCE è ALIMENTATO DIRETTAMENTE DA UNA USCITA TRAMITE UN FLAT-CABLE PER OGNI SETTORE (MAX 18 USCITE PER SETTORE). *)
+(* Ogni uscita ogni è chiamata con lo stesso numero di sequenza progressiva associato alle ubicazioni (2 cifre precedute da 1 cifra di isola) *)
+
+(* - ACCEN bit da PC di accensione luce. Lo attivi dopo che hai scritto le variabili: *)
+(* SETTORE (1-20) e LUCE(1-36); *)
+(* RACCEN è il bit di risposta dal PLC che rimane alto fino alla caduta di ACCEN *)
+(* ACCEN e RACCEN funzionano quindi in 'hand-shake' *)
+
+(* Analogamente funzionano i segnali per lo spegnimento, da parte PLC, dell' ultima luce accesa nel settore, in seguito a pressione del pulsante sul punto-luce. *)
+(* SPEGNI e RSPEGNI , SSETTORE, SLUCE,  *)
+
+(* Analogamente: *)
+(* RESETL , RRESETL,                                      reset totale di tutte le lucine dell' impianto , da PC *)
+
+(* ANNULL, RANNUL, SETTORE, LUCE          annullamento di una luce (cmd. da parte del PC) *)
+
+
+
+
+
+
+
+
+
+
+
+
+
+(* trasporto I segnali hw dei pusanti su variabili interne di un vettore, ordinate per il numero dei settori*)
+
+LD PS11
+	ST PP[1]
+LD PS12
+	ST PP[2]
+LD PS13
+	ST PP[3]
+LD PS14
+	ST PP[4]
+LD PS21
+	ST PP[5]
+LD PS22
+	ST PP[6]
+LD PS23
+	ST PP[7]
+LD PS24
+	ST PP[8]
+LD PS31
+	ST PP[9]
+LD PS32
+	ST PP[10]
+LD PS33
+	ST PP[11]
+LD PS34
+	ST PP[12]
+LD PS41
+	ST PP[13]
+LD PS42
+	ST PP[14]
+LD PS43			(* linea 266 della diagnostica *)
+	ST PP[15]	
+LD PS44
+	ST PP[16]
+LD PS51
+	ST PP[17]
+LD PS52
+	ST PP[18]
+LD PS53
+	ST PP[19]
+LD PS54			(* linea 276 del compilatore *)
+	ST PP[20]
+
+(*____________________________*)
+
+(* reset di tutte le luci; memorizzazione della luce; spegnimento luce e segnalazione a PC di pulsante premuto *)
+
+LD RESETL		(* spengo tutte le luci *)
+JMPCN ERESET
+	LD 180
+	ST I
+	
+E1:
+	LD FALSE
+	ST LUCI[I,I]
+	SUB 1
+	ST I
+	NE 0
+	JMPC E1
+			
+ERESET:	
+LD RESETL
+	ST RRESETL
+(* -------------------------------------- *)
+
+				(* ricezione di comandi di accensione *)		
+	
+	
+LD ACCEN	(* al fronte up di ACCEN *)
+ANDN RACCEN
+JMPCN EACCEN
+
+	LD TRUE
+	S  LUCI [SETTORE,LUCE]
+	
+	LD SETTORE
+	ST MSECTOR
+	LD LUCE
+	ST MLUCE		
+	
+	LD TRUE				(* linea 298 del compilatore *)
+	R FILT[SETTORE]	(* filtro  settore *)
+		
+
+	LD TRUE
+	ST RACCEN	(* risposta a PC *)
+
+EACCEN:	
+
+LDN ACCEN
+	R RACCEN
+	
+(* -------------------------------------- *)
+
+
+
+				
+
+
+
+
+
+(* ricezione di comandi di annullamento (spegnimento) *)
+	
+LD ANNUL	(* al fronte up di ANNUL *)
+ANDN RANNUL
+JMPCN EANNUL
+
+	LD TRUE
+	R LUCI [ASETTORE,ALUCE]
+		
+	LD TRUE
+	ST RANNUL	(* risposta a PC *)
+
+EANNUL:	
+
+LDN ANNUL
+	R RANNUL
+	
+(* -------------------------------------- *)
+
+
+
+
+
+
+
+
+LD RSPEGNI
+	R SPEGNI
+
+
+		(* CONGELAMENTO DELLA FUNZIONE DI  SPEGNIMENTO *)
+		
+LD CONGELA
+JMPC FINECONG
+
+	
+	
+			(* rilevazione dei pulsanti premuti e invio del messaggio a PC *)
+				
+
+	
+LD 20
+	ST I					
+EPP1:		
+	LD PP		
+	ANDN TFILT[SETTORE]
+		S MPP[I]	(* memoria per lo spegnimento completo solo 							al rilascio del pulsante;  *)
+				(* cio' per evitare lo spegnimento immediato in caso 						di riaccensione dello stesso 	pulsante *)	
+	LD MPP[I]
+	ANDN PP[I]
+	ANDN SPEGNI
+	ANDN RSPEGNI
+	JMPCN EPP
+		LD MSECTOR
+			ST SSECTOR
+		LD MLUCE
+			ST SLUCE
+		LD TRUE
+			R MPP[I]		
+			S SPEGNI	
+			S FILT[I]			
+  EPP:
+	
+	LD I
+	SUB 1
+	ST I
+	NE 0
+	JMPC EPP1 
+
+
+
+	(*	--------------------------------------------  *)
+	
+	
+FINECONG:	(* fin qui il pezzo congelato *)
+
+
+
+(* timers dei filtri che bloccano la rilevazione del tasto premuto, dalla ultima pressione fino all' arrivo di una nuova accensione, ritardata. *)
+(* questo per ogni settore, FILT viene settato dalla pressione tasto e resettato da ACCEN alla diseccitazione temporizzata. *)
+
+
+	LD	FILT[1]
+	ST	TTFL11.IN
+	LD	T#500MS
+	ST	TTFL11.PT
+	CAL	TTFL11	(* FUNCTION BLOCK TOF *)
+	LD	TTFL11.Q
+	ST	TFILT[1]
+
+
+	LD	FILT[2]
+	ST	TTFL12.IN
+	LD	T#500MS
+	ST	TTFL12.PT
+	CAL	TTFL12	(* FUNCTION BLOCK TOF *)
+	LD	TTFL12.Q
+	ST	TFILT[2]
+
+
+
+	LD	FILT[3]
+	ST	TTFL13.IN
+	LD	T#500MS
+	ST	TTFL13.PT
+	CAL	TTFL13	(* FUNCTION BLOCK TOF *)
+	LD	TTFL13.Q
+	ST	TFILT[3]
+
+
+
+	LD	FILT[4]
+	ST	TTFL14.IN
+	LD	T#500MS
+	ST	TTFL14.PT
+	CAL	TTFL14	(* FUNCTION BLOCK TOF *)
+	LD	TTFL14.Q
+	ST	TFILT[4]
+
+
+	LD	FILT[5]
+	ST	TTFL15.IN
+	LD	T#500MS
+	ST	TTFL15.PT
+	CAL	TTFL15	(* FUNCTION BLOCK TOF *)
+	LD	TTFL15.Q
+	ST	TFILT[5]
+
+
+
+	LD	FILT[6]
+	ST	TTFL16.IN
+	LD	T#500MS
+	ST	TTFL16.PT
+	CAL	TTFL16	(* FUNCTION BLOCK TOF *)
+	LD	TTFL16.Q
+	ST	TFILT[6]
+
+
+
+	LD	FILT[7]
+	ST	TTFL17.IN
+	LD	T#500MS
+	ST	TTFL17.PT
+	CAL	TTFL17	(* FUNCTION BLOCK TOF *)
+	LD	TTFL17.Q
+	ST	TFILT[7]
+
+
+
+	LD	FILT[8]
+	ST	TTFL18.IN
+	LD	T#500MS
+	ST	TTFL18.PT
+	CAL	TTFL18	(* FUNCTION BLOCK TOF *)
+	LD	TTFL18.Q
+	ST	TFILT[8]
+
+
+	LD	FILT[9]
+	ST	TTFL19.IN
+	LD	T#500MS
+	ST	TTFL19.PT
+	CAL	TTFL19	(* FUNCTION BLOCK TOF *)
+	LD	TTFL19.Q
+	ST	TFILT[9]
+
+
+
+	LD	FILT[10]
+	ST	TTFL20.IN
+	LD	T#500MS
+	ST	TTFL20.PT
+	CAL	TTFL20	(* FUNCTION BLOCK TOF *)
+	LD	TTFL20.Q
+	ST	TFILT[10]
+
+
+
+	LD	FILT[11]
+	ST	TTFL21.IN
+	LD	T#500MS
+	ST	TTFL21.PT
+	CAL	TTFL21	(* FUNCTION BLOCK TOF *)
+	LD	TTFL21.Q
+	ST	TFILT[11]
+
+
+
+	LD	FILT[12]
+	ST	TTFL22.IN
+	LD	T#500MS
+	ST	TTFL22.PT
+	CAL	TTFL22	(* FUNCTION BLOCK TOF *)
+	LD	TTFL22.Q
+	ST	TFILT[12]
+
+
+
+	LD	FILT[13]
+	ST	TTFL23.IN
+	LD	T#500MS
+	ST	TTFL23.PT
+	CAL	TTFL23	(* FUNCTION BLOCK TOF *)
+	LD	TTFL23.Q
+	ST	TFILT[13]
+
+
+
+	LD	FILT[14]
+	ST	TTFL24.IN
+	LD	T#500MS
+	ST	TTFL24.PT
+	CAL	TTFL24	(* FUNCTION BLOCK TOF *)
+	LD	TTFL24.Q
+	ST	TFILT[14]
+
+
+
+	LD	FILT[15]
+	ST	TTFL25.IN
+	LD	T#500MS
+	ST	TTFL25.PT
+	CAL	TTFL25	(* FUNCTION BLOCK TOF *)
+	LD	TTFL25.Q
+	ST	TFILT[15]
+	CAL	TTFL26	(* FUNCTION BLOCK TOF *)
+
+
+
+	LD	FILT[16]
+	ST	TTFL26.IN
+	LD	T#500MS
+	ST	TTFL26.PT
+	CAL	TTFL26	(* FUNCTION BLOCK TOF *)
+	LD	TTFL26.Q
+	ST	TFILT[16]
+
+
+	LD	FILT[17]
+	ST	TTFL27.IN
+	LD	T#500MS
+	ST	TTFL27.PT
+	CAL	TTFL27	(* FUNCTION BLOCK TOF *)
+	LD	TTFL27.Q
+	ST	TFILT[17]
+
+	LD	FILT[18]
+	ST	TTFL28.IN
+	LD	T#500MS
+	ST	TTFL28.PT
+	CAL	TTFL29	(* FUNCTION BLOCK TOF *)
+	LD	TTFL29.Q
+	ST	TFILT[19]
+
+
+	LD	FILT[19]
+	ST	TTFL29.IN
+	LD	T#500MS
+	ST	TTFL29.PT
+	CAL	TTFL29	(* FUNCTION BLOCK TOF *)
+	LD	TTFL29.Q
+	ST	TFILT[19]
+
+
+
+	LD	FILT[20]
+	ST	TTFL30.IN
+	LD	T#500MS
+	ST	TTFL30.PT
+	CAL	TTFL30	(* FUNCTION BLOCK TOF *)
+	LD	TTFL30.Q
+	ST	TFILT[20]
+	
+
+
+
+		
+		
+	(* traslazione dei bits dei vettori su altrettanti ingressi e uscite *)
+		
+		
+(* ISOLA 1*)		
+		
+LD LUCI[01,01]			(* settore 01, 7 lampade*)
+		ST L10101
+LD LUCI[01,02]
+		ST L10102
+LD LUCI[01,03]
+		ST L10103
+LD LUCI[01,04]
+		ST L10104
+LD LUCI[01,05]
+		ST L10105
+LD LUCI[01,06]
+		ST L10106
+LD LUCI[01,07]
+		ST L10107
+		
+
+LD LUCI[02,01]
+		ST L10201
+LD LUCI[02,02]
+		ST L10202
+LD LUCI[02,03]
+		ST L10203
+LD LUCI[02,04]
+		ST L10204
+LD LUCI[02,05]
+		ST L10205
+LD LUCI[02,06]
+		ST L10206
+LD LUCI[02,07]
+		ST L10207
+
+
+
+LD LUCI[03,01]
+		ST L10301
+LD LUCI[03,02]
+		ST L10302
+LD LUCI[03,03]
+		ST L10303
+LD LUCI[03,04]
+		ST L10304
+LD LUCI[03,05]
+		ST L10305
+LD LUCI[03,06]
+		ST L10306
+LD LUCI[03,07]
+		ST L10307
+
+
+LD LUCI[04,01]
+		ST L10401
+LD LUCI[04,02]
+		ST L10402
+LD LUCI[04,03]
+		ST L10403
+LD LUCI[04,04]
+		ST L10404
+LD LUCI[04,05]
+		ST L10405
+LD LUCI[04,06]
+		ST L10406
+LD LUCI[04,07]
+		ST L10407
+
+
+(*_______________________fine prima isola *)
+
+
+
+
+		
+LD LUCI[05,01]			(* settore 01, 7 lampade*)
+		ST L20101
+LD LUCI[05,02]
+		ST L20102
+LD LUCI[05,03]
+		ST L20103
+LD LUCI[05,04]
+		ST L20104
+LD LUCI[05,05]
+		ST L20105
+LD LUCI[05,06]
+		ST L20106
+LD LUCI[05,07]
+		ST L20107
+
+LD LUCI[06,01]
+		ST L20201
+LD LUCI[06,02]
+		ST L20202
+LD LUCI[06,03]
+		ST L20203
+LD LUCI[06,04]
+		ST L20204
+LD LUCI[06,05]
+		ST L20205
+LD LUCI[06,06]
+		ST L20206
+LD LUCI[06,07]
+		ST L20207
+
+
+LD LUCI[07,01]
+		ST L20301
+LD LUCI[07,02]
+		ST L20302
+LD LUCI[07,03]
+		ST L20303
+LD LUCI[07,04]
+		ST L20304
+LD LUCI[07,05]
+		ST L20305
+LD LUCI[07,06]
+		ST L20306
+LD LUCI[07,07]
+		ST L20307
+
+
+LD LUCI[08,01]
+		ST L20401
+LD LUCI[08,02]
+		ST L20402
+LD LUCI[08,03]
+		ST L20403
+LD LUCI[08,04]
+		ST L20404
+LD LUCI[08,05]
+		ST L20405
+LD LUCI[08,06]
+		ST L20406
+LD LUCI[08,07]
+		ST L20407
+
+
+(*_______________________fine 2° isola *)
+
+
+
+
+
+LD LUCI[09,01]			(* settore 01, 7 lampade*)
+		ST L30101
+LD LUCI[09,02]
+		ST L30102
+LD LUCI[09,03]
+		ST L30103
+LD LUCI[09,04]
+		ST L30104
+LD LUCI[09,05]
+		ST L30105
+LD LUCI[09,06]
+		ST L30106
+LD LUCI[09,07]
+		ST L30107
+
+
+LD LUCI[10,01]
+		ST L30201
+LD LUCI[10,02]
+		ST L30202
+LD LUCI[10,03]
+		ST L30203
+LD LUCI[10,04]
+		ST L30204
+LD LUCI[10,05]
+		ST L30205
+LD LUCI[10,06]
+		ST L30206
+LD LUCI[10,07]
+		ST L30207
+
+
+
+LD LUCI[11,01]
+		ST L30301
+LD LUCI[11,02]
+		ST L30302
+LD LUCI[11,03]
+		ST L30303
+LD LUCI[11,04]
+		ST L30304
+LD LUCI[11,05]
+		ST L30305
+LD LUCI[11,06]
+		ST L30306
+LD LUCI[11,07]
+		ST L30307
+
+
+LD LUCI[12,01]
+		ST L30401
+LD LUCI[12,02]
+		ST L30402
+LD LUCI[12,03]
+		ST L30403
+LD LUCI[12,04]
+		ST L30404
+LD LUCI[12,05]
+		ST L30405
+LD LUCI[12,06]
+		ST L30406
+LD LUCI[12,07]
+		ST L30407
+
+(*_______________________fine 3° isola *)
+
+
+
+
+		
+LD LUCI[13,01]			(* settore 01, 7 lampade*)
+		ST L40101
+LD LUCI[13,02]
+		ST L40102
+LD LUCI[13,03]
+		ST L40103
+LD LUCI[13,04]
+		ST L40104
+LD LUCI[13,05]
+		ST L40105
+LD LUCI[13,06]
+		ST L40106
+LD LUCI[13,07]
+		ST L40107
+
+LD LUCI[14,01]
+		ST L40201
+LD LUCI[14,02]
+		ST L40202
+LD LUCI[14,03]
+		ST L40203
+LD LUCI[14,04]
+		ST L40204
+LD LUCI[14,05]
+		ST L40205
+LD LUCI[14,06]
+		ST L40206
+LD LUCI[14,07]
+		ST L40207
+
+
+LD LUCI[15,01]
+		ST L40301
+LD LUCI[15,02]
+		ST L40302
+LD LUCI[15,03]
+		ST L40303
+LD LUCI[15,04]
+		ST L40304
+LD LUCI[15,05]
+		ST L40305
+LD LUCI[15,06]
+		ST L40306
+LD LUCI[15,07]
+		ST L40307
+
+
+
+LD LUCI[16,01]
+		ST L40401
+LD LUCI[16,02]
+		ST L40402
+LD LUCI[16,03]
+		ST L40403
+LD LUCI[16,04]
+		ST L40404
+LD LUCI[016,05]
+		ST L40405
+LD LUCI[16,06]
+		ST L40406
+LD LUCI[16,07]
+		ST L40407
+
+
+(*_______________________fine 4° isola *)
+
+
+
+
+LD LUCI[17,01]			(* settore 01, 7 lampade*)
+		ST L50101
+LD LUCI[17,02]
+		ST L50102
+LD LUCI[17,03]
+		ST L50103
+LD LUCI[17,04]
+		ST L50104
+LD LUCI[17,05]
+		ST L50105
+LD LUCI[17,06]
+		ST L50106
+LD LUCI[17,07]
+		ST L50107
+
+LD LUCI[18,01]
+		ST L50201
+LD LUCI[18,02]
+		ST L50202
+LD LUCI[18,03]
+		ST L50203
+LD LUCI[18,04]
+		ST L50204
+LD LUCI[18,05]
+		ST L50205
+LD LUCI[18,06]
+		ST L50206
+LD LUCI[18,07]
+		ST L50207
+
+
+LD LUCI[19,01]
+		ST L50301
+LD LUCI[19,02]
+		ST L50302
+LD LUCI[19,03]
+		ST L50303
+LD LUCI[19,04]
+		ST L50304
+LD LUCI[19,05]
+		ST L50305
+LD LUCI[19,06]
+		ST L50306
+LD LUCI[19,07]
+		ST L50307
+
+
+
+LD LUCI[20,01]
+		ST L50401
+LD LUCI[20,02]
+		ST L50402
+LD LUCI[20,03]
+		ST L50403
+LD LUCI[20,04]
+		ST L50404
+LD LUCI[20,05]
+		ST L50405
+LD LUCI[20,06]
+		ST L50406
+LD LUCI[20,07]
+		ST L50407
+
+(*_______________________fine 5° isola *)
+
+
+
+
+
+
+
+
+(* _____________________________________ *)
+
+(* PROVE  DI  MISURA  DELLA REGOLARITA'  DEL  LOOP   *)
+
+LD	PMI3
+JMPCN LAB4
+	(* 0 *)
+	ST MAX
+	LD 9999
+	ST MIN
+	LD TRUE
+	STN C
+	STN D
+	ST B
+	JMP LAB5
+	
+LAB4:
+
+
+	(* incremento del contatore per tutto il tempo impostato *)
+
+	LD	C
+	ST	CCNTLP.CU
+	LD	B
+	ST	CCNTLP.R
+	CAL	CCNTLP	(* FUNCTION BLOCK CTU *)
+	LD	CCNTLP.CV
+	ST	CONT
+	
+	
+	LD	E
+	ST	CCNTLP2.CU
+	LD	B
+	ST	CCNTLP2.R
+	CAL	CCNTLP2	(* FUNCTION BLOCK CTU *)
+	LD	CCNTLP2.CV
+	ST	CONTD
+	
+	LD CONT
+	ADD CONTD
+		ST CONTA
+		
+	
+
+	LD	D
+	ST	TB.IN
+	LD	T#100MS
+	ST	TB.PT
+	CAL	TB	(* FUNCTION BLOCK TON *)
+	LD	TB.Q
+	ST	B
+
+
+
+
+	(* scrittura minimo e massimo conteggio *)
+	
+	LD B
+	JMPCN LAB1
+		LDN TRUE
+		(* ST C *)
+		LD CONTA
+		ST CORR
+		LT MIN
+		JMPCN LAB2
+			LD CONTA
+			ST MIN
+LAB2:
+	
+	LD CONTA
+	GT MAX
+	JMPCN LAB3
+		LD CONTA
+		ST MAX
+	LAB3:
+LAB1:
+
+
+	(* settaggio delle variabili *)
+	LDN B
+		ST D
+	
+	LDN C
+		ST C
+		STN E
+	
+LAB5:	
+
+
+
+
+END_PROGRAM
+
+
+
+
+
