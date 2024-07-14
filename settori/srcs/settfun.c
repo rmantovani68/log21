@@ -2286,19 +2286,15 @@ int ReadDisplaysInfo(PDISPLAYSTRUCT pDisplays)
     int nDisplays=0;
     int nIndex=0;
     
-    PGres=DBExecQuery(Cfg.nDebugLevel>1,"select display,isola,settore,ios,cpu,modulo from displays order by display;");
+    PGres=DBExecQuery(Cfg.nDebugLevel>1,"select dsnmdsp,dsnmisl,dsnmset from displays order by dsnmdsp;");
 
     if(DBresultStatus(PGres) == DBRES_TUPLES_OK && (nDisplays=DBntuples(PGres))){
 
         /* memorizzo le informazioni nella struttura preposta */
         for(nIndex=0; nIndex<nDisplays; nIndex++){
-
                 pDisplays[nIndex].nDisplay = atoi(DBgetvalue(PGres,nIndex,0));
                 pDisplays[nIndex].nIsola   = atoi(DBgetvalue(PGres,nIndex,1));
                 pDisplays[nIndex].nSettore = atoi(DBgetvalue(PGres,nIndex,2));
-                pDisplays[nIndex].nIOS     = atoi(DBgetvalue(PGres,nIndex,3));
-                pDisplays[nIndex].nCPU     = atoi(DBgetvalue(PGres,nIndex,4));
-                pDisplays[nIndex].nModulo  = atoi(DBgetvalue(PGres,nIndex,5));
         }
 
         DBclear(PGres);
@@ -2336,7 +2332,7 @@ ep_bool_t ReadSettoriInfo(int nNumeroSettori)
     int nIndex=0;
     ep_bool_t rc = TRUE;
 
-    PGres=DBExecQuery(Cfg.nDebugLevel>1,"select settore,isola,flag,tipo,operatore,cedola from settori order by settore;");
+    PGres=DBExecQuery(Cfg.nDebugLevel>1,"select stnmset,stnmisl,stcdflg,sttpset,stcdope,stnmced from settori order by stnmset;");
 
     if(DBresultStatus(PGres) == DBRES_TUPLES_OK && ((nSettori=DBntuples(PGres))==nNumeroSettori) ){
 

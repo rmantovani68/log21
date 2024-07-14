@@ -54,13 +54,9 @@ typedef struct TagUbicazione {
 	int  nSettore;
 	int  nIsola;
 	int  nDisplay;
-	int nIOS;
-	int nCPU;
-	int nModulo;
-	int nRowIndex;
-	int nColIndex;
-	int nPriorita;
-	int nIndex;
+	int  nPLCNum;
+	int  nPriorita;
+	int  nIndex;
 } UBICAZIONE, *PUBICAZIONE;
 
 typedef struct TagUbicazioni {
@@ -73,11 +69,7 @@ typedef struct tagEvento {
 	int nSettore;
 	int nIsola;
 	int nEvento;
-	int nModulo;
-	int nIOS;
-	int nCPU;
-	int nRiga;
-	int nColonna;
+	int nCPUNum;
 	PUBICAZIONE pUbicazione;
 } EVENTO, *PEVENTO;
 

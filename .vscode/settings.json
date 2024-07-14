@@ -72,6 +72,9 @@
             }
         }
     ],
-    "version": 4
+    "version": 4,
+    "files.associations": {
+        "mainstruct.h": "c"
+    }
 }
 

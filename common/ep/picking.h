@@ -198,13 +198,9 @@ typedef struct TagUbicazione {
 	int  nSettore;
 	int  nIsola;
 	int  nDisplay;
-	int nIOS;
-	int nCPU;
-	int nModulo;
-	int nRowIndex;
-	int nColIndex;
-	int nPriorita;
-	int nIndex;
+	int  nPLCNum;
+	int  nPriorita;
+	int  nIndex;
 } UBICAZIONE, *PUBICAZIONE;
 
 typedef struct TagUbicazioni {
@@ -291,17 +287,9 @@ typedef struct tagSettore {
 	int nTipoSettore;                           /* Tipo attuale del settore */
 	int nFlagSettore;                           /* Flag di abilitato/disabilitato */
 	int nCedola;                                /* Cedola associata */
-	int nFirstMod;                              /* Modulo  primo pulsante settore (priorita') */
-	int nFirstRow;                              /* Riga    primo pulsante settore (priorita') */
-	int nFirstColumn;                           /* Colonna primo pulsante settore (priorita') */
-	int nFirstIOS;                              /* IOS primo pulsante settore (priorita') */
-	int nFirstCPU;                              /* CPU primo pulsante settore (priorita') */
+	int nFirstPLCNum;                           /* PLC Num primo pulsante settore (priorita') */
 	int nFirstDisplay;                          /* Display primo pulsante settore (priorita') */
-	int nIOS;                                   /* IOS  Tasto Premuto / da premere */
-	int nCPU;                                   /* CPU  Tasto Premuto / da premere */
-	int nModulo;                                /* Modulo  Tasto Premuto / da premere */
-	int nRiga;                                  /* Riga    Tasto Premuto / da premere */
-	int nColonna;                               /* Colonna Tasto Premuto / da premere */
+	int nPLCNum;                                   /* IOS  Tasto Premuto / da premere */
 	int nDisplay;                               /* DIsplay Attivo */
 	int nNumCopie;                              /* Numero Copie */
 	int nNumCollo;                              /* Numero Collo */

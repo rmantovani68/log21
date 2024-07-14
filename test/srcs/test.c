@@ -39,16 +39,12 @@ typedef enum {
 
 typedef struct {
     int nSettore;
-    int nDisplayIndex;
+    int nDisplay;
     int nPLCNum;
-    char cFilaUbicazione;
     gboolean pressed;
-    int nMontante;
     int nColonna;
     int nPiano;
 } PULSANTE, *PPULSANTE;
-
-typedef struct _TestWindowPrivate TestWindowPrivate;
 
 struct _TestWindowPrivate
 {
@@ -116,6 +112,8 @@ struct _TestWindowPrivate
     int nCONGELA ;
 
 };
+
+typedef struct _TestWindowPrivate TestWindowPrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE(TestWindow, test_window, GTK_TYPE_DIALOG)
 
@@ -260,7 +258,7 @@ gboolean PklReset(gpointer win)
     return rc;
 }
 
-gboolean PklCheckPressed(gpointer win, int settore, int numero)
+gboolean PklCheckPressed(gpointer win, int *settore, int *numero)
 {
     TestWindowPrivate *priv = test_window_get_instance_private (win);
     gboolean rc = FALSE;
@@ -552,13 +550,13 @@ enum TagUbicazioniColumns {
 
     NUM_COLUMNS,
 } UbicazioniColumns;
-PUBICAZIONE SearchUbicazione(PUBICAZIONI pUbi,int nSettore,int nRowIndex,int nColIndex)
+
+PUBICAZIONE SearchUbicazione(PUBICAZIONI pUbi,int nSettore,int nPLCNum)
 {
     UBICAZIONE Ubi;
 
     Ubi.nSettore=nSettore;
-    Ubi.nRowIndex=nRowIndex;
-    Ubi.nColIndex=nColIndex;
+    Ubi.nPLCNum=nPLCNum;
 
     return bsearch(&Ubi,pUbi->Ubicazione,pUbi->nUbicazioni,sizeof(UBICAZIONE),(int(*)())CmpUbicazione);
 }
@@ -692,13 +690,11 @@ gboolean fsm_manage(gpointer win)
                 priv->pulsanti        = g_list_append(priv->pulsanti, pulsante  );
 
                 gtk_list_store_append (store, &iter);
-                gchar *fila = g_strdup_printf("%c", pulsante->cFilaUbicazione);
                 gtk_list_store_set (store, &iter,
                     COLUMN_SETTORE  , pulsante->nSettore, 
                     COLUMN_COLONNA  , pulsante->nColonna,
                     COLUMN_PIANO    , pulsante->nPiano,
                     COLUMN_PRESSED  , FALSE, -1);
-                g_free(fila);
 
             }
             DBclear(DBRes);
@@ -771,11 +767,11 @@ gboolean fsm_manage(gpointer win)
         case STATE_TEST:
         {
             PPULSANTE pulsante = priv->pulsante ;
-            int mod, row, col;
+            int settore, plc_num, col;
 
             if(pulsante){
                 /* real button check */
-                if (PklCheckPressed(win, &settore, &plc_num, &col)){
+                if (PklCheckPressed(win, &settore, &plc_num)){
                     if(SearchUbicazione(priv->pUbicazioni,settore,plc_num)){
                         pulsante->pressed=TRUE;
                     }
@@ -990,12 +986,12 @@ static void test_window_init (TestWindow *win)
     if(Cfg.nPLC){
         GetVarsIndex(win);
 
-        plc_set_var_value(priv->nSETTORE, FALSE);
-        plc_set_var_value(priv->nLUCE,   FALSE);
-        plc_set_var_value(priv->nACCEN,   FALSE);
-        plc_set_var_value(priv->nANNUL,   FALSE);
-        plc_set_var_value(priv->nRSPEGNI, FALSE);
-        plc_set_var_value(priv->nRESETL,  FALSE);
+        plc_set_var_value(priv->nASETTORE, FALSE);
+        plc_set_var_value(priv->nALUCE,    FALSE);
+        plc_set_var_value(priv->nACCEN,    FALSE);
+        plc_set_var_value(priv->nANNUL,    FALSE);
+        plc_set_var_value(priv->nRSPEGNI,  FALSE);
+        plc_set_var_value(priv->nRESETL,   FALSE);
     }
     gtk_spin_button_set_range ( GTK_SPIN_BUTTON(find_child(GTK_WIDGET(win),"sb_settore")), (gdouble)0, (gdouble) Cfg.nNumeroSettori);
     gtk_spin_button_set_range ( GTK_SPIN_BUTTON(find_child(GTK_WIDGET(win),"sb_isola")), (gdouble)0, (gdouble) Cfg.nNumeroIsole);
