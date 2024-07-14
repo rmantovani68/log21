@@ -38,13 +38,9 @@ typedef enum {
 } FSMState;
 
 typedef struct {
-    int nSettoreIndex;
+    int nSettore;
     int nDisplayIndex;
-    int nIOS;
-    int nCPU;
-    int nModulo;
-    int nRow;
-    int nCol;
+    int nPLCNum;
     char cFilaUbicazione;
     gboolean pressed;
     int nMontante;
@@ -80,7 +76,7 @@ struct _TestWindowPrivate
     GtkWidget *lb_msg;
     GtkWidget *txt_msgs;
 
-    int isola;
+    int ubnmisl;
     int settore;
     int delay_simulazione;
     gboolean simulazione;
@@ -100,23 +96,21 @@ struct _TestWindowPrivate
     GSettings *settings;
     WindowSizeInfo *wsi;
 
-    int nAMATRIX ;
-    int nARIGA   ;
-    int nACOLON  ;
+    int nASETTORE ;
+    int nALUCE   ;
     int nACCEN   ;
     int nRACCEN  ;
 
-    int nNMATRIX ;
-    int nNRIGA   ;
-    int nNCOLON  ;
+    int nNSETTORE ;
+    int nNLUCE   ;
     int nANNUL   ;
     int nRANNUL  ;
 
-    int nSMATRIX ;
-    int nSRIGA   ;
-    int nSCOLON  ;
+    int nSSETTORE ;
+    int nSLUCE   ;
     int nSPEGNI  ;
     int nRSPEGNI ;
+
     int nRESETL  ;
     int nRRESETL ;
     int nCONGELA ;
@@ -181,36 +175,32 @@ gboolean GetVarsIndex(gpointer win)
     char szBuffer[128];
     gboolean rc = TRUE;
 
-    sprintf(szBuffer,"AMATRIX"); if((priv->nAMATRIX  = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
-    sprintf(szBuffer,"ARIGA"  ); if((priv->nARIGA    = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
-    sprintf(szBuffer,"ACOLON" ); if((priv->nACOLON   = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
-    sprintf(szBuffer,"NMATRIX"); if((priv->nNMATRIX  = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
-    sprintf(szBuffer,"NRIGA"  ); if((priv->nNRIGA    = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
-    sprintf(szBuffer,"NCOLON" ); if((priv->nNCOLON   = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
-    sprintf(szBuffer,"ACCEN"  ); if((priv->nACCEN    = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
-    sprintf(szBuffer,"RACCEN" ); if((priv->nRACCEN   = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
-    sprintf(szBuffer,"ANNUL"  ); if((priv->nANNUL    = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
-    sprintf(szBuffer,"RANNUL" ); if((priv->nRANNUL   = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
-    sprintf(szBuffer,"SMATRIX"); if((priv->nSMATRIX  = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
-    sprintf(szBuffer,"SRIGA"  ); if((priv->nSRIGA    = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
-    sprintf(szBuffer,"SCOLON" ); if((priv->nSCOLON   = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
-    sprintf(szBuffer,"SPEGNI" ); if((priv->nSPEGNI   = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
-    sprintf(szBuffer,"RSPEGNI"); if((priv->nRSPEGNI  = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
-    sprintf(szBuffer,"RESETL" ); if((priv->nRESETL   = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
-    sprintf(szBuffer,"RRESETL"); if((priv->nRRESETL  = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
-    sprintf(szBuffer,"CONGELA"); if((priv->nCONGELA  = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
+    sprintf(szBuffer,"ASETTORE"); if((priv->nASETTORE  = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
+    sprintf(szBuffer,"ALUCE"   ); if((priv->nALUCE     = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
+    sprintf(szBuffer,"NSETTORE"); if((priv->nNSETTORE  = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
+    sprintf(szBuffer,"NLUCE"   ); if((priv->nNLUCE     = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
+    sprintf(szBuffer,"ACCEN"   ); if((priv->nACCEN     = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
+    sprintf(szBuffer,"RACCEN"  ); if((priv->nRACCEN    = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
+    sprintf(szBuffer,"ANNUL"   ); if((priv->nANNUL     = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
+    sprintf(szBuffer,"RANNUL"  ); if((priv->nRANNUL    = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
+    sprintf(szBuffer,"SSETTORE"); if((priv->nSSETTORE  = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
+    sprintf(szBuffer,"SLUCE"   ); if((priv->nSLUCE     = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
+    sprintf(szBuffer,"SPEGNI"  ); if((priv->nSPEGNI    = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
+    sprintf(szBuffer,"RSPEGNI" ); if((priv->nRSPEGNI   = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
+    sprintf(szBuffer,"RESETL"  ); if((priv->nRESETL    = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
+    sprintf(szBuffer,"RRESETL" ); if((priv->nRRESETL   = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
+    sprintf(szBuffer,"CONGELA" ); if((priv->nCONGELA   = plc_get_var_index(szBuffer))==-1){ trace_debug_gtk("RED", TRUE, TRUE, priv->txt_msgs, "Variabile %s assente !\n",szBuffer); rc = FALSE;}
 
     return rc;
 }
 
-gboolean PklSetRC(gpointer win, int module, int row, int col)
+gboolean PklSetRC(gpointer win, int settore, int numero)
 {
     TestWindowPrivate *priv = test_window_get_instance_private (win);
     gboolean rc = TRUE;
 
-    plc_set_var_value(priv->nAMATRIX, module);
-    plc_set_var_value(priv->nARIGA, row);
-    plc_set_var_value(priv->nACOLON, col);
+    plc_set_var_value(priv->nASETTORE, settore);
+    plc_set_var_value(priv->nALUCE, numero);
 
     SetAndWaitVariable (win, priv->nACCEN, priv->nRACCEN,TRUE);
     SetAndWaitVariable (win, priv->nACCEN, priv->nRACCEN,FALSE);
@@ -218,14 +208,13 @@ gboolean PklSetRC(gpointer win, int module, int row, int col)
     return rc;
 }
 
-gboolean PklResetRC(gpointer win, int module, int row, int col)
+gboolean PklResetRC(gpointer win, int settore, int numero)
 {
     TestWindowPrivate *priv = test_window_get_instance_private (win);
     gboolean rc = TRUE;
 
-    plc_set_var_value(priv->nAMATRIX, module);
-    plc_set_var_value(priv->nARIGA, row);
-    plc_set_var_value(priv->nACOLON, col);
+    plc_set_var_value(priv->nASETTORE, settore);
+    plc_set_var_value(priv->nALUCE, numero);
 
     SetAndWaitVariable (win, priv->nANNUL, priv->nRANNUL,TRUE);
     SetAndWaitVariable (win, priv->nANNUL, priv->nRANNUL,FALSE);
@@ -271,16 +260,15 @@ gboolean PklReset(gpointer win)
     return rc;
 }
 
-gboolean PklCheckPressed(gpointer win, int *module, int *row, int *col)
+gboolean PklCheckPressed(gpointer win, int settore, int numero)
 {
     TestWindowPrivate *priv = test_window_get_instance_private (win);
     gboolean rc = FALSE;
 
     if(Cfg.nPLC){
         if(plc_var_value(priv->nSPEGNI)){
-            *module = plc_var_value(priv->nSMATRIX);
-            *row    = plc_var_value(priv->nSRIGA);
-            *col    = plc_var_value(priv->nSCOLON);
+            *settore = plc_var_value(priv->nSSETTORE);
+            *numero  = plc_var_value(priv->nSLUCE);
             rc = TRUE;
 
             plc_set_var_value(priv->nRSPEGNI,TRUE);
@@ -295,11 +283,7 @@ void ResetSettore(gpointer win, int nIsola,int nSettore)
 {
     TestWindowPrivate *priv = test_window_get_instance_private (win);
     int nFirstDisplay=0;
-    int nFirstIOS=0;
-    int nFirstCPU=0;
-    int nFirstMod=0;
-    int nFirstCol=0;
-    int nFirstRow=0;
+    int nFirstPLCNum=0;
     DBresult *DBRes = NULL;
     int nIndex;
 
@@ -317,32 +301,19 @@ void ResetSettore(gpointer win, int nIsola,int nSettore)
             /*
             * Determino i dati della prima ubicazione del settore in oggetto
             */
-            DBRes=DBExecQuery(Cfg.nDebugLevel>1,"select display, ios, cpu, modulo, riga, colonna from ubicazioni where ubitipo='%s' AND isola=%d AND settore=%d order by priorita;",Cfg.szTipoUbicazioni, nIsola,nSettore);
-
+            DBRes=DBExecQuery(Cfg.nDebugLevel>1,"select ubnmdsp, ubplcnm from ubicazioni where ubtpubi='%s' AND ubnmisl=%d AND ubnmset=%d order by ubprior;",Cfg.szTipoUbicazioni, nIsola, nSettore);
 
             if(DBntuples(DBRes)){
-                nFirstIOS=atoi(DBgetvalue(DBRes,0,1));
-                nFirstCPU=atoi(DBgetvalue(DBRes,0,2));
-                nFirstMod=atoi(DBgetvalue(DBRes,0,3));
-                nFirstRow=atoi(DBgetvalue(DBRes,0,4));
-                nFirstCol=atoi(DBgetvalue(DBRes,0,5));
+                nFirstPLCNum=atoi(DBgetvalue(DBRes,0,1));
             } else {
 #ifdef TRACE
-                trace_debug_gtk(NULL, TRUE, TRUE, priv->txt_msgs, "ResetSettore(Isola:%d,Settore:%d) : Non esistono ubicazioni per il settore in oggetto",nIsola,nSettore);
+                trace_debug_gtk(NULL, TRUE, TRUE, priv->txt_msgs, "ResetSettore(Isola:%d,Settore:%d) : Non esistono ubicazioni per il settore in oggetto",nIsola, nSettore);
 #endif
             }
             priv->pSettori[nIndex]->nOpBlinking=0;
-            priv->pSettori[nIndex]->nFirstIOS=nFirstIOS;
-            priv->pSettori[nIndex]->nFirstCPU=nFirstCPU;
-            priv->pSettori[nIndex]->nFirstMod=nFirstMod;
-            priv->pSettori[nIndex]->nFirstRow=nFirstRow;
-            priv->pSettori[nIndex]->nFirstColumn=nFirstCol;
+            priv->pSettori[nIndex]->nFirstPLCNum=nFirstPLCNum;
 
-            priv->pSettori[nIndex]->nIOS=nFirstIOS;             /* Nro IOS Tasto Premuto / da premere */
-            priv->pSettori[nIndex]->nCPU=nFirstCPU;             /* Nro CPU Tasto Premuto / da premere */
-            priv->pSettori[nIndex]->nModulo=nFirstMod;          /* Modulo Tasto Premuto / da premere */
-            priv->pSettori[nIndex]->nRiga=nFirstRow;            /* Riga Tasto Premuto / da premere */
-            priv->pSettori[nIndex]->nColonna=nFirstCol;         /* Colonna Tasto Premuto / da premere */
+            priv->pSettori[nIndex]->nPLCNum=nFirstPLCNum;       /* Nro PLC Tasto Premuto / da premere */
             priv->pSettori[nIndex]->nNumCopie=0;                /* Numero Copie */
             priv->pSettori[nIndex]->nNumCollo=0;                /* Numero Collo */
             priv->pSettori[nIndex]->nStatoLampada=0;            /* Stato Lampada */
@@ -448,7 +419,7 @@ gboolean ReadSettoriInfo(gpointer win, int nNumeroSettori)
     int nSettori=0;
     int nIndex=0;
 
-    DBres=DBExecQuery(Cfg.nDebugLevel>1,"select settore,isola,flag,tipo,operatore,cedola from settori order by settore;");
+    DBres=DBExecQuery(Cfg.nDebugLevel>1,"select stnmset,stnmisl,stcdflg,sttpset,stcdope,stnmced from settori order by stnmset;");
 
     if(DBresultStatus(DBres) == DBRES_TUPLES_OK && ((nSettori=DBntuples(DBres))==nNumeroSettori) ){
 
@@ -485,365 +456,6 @@ gboolean ReadSettoriInfo(gpointer win, int nNumeroSettori)
     return rc;
 }
 
-
-
-#ifdef TEST
-void create_table_settori(GtkWidget *dlg,GtkWidget *parent,int nRows,int nCols)
-{
-  GtkWidget *table_settori;
-  GtkWidget *frame_settore;
-  GtkWidget *vbox_settore;
-  GtkWidget *hbox155;
-  GtkWidget *vbox339;
-  GtkWidget *lb_operatore;
-  GtkWidget *lb_ordine;
-  GtkWidget *lb_prodotto;
-  GtkWidget *frame_display;
-  GtkWidget *vbox_display;
-  GtkWidget *lb_riga_1;
-  GtkWidget *lb_riga_2;
-  GtkWidget *hsep_settore;
-  GtkWidget *table_settore;
-  GtkWidget *lb_null;
-  GtkWidget *lb_copie_prelevate;
-  GtkWidget *lb_righe_prelevate;
-  GtkWidget *lb_righe_da_prelevare;
-  GtkWidget *lb_copie_da_prelevare;
-  GtkWidget *lb_copie_evase;
-  GtkWidget *lb_righe_evase;
-  GtkWidget *frame235;
-  GtkWidget *lb_titolo_righe;
-  GtkWidget *frame236;
-  GtkWidget *lb_titolo_copie;
-  GtkWidget *frame237;
-  GtkWidget *lb_titolo_prelevato;
-  GtkWidget *frame238;
-  GtkWidget *lb_titolo_da_prelevare;
-  GtkWidget *frame239;
-  GtkWidget *lb_titolo_evaso;
-    char szBuffer[128];
-    int nCol,nRow,nSettore;
-
-
-  table_settori = gtk_table_new (nRows,nCols, FALSE);
-  gtk_widget_set_name (table_settori, "table_settori");
-  gtk_widget_ref (table_settori);
-  gtk_object_set_data_full (GTK_OBJECT (dlg), "table_settori", table_settori, (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (table_settori);
-  gtk_container_add (GTK_CONTAINER (parent), table_settori);
-
-    nSettore=0;
-    for(nRow=0;nRow<nRows;nRow++){
-        for(nCol=0;nCol<nCols;nCol++){
-            if(nSettore+1>Cfg.nNumeroSettori){
-                break;
-            }
-            sprintf(szBuffer,"Settore %d",nSettore+1);
-            frame_settore = gtk_frame_new (szBuffer);
-            sprintf(szBuffer,"frame_settore_%d",nSettore+1);
-            gtk_widget_set_name (frame_settore, szBuffer);
-            gtk_widget_ref (frame_settore);
-            gtk_object_set_data_full (GTK_OBJECT (dlg), szBuffer, frame_settore, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_show (frame_settore);
-            gtk_table_attach (GTK_TABLE (table_settori), frame_settore, nCol, nCol+1, nRow, nRow+1,
-                                                (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-                                                (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
-            gtk_container_set_border_width (GTK_CONTAINER (frame_settore), 5);
-
-            vbox_settore = gtk_vbox_new (FALSE, 0);
-            gtk_widget_set_name (vbox_settore, "vbox_settore");
-            gtk_widget_ref (vbox_settore);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "vbox_settore", vbox_settore, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_show (vbox_settore);
-            gtk_container_add (GTK_CONTAINER (frame_settore), vbox_settore);
-
-            hbox155 = gtk_hbox_new (FALSE, 0);
-            gtk_widget_set_name (hbox155, "hbox155");
-            gtk_widget_ref (hbox155);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "hbox155", hbox155, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_show (hbox155);
-            gtk_box_pack_start (GTK_BOX (vbox_settore), hbox155, TRUE, TRUE, 0);
-
-            vbox339 = gtk_vbox_new (FALSE, 0);
-            gtk_widget_set_name (vbox339, "vbox339");
-            gtk_widget_ref (vbox339);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "vbox339", vbox339, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_set_usize (vbox339, 150, -2);
-            gtk_widget_show (vbox339);
-            gtk_box_pack_start (GTK_BOX (hbox155), vbox339, TRUE, TRUE, 0);
-
-            lb_operatore = gtk_label_new ("operatore");
-            gtk_widget_set_name (lb_operatore, "lb_operatore");
-            gtk_widget_ref (lb_operatore);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "lb_operatore", lb_operatore, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_show (lb_operatore);
-            gtk_box_pack_start (GTK_BOX (vbox339), lb_operatore, TRUE, TRUE, 0);
-            gtk_misc_set_alignment (GTK_MISC (lb_operatore), 0, 0.5);
-            gtk_misc_set_padding (GTK_MISC (lb_operatore), 5, 0);
-
-            lb_ordine = gtk_label_new ("ordine");
-            gtk_widget_set_name (lb_ordine, "lb_ordine");
-            gtk_widget_ref (lb_ordine);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "lb_ordine", lb_ordine, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_show (lb_ordine);
-            gtk_box_pack_start (GTK_BOX (vbox339), lb_ordine, TRUE, TRUE, 0);
-            gtk_misc_set_alignment (GTK_MISC (lb_ordine), 0, 0.5);
-            gtk_misc_set_padding (GTK_MISC (lb_ordine), 5, 0);
-
-            lb_prodotto = gtk_label_new ("prodotto");
-            gtk_widget_set_name (lb_prodotto, "lb_prodotto");
-            gtk_widget_ref (lb_prodotto);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "lb_prodotto", lb_prodotto, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_show (lb_prodotto);
-            gtk_box_pack_start (GTK_BOX (vbox339), lb_prodotto, TRUE, TRUE, 0);
-            gtk_misc_set_alignment (GTK_MISC (lb_prodotto), 0, 0.5);
-            gtk_misc_set_padding (GTK_MISC (lb_prodotto), 5, 0);
-
-            frame_display = gtk_frame_new (NULL);
-            gtk_widget_set_name (frame_display, "frame_display");
-            gtk_widget_ref (frame_display);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "frame_display", frame_display, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_show (frame_display);
-            gtk_box_pack_start (GTK_BOX (hbox155), frame_display, FALSE, TRUE, 0);
-
-            vbox_display = gtk_vbox_new (FALSE, 0);
-            gtk_widget_set_name (vbox_display, "vbox_display");
-            gtk_widget_ref (vbox_display);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "vbox_display", vbox_display, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_show (vbox_display);
-            gtk_container_add (GTK_CONTAINER (frame_display), vbox_display);
-
-            lb_riga_1 = gtk_label_new ("");
-            gtk_widget_set_name (lb_riga_1, "lb_riga_1");
-            gtk_widget_ref (lb_riga_1);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "lb_riga_1", lb_riga_1, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_set_usize (lb_riga_1, 100, -2);
-            gtk_widget_show (lb_riga_1);
-            gtk_box_pack_start (GTK_BOX (vbox_display), lb_riga_1, TRUE, TRUE, 0);
-
-            lb_riga_2 = gtk_label_new ("");
-            gtk_widget_set_name (lb_riga_2, "lb_riga_2");
-            gtk_widget_ref (lb_riga_2);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "lb_riga_2", lb_riga_2, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_set_usize (lb_riga_2, 100, -2);
-            gtk_widget_show (lb_riga_2);
-            gtk_box_pack_start (GTK_BOX (vbox_display), lb_riga_2, TRUE, TRUE, 0);
-
-            hsep_settore = gtk_hseparator_new ();
-            gtk_widget_set_name (hsep_settore, "hsep_settore");
-            gtk_widget_ref (hsep_settore);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "hsep_settore", hsep_settore, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_show (hsep_settore);
-            gtk_box_pack_start (GTK_BOX (vbox_settore), hsep_settore, FALSE, FALSE, 0);
-
-            table_settore = gtk_table_new (4, 3, FALSE);
-            gtk_widget_set_name (table_settore, "table_settore");
-            gtk_widget_ref (table_settore);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "table_settore", table_settore, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_show (table_settore);
-            gtk_box_pack_start (GTK_BOX (vbox_settore), table_settore, TRUE, TRUE, 0);
-            gtk_container_set_border_width (GTK_CONTAINER (table_settore), 5);
-            gtk_table_set_row_spacings (GTK_TABLE (table_settore), 5);
-            gtk_table_set_col_spacings (GTK_TABLE (table_settore), 5);
-
-            lb_null = gtk_label_new ("");
-            gtk_widget_set_name (lb_null, "lb_null");
-            gtk_widget_ref (lb_null);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "lb_null", lb_null, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_show (lb_null);
-            gtk_table_attach (GTK_TABLE (table_settore), lb_null, 0, 1, 0, 1,
-                                                (GtkAttachOptions) (GTK_FILL),
-                                                (GtkAttachOptions) (0), 0, 0);
-            gtk_misc_set_alignment (GTK_MISC (lb_null), 0, 0.5);
-
-            lb_copie_prelevate = gtk_label_new ("");
-            gtk_widget_set_name (lb_copie_prelevate, "lb_copie_prelevate");
-            gtk_widget_ref (lb_copie_prelevate);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "lb_copie_prelevate", lb_copie_prelevate, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_show (lb_copie_prelevate);
-            gtk_table_attach (GTK_TABLE (table_settore), lb_copie_prelevate, 2, 3, 1, 2,
-                                                (GtkAttachOptions) (GTK_FILL),
-                                                (GtkAttachOptions) (0), 0, 0);
-            gtk_misc_set_alignment (GTK_MISC (lb_copie_prelevate), 1, 0.5);
-            gtk_misc_set_padding (GTK_MISC (lb_copie_prelevate), 5, 0);
-
-            lb_righe_prelevate = gtk_label_new ("");
-            gtk_widget_set_name (lb_righe_prelevate, "lb_righe_prelevate");
-            gtk_widget_ref (lb_righe_prelevate);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "lb_righe_prelevate", lb_righe_prelevate, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_show (lb_righe_prelevate);
-            gtk_table_attach (GTK_TABLE (table_settore), lb_righe_prelevate, 1, 2, 1, 2,
-                                                (GtkAttachOptions) (GTK_FILL),
-                                                (GtkAttachOptions) (0), 0, 0);
-            gtk_misc_set_alignment (GTK_MISC (lb_righe_prelevate), 1, 0.5);
-            gtk_misc_set_padding (GTK_MISC (lb_righe_prelevate), 5, 0);
-
-            lb_righe_da_prelevare = gtk_label_new ("");
-            gtk_widget_set_name (lb_righe_da_prelevare, "lb_righe_da_prelevare");
-            gtk_widget_ref (lb_righe_da_prelevare);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "lb_righe_da_prelevare", lb_righe_da_prelevare, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_show (lb_righe_da_prelevare);
-            gtk_table_attach (GTK_TABLE (table_settore), lb_righe_da_prelevare, 1, 2, 2, 3,
-                                                (GtkAttachOptions) (GTK_FILL),
-                                                (GtkAttachOptions) (0), 0, 0);
-            gtk_misc_set_alignment (GTK_MISC (lb_righe_da_prelevare), 1, 0.5);
-            gtk_misc_set_padding (GTK_MISC (lb_righe_da_prelevare), 5, 0);
-
-            lb_copie_da_prelevare = gtk_label_new ("");
-            gtk_widget_set_name (lb_copie_da_prelevare, "lb_copie_da_prelevare");
-            gtk_widget_ref (lb_copie_da_prelevare);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "lb_copie_da_prelevare", lb_copie_da_prelevare, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_show (lb_copie_da_prelevare);
-            gtk_table_attach (GTK_TABLE (table_settore), lb_copie_da_prelevare, 2, 3, 2, 3,
-                                                (GtkAttachOptions) (GTK_FILL),
-                                                (GtkAttachOptions) (0), 0, 0);
-            gtk_misc_set_alignment (GTK_MISC (lb_copie_da_prelevare), 1, 0.5);
-            gtk_misc_set_padding (GTK_MISC (lb_copie_da_prelevare), 5, 0);
-
-            lb_copie_evase = gtk_label_new ("");
-            gtk_widget_set_name (lb_copie_evase, "lb_copie_evase");
-            gtk_widget_ref (lb_copie_evase);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "lb_copie_evase", lb_copie_evase, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_show (lb_copie_evase);
-            gtk_table_attach (GTK_TABLE (table_settore), lb_copie_evase, 2, 3, 3, 4,
-                                                (GtkAttachOptions) (GTK_FILL),
-                                                (GtkAttachOptions) (0), 0, 0);
-            gtk_misc_set_alignment (GTK_MISC (lb_copie_evase), 1, 0.5);
-            gtk_misc_set_padding (GTK_MISC (lb_copie_evase), 5, 0);
-
-            lb_righe_evase = gtk_label_new ("");
-            gtk_widget_set_name (lb_righe_evase, "lb_righe_evase");
-            gtk_widget_ref (lb_righe_evase);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "lb_righe_evase", lb_righe_evase, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_show (lb_righe_evase);
-            gtk_table_attach (GTK_TABLE (table_settore), lb_righe_evase, 1, 2, 3, 4,
-                                                (GtkAttachOptions) (GTK_FILL),
-                                                (GtkAttachOptions) (0), 0, 0);
-            gtk_misc_set_alignment (GTK_MISC (lb_righe_evase), 1, 0.5);
-            gtk_misc_set_padding (GTK_MISC (lb_righe_evase), 5, 0);
-
-            frame235 = gtk_frame_new (NULL);
-            gtk_widget_set_name (frame235, "frame235");
-            gtk_widget_ref (frame235);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "frame235", frame235, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_show (frame235);
-            gtk_table_attach (GTK_TABLE (table_settore), frame235, 1, 2, 0, 1,
-                                                (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-                                                (GtkAttachOptions) (GTK_FILL), 0, 0);
-
-            lb_titolo_righe = gtk_label_new ("Righe");
-            gtk_widget_set_name (lb_titolo_righe, "lb_titolo_righe");
-            gtk_widget_ref (lb_titolo_righe);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "lb_titolo_righe", lb_titolo_righe, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_show (lb_titolo_righe);
-            gtk_container_add (GTK_CONTAINER (frame235), lb_titolo_righe);
-            gtk_misc_set_alignment (GTK_MISC (lb_titolo_righe), 0, 0.5);
-            gtk_misc_set_padding (GTK_MISC (lb_titolo_righe), 5, 0);
-
-            frame236 = gtk_frame_new (NULL);
-            gtk_widget_set_name (frame236, "frame236");
-            gtk_widget_ref (frame236);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "frame236", frame236, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_show (frame236);
-            gtk_table_attach (GTK_TABLE (table_settore), frame236, 2, 3, 0, 1,
-                                                (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-                                                (GtkAttachOptions) (GTK_FILL), 0, 0);
-
-            lb_titolo_copie = gtk_label_new ("Copie");
-            gtk_widget_set_name (lb_titolo_copie, "lb_titolo_copie");
-            gtk_widget_ref (lb_titolo_copie);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "lb_titolo_copie", lb_titolo_copie, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_show (lb_titolo_copie);
-            gtk_container_add (GTK_CONTAINER (frame236), lb_titolo_copie);
-            gtk_misc_set_alignment (GTK_MISC (lb_titolo_copie), 0, 0.5);
-            gtk_misc_set_padding (GTK_MISC (lb_titolo_copie), 5, 0);
-
-            frame237 = gtk_frame_new (NULL);
-            gtk_widget_set_name (frame237, "frame237");
-            gtk_widget_ref (frame237);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "frame237", frame237, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_show (frame237);
-            gtk_table_attach (GTK_TABLE (table_settore), frame237, 0, 1, 1, 2,
-                                                (GtkAttachOptions) (GTK_FILL),
-                                                (GtkAttachOptions) (GTK_FILL), 0, 0);
-
-            lb_titolo_prelevato = gtk_label_new ("Prelevato");
-            gtk_widget_set_name (lb_titolo_prelevato, "lb_titolo_prelevato");
-            gtk_widget_ref (lb_titolo_prelevato);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "lb_titolo_prelevato", lb_titolo_prelevato, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_show (lb_titolo_prelevato);
-            gtk_container_add (GTK_CONTAINER (frame237), lb_titolo_prelevato);
-            gtk_misc_set_alignment (GTK_MISC (lb_titolo_prelevato), 0, 0.5);
-            gtk_misc_set_padding (GTK_MISC (lb_titolo_prelevato), 5, 0);
-
-            frame238 = gtk_frame_new (NULL);
-            gtk_widget_set_name (frame238, "frame238");
-            gtk_widget_ref (frame238);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "frame238", frame238, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_show (frame238);
-            gtk_table_attach (GTK_TABLE (table_settore), frame238, 0, 1, 2, 3,
-                                                (GtkAttachOptions) (GTK_FILL),
-                                                (GtkAttachOptions) (GTK_FILL), 0, 0);
-
-            lb_titolo_da_prelevare = gtk_label_new ("Da Prelevare");
-            gtk_widget_set_name (lb_titolo_da_prelevare, "lb_titolo_da_prelevare");
-            gtk_widget_ref (lb_titolo_da_prelevare);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "lb_titolo_da_prelevare", lb_titolo_da_prelevare, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_show (lb_titolo_da_prelevare);
-            gtk_container_add (GTK_CONTAINER (frame238), lb_titolo_da_prelevare);
-            gtk_misc_set_alignment (GTK_MISC (lb_titolo_da_prelevare), 0, 0.5);
-            gtk_misc_set_padding (GTK_MISC (lb_titolo_da_prelevare), 5, 0);
-
-            frame239 = gtk_frame_new (NULL);
-            gtk_widget_set_name (frame239, "frame239");
-            gtk_widget_ref (frame239);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "frame239", frame239, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_show (frame239);
-            gtk_table_attach (GTK_TABLE (table_settore), frame239, 0, 1, 3, 4,
-                                                (GtkAttachOptions) (GTK_FILL),
-                                                (GtkAttachOptions) (GTK_FILL), 0, 0);
-
-            lb_titolo_evaso = gtk_label_new ("Evaso");
-            gtk_widget_set_name (lb_titolo_evaso, "lb_titolo_evaso");
-            gtk_widget_ref (lb_titolo_evaso);
-            gtk_object_set_data_full (GTK_OBJECT (frame_settore), "lb_titolo_evaso", lb_titolo_evaso, (GtkDestroyNotify) gtk_widget_unref);
-            gtk_widget_show (lb_titolo_evaso);
-            gtk_container_add (GTK_CONTAINER (frame239), lb_titolo_evaso);
-            gtk_misc_set_alignment (GTK_MISC (lb_titolo_evaso), 0, 0.5);
-            gtk_misc_set_padding (GTK_MISC (lb_titolo_evaso), 5, 0);
-            nSettore++;
-        }
-    }
-
-}
-
-
-
-void refresh_table_settori(GtkWidget *dlg,ep_bool_t bRefreshDB)
-{
-    GtkWidget *frame_settore;
-    int nSettore;
-    char szBuffer[80];
-
-
-    for(nSettore=0;nSettore<Cfg.nNumeroSettori;nSettore++){
-        PSETTORE pSettore=priv->pSettori[nSettore];
-
-        sprintf(szBuffer,"frame_settore_%d",nSettore+1);
-        frame_settore=get_widget(dlg,szBuffer);
-
-
-        gtk_widget_set_foreground(get_widget(frame_settore,"lb_ordine"),&cGREEN);
-        gtk_widget_set_foreground(get_widget(frame_settore,"lb_prodotto"),&cGREEN);
-        gtk_widget_set_foreground(get_widget(frame_settore,"lb_operatore"),&cGREEN);
-        gtk_widget_set_foreground(get_widget(frame_settore,"lb_riga_1"),&cGREEN);
-        gtk_widget_set_foreground(get_widget(frame_settore,"lb_riga_2"),&cGREEN);
-
-        gtk_label_printf(get_widget(frame_settore,"lb_riga_1"),pSettore->szRiga_1_Display);
-        gtk_label_printf(get_widget(frame_settore,"lb_riga_2"),pSettore->szRiga_2_Display);
-    }
-}
-#endif
 
 static void close_activated (GSimpleAction *action, GVariant *parameter, gpointer win)
 {
@@ -886,7 +498,7 @@ int ReadUbicazioni(PUBICAZIONI pUbi)
     DBresult *DBRes = NULL;
     int nTuples;
 
-    DBRes=DBExecQuery(Cfg.nDebugLevel>1,"select ubicazione, codprod, isola, settore, display, ios, cpu, modulo, riga, colonna, priorita, cnistato from ubicazioni where ubitipo='%s';",Cfg.szTipoUbicazioni);
+    DBRes=DBExecQuery(Cfg.nDebugLevel>1,"select ubcdubi, ubcdpro, ubnmisl, ubnmset, ubnmdsp, ubplcnm, ubprior, ubstato from ubicazioni where ubtpubi='%s';",Cfg.szTipoUbicazioni);
 
     nTuples=DBntuples(DBRes);
 
@@ -897,12 +509,8 @@ int ReadUbicazioni(PUBICAZIONI pUbi)
         pUbi->Ubicazione[nIndex].nIsola            = atoi(DBgetvalue(DBRes,nIndex,2));
         pUbi->Ubicazione[nIndex].nSettore          = atoi(DBgetvalue(DBRes,nIndex,3));
         pUbi->Ubicazione[nIndex].nDisplay          = atoi(DBgetvalue(DBRes,nIndex,4));
-        pUbi->Ubicazione[nIndex].nIOS              = atoi(DBgetvalue(DBRes,nIndex,5));
-        pUbi->Ubicazione[nIndex].nCPU              = atoi(DBgetvalue(DBRes,nIndex,6));
-        pUbi->Ubicazione[nIndex].nModulo           = atoi(DBgetvalue(DBRes,nIndex,7));
-        pUbi->Ubicazione[nIndex].nRowIndex         = atoi(DBgetvalue(DBRes,nIndex,8));
-        pUbi->Ubicazione[nIndex].nColIndex         = atoi(DBgetvalue(DBRes,nIndex,9));
-        pUbi->Ubicazione[nIndex].nPriorita         = atoi(DBgetvalue(DBRes,nIndex,10));
+        pUbi->Ubicazione[nIndex].nPLCNum           = atoi(DBgetvalue(DBRes,nIndex,5));
+        pUbi->Ubicazione[nIndex].nPriorita         = atoi(DBgetvalue(DBRes,nIndex,6));
 
         pUbi->Ubicazione[nIndex].nIndex=nIndex;
         
@@ -921,16 +529,10 @@ int CmpUbicazione(PUBICAZIONE pUbi1,PUBICAZIONE pUbi2)
     if(pUbi1->nSettore > pUbi2->nSettore){
         return 1;
     }
-    if(pUbi1->nRowIndex < pUbi2->nRowIndex){
+    if(pUbi1->nPLCNum < pUbi2->nPLCNum){
         return -1;
     }
-    if(pUbi1->nRowIndex > pUbi2->nRowIndex){
-        return 1;
-    }
-    if(pUbi1->nColIndex < pUbi2->nColIndex){
-        return -1;
-    }
-    if(pUbi1->nColIndex > pUbi2->nColIndex){
+    if(pUbi1->nPLCNum > pUbi2->nPLCNum){
         return 1;
     }
     return 0;
@@ -944,8 +546,6 @@ void SortUbicazioni(PUBICAZIONI pUbi)
 
 enum TagUbicazioniColumns {
     COLUMN_SETTORE,
-    COLUMN_FILA,
-    COLUMN_MONTANTE,
     COLUMN_COLONNA,
     COLUMN_PIANO,
     COLUMN_PRESSED,
@@ -963,13 +563,12 @@ PUBICAZIONE SearchUbicazione(PUBICAZIONI pUbi,int nSettore,int nRowIndex,int nCo
     return bsearch(&Ubi,pUbi->Ubicazione,pUbi->nUbicazioni,sizeof(UBICAZIONE),(int(*)())CmpUbicazione);
 }
 
-void set_selection(gpointer win, GtkWidget *lst, int settore, char fila, int montante, int colonna, int piano, gboolean value, gboolean set_position, gboolean select_row)
+void set_selection(gpointer win, GtkWidget *lst, int settore, int colonna, int piano, gboolean value, gboolean set_position, gboolean select_row)
 {
     TestWindowPrivate *priv = test_window_get_instance_private (win);
     char *pszString;
     GtkTreeIter iter;
-    char f;
-    int s, m, c, p;
+    int s, c, p;
 
     gtk_tree_model_get_iter_first(TREE_MODEL_LST(lst), &iter);
 
@@ -978,12 +577,10 @@ void set_selection(gpointer win, GtkWidget *lst, int settore, char fila, int mon
         * colonne : settore, fila / colonna / piano 
         */
         gtk_tree_model_get_text(TREE_MODEL_LST(lst),&iter, COLUMN_SETTORE,  &pszString); s = atoi(pszString); g_free(pszString); /* settore  */
-        gtk_tree_model_get_text(TREE_MODEL_LST(lst),&iter, COLUMN_FILA,     &pszString); f = pszString[0];    g_free(pszString); /* fila     */
-        gtk_tree_model_get_text(TREE_MODEL_LST(lst),&iter, COLUMN_MONTANTE, &pszString); m = atoi(pszString); g_free(pszString); /* montante */
         gtk_tree_model_get_text(TREE_MODEL_LST(lst),&iter, COLUMN_COLONNA,  &pszString); c = atoi(pszString); g_free(pszString); /* colonna  */
         gtk_tree_model_get_text(TREE_MODEL_LST(lst),&iter, COLUMN_PIANO,    &pszString); p = atoi(pszString); g_free(pszString); /* piano    */
         
-        if(s == settore && f == fila && m == montante && c == colonna && p == piano){
+        if(s == settore && c == colonna && p == piano){
             /* found */
             gtk_list_store_set (GTK_LIST_STORE(TREE_MODEL_LST(lst)), &iter, COLUMN_PRESSED, value, -1);
 
@@ -1028,7 +625,7 @@ gboolean fsm_manage(gpointer win)
             g_printf("Start\n");
 
             if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(priv->rb_tutte_le_isole))){
-                priv->isola=0;
+                priv->ubnmisl=0;
             } else {
                 priv->settore= gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(priv->sb_isola));
             }
@@ -1070,7 +667,7 @@ gboolean fsm_manage(gpointer win)
             } else {
                strcpy( key, "");
             }
-            DBRes=DBExecQuery(TRUE,"select ubicazione, codprod, isola, settore, display, ios, cpu, modulo, riga, colonna, priorita, cnistato, fila(ubicazione), montante(ubicazione), colonna(ubicazione), piano(ubicazione) from ubicazioni where ubitipo = '%s' and ubcdflg='%c' %s order by isola,priorita;",
+            DBRes=DBExecQuery(TRUE,"select ubcdubi, ubcdpro, ubnmisl, ubnmset, ubnmdsp, ubplcnm, ubprior, ubstato, settore(ubcdubi), colonna(ubcdubi), piano(ubcdubi) from ubicazioni where ubtpubi = '%s' and ubcdflg='%c' %s order by ubnmisl,ubprior;",
                 Cfg.szTipoUbicazioni,
                 UBICAZIONE_AUTOMATICA,
                 key);
@@ -1078,35 +675,26 @@ gboolean fsm_manage(gpointer win)
             int nTuples=DBntuples(DBRes);
             char tmp_buffer[128];
 
-            store = gtk_list_store_new (NUM_COLUMNS, G_TYPE_INT, G_TYPE_STRING, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT, G_TYPE_BOOLEAN);
+            store = gtk_list_store_new (NUM_COLUMNS, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT, G_TYPE_BOOLEAN);
 
             /* popolo la lista dei pulsanti da testare */
             int nIndex;
             for(nIndex=0;nIndex<nTuples;nIndex++){
                 PPULSANTE pulsante = g_new0(PULSANTE, 1);
 
-                pulsante->nSettoreIndex    = atoi(DBgetvalue(DBRes,nIndex,3));
-                pulsante->nDisplayIndex    = atoi(DBgetvalue(DBRes,nIndex,4));
-                pulsante->nIOS             = atoi(DBgetvalue(DBRes,nIndex,5));
-                pulsante->nCPU             = atoi(DBgetvalue(DBRes,nIndex,6));
-                pulsante->nModulo          = atoi(DBgetvalue(DBRes,nIndex,7));
-                pulsante->nRow             = atoi(DBgetvalue(DBRes,nIndex,8));
-                pulsante->nCol             = atoi(DBgetvalue(DBRes,nIndex,9));
-                strcpy(tmp_buffer, DBgetvalue(DBRes,nIndex,12));
-                pulsante->cFilaUbicazione  = tmp_buffer[0];
-                pulsante->nMontante        = atoi(DBgetvalue(DBRes,nIndex,13));
-                pulsante->nColonna         = atoi(DBgetvalue(DBRes,nIndex,14));
-                pulsante->nPiano           = atoi(DBgetvalue(DBRes,nIndex,15));
-                pulsante->pressed          = FALSE;
+                pulsante->nSettore    = atoi(DBgetvalue(DBRes,nIndex,3));
+                pulsante->nDisplay    = atoi(DBgetvalue(DBRes,nIndex,4));
+                pulsante->nPLCNum     = atoi(DBgetvalue(DBRes,nIndex,5));
+                pulsante->nColonna    = atoi(DBgetvalue(DBRes,nIndex,8));
+                pulsante->nPiano      = atoi(DBgetvalue(DBRes,nIndex,9));
+                pulsante->pressed     = FALSE;
 
-                priv->pulsanti             = g_list_append(priv->pulsanti, pulsante  );
+                priv->pulsanti        = g_list_append(priv->pulsanti, pulsante  );
 
                 gtk_list_store_append (store, &iter);
                 gchar *fila = g_strdup_printf("%c", pulsante->cFilaUbicazione);
                 gtk_list_store_set (store, &iter,
-                    COLUMN_SETTORE  , pulsante->nSettoreIndex, 
-                    COLUMN_FILA     , fila, 
-                    COLUMN_MONTANTE , pulsante->nMontante,
+                    COLUMN_SETTORE  , pulsante->nSettore, 
                     COLUMN_COLONNA  , pulsante->nColonna,
                     COLUMN_PIANO    , pulsante->nPiano,
                     COLUMN_PRESSED  , FALSE, -1);
@@ -1127,8 +715,6 @@ gboolean fsm_manage(gpointer win)
             g_object_set (text_renderer, "xalign",1.0,NULL) ;
 
             gtk_tree_view_append_column (GTK_TREE_VIEW (priv->lst), gtk_tree_view_column_new_with_attributes( "SETTORE", text_renderer,"text", COLUMN_SETTORE , NULL));
-            gtk_tree_view_append_column (GTK_TREE_VIEW (priv->lst), gtk_tree_view_column_new_with_attributes( "FILA",    text_renderer,"text", COLUMN_FILA    , NULL));
-            gtk_tree_view_append_column (GTK_TREE_VIEW (priv->lst), gtk_tree_view_column_new_with_attributes( "MONTANTE",text_renderer,"text", COLUMN_MONTANTE, NULL));
             gtk_tree_view_append_column (GTK_TREE_VIEW (priv->lst), gtk_tree_view_column_new_with_attributes( "COLONNA", text_renderer,"text", COLUMN_COLONNA , NULL));
             gtk_tree_view_append_column (GTK_TREE_VIEW (priv->lst), gtk_tree_view_column_new_with_attributes( "PIANO",   text_renderer,"text", COLUMN_PIANO   , NULL));
             gtk_tree_view_append_column (GTK_TREE_VIEW (priv->lst), col = gtk_tree_view_column_new_with_attributes( "PREMUTO", pixmap_renderer, NULL));
@@ -1138,8 +724,6 @@ gboolean fsm_manage(gpointer win)
 
             GtkLabel *lb_column_title;
             lb_column_title=GTK_LABEL(gtk_label_new("SETTORE" )); gtk_widget_show (GTK_WIDGET(lb_column_title)); gtk_tree_view_column_set_widget (gtk_tree_view_get_column (GTK_TREE_VIEW (priv->lst), COLUMN_SETTORE ), GTK_WIDGET(lb_column_title));
-            lb_column_title=GTK_LABEL(gtk_label_new("FILA"    )); gtk_widget_show (GTK_WIDGET(lb_column_title)); gtk_tree_view_column_set_widget (gtk_tree_view_get_column (GTK_TREE_VIEW (priv->lst), COLUMN_FILA    ), GTK_WIDGET(lb_column_title));
-            lb_column_title=GTK_LABEL(gtk_label_new("MONTANTE")); gtk_widget_show (GTK_WIDGET(lb_column_title)); gtk_tree_view_column_set_widget (gtk_tree_view_get_column (GTK_TREE_VIEW (priv->lst), COLUMN_MONTANTE), GTK_WIDGET(lb_column_title));
             lb_column_title=GTK_LABEL(gtk_label_new("COLONNA" )); gtk_widget_show (GTK_WIDGET(lb_column_title)); gtk_tree_view_column_set_widget (gtk_tree_view_get_column (GTK_TREE_VIEW (priv->lst), COLUMN_COLONNA ), GTK_WIDGET(lb_column_title));
             lb_column_title=GTK_LABEL(gtk_label_new("PIANO"   )); gtk_widget_show (GTK_WIDGET(lb_column_title)); gtk_tree_view_column_set_widget (gtk_tree_view_get_column (GTK_TREE_VIEW (priv->lst), COLUMN_PIANO   ), GTK_WIDGET(lb_column_title));
             lb_column_title=GTK_LABEL(gtk_label_new("PREMUTO" )); gtk_widget_show (GTK_WIDGET(lb_column_title)); gtk_tree_view_column_set_widget (gtk_tree_view_get_column (GTK_TREE_VIEW (priv->lst), COLUMN_PRESSED ), GTK_WIDGET(lb_column_title));
@@ -1156,20 +740,16 @@ gboolean fsm_manage(gpointer win)
 
             /* accendo il primo pulsante della lista */
             if(priv->pulsanti && (priv->pulsante = (PPULSANTE)g_list_first(priv->pulsanti)->data)){
-                PklSetRC(win, priv->pulsante->nModulo, priv->pulsante->nRow, priv->pulsante->nCol);
+                PklSetRC(win, priv->pulsante->nSettore, priv->pulsante->nPLCNum);
 
-                SetStatoSettore(win, priv->pulsante->nSettoreIndex-1, TEST);
+                SetStatoSettore(win, priv->pulsante->nSettore-1, TEST);
 
-                sprintf(priv->pSettori[priv->pulsante->nSettoreIndex-1]->szCodUbi, "S:%2d U:%c-%2d-%2d-%2d", 
-                        priv->pulsante->nSettoreIndex, 
-                        priv->pulsante->cFilaUbicazione, 
-                        priv->pulsante->nMontante, 
+                sprintf(priv->pSettori[priv->pulsante->nSettore-1]->szCodUbi, "S:%2d U:%02d-%02d-%02d", 
+                        priv->pulsante->nSettore, 
+                        priv->pulsante->nSettore, 
                         priv->pulsante->nColonna, 
                         priv->pulsante->nPiano);
 
-                priv->pSettori[priv->pulsante->nSettoreIndex-1]->nModulo  = priv->pulsante->nModulo;
-                priv->pSettori[priv->pulsante->nSettoreIndex-1]->nRiga    = priv->pulsante->nRow;
-                priv->pSettori[priv->pulsante->nSettoreIndex-1]->nColonna = priv->pulsante->nCol;
                 if(priv->simulazione){
                     g_timeout_add(priv->delay_simulazione,pkl_press_button_timeout_cb, win);
                 }
@@ -1195,42 +775,36 @@ gboolean fsm_manage(gpointer win)
 
             if(pulsante){
                 /* real button check */
-                if (PklCheckPressed(win, &mod, &row, &col)){
-                    if(SearchUbicazione(priv->pUbicazioni,mod,row,col)){
+                if (PklCheckPressed(win, &settore, &plc_num, &col)){
+                    if(SearchUbicazione(priv->pUbicazioni,settore,plc_num)){
                         pulsante->pressed=TRUE;
                     }
                 }
                 if(pulsante->pressed){
 
-                    // g_printf("Premuto pulsante %c-%02d-%02d-%02d - S:%2d R:%2d C:%2d\n", pulsante->cFilaUbicazione, pulsante->nMontante, pulsante->nColonna, pulsante->nPiano, pulsante->nSettoreIndex, pulsante->nRow, pulsante->nCol);
+                    // g_printf("Premuto pulsante %02d-%02d-%02d - S:%2d N:%2d\n", pulsante->nSettore, pulsante->nColonna, pulsante->nPiano, pulsante->nSettore, pulsante->nPLCNum);
                     set_selection(win, priv->lst, 
-                        pulsante->nSettoreIndex, 
-                        pulsante->cFilaUbicazione, 
-                        pulsante->nMontante, 
+                        pulsante->nSettore, 
                         pulsante->nColonna, 
                         pulsante->nPiano, 
                         pulsante->pressed, TRUE, TRUE);
-                    strcpy(priv->pSettori[priv->pulsante->nSettoreIndex-1]->szCodUbi, "" );
+                    strcpy(priv->pSettori[priv->pulsante->nSettore-1]->szCodUbi, "" );
 
                     /* spengo la luce */
-                    PklResetRC(win, pulsante->nModulo, pulsante->nRow, pulsante->nCol);
+                    PklResetRC(win, pulsante->nSettore, pulsante->nPLCNum);
                     /* passo al prossimo pulsante */
                     if((priv->pulsanti = priv->pulsanti->next)){
                         if((priv->pulsante = (PPULSANTE)(priv->pulsanti->data))){
-                            PklSetRC(win, priv->pulsante->nModulo, priv->pulsante->nRow, priv->pulsante->nCol);
+                            PklSetRC(win, priv->pulsante->nSettore, priv->pulsante->nPLCNum);
 
-                            SetStatoSettore(win, priv->pulsante->nSettoreIndex-1, TEST);
+                            SetStatoSettore(win, priv->pulsante->nSettore-1, TEST);
 
-                            sprintf(priv->pSettori[priv->pulsante->nSettoreIndex-1]->szCodUbi, "S:%2d U:%c-%2d-%2d-%2d", 
-                                    priv->pulsante->nSettoreIndex, 
-                                    priv->pulsante->cFilaUbicazione, 
-                                    priv->pulsante->nMontante, 
+                            sprintf(priv->pSettori[priv->pulsante->nSettore-1]->szCodUbi, "S:%2d U:%2d-%2d-%2d", 
+                                    priv->pulsante->nSettore, 
+                                    priv->pulsante->nSettore, 
                                     priv->pulsante->nColonna, 
                                     priv->pulsante->nPiano);
 
-                            priv->pSettori[priv->pulsante->nSettoreIndex-1]->nModulo  = priv->pulsante->nModulo;
-                            priv->pSettori[priv->pulsante->nSettoreIndex-1]->nRiga    = priv->pulsante->nRow;
-                            priv->pSettori[priv->pulsante->nSettoreIndex-1]->nColonna = priv->pulsante->nCol;
                             if(priv->simulazione){
                                 g_timeout_add(priv->delay_simulazione,pkl_press_button_timeout_cb, win);
                             }
@@ -1416,9 +990,8 @@ static void test_window_init (TestWindow *win)
     if(Cfg.nPLC){
         GetVarsIndex(win);
 
-        plc_set_var_value(priv->nAMATRIX, FALSE);
-        plc_set_var_value(priv->nARIGA,   FALSE);
-        plc_set_var_value(priv->nACOLON,  FALSE);
+        plc_set_var_value(priv->nSETTORE, FALSE);
+        plc_set_var_value(priv->nLUCE,   FALSE);
         plc_set_var_value(priv->nACCEN,   FALSE);
         plc_set_var_value(priv->nANNUL,   FALSE);
         plc_set_var_value(priv->nRSPEGNI, FALSE);

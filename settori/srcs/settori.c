@@ -245,19 +245,15 @@ int main(int argc,char** argv)
             /*
             * Selezione di tutte le ubicazioni dell'impianto
             */
-            DBRes=DBExecQuery(TRUE,"select ubicazione, codprod, isola, settore, display, ios, cpu, modulo, riga, colonna, priorita, cnistato, fila(ubicazione) from ubicazioni where ubitipo = '%s' and ubcdflg='%c' order by isola,settore,priorita;",Cfg.szTipoOrdini,UBICAZIONE_AUTOMATICA);
+            DBRes=DBExecQuery(TRUE,"select ubcdubi, ubcdpro, ubnmisl, ubnmset, ubnmdsp, ubplcnm, ubprior, ubstato, settore(ubcdubi) from ubicazioni where ubtpubi = '%s' and ubcdflg='%c' order by ubnmisl,ubnmset,ubprior;",Cfg.szTipoOrdini,UBICAZIONE_AUTOMATICA);
 
             nTuples=DBntuples(DBRes);
 
             for(nIndex=0;nIndex<nTuples;nIndex++){
                 nSettoreIndex=atoi(DBgetvalue(DBRes,nIndex,3));
                 nDisplayIndex=atoi(DBgetvalue(DBRes,nIndex,4));
-                nIOS=atoi(DBgetvalue(DBRes,nIndex,5));
-                nCPU=atoi(DBgetvalue(DBRes,nIndex,6));
-                nModulo=atoi(DBgetvalue(DBRes,nIndex,7));
-                nRow=atoi(DBgetvalue(DBRes,nIndex,8));
-                nCol=atoi(DBgetvalue(DBRes,nIndex,9));
-                strcpy(szFilaUbicazione,DBgetvalue(DBRes,nIndex,12));
+                nPLCNum=atoi(DBgetvalue(DBRes,nIndex,5));
+                strcpy(szFilaUbicazione,DBgetvalue(DBRes,nIndex,8));
                 pDisplay=&(Cfg.Displays[nDisplayIndex-1]);
 
                 /*
@@ -272,8 +268,8 @@ int main(int argc,char** argv)
                         pDisplay->nStatoRiga2=NORMAL;
                         UpdateDisplay(pDisplay,TUTTO);
 
-                        sprintf(szBuffer,"%d,%d,%d,%d,%d", nIOS,nCPU,nModulo,nRow,nCol);
-                        SendMessage(PROC_IOS, PROC_SETTORI,  IOS_PKL_SET_RC, szBuffer);
+                        sprintf(szBuffer,"%d,%d", nSettoreIndex, nPLCNum);
+                        SendMessage(PROC_IOS, PROC_SETTORI,  IOS_PKL_SET_RC_SETTORE_NUMERO, szBuffer);
 
                         bTastoOK=FALSE;
 
@@ -285,19 +281,20 @@ int main(int argc,char** argv)
                                 switch (InMsgStruct.srce){
                                     case PROC_IOS:
                                         switch(InMsgStruct.code){
-                                            case IOS_PKL_BUTTON_PRESSED:
+                                            case IOS_PKL_BUTTON_PRESSED_SETTORE_NUMERO:
                                             {
                                                 PUBICAZIONE pUbicazione;
-                                                int nMsgIOS,nMsgCPU,nMsgModulo,nMsgRowIndex,nMsgColIndex;
+                                                int nMsgSettore;
+                                                int nMsgPLCNum;
 
-                                                sscanf(szText,"%d,%d,%d,%d,%d",&nMsgIOS,&nMsgCPU,&nMsgModulo,&nMsgRowIndex,&nMsgColIndex);
+                                                sscanf(szText,"%d,%d",&nMsgSettore,&nMsgPLCNum);
 
 #ifdef TRACE
-                                                trace_debug(TRUE, TRUE, "TEST : Ricevuto IOS_PKL_BUTTON_PRESSED [IOS:%d CPU:%d m:%02d,r:%02d,c:%02d]", nMsgIOS,nMsgCPU,nMsgModulo,nMsgRowIndex,nMsgColIndex);
+                                                trace_debug(TRUE, TRUE, "TEST : Ricevuto IOS_PKL_BUTTON_PRESSED_SETTORE_NUMERO [SETTORE:%d NUMERO:%d]", nMsgSettore,nMsgPLCNum);
 #endif
 
-                                                if((pUbicazione=SearchUbicazione(&Ubicazioni,nMsgIOS,nMsgCPU,nMsgModulo,nMsgRowIndex,nMsgColIndex))!=NULL){
-                                                    if(nMsgIOS==nIOS && nMsgCPU==nCPU && nMsgModulo==nModulo && nMsgRowIndex==nRow && nMsgColIndex==nCol){
+                                                if((pUbicazione=SearchUbicazione(&Ubicazioni,nMsgSettore,nMsgPLCNum))!=NULL){
+                                                    if(nMsgSettore==nSettore && nMsgPLCNum==nPLCNum){
                                                         bTastoOK=TRUE;
                                                     }
                                                 }
@@ -306,16 +303,17 @@ int main(int argc,char** argv)
                                             case IOS_PKL_LIGHT_DAMAGED:
                                             {
                                                 PUBICAZIONE pUbicazione;
-                                                int nMsgIOS,nMsgCPU,nMsgModulo,nMsgRowIndex,nMsgColIndex;
+                                                int nMsgSettore;
+                                                int nMsgPLCNum;
 
-                                                sscanf(szText,"%d,%d,%d,%d,%d",&nMsgIOS,&nMsgCPU,&nMsgModulo,&nMsgRowIndex,&nMsgColIndex);
+                                                sscanf(szText,"%d,%d",&nMsgSettore,&nMsgPLCNum);
 
 #ifdef TRACE
-                                                trace_debug(TRUE, TRUE, "TEST : Ricevuto IOS_PKL_LIGHT_DAMAGED [IOS:%d CPU:%d m:%02d,r:%02d,c:%02d]", nMsgIOS,nMsgCPU,nMsgModulo,nMsgRowIndex,nMsgColIndex);
+                                                trace_debug(TRUE, TRUE, "TEST : Ricevuto IOS_PKL_LIGHT_DAMAGED_SETTORE_NUMERO [SETTORE:%d NUMERO:%d]", nMsgSettore,nMsgPLCNum);
 #endif
 
-                                                if((pUbicazione=SearchUbicazione(&Ubicazioni,nMsgIOS,nMsgCPU,nMsgModulo,nMsgRowIndex,nMsgColIndex))!=NULL){
-                                                    if(nMsgIOS==nIOS && nMsgCPU==nCPU && nMsgModulo==nModulo && nMsgRowIndex==nRow && nMsgColIndex==nCol){
+                                                if((pUbicazione=SearchUbicazione(&Ubicazioni,nMsgSettore,nMsgPLCNum))!=NULL){
+                                                    if(nMsgSettore==nSettore && nMsgPLCNum==nPLCNum){
                                                         bTastoOK=TRUE;
                                                     }
                                                 }

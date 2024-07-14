@@ -246,19 +246,15 @@ int main(int argc,char** argv)
 			/*
 			* Selezione di tutte le ubicazioni dell'impianto
 			*/
-			PGRes=DBExecQuery(TRUE,"select ubicazione, codprod, isola, settore, display, ios, cpu, modulo, riga, colonna, priorita, cnistato, fila(ubicazione) from ubicazioni where ubitipo = '%s' and ubcdflg='%c' order by isola,settore,priorita;",Cfg.szTipoOrdini,UBICAZIONE_AUTOMATICA);
+			PGRes=DBExecQuery(TRUE,"select ubcdubi, ubcdpro, ubnmisl, ubnmset, ubnmdsp, ubplcnm, ubprior, ubstato, settore(ubcdpro) from ubicazioni where ubtpubi = '%s' and ubcdflg='%c' order by ubnmisl,ubnmset,ubprior;",Cfg.szTipoOrdini,UBICAZIONE_AUTOMATICA);
 
 			nTuples=DBntuples(PGRes);
 
 			for(nIndex=0;nIndex<nTuples;nIndex++){
 				nSettoreIndex=atoi(DBgetvalue(PGRes,nIndex,3));
 				nDisplayIndex=atoi(DBgetvalue(PGRes,nIndex,4));
-				nIOS=atoi(DBgetvalue(PGRes,nIndex,5));
-				nCPU=atoi(DBgetvalue(PGRes,nIndex,6));
-				nModulo=atoi(DBgetvalue(PGRes,nIndex,7));
-				nRow=atoi(DBgetvalue(PGRes,nIndex,8));
-				nCol=atoi(DBgetvalue(PGRes,nIndex,9));
-				strcpy(szFilaUbicazione,DBgetvalue(PGRes,nIndex,12));
+				nPLCNum=atoi(DBgetvalue(PGRes,nIndex,5));
+				strcpy(szFilaUbicazione,DBgetvalue(PGRes,nIndex,6));
 				pDisplay=&(Cfg.Displays[nDisplayIndex-1]);
 
 				/*
@@ -274,7 +270,7 @@ int main(int argc,char** argv)
 						UpdateDisplay(pDisplay,TUTTO);
 
 						sprintf(szBuffer,"%d,%d,%d,%d,%d", nIOS,nCPU,nModulo,nRow,nCol);
-						SendMessage(PROC_IOS, PROC_SETTORI,  IOS_PKL_SET_RC, szBuffer);
+						SendMessage(PROC_IOS, PROC_SETTORI,  IOS_PKL_SET_RC_SETTORE_NUMERO, szBuffer);
 
 						bTastoOK=FALSE;
 
@@ -286,7 +282,7 @@ int main(int argc,char** argv)
 								switch (InMsgStruct.srce){
 									case PROC_IOS:
 										switch(InMsgStruct.code){
-											case IOS_PKL_BUTTON_PRESSED:
+											case IOS_PKL_BUTTON_PRESSED_SETTORE_NUMERO:
 											{
 												PUBICAZIONE pUbicazione;
 												int nMsgIOS,nMsgCPU,nMsgModulo,nMsgRowIndex,nMsgColIndex;

@@ -273,7 +273,7 @@ ep_bool_t AssegnatiUtente(gpointer win, int nEquilibratura,ep_bool_t bEscludiPro
 		* Esclude l'ubicazione anche se attivo il flag 'bEscludiProdottiUbicati'
 		*/
 		if(szTPUBI[0]==UBICAZIONE_MANUALE || bEscludiProdottiUbicati){
-			DBResUbi=DBExecQuery(Cfg.nDebugLevel>1,"select settore from ubicazioni where ubicazione='%s';",szCDUBI);
+			DBResUbi=DBExecQuery(Cfg.nDebugLevel>1,"select ubnmset from ubicazioni where ubicazione='%s';",szCDUBI);
 			if(DBntuples(DBResUbi)==1){
 				nCDSET=atoi(DBgetvalue(DBResUbi,0,0));
 			} else {
@@ -428,7 +428,7 @@ ep_bool_t CreaListeProdotti(gpointer win, int nEquilibratura,ep_bool_t bEscludiP
 		/* default */
 		bEscludiProdotto=FALSE;
 
-		DBResUbi=DBExecQuery(Cfg.nDebugLevel>1,"select ubicazione from ubicazioni where ubicazione='%s';",szCDUBI);
+		DBResUbi=DBExecQuery(Cfg.nDebugLevel>1,"select ubcdubi from ubicazioni where ubicazione='%s';",szCDUBI);
 		if(DBntuples(DBResUbi) && bEscludiProdottiUbicati){
 			/*
 			* Il prodotto e' gia ubicato e devo escluderlo dall'equilkibratura
@@ -1113,7 +1113,7 @@ void AssegnaUbicazioniManuali(gpointer win)
 	/*
 	* Seleziono le ubicazioni manuali per uso successivo
 	*/
-	DBResUbiMan=DBExecQuery(Cfg.nDebugLevel>1,"select ubicazione,settore,cnistato,ubcdflg from ubicazioni where ubcdflg='%c' order by fila(ubicazione),montante(ubicazione)::int2,colonna(ubicazione)::int2,piano(ubicazione)::int2;", UBICAZIONE_MANUALE);
+	DBResUbiMan=DBExecQuery(Cfg.nDebugLevel>1,"select ubcdubi,ubnmset,ubstato,ubcdflg from ubicazioni where ubcdflg='%c' order by fila(ubicazione),montante(ubicazione)::int2,colonna(ubicazione)::int2,piano(ubicazione)::int2;", UBICAZIONE_MANUALE);
 	nUbicazioniManuali=DBntuples(DBResUbiMan);
 	nUbicazioniManualiUtilizzate=0;
 
@@ -1265,7 +1265,7 @@ void do_carico_settori(gpointer win)
 	/*
 	* Seleziono le qta per settore
 	*/
-	DBRes=DBExecQuery(Cfg.nDebugLevel>1,"select u.settore,sum(s.sanmcpe) from ubicazioni as u,sel_art_tmp_%s_%s as s where u.ubicazione=s.sacdubi group by u.settore order by u.settore;", Cfg.szTmpSuffix, Cfg.szTipoOrdini);
+	DBRes=DBExecQuery(Cfg.nDebugLevel>1,"select u.ubnmset,sum(s.sanmcpe) from ubicazioni as u,sel_art_tmp_%s_%s as s where u.ubicazione=s.sacdubi group by u.settore order by u.settore;", Cfg.szTmpSuffix, Cfg.szTipoOrdini);
 	if((nTuples=DBntuples(DBRes))){
 		for(nIndex=0;nIndex<nTuples;nIndex++){
 			nSettoreIndex=max(atoi(DBgetvalue(DBRes,nIndex,0)),0);

@@ -282,9 +282,9 @@ BOOL OrdineProducibile(PORDINE pOrdine)
 				/*
 				* verifico giacenza e impegnato
 				*/
-				PGResUbi=DBExecQuery(Cfg.nDebugVersion>1,"select ubicazione,ubqtcas,ubqtimp from ubicazioni where codprod='%s' and ubitipo='%s' order by priorita;",szCodProd,Cfg.szTipoOrdini);
+				PGResUbi=DBExecQuery(Cfg.nDebugVersion>1,"select ubcdubi,ubqtcas,ubqtimp from ubicazioni where codprod='%s' and ubtpubi='%s' order by ubprior;",szCodProd,Cfg.szTipoOrdini);
 				if(DBntuples(PGResUbi)){
-					strcpy(szUbicazione,DBgetvalue(PGResUbi,0,0));
+					strcpy(szubcdubi,DBgetvalue(PGResUbi,0,0));
 					nQTCas=atoi(DBgetvalue(PGResUbi,0,1));
 					nQTImp=atoi(DBgetvalue(PGResUbi,0,2));
 
@@ -356,7 +356,7 @@ BOOL ProduzioneOrdine(PORDINE pOrdine)
 		for(nIndex=0;nIndex<nTuples;nIndex++){
 
 			strcpy(szCodProd,DBgetvalue(PGRes,nIndex,0));
-			strcpy(szUbicazione,DBgetvalue(PGRes,nIndex,1));
+			strcpy(szubcdubi,DBgetvalue(PGRes,nIndex,1));
 
 			nCollo=atoi(DBgetvalue(PGRes,nIndex,2));
 			nProgRiga=atoi(DBgetvalue(PGRes,nIndex,3));
@@ -419,7 +419,7 @@ BOOL InizioPrelievoSettore(PORDINE pOrdine,PSETTORE pSettore)
 	*   NO :
 	*      Chiudo il collo e l'ordine
 	*/
-	PGRes=DBExecQuery(Cfg.nDebugVersion>1,"select r.ordprog,r.rpcdpro,r.rpcdubi,r.rpqtspe,r.rpprrig,r.rpnmcol,u.ios,u.cpu,u.modulo,u.riga,u.colonna,u.display,u.settore,c.cpswlin from rig_prod as r, ubicazioni as u, col_prod as c where r.ordprog='%s' and r.ordprog=c.ordprog and r.rpnmcol=c.cpnmcol and u.ubicazione=r.rpcdubi and u.isola=%d and r.rpcdflg not in ('%c','%c') and u.ubitipo='%s' and c.cpswlin='%d' order by u.priorita,r.rpnmcol,r.rpprrig;",
+	PGRes=DBExecQuery(Cfg.nDebugVersion>1,"select r.ordprog,r.rpcdpro,r.rpcdubi,r.rpqtspe,r.rpprrig,r.rpnmcol,u.ubplcnm,u.ubnmdsp,u.ubnmset,c.cpswlin from rig_prod as r, ubicazioni as u, col_prod as c where r.ordprog='%s' and r.ordprog=c.ordprog and r.rpnmcol=c.cpnmcol and u.ubcdubi=r.rpcdubi and u.ubnmisl=%d and r.rpcdflg not in ('%c','%c') and u.ubtpubi='%s' and c.cpswlin='%d' order by u.ubprior,r.rpnmcol,r.rpprrig;",
 		pOrdine->szOrdProg,
 		pSettore->nIsola,
 		RIGA_TAGLIATA,
@@ -461,7 +461,7 @@ BOOL InizioPrelievoSettore(PORDINE pOrdine,PSETTORE pSettore)
 				/*
 				* Se si tratta di una riga relativa al settore in esame ...
 				*/
-				if(pSettore->nSettore==atoi(DBgetvalue(PGRes,nIndex,12))){
+				if(pSettore->nubnmset==atoi(DBgetvalue(PGRes,nIndex,12))){
 					strcpy(pSettore->RigaOrdine[nRigaIndex].szCodSped, DBgetvalue(PGRes,nIndex,0));
 					strcpy(pSettore->RigaOrdine[nRigaIndex].szCodProd, DBgetvalue(PGRes,nIndex,1));
 					strcpy(pSettore->RigaOrdine[nRigaIndex].szCodUbi,  DBgetvalue(PGRes,nIndex,2));
@@ -480,12 +480,8 @@ BOOL InizioPrelievoSettore(PORDINE pOrdine,PSETTORE pSettore)
 						*/
 						pSettore->RigaOrdine[nRigaIndex].nNumCollo         = 1;
 					}
-					pSettore->RigaOrdine[nRigaIndex].nIOS              = atoi(DBgetvalue(PGRes,nIndex,6));
-					pSettore->RigaOrdine[nRigaIndex].nCPU              = atoi(DBgetvalue(PGRes,nIndex,7));
-					pSettore->RigaOrdine[nRigaIndex].nModulo           = atoi(DBgetvalue(PGRes,nIndex,8));
-					pSettore->RigaOrdine[nRigaIndex].nRiga             = atoi(DBgetvalue(PGRes,nIndex,9));
-					pSettore->RigaOrdine[nRigaIndex].nColonna          = atoi(DBgetvalue(PGRes,nIndex,10));
-					pSettore->RigaOrdine[nRigaIndex].nDisplay          = atoi(DBgetvalue(PGRes,nIndex,11));
+					pSettore->RigaOrdine[nRigaIndex].nPLCNum           = atoi(DBgetvalue(PGRes,nIndex,6));
+					pSettore->RigaOrdine[nRigaIndex].nDisplay          = atoi(DBgetvalue(PGRes,nIndex,7));
 					pSettore->RigaOrdine[nRigaIndex].nIsola            = pSettore->nIsola;
 					pSettore->RigaOrdine[nRigaIndex].nStato=0;
 
@@ -553,11 +549,7 @@ BOOL InizioPrelievoSettore(PORDINE pOrdine,PSETTORE pSettore)
 				strcpy(pSettore->szCodUbi,pRigaOrdine->szCodUbi);
 				pSettore->nNumCollo=pRigaOrdine->nNumCollo;
 				pSettore->nNumCopie=pRigaOrdine->nNumCopie;
-				pSettore->nIOS=pRigaOrdine->nIOS;
-				pSettore->nCPU=pRigaOrdine->nCPU;
-				pSettore->nModulo=pRigaOrdine->nModulo;
-				pSettore->nRiga=pRigaOrdine->nRiga;
-				pSettore->nColonna=pRigaOrdine->nColonna;
+				pSettore->nPLCNum=pRigaOrdine->nPLCNum;
 
 				pSettore->nDisplay=GetDisplay(pRigaOrdine->nDisplay,pSettore->nIsola);
 
@@ -579,14 +571,14 @@ BOOL InizioPrelievoSettore(PORDINE pOrdine,PSETTORE pSettore)
 				UpdateDisplay(pDisplay,TUTTO);
 
 				/*
-				* acccendo la luce di prelievo prodotto
+				* accendo la luce di prelievo prodotto
 				*/
 				pSettore->nStatoLampada=1;
-				SetLampada(pSettore->nIOS,pSettore->nCPU,pSettore->nModulo,pSettore->nRiga,pSettore->nColonna);
+				SetLampada(pSettore->nSettore,pSettore->nPLCNum);
 				/*
 				* setto lo stato settore in attesa di conferma copie prelevate
 				*/
-				pSettore->nStatoSettore=PRELIEVO_COPIE;
+				pSettore->nStatoubnmset=PRELIEVO_COPIE;
 			} else {
 				/*
 				* non ci sono righe per questo settore
@@ -606,9 +598,9 @@ BOOL InizioPrelievoSettore(PORDINE pOrdine,PSETTORE pSettore)
 				*/
 				pSettore->nStatoLampada=1;
 
-				SetLampada(pSettore->nIOS,pSettore->nCPU,pSettore->nModulo,pSettore->nRiga,pSettore->nColonna);
+				SetLampada(pSettore->nSettore,pSettore->nPLCNum);
 
-				pSettore->nStatoSettore=PASSA_SETT_SUCC;
+				pSettore->nStatoubnmset=PASSA_SETT_SUCC;
 			}
 		} else {
 			/* non ci sono righe di ubicazione automatica : chiudo l'ordine */
@@ -629,9 +621,9 @@ BOOL InizioPrelievoSettore(PORDINE pOrdine,PSETTORE pSettore)
 			*/
 			pSettore->nStatoLampada=1;
 
-			SetLampada(pSettore->nIOS,pSettore->nCPU,pSettore->nModulo,pSettore->nRiga,pSettore->nColonna);
+			SetLampada(pSettore->nSettore,pSettore->nPLCNum);
 
-			pSettore->nStatoSettore=FINE_ORDINE;
+			pSettore->nStatoubnmset=FINE_ORDINE;
 			/*
 			* Messaggio di Ordine Terminato a MAIN
 			*/
@@ -675,7 +667,7 @@ BOOL GestioneSettore(EVENTO *pEvento)
 #endif
 		return FALSE;
 	}
-	pSettore=&pSettori[nSettoreIndex];
+	pubnmset=&pSettori[nSettoreIndex];
 
 #ifdef TRACE_ELIMINATO
 	trace_out_vstr_date(1,"GestioneSettore(I:%d,S:%d) : settore %d",pEvento->nIsola,pEvento->nSettore,nSettoreIndex);
@@ -684,14 +676,14 @@ BOOL GestioneSettore(EVENTO *pEvento)
 	* caso di settore in stato di attesa 
 	* e nessun evento verificatosi
 	*/
-	if(pSettore->nStatoSettore==ATTESA && pEvento->nEvento==-1){
+	if(pSettore->nStatoubnmset==ATTESA && pEvento->nEvento==-1){
 		/*
-		* - se si tratta del primo settore, 
+		* - se si tratta del primo ubnmset, 
 		* - se la lista ordini e' vuota,
 		* - se l'archivio rig_prod contiene prelievi di righe sul primo settore :
 		* si mettono queste righe d'ordine in lista  
 		*/
-		if(pSettore->nTipoSettore==SETTORE_START){
+		if(pSettore->nTipoubnmset==SETTORE_START){
 			if((pOrdine=link_first(&(ListaOrdini[nSettoreIndex])))==NULL){
 				/*
 				* Gestione Timeout per get ordine (evita di ricercare un ordine sul settore di start con 
@@ -781,7 +773,7 @@ BOOL GestioneSettore(EVENTO *pEvento)
 										memset(pOrdine,0,sizeof(ORDINE));
 
 										strcpy(pOrdine->szOrdProg,Ordine.szOrdProg);   /* Chiave Spedizione */
-										pOrdine->nIsola=Ordine.nIsola;
+										pOrdine->nubnmisl=Ordine.nIsola;
 										pOrdine->nColli=Ordine.nColli;
 										pOrdine->nRighe=Ordine.nRighe;
 										pOrdine->nCopie=Ordine.nCopie;
@@ -806,7 +798,7 @@ BOOL GestioneSettore(EVENTO *pEvento)
 					}        /* if(!Cfg.bAttesaAnalisiVolumetrice)                            - Flag di attesa analisi volumetrica per ordini forzati*/
 				}          /* if(nGetOrderTimePassed[pSettore->nIsola]==0)                  - Tempo di ritardo sulla ricerca ordine */
 			}            /* if((pOrdine=link_first(&(ListaOrdini[nSettoreIndex])))==NULL) - Verifica di coda vuota */
-		}              /* if(pSettore->nTipoSettore==SETTORE_START)                     - Verifica di settore di start */
+		}              /* if(pSettore->nTipoubnmset==SETTORE_START)                     - Verifica di settore di start */
 
 		/*
 		* caso valido per tutti i settori, compreso il primo:
@@ -815,7 +807,7 @@ BOOL GestioneSettore(EVENTO *pEvento)
 		*/
 		if((pOrdine=link_first(&(ListaOrdini[nSettoreIndex])))!=NULL){
 
-			if(pSettore->nTipoSettore==SETTORE_START && Cfg.nImballiUbicati==1){
+			if(pSettore->nTipoubnmset==SETTORE_START && Cfg.nImballiUbicati==1){
 				PIMBALLO_PRELIEVO pImballo;
 				/*
 				* Se si tratta di un settore di start e gestisco
@@ -823,7 +815,7 @@ BOOL GestioneSettore(EVENTO *pEvento)
 				* passo al prelievo imballi e stampa etichetta per i colli AUTOMATICI
 				* altrimenti passo alla gestione righe di prelievo
 				*/
-				PGRes=DBExecQuery(Cfg.nDebugVersion>1,"select c.ordprog,c.cptpfor,count(c.cptpfor),u.ios,u.cpu,u.modulo,u.riga,u.colonna,u.display,u.settore from col_prod as c, ubicazioni as u where ordprog='%s' and c.cpswlin!='1' and u.codprod=c.cptpfor and u.isola=%d group by c.cptpfor,c.ordprog,c.ordprog,u.ios,u.cpu,u.modulo,u.riga,u.colonna,u.display,u.settore,u.priorita order by u.priorita;",pOrdine->szOrdProg,pSettore->nIsola);
+				PGRes=DBExecQuery(Cfg.nDebugVersion>1,"select c.ordprog,c.cptpfor,count(c.cptpfor),u.ubplcnm,u.ubnmdsp,u.ubnmset from col_prod as c, ubicazioni as u where ordprog='%s' and c.cpswlin!='1' and u.codprod=c.cptpfor and u.ubnmisl=%d group by c.cptpfor,c.ordprog,c.ordprog,u.ubplcnm,u.ubnmddsp,u.ubnmset,u.ubprior order by u.ubprior;",pOrdine->szOrdProg,pSettore->nIsola);
 
 				nTuples=DBntuples(PGRes);
 				for(nIndex=0;nIndex<nTuples;nIndex++){
@@ -831,12 +823,8 @@ BOOL GestioneSettore(EVENTO *pEvento)
 					strcpy(pImballo->szOrdProg,   DBgetvalue(PGRes,nIndex,0));
 					strcpy(pImballo->szFormato,   DBgetvalue(PGRes,nIndex,1));
 					pImballo->nNumCollo    = atoi(DBgetvalue(PGRes,nIndex,2));
-					pImballo->nIOS         = atoi(DBgetvalue(PGRes,nIndex,3));
-					pImballo->nCPU         = atoi(DBgetvalue(PGRes,nIndex,4));
-					pImballo->nModulo      = atoi(DBgetvalue(PGRes,nIndex,5));
-					pImballo->nRiga        = atoi(DBgetvalue(PGRes,nIndex,6));
-					pImballo->nColonna     = atoi(DBgetvalue(PGRes,nIndex,7));
-					pImballo->nDisplay     = atoi(DBgetvalue(PGRes,nIndex,8));
+					pImballo->nPLCNum      = atoi(DBgetvalue(PGRes,nIndex,3));
+					pImballo->nDisplay     = atoi(DBgetvalue(PGRes,nIndex,4));
 				}
 				DBclear(PGRes);
 
@@ -846,11 +834,7 @@ BOOL GestioneSettore(EVENTO *pEvento)
 
 				strcpy(pSettore->szCodSped,pImballo->szOrdProg);
 				pSettore->nNumCollo = pImballo->nNumCollo;
-				pSettore->nIOS      = pImballo->nIOS;
-				pSettore->nCPU      = pImballo->nCPU;
-				pSettore->nModulo   = pImballo->nModulo;
-				pSettore->nRiga     = pImballo->nRiga;
-				pSettore->nColonna  = pImballo->nColonna;
+				pSettore->nPLCNum   = pImballo->nPLCNum;
 				pSettore->nDisplay  = GetDisplay(pImballo->nDisplay,pSettore->nIsola);
 
 				/*
@@ -865,14 +849,14 @@ BOOL GestioneSettore(EVENTO *pEvento)
 				UpdateDisplay(pDisplay,TUTTO);
 
 				/*
-				* acccendo la luce di prelievo prodotto
+				* accendo la luce di prelievo prodotto
 				*/
 				pSettore->nStatoLampada=1;
-				SetLampada(pSettore->nIOS,pSettore->nCPU,pSettore->nModulo,pSettore->nRiga,pSettore->nColonna);
+				SetLampada(pSettore->nSettore,pSettore->nPLCNum);
 				/*
 				* setto lo stato settore in attesa di conferma copie prelevate
 				*/
-				pSettore->nStatoSettore=PRELIEVO_IMBALLI;
+				pSettore->nStatoubnmset=PRELIEVO_IMBALLI;
 			} else {
 				InizioPrelievoSettore(pOrdine,pSettore);
 			}
@@ -880,7 +864,7 @@ BOOL GestioneSettore(EVENTO *pEvento)
 	}
 
 	switch(pEvento->nEvento){
-		case IOS_PKL_BUTTON_PRESSED:
+		case IOS_PKL_BUTTON_PRESSED_SETTORE_NUMERO:
 			switch(pSettore->nStatoSettore){
 				case PRELIEVO_IMBALLI:
 				{
@@ -894,9 +878,9 @@ BOOL GestioneSettore(EVENTO *pEvento)
 					* controllo che la riga/colonna siano quelle giuste
 					*/
 					switch(pEvento->nEvento){
-						case IOS_PKL_BUTTON_PRESSED:
+						case IOS_PKL_BUTTON_PRESSED_SETTORE_NUMERO:
 						{
-							if(pEvento->nModulo==pSettore->nModulo && pEvento->nRiga==pSettore->nRiga && pEvento->nColonna==pSettore->nColonna){
+							if(pEvento->nubnmset==pSettore->nSettore && pEvento->nPLCNum==pSettore->nPLCNum){
 
 								/* reset lampada */
 								pSettore->nStatoLampada=0;
@@ -912,11 +896,7 @@ BOOL GestioneSettore(EVENTO *pEvento)
 
 									strcpy(pSettore->szCodSped,pImballo->szOrdProg);
 									pSettore->nNumCollo = pImballo->nNumCollo;
-									pSettore->nIOS      = pImballo->nIOS;
-									pSettore->nCPU      = pImballo->nCPU;
-									pSettore->nModulo   = pImballo->nModulo;
-									pSettore->nRiga     = pImballo->nRiga;
-									pSettore->nColonna  = pImballo->nColonna;
+									pSettore->nPLCNUm   = pImballo->nPLCNUm;
 									pSettore->nDisplay  = GetDisplay(pImballo->nDisplay,pSettore->nIsola);
 
 									/*
@@ -931,14 +911,14 @@ BOOL GestioneSettore(EVENTO *pEvento)
 									UpdateDisplay(pDisplay,TUTTO);
 
 									/*
-									* acccendo la luce di prelievo prodotto
+									* accendo la luce di prelievo prodotto
 									*/
 									pSettore->nStatoLampada=1;
-									SetLampada(pSettore->nIOS,pSettore->nCPU,pSettore->nModulo,pSettore->nRiga,pSettore->nColonna);
+									SetLampada(pSettore->nSettore,pSettore->nPLCNum);
 									/*
 									* setto lo stato settore in attesa di conferma copie prelevate
 									*/
-									pSettore->nStatoSettore=PRELIEVO_IMBALLI;
+									pSettore->nStatoubnmset=PRELIEVO_IMBALLI;
 								} else {
 									/*
 									* scrivo i dati per il prelievo imballo sul display
@@ -976,12 +956,12 @@ BOOL GestioneSettore(EVENTO *pEvento)
 					* controllo che la riga/colonna siano quelle giuste
 					*/
 					switch(pEvento->nEvento){
-						case IOS_PKL_BUTTON_PRESSED:
+						case IOS_PKL_BUTTON_PRESSED_SETTORE_NUMERO:
 						{
 							PRIGA_PRELIEVO pOldRigaOrdine=&(pSettore->RigaOrdine[pSettore->nIndiceRigaOrdine]);
 							PRIGA_PRELIEVO pRigaOrdine=pOldRigaOrdine;
 
-							if(pEvento->nModulo==pSettore->nModulo && pEvento->nRiga==pSettore->nRiga && pEvento->nColonna==pSettore->nColonna){
+							if(pEvento->nubnmset==pSettore->nSettore && pEvento->nPLCNum==pSettore->nPLCNum){
 
 								/* reset lampada */
 								pSettore->nStatoLampada=0;
@@ -1015,9 +995,9 @@ BOOL GestioneSettore(EVENTO *pEvento)
 										*/
 										pSettore->nStatoLampada=1;
 
-										SetLampada(pSettore->nIOS,pSettore->nCPU,pSettore->nModulo,pSettore->nRiga,pSettore->nColonna);
+										SetLampada(pSettore->nSettore,pSettore->nPLCNum);
 
-										pSettore->nStatoSettore=FINE_ORDINE;
+										pSettore->nStatoubnmset=FINE_ORDINE;
 									} else if(!Cfg.nChiusuraCollo || pOldRigaOrdine->nNumCollo==pOldRigaOrdine->nNextCollo){
 										/*
 										* finite le righe d'ordine
@@ -1042,9 +1022,9 @@ BOOL GestioneSettore(EVENTO *pEvento)
 										*/
 										pSettore->nStatoLampada=1;
 
-										SetLampada(pSettore->nIOS,pSettore->nCPU,pSettore->nModulo,pSettore->nRiga,pSettore->nColonna);
+										SetLampada(pSettore->nSettore,pSettore->nPLCNum);
 
-										pSettore->nStatoSettore=PASSA_SETT_SUCC;
+										pSettore->nStatoubnmset=PASSA_SETT_SUCC;
 									} else {
 										/*
 										* chiudo il collo se in gestione collo e non ordine (rif.Wella)
@@ -1065,9 +1045,9 @@ BOOL GestioneSettore(EVENTO *pEvento)
 										*/
 										pSettore->nStatoLampada=1;
 
-										SetLampada(pSettore->nIOS,pSettore->nCPU,pSettore->nModulo,pSettore->nRiga,pSettore->nColonna);
+										SetLampada(pSettore->nSettore,pSettore->nPLCNum);
 
-										pSettore->nStatoSettore=CHIUSURA_COLLO;
+										pSettore->nStatoubnmset=CHIUSURA_COLLO;
 									}
 								} else {
 									/*
@@ -1118,14 +1098,14 @@ BOOL GestioneSettore(EVENTO *pEvento)
 										pDisplay->nStatoRiga2=NORMAL;
 										UpdateDisplay(pDisplay,TUTTO);
 										/*
-										* acccendo la luce di prelievo prodotto
+										* accendo la luce di prelievo prodotto
 										*/
 										pSettore->nStatoLampada=1;
-										SetLampada(pSettore->nIOS,pSettore->nCPU,pSettore->nModulo,pSettore->nRiga,pSettore->nColonna);
+										SetLampada(pSettore->nSettore,pSettore->nPLCNum);
 										/*
 										* setto lo stato settore in attesa di conferma copie prelevate
 										*/
-										pSettore->nStatoSettore=PRELIEVO_COPIE;
+										pSettore->nStatoubnmset=PRELIEVO_COPIE;
 									} else {
 										/*
 										* il collo e' diverso : faccio la chiusura collo
@@ -1145,9 +1125,9 @@ BOOL GestioneSettore(EVENTO *pEvento)
 										*/
 										pSettore->nStatoLampada=1;
 
-										SetLampada(pSettore->nIOS,pSettore->nCPU,pSettore->nModulo,pSettore->nRiga,pSettore->nColonna);
+										SetLampada(pSettore->nSettore,pSettore->nPLCNum);
 
-										pSettore->nStatoSettore=CHIUSURA_COLLO;
+										pSettore->nStatoubnmset=CHIUSURA_COLLO;
 									}
 								}
 							}
@@ -1174,7 +1154,7 @@ BOOL GestioneSettore(EVENTO *pEvento)
 					*/
 					switch(pEvento->nEvento){
 						case IOS_PKL_BUTTON_PRESSED:
-							if(pEvento->nModulo==pSettore->nModulo && pEvento->nRiga==pSettore->nRiga && pEvento->nColonna==pSettore->nColonna){
+							if(pEvento->nubnmset==pSettore->nSettore && pEvento->nPLCNum==pSettore->nPLCNum){
 
 								/* reset lampada */
 								pSettore->nStatoLampada=0;
@@ -1195,16 +1175,11 @@ BOOL GestioneSettore(EVENTO *pEvento)
 								pSettore->szCodUbi[0]='\0';
 								pSettore->nNumCollo=0;
 								pSettore->nNumCopie=0;
-								pSettore->nIOS=pSettore->nFirstIOS;
-								pSettore->nCPU=pSettore->nFirstCPU;
-								pSettore->nModulo=pSettore->nFirstMod;
-								pSettore->nRiga=pSettore->nFirstRow;
-								pSettore->nColonna=pSettore->nFirstColumn;
-								pSettore->nDisplay=pSettore->nFirstDisplay;
+								pSettore->nCPUNum=pSettore->nFirstCPUNum;
 								pSettore->nIndiceRigaOrdine=0;
 								pSettore->nNumeroRigheOrdine=0;
 
-								if(pSettore->nTipoSettore==SETTORE_END){
+								if(pSettore->nTipoubnmset==SETTORE_END){
 									/*
 									* rimuovo il primo ordine dalla coda
 									*/
@@ -1235,7 +1210,7 @@ BOOL GestioneSettore(EVENTO *pEvento)
 										/*
 										* DA SISTEMARE ... GESTIRE I SETTORI PER ISOLA !!!!
 										*/
-										while(pSettori[nSettoreIndex].nIsola==pSettore->nIsola && pSettori[nSettoreIndex].nStatoSettore==DISABILITATO){
+										while(pSettori[nSettoreIndex].nubnmisl==pSettore->nIsola && pSettori[nSettoreIndex].nStatoubnmset==DISABILITATO){
 											nSettoreIndex++;
 										}
 #ifdef TRACE
@@ -1246,7 +1221,7 @@ BOOL GestioneSettore(EVENTO *pEvento)
 									}
 								}
 
-								pSettore->nStatoSettore=ATTESA;
+								pSettore->nStatoubnmset=ATTESA;
 							}
 						break;
 					}
@@ -1267,16 +1242,12 @@ BOOL GestioneSettore(EVENTO *pEvento)
 					* controllo che la riga/colonna siano quelle giuste
 					*/
 					switch(pEvento->nEvento){
-						case IOS_PKL_BUTTON_PRESSED:
+						case IOS_PKL_BUTTON_PRESSED_SETTORE_NUMERO:
 						{
 							PRIGA_PRELIEVO pOldRigaOrdine=&(pSettore->RigaOrdine[pSettore->nIndiceRigaOrdine]);
 							PRIGA_PRELIEVO pRigaOrdine;
 
-							if(pEvento->nIOS==pSettore->nIOS && 
-								pEvento->nCPU==pSettore->nCPU && 
-								pEvento->nModulo==pSettore->nModulo && 
-								pEvento->nRiga==pSettore->nRiga && 
-								pEvento->nColonna==pSettore->nColonna){
+							if(pEvento->nubnmset==pSettore->nSettore && pEvento->nPLCNum==pSettore->nPLCNum){
 
 								/* reset lampada */
 								pSettore->nStatoLampada=0;
@@ -1333,9 +1304,9 @@ BOOL GestioneSettore(EVENTO *pEvento)
 										*/
 										pSettore->nStatoLampada=1;
 
-										SetLampada(pSettore->nIOS,pSettore->nCPU,pSettore->nModulo,pSettore->nRiga,pSettore->nColonna);
+										SetLampada(pSettore->nSettore,pSettore->nPLCNum);
 
-										pSettore->nStatoSettore=FINE_ORDINE;
+										pSettore->nStatoubnmset=FINE_ORDINE;
 
 									} else {
 										/* Passa a Settore Successivo */
@@ -1355,9 +1326,9 @@ BOOL GestioneSettore(EVENTO *pEvento)
 										*/
 										pSettore->nStatoLampada=1;
 
-										SetLampada(pSettore->nIOS,pSettore->nCPU,pSettore->nModulo,pSettore->nRiga,pSettore->nColonna);
+										SetLampada(pSettore->nSettore,pSettore->nPLCNum);
 
-										pSettore->nStatoSettore=PASSA_SETT_SUCC;
+										pSettore->nStatoubnmset=PASSA_SETT_SUCC;
 									}
 								} else {
 									/*
@@ -1381,11 +1352,7 @@ BOOL GestioneSettore(EVENTO *pEvento)
 									strcpy(pSettore->szCodUbi,pRigaOrdine->szCodUbi);
 									pSettore->nNumCollo=pRigaOrdine->nNumCollo;
 									pSettore->nNumCopie=pRigaOrdine->nNumCopie;
-									pSettore->nIOS=pRigaOrdine->nIOS;
-									pSettore->nCPU=pRigaOrdine->nCPU;
-									pSettore->nModulo=pRigaOrdine->nModulo;
-									pSettore->nRiga=pRigaOrdine->nRiga;
-									pSettore->nColonna=pRigaOrdine->nColonna;
+									pSettore->nPLCNum=pRigaOrdine->nPLCNum;
 									if(pSettore->nDisplay!=pRigaOrdine->nDisplay){
 										/*
 										* Pulisco il display
@@ -1408,14 +1375,14 @@ BOOL GestioneSettore(EVENTO *pEvento)
 									pDisplay->nStatoRiga2=NORMAL;
 									UpdateDisplay(pDisplay,TUTTO);
 									/*
-									* acccendo la luce di prelievo prodotto
+									* accendo la luce di prelievo prodotto
 									*/
 									pSettore->nStatoLampada=1;
-									SetLampada(pSettore->nIOS,pSettore->nCPU,pSettore->nModulo,pSettore->nRiga,pSettore->nColonna);
+									SetLampada(pSettore->nSettore,pSettore->nPLCNum);
 									/*
 									* setto lo stato settore in attesa di conferma copie prelevate
 									*/
-									pSettore->nStatoSettore=PRELIEVO_COPIE;
+									pSettore->nStatoubnmset=PRELIEVO_COPIE;
 								}
 							}
 						}
@@ -1434,13 +1401,10 @@ BOOL GestioneSettore(EVENTO *pEvento)
 					* controllo che la riga/colonna siano quelle giuste
 					*/
 					switch(pEvento->nEvento){
-						case IOS_PKL_BUTTON_PRESSED:
-							if(pEvento->nIOS==pSettore->nIOS && 
-								pEvento->nCPU==pSettore->nCPU && 
-								pEvento->nModulo==pSettore->nModulo && 
-								pEvento->nRiga==pSettore->nRiga && 
-								pEvento->nColonna==pSettore->nColonna){
+						case IOS_PKL_BUTTON_PRESSED_SETTORE_NUMERO:
+							pSettore->nPLCNum=pRigaOrdine->nPLCNum;
 
+							if(pSettore->nSettore=pRigaOrdine->nSettore && pSettore->nPLCNum=pRigaOrdine->nPLCNum) {
 
 								pDisplay=&(Cfg.Displays[pSettore->nDisplay]);
 								strcpy(pDisplay->szRiga_1_Display,"    ");
@@ -1455,7 +1419,7 @@ BOOL GestioneSettore(EVENTO *pEvento)
 								pSettore->nStatoLampada=0;
 
 								/* metto il settore in attesa di ordini da gestire */
-								pSettore->nStatoSettore=ATTESA;
+								pSettore->nStatoubnmset=ATTESA;
 
 								/*
 								* fine ordine confermata
@@ -1465,11 +1429,7 @@ BOOL GestioneSettore(EVENTO *pEvento)
 								pSettore->szCodUbi[0]='\0';
 								pSettore->nNumCollo=0;
 								pSettore->nNumCopie=0;
-								pSettore->nIOS=pSettore->nFirstIOS;
-								pSettore->nCPU=pSettore->nFirstCPU;
-								pSettore->nModulo=pSettore->nFirstMod;
-								pSettore->nRiga=pSettore->nFirstRow;
-								pSettore->nColonna=pSettore->nFirstColumn;
+								pSettore->nPLCNum=pSettore->nFirstPLCNum;
 								pSettore->nDisplay=pSettore->nFirstDisplay;
 								pSettore->nIndiceRigaOrdine=0;
 								pSettore->nNumeroRigheOrdine=0;
@@ -1477,7 +1437,7 @@ BOOL GestioneSettore(EVENTO *pEvento)
 								/*
 								* Gestione di fine settore particolare per Wella (NO RULLIERA DI SCARICO)
 								*/
-								if(Cfg.nFineOrdine || pSettore->nTipoSettore==SETTORE_END){
+								if(Cfg.nFineOrdine || pSettore->nTipoubnmset==SETTORE_END){
 
 									/*
 									* rimuovo il primo ordine dalla coda
@@ -1513,7 +1473,7 @@ BOOL GestioneSettore(EVENTO *pEvento)
 										/*
 										* DA SISTEMARE ... GESTIRE I SETTORI PER ISOLA !!!!
 										*/
-										while(pSettori[nSettoreIndex].nIsola==pSettore->nIsola && pSettori[nSettoreIndex].nStatoSettore==DISABILITATO){
+										while(pSettori[nSettoreIndex].nubnmisl==pSettore->nIsola && pSettori[nSettoreIndex].nStatoubnmset==DISABILITATO){
 											nSettoreIndex++;
 										}
 #ifdef TRACE
@@ -1544,7 +1504,7 @@ int ReadUbicazioni(PUBICAZIONI pUbi)
 	DBresult *PGRes = NULL;
 	int nTuples;
 
-	PGRes=DBExecQuery(Cfg.nDebugVersion>1,"select ubicazione, codprod, isola, settore, display, ios, cpu, modulo, riga, colonna, priorita, cnistato from ubicazioni where ubitipo='%s';",Cfg.szTipoOrdini);
+	PGRes=DBExecQuery(Cfg.nDebugVersion>1,"select ubcdubi, ubcdubi, ubnmisl, ubnmset, ubnmdsp, ubplcnm, ubprior, cnistato from ubicazioni where ubtpubi='%s';",Cfg.szTipoOrdini);
 
 	nTuples=DBntuples(PGRes);
 
@@ -1555,12 +1515,8 @@ int ReadUbicazioni(PUBICAZIONI pUbi)
 		pUbi->Ubicazione[nIndex].nIsola            = atoi(DBgetvalue(PGRes,nIndex,2));
 		pUbi->Ubicazione[nIndex].nSettore          = atoi(DBgetvalue(PGRes,nIndex,3));
 		pUbi->Ubicazione[nIndex].nDisplay          = atoi(DBgetvalue(PGRes,nIndex,4));
-		pUbi->Ubicazione[nIndex].nIOS              = atoi(DBgetvalue(PGRes,nIndex,5));
-		pUbi->Ubicazione[nIndex].nCPU              = atoi(DBgetvalue(PGRes,nIndex,6));
-		pUbi->Ubicazione[nIndex].nModulo           = atoi(DBgetvalue(PGRes,nIndex,7));
-		pUbi->Ubicazione[nIndex].nRowIndex         = atoi(DBgetvalue(PGRes,nIndex,8));
-		pUbi->Ubicazione[nIndex].nColIndex         = atoi(DBgetvalue(PGRes,nIndex,9));
-		pUbi->Ubicazione[nIndex].nPriorita         = atoi(DBgetvalue(PGRes,nIndex,10));
+		pUbi->Ubicazione[nIndex].nPLCNum           = atoi(DBgetvalue(PGRes,nIndex,5));
+		pUbi->Ubicazione[nIndex].nPriorita         = atoi(DBgetvalue(PGRes,nIndex,6));
 
 		pUbi->Ubicazione[nIndex].nIndex=nIndex;
 		
@@ -1573,54 +1529,33 @@ int ReadUbicazioni(PUBICAZIONI pUbi)
 
 void SortUbicazioni(PUBICAZIONI pUbi)
 {
-	qsort(pUbi->Ubicazione,pUbi->nUbicazioni,sizeof(UBICAZIONE),(int(*)())CmpUbicazione);
+	qsort(pUbi->ubcdubi,pUbi->nUbicazioni,sizeof(UBICAZIONE),(int(*)())CmpUbicazione);
 }
 
 int CmpUbicazione(PUBICAZIONE pUbi1,PUBICAZIONE pUbi2)
 {
-	if(pUbi1->nIOS < pUbi2->nIOS){
+	if(pUbi1->nSettore < pUbi2->nSettore){
 		return -1;
 	}
-	if(pUbi1->nIOS > pUbi2->nIOS){
+	if(pUbi1->nSettore > pUbi2->nSettore){
 		return 1;
 	}
-	if(pUbi1->nCPU < pUbi2->nCPU){
+	if(pUbi1->nPLCNum < pUbi2->nPLCNum){
 		return -1;
 	}
-	if(pUbi1->nCPU > pUbi2->nCPU){
-		return 1;
-	}
-	if(pUbi1->nModulo < pUbi2->nModulo){
-		return -1;
-	}
-	if(pUbi1->nModulo > pUbi2->nModulo){
-		return 1;
-	}
-	if(pUbi1->nRowIndex < pUbi2->nRowIndex){
-		return -1;
-	}
-	if(pUbi1->nRowIndex > pUbi2->nRowIndex){
-		return 1;
-	}
-	if(pUbi1->nColIndex < pUbi2->nColIndex){
-		return -1;
-	}
-	if(pUbi1->nColIndex > pUbi2->nColIndex){
+	if(pUbi1->nPLCNum > pUbi2->nPLCNum){
 		return 1;
 	}
 	return 0;
 }
 
 
-PUBICAZIONE SearchUbicazione(PUBICAZIONI pUbi,int nIOS,int nCPU,int nModulo,int nRowIndex,int nColIndex)
+PUBICAZIONE SearchUbicazione(PUBICAZIONI pUbi,int nSettore,int nPLCNum)
 {
 	UBICAZIONE Ubi;
 
-	Ubi.nIOS=nIOS;
-	Ubi.nCPU=nCPU;
-	Ubi.nModulo=nModulo;
-	Ubi.nRowIndex=nRowIndex;
-	Ubi.nColIndex=nColIndex;
+	Ubi.nSettore=nSettore;
+	Ubi.nPLCNum=nPLCNum;
 
 	return bsearch(&Ubi,pUbi->Ubicazione,pUbi->nUbicazioni,sizeof(UBICAZIONE),(int(*)())CmpUbicazione);
 }
@@ -1630,68 +1565,15 @@ PUBICAZIONE SearchUbicazione(PUBICAZIONI pUbi,int nIOS,int nCPU,int nModulo,int 
 */
 void UpdateDisplay(PDISPLAYSTRUCT pDisplay,int nRiga)
 {
-	int nIOS;
-	int nCPU;
-	int nModulo; 
-
-	if(pDisplay==(PDISPLAYSTRUCT)NULL){
-		return;
-	}
-
-	nIOS=pDisplay->nIOS;
-	nCPU=pDisplay->nCPU;
-	nModulo=pDisplay->nModulo; 
-
-	switch(nRiga){
-		case TUTTO:
-			DisplayWriteStringBCD( nIOS, nCPU, nModulo, 0, pDisplay->nStatoRiga1, pDisplay->szRiga_1_Display,0,0);
-			DisplayWriteString( nIOS, nCPU, nModulo, 1, pDisplay->nStatoRiga2, pDisplay->szRiga_2_Display);
-			/*
-			DisplayWriteString( nIOS, nCPU, nModulo, 0, pDisplay->nStatoRiga1, pDisplay->szRiga_1_Display);
-			DisplayWriteString( nIOS, nCPU, nModulo, 1, pDisplay->nStatoRiga2, pDisplay->szRiga_2_Display);
-			*/
-		break;
-
-		case RIGA_1:
-			DisplayWriteStringBCD( nIOS, nCPU, nModulo, 0, pDisplay->nStatoRiga1, pDisplay->szRiga_1_Display,0,0);
-			/*
-			DisplayWriteString( nIOS, nCPU, nModulo, 0, pDisplay->nStatoRiga1, pDisplay->szRiga_1_Display);
-			*/
-		break;
-
-		case RIGA_2:
-			DisplayWriteString( nIOS, nCPU, nModulo, 1, pDisplay->nStatoRiga2, pDisplay->szRiga_2_Display);
-			/*
-			DisplayWriteString( nIOS, nCPU, nModulo, 1, pDisplay->nStatoRiga2, pDisplay->szRiga_2_Display);
-			*/
-		break;
-	}
 }
 
 void DisplayWriteString(int nIOS, int nCPU, int nModulo, int nRowIndex, int nMode, char *szString)
 {
-	char szBuffer[40];
-
-	sprintf(szBuffer,"%d,%d,%d,%d,%d,%x,%x,%x,%x", nIOS, nCPU, nModulo, nRowIndex, nMode, szString[0], szString[1], szString[2], szString[3]);
-
-	SendMessage(PROC_IOS, PROC_SETTORI,  IOS_DPY_STRING, szBuffer);
 }
 
 int GetBCDNibble(unsigned char cChar)
 {
-	switch(cChar){
-		case '0': case '1': case '2': case '3': case '4': 
-		case '5': case '6': case '7': case '8': case '9':
-			return cChar-'0';
-		break;
-		case ' ': return 10; break;
-		case '-': return 11; break;
-		case '.': return 12; break;
-		case 'X': return 13; break;	/* non gestito */
-		case 'Y': return 14; break;	/* non gestito */
-		case 'Z': return 15; break;	/* non gestito */
-	}
-	return 15;
+	return 0;
 }
 
 /*
@@ -1700,73 +1582,39 @@ int GetBCDNibble(unsigned char cChar)
 */
 void DisplayWriteStringBCD(int nIOS, int nCPU, int nModulo, int nRowIndex, int nMode, char *szString,unsigned char nDot,unsigned char nBlink)
 {
-	char szBuffer[40];
-	unsigned char DPYByte[3];
-
-	DPYByte[0]  = GetBCDNibble(szString[0])<<4;
-	DPYByte[0] |= GetBCDNibble(szString[1]);
-	DPYByte[1]  = GetBCDNibble(szString[2])<<4;
-	DPYByte[1] |= GetBCDNibble(szString[3]);
-
-	/* flags */
-	/* 4 bit bassi : puntino */
-	/* 4 bit alti  : lampeggio */
-	DPYByte[2]  = nDot | (nBlink<<4);
-
-	sprintf(szBuffer,"%d,%d,%d,%d,%x,%x,%x", nIOS, nCPU, nModulo, nRowIndex, DPYByte[0],DPYByte[1],DPYByte[2]);
-
-	SendMessage(PROC_IOS, PROC_SETTORI,  IOS_DPY_BCD, szBuffer);
 }
 
 void ScongelaPKL(void)
 {
-	int nIndex;
-	char szBuffer[80];
-
-	for(nIndex=0;nIndex<Cfg.nPKLNumber;nIndex++){
-		sprintf(szBuffer,"%d,%d,%d", Cfg.PKL[nIndex].nIOS, Cfg.PKL[nIndex].nCPU, Cfg.PKL[nIndex].nModulo);
-		SendMessage(PROC_IOS, PROC_SETTORI,  IOS_PKL_SCONGELA, szBuffer);
-	}
+	SendMessage(PROC_IOS, PROC_SETTORI,  IOS_PKL_SCONGELA, NULL);
 }
 
 void CongelaPKL(void)
 {
-	int nIndex;
-	char szBuffer[80];
-
-	for(nIndex=0;nIndex<Cfg.nPKLNumber;nIndex++){
-		sprintf(szBuffer,"%d,%d,%d", Cfg.PKL[nIndex].nIOS, Cfg.PKL[nIndex].nCPU, Cfg.PKL[nIndex].nModulo);
-		SendMessage(PROC_IOS, PROC_SETTORI,  IOS_PKL_CONGELA, szBuffer);
-	}
+	SendMessage(PROC_IOS, PROC_SETTORI,  IOS_PKL_CONGELA, NULL);
 }
 
-void SetLampada(int nIOS,int nCPU,int nModule,int nRowIndex, int nColumn)
+void SetLampada(int nSettore,int PLCNum)
 {
 	char szBuffer[40];
 
-	sprintf(szBuffer,"%d,%d,%d,%d,%d", nIOS, nCPU, nModule, nRowIndex, nColumn);
+	sprintf(szBuffer,"%d,%d",nSettore, PLCNum);
 
-	SendMessage(PROC_IOS, PROC_SETTORI,  IOS_PKL_SET_RC, szBuffer);
+	SendMessage(PROC_IOS, PROC_SETTORI,  IOS_PKL_SET_RC_SETTORE_NUMERO, szBuffer);
 }
 
-void ResetLampada(int nIOS,int nCPU,int nModule,int nRowIndex, int nColumn)
+void ResetLampada(int nSettore,int PLCNum)
 {
 	char szBuffer[40];
 
-	sprintf(szBuffer,"%d,%d,%d,%d,%d", nIOS, nCPU, nModule, nRowIndex, nColumn); 
+	sprintf(szBuffer,"%d,%d",nSettore, PLCNum);
 
-	SendMessage(PROC_IOS, PROC_SETTORI,  IOS_PKL_RESET_RC, szBuffer);
+	SendMessage(PROC_IOS, PROC_SETTORI,  IOS_PKL_RESET_RC_SETTORE_NUMERO, szBuffer);
 }
 
 void ResetLuci(void)
 {
-	int nIndex;
-	char szBuffer[80];
-
-	for(nIndex=0;nIndex<Cfg.nPKLNumber;nIndex++){
-		sprintf(szBuffer,"%d,%d,%d", Cfg.PKL[nIndex].nIOS, Cfg.PKL[nIndex].nCPU, Cfg.PKL[nIndex].nModulo);
-		SendMessage(PROC_IOS, PROC_SETTORI,  IOS_PKL_RESET_ALL, szBuffer);
-	}
+	SendMessage(PROC_IOS, PROC_SETTORI,  IOS_PKL_RESET_ALL, NULL);
 }
 
 void ResetSettori(void)
@@ -1786,11 +1634,7 @@ void ResetSettore(int nIsola,int nSettore)
 {
 	PORDINE pOrdine;
 	int nFirstDisplay=0;
-	int nFirstIOS=0;
-	int nFirstCPU=0;
-	int nFirstMod=0;
-	int nFirstCol=0;
-	int nFirstRow=0;
+	int nFirstPLCNum=0;
 	DBresult *PGRes = NULL;
 	int nTuples;
 	int nIndex;
@@ -1813,39 +1657,27 @@ void ResetSettore(int nIsola,int nSettore)
 				free(pOrdine);
 			}
 			if(pSettori[nIndex].nStatoSettore!=DISABILITATO){
-				pSettori[nIndex].nStatoSettore=ATTESA;       /* Stato attuale del settore */
+				pSettori[nIndex].nStatoubnmset=ATTESA;       /* Stato attuale del settore */
 			}
 			/*
 			* Determino i dati della prima ubicazione del settore in oggetto
 			*/
-			PGRes=DBExecQuery(Cfg.nDebugVersion>1,"select display, ios, cpu, modulo, riga, colonna from ubicazioni where ubitipo='%s' AND isola='%d' AND settore='%4d' order by priorita;",Cfg.szTipoOrdini, nIsola,nSettore);
+			PGRes=DBExecQuery(Cfg.nDebugVersion>1,"select ubnmdsp, ubplcnm from ubicazioni where ubtpubi='%s' AND ubnmisl='%d' AND ubnmset='%4d' order by ubprior;",Cfg.szTipoOrdini, nIsola,nSettore);
 
 			nTuples=DBntuples(PGRes);
 
 			if(nTuples>=1){
 				nFirstDisplay = GetDisplay(atoi(DBgetvalue(PGRes,0,0)),nIsola);
-				nFirstIOS=atoi(DBgetvalue(PGRes,0,1));
-				nFirstCPU=atoi(DBgetvalue(PGRes,0,2));
-				nFirstMod=atoi(DBgetvalue(PGRes,0,3));
-				nFirstRow=atoi(DBgetvalue(PGRes,0,4));
-				nFirstCol=atoi(DBgetvalue(PGRes,0,5));
+				nFirstPLCNum  = atoi(DBgetvalue(PGRes,0,1));
 			} else {
 #ifdef TRACE
 				trace_out_vstr_date(1,"ResetSettore(Isola:%d,Settore:%d) : Non esistono ubicazioni per il settore in oggetto",nIsola,nSettore);
 #endif
 			}
-			pSettori[nIndex].nFirstIOS=nFirstIOS;
-			pSettori[nIndex].nFirstCPU=nFirstCPU;
-			pSettori[nIndex].nFirstMod=nFirstMod;
-			pSettori[nIndex].nFirstRow=nFirstRow;
-			pSettori[nIndex].nFirstColumn=nFirstCol;
+			pSettori[nIndex].nFirstIOS=nFirstPLCNum;
 			pSettori[nIndex].nFirstDisplay=nFirstDisplay;
 
-			pSettori[nIndex].nIOS=nFirstIOS;             /* Nro IOS Tasto Premuto / da premere */
-			pSettori[nIndex].nCPU=nFirstCPU;             /* Nro CPU Tasto Premuto / da premere */
-			pSettori[nIndex].nModulo=nFirstMod;          /* Modulo Tasto Premuto / da premere */
-			pSettori[nIndex].nRiga=nFirstRow;            /* Riga Tasto Premuto / da premere */
-			pSettori[nIndex].nColonna=nFirstCol;         /* Colonna Tasto Premuto / da premere */
+			pSettori[nIndex].nPLCNum=nFirstPLCNum;       /* Nro PLC Tasto Premuto / da premere */
 			pSettori[nIndex].nDisplay=nFirstDisplay;     /* Display */
 			pSettori[nIndex].nNumCopie=0;                /* Numero Copie */
 			pSettori[nIndex].nNumCollo=0;                /* Numero Collo */
@@ -1863,7 +1695,7 @@ void ResetSettore(int nIsola,int nSettore)
 	* Cerco l'indice del o dei displays relativo/i ai parametri isola e settore passati alla funzione
 	*/
 	for(nIndex=0;nIndex<Cfg.nNumeroDisplays;nIndex++){
-		if(Cfg.Displays[nIndex].nIsola==nIsola && Cfg.Displays[nIndex].nSettore==nSettore){
+		if(Cfg.Displays[nIndex].nubnmisl==nIsola && Cfg.Displays[nIndex].nubnmset==nSettore){
 			strcpy(Cfg.Displays[nIndex].szRiga_1_Display,"----");     /* Riga 1 del display */
 			strcpy(Cfg.Displays[nIndex].szRiga_2_Display,"----");     /* Riga 2 del display */
 			Cfg.Displays[nIndex].nStatoRiga1=NORMAL;
@@ -2078,7 +1910,7 @@ int GetSettore(int nIsola,int nSettore)
 	int nIndex;
 
 	for(nIndex=0;nIndex<Cfg.nNumeroSettori;nIndex++){
-		if(pSettori[nIndex].nIsola==nIsola && pSettori[nIndex].nSettore==nSettore){
+		if(pSettori[nIndex].nubnmisl==nIsola && pSettori[nIndex].nubnmset==nSettore){
 			return nIndex;
 		}
 	}
@@ -2243,7 +2075,7 @@ BOOL RestoreState(char *pszFileName)
 			*/
 			for(nIndex=0;nIndex<Cfg.nNumeroSettori;nIndex++){
 				if(pSettori[nIndex].nStatoLampada==1){
-					SetLampada( pSettori[nIndex].nIOS,pSettori[nIndex].nCPU, pSettori[nIndex].nModulo,pSettori[nIndex].nRiga,pSettori[nIndex].nColonna);
+					SetLampada( pSettori[nIndex].nSettore,pSettori[nIndex].nPLCNum);
 				}
 			}
 			for(nIndex=0;nIndex<Cfg.nNumeroDisplays;nIndex++){
@@ -2302,7 +2134,7 @@ int ReadDisplaysInfo(PDISPLAYSTRUCT pDisplays)
 	int nDisplays=0;
 	int nIndex=0;
 	
-	PGres=DBExecQuery(Cfg.nDebugVersion>1,"select display,isola,settore,ios,cpu,modulo from displays order by display;");
+	PGres=DBExecQuery(Cfg.nDebugVersion>1,"select dsnmdsp,dsnmisl,dsnmset from displays order by display;");
 
 	if(DBresultStatus(PGres) == DBRES_TUPLES_OK && (nDisplays=DBntuples(PGres))){
 
@@ -2312,9 +2144,6 @@ int ReadDisplaysInfo(PDISPLAYSTRUCT pDisplays)
 				pDisplays[nIndex].nDisplay = atoi(DBgetvalue(PGres,nIndex,0));
 				pDisplays[nIndex].nIsola   = atoi(DBgetvalue(PGres,nIndex,1));
 				pDisplays[nIndex].nSettore = atoi(DBgetvalue(PGres,nIndex,2));
-				pDisplays[nIndex].nIOS     = atoi(DBgetvalue(PGres,nIndex,3));
-				pDisplays[nIndex].nCPU     = atoi(DBgetvalue(PGres,nIndex,4));
-				pDisplays[nIndex].nModulo  = atoi(DBgetvalue(PGres,nIndex,5));
 		}
 
 		DBclear(PGres);
@@ -2322,7 +2151,7 @@ int ReadDisplaysInfo(PDISPLAYSTRUCT pDisplays)
 	} else {
 		char szMsg[256];
 
-		/* c'e' qualcosa che non va', lo segnolo */
+		/* c'e' qualcosa che non va', lo segnalo */
 		sprintf(szMsg,"ATTENZIONE : fallita ReadDisplaysInfo() - Exit(1) di SETTORI");
 		SendMessage(PROC_MAIN, PROC_SETTORI, DISPLAY_MSG, szMsg);
 #ifdef TRACE
@@ -2350,7 +2179,7 @@ void ReadSettoriInfo(int nNumeroSettori)
 	int nSettori=0;
 	int nIndex=0;
 
-	PGres=DBExecQuery(Cfg.nDebugVersion>1,"select settore,isola,flag,tipo,operatore from settori order by settore;");
+	PGres=DBExecQuery(Cfg.nDebugVersion>1,"select stnmset,stnmisl,stcdflg,sttpset,stcdope from settori order by settore;");
 
 	if(DBresultStatus(PGres) == DBRES_TUPLES_OK && ((nSettori=DBntuples(PGres))==nNumeroSettori) ){
 
@@ -2403,7 +2232,7 @@ int GetDisplay(int nDisplay,int nIsola)
 	BOOL bFound=FALSE;
 	
 	for(nIndex=0;nIndex<Cfg.nNumeroDisplays;nIndex++){
-		if((Cfg.Displays[nIndex].nDisplay==nDisplay) && (Cfg.Displays[nIndex].nIsola==nIsola)){
+		if((Cfg.Displays[nIndex].nDisplay==nDisplay) && (Cfg.Displays[nIndex].nubnmisl==nIsola)){
 			bFound=TRUE;
 			break;
 		}

@@ -133,7 +133,7 @@ void do_carico_settori(gpointer win)
 	/*
 	* Seleziono le qta per settore
 	*/
-	DBRes=DBExecQuery(Cfg.nDebugLevel>1,"select u.settore,sum(s.sanmcpe) from ubicazioni as u,sel_art_tmp_%s_%s as s where u.ubicazione=s.sacdubi group by u.settore order by u.settore;", Cfg.szTmpSuffix, Cfg.szTipoOrdini);
+	DBRes=DBExecQuery(Cfg.nDebugLevel>1,"select u.ubnmset,sum(s.sanmcpe) from ubicazioni as u,sel_art_tmp_%s_%s as s where u.ubicazione=s.sacdubi group by u.settore order by u.settore;", Cfg.szTmpSuffix, Cfg.szTipoOrdini);
 	if((nTuples=DBntuples(DBRes))){
 		for(nIndex=0;nIndex<nTuples;nIndex++){
 			nSettoreIndex=max(atoi(DBgetvalue(DBRes,nIndex,0)),0);

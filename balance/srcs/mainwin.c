@@ -157,7 +157,7 @@ void do_lista_articoli_cedola(gpointer win)
             * Seleziono le ubicazioni manuali per uso successivo
             * rm 09-10-2003 : solo quelle inutilizzate
             */
-            DBResUbiMan=DBExecQuery(Cfg.nDebugLevel>1,"select ubicazione,settore,cnistato,ubcdflg from ubicazioni where ubcdflg='%c' and codprod='' order by fila(ubicazione),montante(ubicazione)::int2,colonna(ubicazione)::int2,piano(ubicazione)::int2;", UBICAZIONE_MANUALE);
+            DBResUbiMan=DBExecQuery(Cfg.nDebugLevel>1,"select ubcdubi,ubnmset,ubstato,ubcdflg from ubicazioni where ubcdflg='%c' and codprod='' order by fila(ubicazione),montante(ubicazione)::int2,colonna(ubicazione)::int2,piano(ubicazione)::int2;", UBICAZIONE_MANUALE);
             nUbicazioniManuali=DBntuples(DBResUbiMan);
             nUbicazioniManualiUtilizzate=0;
 
@@ -286,7 +286,7 @@ void do_lista_articoli_cedola(gpointer win)
             nTuples=DBntuples(DBRes);
             for(nIndex=0;nIndex<nTuples;nIndex++){
 
-                DBResUbi=DBExecQuery(Cfg.nDebugLevel>1,"select ubicazione,settore from ubicazioni where codprod='%s';", DBgetvalue(DBRes,nIndex,0));
+                DBResUbi=DBExecQuery(Cfg.nDebugLevel>1,"select ubcdubi,ubnmset from ubicazioni where codprod='%s';", DBgetvalue(DBRes,nIndex,0));
                 if(DBntuples(DBResUbi)){
                     strcpy(szCDUBI,DBgetvalue(DBResUbi,0,0));
                     nCDSET=atoi(DBgetvalue(DBResUbi,0,1));

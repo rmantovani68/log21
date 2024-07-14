@@ -3,7 +3,8 @@ PLCBIN=$(PLCHOME)/bin.Linux
 PLCLIB=$(PLCHOME)/util
 AS=$(PLCBIN)/as
 
-PLC_PROG=log21R
+#PLC_PROG=log21R
+PLC_PROG=bistabile
 
 all: plc-objs/user.oo
 
